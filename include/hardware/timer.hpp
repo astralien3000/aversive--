@@ -49,7 +49,7 @@ public:
     /*!
       Will throw a compile-time error if type is unappropriate
      */
-    template<typename T> static inline T& comparator(void);
+    template<typename T> static inline void setComparator(T);
   };
 };
 

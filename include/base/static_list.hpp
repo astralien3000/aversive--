@@ -7,7 +7,7 @@ template<int E1, int ... ARGS> struct StaticList {
   enum { ELEM = E1 };
 };
 
-template<int E1> struct StaticList {
+template<int E1> struct StaticList<E1> {
   enum { SIZE = 1 };
   enum { ELEM = E1 };
 };
@@ -23,20 +23,19 @@ struct StaticListIterator<List,0> {
   enum { VALUE = List::ELEM };
 };
 
-template<typename List1, typename List2>
+template<typename List1, typename List2, int _SIZE = List1::SIZE>
 struct StaticListLooper {
-  template<typename Callable, int _SIZE = List1::SIZE> static inline void exec(Callable func);
+  template<typename Callable> static inline void exec(Callable func) {
+    static_assert(List1::SIZE <= _SIZE, "Error static list overflow !");
+    static_assert(List2::SIZE <= _SIZE, "Error static list overflow !");
+    func(List1::ELEM, List2::ELEM);
+    StaticListLooper<typename List1::Next, typename List2::Next, (_SIZE - 1)>::exec(func);
+  }
 };
 
-template<typename List1, typename List2> template<typename Callable, int _SIZE>
-static inline void StaticListLooper<List1, List2>::exec(Callable func) {
-  static_assert(List1::SIZE <= _SIZE, "Error static list overflow !");
-  static_assert(List2::SIZE <= _SIZE, "Error static list overflow !");
-  func(List1::ELEM, List2::ELEM);
-  StaticListLooper<typename List1::Next, typename List2::Next>::exec<Callable, _SIZE - 1>(func);
-}
-
-template<typename List1, typename List2> template<typename Callable>
-static inline void StaticListLooper<List1, List2>::exec<Callable, 0>(Callable func) {}
+template<typename List1, typename List2>
+struct StaticListLooper<List1, List2, 1> {
+  template<typename Callable> static inline void exec(Callable func) {}
+};
 
 #endif//STATIC_LIST_HPP

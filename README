@@ -1,0 +1,5 @@
+commandes utiles (pour mémoire)
+
+avr-g++ -std=c++11 -mmcu=*** -I./include/
+
+simulavr -f a.out -d  atmega** -R 0xFA -W 0xFF
