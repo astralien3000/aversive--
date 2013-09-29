@@ -35,7 +35,9 @@ struct StaticListLooper {
 
 template<typename List1, typename List2>
 struct StaticListLooper<List1, List2, 1> {
-  template<typename Callable> static inline void exec(Callable func) {}
+  template<typename Callable> static inline void exec(Callable func) {
+    func(List1::ELEM, List2::ELEM);
+  }
 };
 
 #endif//STATIC_LIST_HPP

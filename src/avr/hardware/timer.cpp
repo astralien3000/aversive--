@@ -73,23 +73,23 @@ struct TimerFuncHelper {
 template<int ID>
 inline void Timer<ID>::init(void) {
   TimerFuncHelper<ID,0> helper();
-  
+
   // Set Waveform Generator Mode to Normal
   StaticListLooper<
     typename AVR::Timer<ID>::Control, 
     typename AVR::Timer<ID>::WGM::Normal
     >::exec([](int reg, int val) {
-      REG(reg) = val;
-    });
-  
+	REG(reg) = val;
+      });
+
   // Set Prescaler to 0
   StaticListLooper<
     typename AVR::Timer<ID>::Control, 
     typename AVR::Timer<ID>::template Prescaler<0>::Config
     >::exec([](int reg, int val){
-      REG(reg) |= val;
-    });
-
+	REG(reg) |= val;
+      });
+  
   // Set Counter to 0
   StaticListLooper<
     typename AVR::Timer<ID>::Counter, 

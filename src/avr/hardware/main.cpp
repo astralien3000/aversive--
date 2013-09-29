@@ -9,10 +9,10 @@ typedef Timer<0> Timer0;
 ////////////////
 
 // This port correponds to the "-W 0x20,-" command line option.
-#define special_output_port (*((volatile char *)0xFA))
+#define special_output_port (*((volatile char *)0x20))
 
 // This port correponds to the "-R 0x22,-" command line option.
-#define special_input_port  (*((volatile char *)0xFF))
+#define special_input_port  (*((volatile char *)0x22))
 
 // Poll the specified string out the debug port.
 void debug_puts(const char *str) {
@@ -29,27 +29,25 @@ void debug_puts(const char *str) {
 
 int main(int argc, char* argv[]) {
   Timer0::init();
-  
+
   Timer0::Event<0>::set([](void){ 
       debug_puts("A\n");
       Timer0::counter<u8>() = 0;
     });
-
-  Timer0::Event<0>::setComparator<u8>(100);
-  Timer0::setPrescaler<1024>();
-  Timer0::setPrescaler<0>();
-  Timer0::Event<0>::start();
-  Timer0::Event<0>::stop();
+  
+  Timer0::Event<0>::setComparator<u8>(50);
+  Timer0::setPrescaler<128>();
   Timer0::Event<0>::start();
 
   Interrupts::set();
 
   int i = 0;
   while(1) {
-    debug_puts("l");
+    debug_puts("i");
     i++;
-    if(i == 20) {
-      debug_puts("l\n");
+    if(i == 40) {
+      debug_puts("li\n");
+      i = 0;
     }
     
   }
