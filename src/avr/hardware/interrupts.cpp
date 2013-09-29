@@ -1,19 +1,19 @@
 #include <hardware/interrupts.hpp>
 
-inline void InterruptsHandler::clear(void) {
+inline void Interrupts::clear(void) {
   __asm__ __volatile__ ("CLI\n");
 }
 
-inline void InterruptsHandler::set(void) {
+inline void Interrupts::set(void) {
   __asm__ __volatile__ ("SEI\n");
 }
 
-inline void InterruptsHandler::lock(ArchiHandler::RegType& flag) {
+template<typename T> inline void Interrupts::lock(T& flag) {
   flag = SREG;
-  InterruptsHandler::clear();
+  Interrupts::clear();
 }
 
-inline void InterruptsHandler::unlock(ArchiHandler::RegType& flag) {
+template<typename T> inline void Interrupts::unlock(T& flag) {
   SREG = flag;
-  InterruptsHandler::set();
+  Interrupts::set();
 }

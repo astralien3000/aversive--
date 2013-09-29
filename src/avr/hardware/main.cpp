@@ -2,10 +2,9 @@
 #include <hardware/timer.hpp>
 #include <hardware/interrupts.hpp>
 #include <maths/saturate.hpp>
+#include <base/types.hpp>
 
-typedef TimerHandler<0> Timer0;
-//typedef TimerHandler<1> Timer0;
-typedef InterruptsHandler Interrupts;
+typedef Timer<0> Timer0;
 
 ////////////////
 
@@ -30,12 +29,13 @@ void debug_puts(const char *str) {
 
 int main(int argc, char* argv[]) {
   Timer0::init();
+  
   Timer0::Event<0>::set([](void){ 
       debug_puts("A\n");
       Timer0::counter<u8>() = 0;
     });
-  
-  Timer0::Event<0>::setComparator((u8)100);
+
+  Timer0::Event<0>::setComparator<u8>(100);
   Timer0::setPrescaler<1024>();
   Timer0::setPrescaler<0>();
   Timer0::Event<0>::start();
