@@ -27,17 +27,22 @@ void debug_puts(const char *str) {
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-int main(int argc, char* argv[]) {
-  Timer0::init();
+#include "impl/hardware/timer.cpp"
+#include "impl/hardware/interrupts.cpp"
 
-  Timer0::Event<0>::set([](void){ 
+int main(int argc, char* argv[]) {
+  Timer0& timer = Timer0::instance();
+  timer.init();
+
+  Timer0::Event<0>& evt = timer.event<0>();
+  evt.set([](void){ 
       debug_puts("A\n");
-      Timer0::counter<u8>() = 0;
+      Timer0::instance().counter<u8>() = 0;
     });
   
-  Timer0::Event<0>::setComparator<u8>(50);
-  Timer0::setPrescaler<128>();
-  Timer0::Event<0>::start();
+  evt.setComparator<u8>(50);
+  timer.setPrescaler<64>();
+  evt.start();
 
   Interrupts::set();
 
@@ -56,5 +61,3 @@ int main(int argc, char* argv[]) {
   return 0;
 }
 
-#include "timer.cpp"
-#include "interrupts.cpp"

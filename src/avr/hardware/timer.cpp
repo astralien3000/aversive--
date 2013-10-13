@@ -2,6 +2,8 @@
 #include <hardware/timer.hpp>
 #include <hardware/interrupts.hpp>
 
+#include <base/static_container.hpp>
+
 #include "../config/atmega32.hpp"
 
 template<int SIZE = 8>
@@ -14,14 +16,17 @@ typedef void (*InterruptFunc)(void);
 ////////////////////////////////////////////////////////
 // DATA ////////////////////////////////////////////////
 
-template<int ID>
-struct TimerData {
-  static InterruptFunc event[AVR::Timer<ID>::EVENTS];
+class TimerEventPrivateData {
+public:
+  InterruptFunc func = 0;
 };
 
 template<int ID>
-InterruptFunc TimerData<ID>::event[] = {0};
-
+class TimerPrivateData {
+public:
+  typedef StaticContainer<typename Timer<ID>::template Event<0>> EventList;
+  EventList events;
+};
 
 ////////////////////////////////////////////////////////
 // INTERRUPTION FUNCS //////////////////////////////////
@@ -31,17 +36,18 @@ InterruptFunc TimerData<ID>::event[] = {0};
 #define MACRO_INTERRUPT_BIND(timer, comp, ev)				\
   ISR(TIMER##timer##_COMP##comp##_vect, ISR_NAKED) {			\
     uint8_t flags = SREG;						\
-    if(TimerData<timer>::event[ev])					\
-      TimerData<timer>::event[ev]();					\
+    Timer<timer>::Event<ev>& evt = Timer<timer>::instance().event<ev>(); \
+    if(evt.activated())							\
+      evt.exec();							\
     SREG = flags;							\
     reti();								\
   }
 
 MACRO_INTERRUPT_BIND(0,,0)
-MACRO_INTERRUPT_BIND(1,A,0)
-MACRO_INTERRUPT_BIND(1,B,1)
+//MACRO_INTERRUPT_BIND(1,A,0)
+//MACRO_INTERRUPT_BIND(1,B,1)
 #if defined (__AVR_ATmega128__)
-MACRO_INTERRUPT_BIND(1,C,2)
+//MACRO_INTERRUPT_BIND(1,C,2)
 #endif
 
 ////////////////////////////////////////////////////////
@@ -70,8 +76,13 @@ struct TimerFuncHelper {
 
 ////////////////////////////////////////////////////////
 
-template<int ID>
-inline void Timer<ID>::init(void) {
+template<int ID, typename TimerImpl>
+inline Timer<ID, TimerImpl>::Timer() {
+  
+}
+
+template<int ID, typename TimerImpl>
+inline void Timer<ID, TimerImpl>::init(void) {
   TimerFuncHelper<ID,0> helper();
 
   // Set Waveform Generator Mode to Normal
@@ -99,16 +110,16 @@ inline void Timer<ID>::init(void) {
     });
 }
 
-template<int ID> template<typename T>
-inline T& Timer<ID>::counter(void) {
+template<int ID, typename TimerImpl> template<typename T>
+inline T& Timer<ID, TimerImpl>::counter(void) {
   TimerFuncHelper<ID,0,AVR::Timer<ID>::SIZE == sizeof(T)*8> helper;
 
   // Set counter value
   return REG<AVR::Timer<ID>::SIZE>(AVR::Timer<ID>::Counter::ELEM);
 }
 
-template<int ID> template<int PRESCALE>
-inline void Timer<ID>::setPrescaler(void) {
+template<int ID, typename TimerImpl> template<int PRESCALE>
+inline void Timer<ID, TimerImpl>::setPrescaler(void) {
   TimerFuncHelper<ID,0> helper;
 
   // Set to 0 all prescaler bits
@@ -128,8 +139,8 @@ inline void Timer<ID>::setPrescaler(void) {
     });
 }
 
-template<int ID> template<int EID>
-inline void Timer<ID>::Event<EID>::start(void) {
+template<int ID, typename TimerImpl> template<int EID, typename EventImpl>
+inline void Timer<ID, TimerImpl>::Event<EID, EventImpl>::start(void) {
   TimerFuncHelper<ID,EID> helper;
 
   // Enable event interrupt bit
@@ -141,8 +152,8 @@ inline void Timer<ID>::Event<EID>::start(void) {
     });
 }
 
-template<int ID> template<int EID>
-inline void Timer<ID>::Event<EID>::stop(void) {
+template<int ID, typename TimerImpl> template<int EID, typename EventImpl>
+inline void Timer<ID, TimerImpl>::Event<EID, EventImpl>::stop(void) {
   TimerFuncHelper<ID,EID> helper;
 
   // Disable event interrupt bit
@@ -154,16 +165,31 @@ inline void Timer<ID>::Event<EID>::stop(void) {
     });
 }
 
-template<int ID> template<int EID> template<typename Callable> 
-inline void Timer<ID>::Event<EID>::set(Callable func) {
+template<int ID, typename TimerImpl> template<int EID, typename EventImpl> template<typename Callable> 
+inline void Timer<ID, TimerImpl>::Event<EID, EventImpl>::set(Callable func) {
   TimerFuncHelper<ID,EID> helper;
 
-  TimerData<ID>::event[EID] = static_cast<InterruptFunc>(func);
+  this->data.func = static_cast<InterruptFunc>(func);
 }
 
-template<int ID> template<int EID> template<typename T>
-inline void Timer<ID>::Event<EID>::setComparator(T val) {
+template<int ID, typename TimerImpl> template<int EID, typename EventImpl> template<typename T>
+inline void Timer<ID, TimerImpl>::Event<EID, EventImpl>::setComparator(T val) {
   TimerFuncHelper<ID,EID,AVR::Timer<ID>::SIZE == sizeof(T)*8> helper;
 
   REG<AVR::Timer<ID>::SIZE>(StaticListIterator<typename AVR::Timer<ID>::Compare, EID>::VALUE) = val;
+}
+
+template<int ID, typename TimerImpl> template<int EID, typename EventImpl>
+inline void Timer<ID, TimerImpl>::Event<EID, EventImpl>::exec(void) {
+  this->data.func();
+}
+
+template<int ID, typename TimerImpl> template<int EID, typename EventImpl>
+inline bool Timer<ID, TimerImpl>::Event<EID, EventImpl>::activated(void) {
+  return this->data.func != 0;
+}
+
+template<int ID, typename TimerImpl> template<int EID>
+inline Timer<ID, TimerImpl>::Event<EID>& Timer<ID, TimerImpl>::event() {
+  return StaticContainerIterator<typename TimerPrivateData<ID>::EventList, EID>::value(this->data.events);
 }
