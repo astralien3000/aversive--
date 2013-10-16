@@ -33,6 +33,7 @@ namespace AVR {
       typedef StaticList<(1 << WGM00)> PWM;
       typedef StaticList<(1 << WGM01)> CTC;
       typedef StaticList<(1 << WGM00)|(1 << WGM01)> FastPWM;
+      typedef FastPWM Mask;
     };
 
     // Prescaler (decl)
@@ -60,6 +61,8 @@ namespace AVR {
 
   MACRO_PRESCALER(-2,   1,1,1)
 
+#define PRESCALER_MASK -2
+
 #undef MACRO_PRESCALER
 
   // Interruption Mask (def)
@@ -83,9 +86,10 @@ namespace AVR {
     // Waveform Generator
     struct WGM {
       typedef StaticList<0                          ,0           > Normal;
-      typedef StaticList<(1 << WGM10) | (1 << WGM11),0           > Pwm;
-      typedef StaticList<0                          ,(1 << WGM12)> Ctc;
-      typedef StaticList<(1 << WGM10) | (1 << WGM11),(1 << WGM12)> FastPwm;
+      typedef StaticList<(1 << WGM10) | (1 << WGM11),0           > PWM;
+      typedef StaticList<0                          ,(1 << WGM12)> CTC;
+      typedef StaticList<(1 << WGM10) | (1 << WGM11),(1 << WGM12)> FastPWM;
+      typedef FastPWM Mask;
     };
 
     // Prescaler (decl)
@@ -159,5 +163,17 @@ inline typename Integer<SIZE>::Unsigned & REG(int r) {
 
 typedef void (*InterruptFunc)(void);
 
+#define MACRO_STATIC_OP(name, arg1, arg2, code)		\
+  struct name {						\
+    static inline void exec(int arg1, int arg2) {	\
+      code;						\
+    }							\
+  };
+
+MACRO_STATIC_OP(BitOrAssign, reg, val, REG(reg) |= val)
+MACRO_STATIC_OP(BitAndAssign, reg, val, REG(reg) &= val)
+MACRO_STATIC_OP(BitNotOrAssign, reg, val, REG(reg) |= ~val)
+MACRO_STATIC_OP(BitNotAndAssign, reg, val, REG(reg) &= ~val)
+MACRO_STATIC_OP(Assign, reg, val, REG(reg) = val)
 
 #endif//ATMEGA32

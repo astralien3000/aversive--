@@ -17,13 +17,25 @@ public:
 template<typename List, int ID>
 struct TypeListIterator {
   typedef TypeListIterator<typename List::Next, ID-1> Next;
-  typename Next::Value Value;
+  typedef typename Next::Value Value;
 };
 
 template<typename List>
 struct TypeListIterator<List, 0> {
-  typename List::Elem Value;
+  typedef typename List::Elem Value;
 };
 
+template<int BEG, int END, template<int PARAM> class Template>
+struct EnumerateTypeList {
+public:
+  typedef Template<BEG> Elem;
+  typedef EnumerateTypeList<BEG+1, END, Template> Next;
+};
+
+template<int END, template<int PARAM> class Template>
+struct EnumerateTypeList<END, END, Template> {
+public:
+  typedef Template<END> Elem;
+};
 
 #endif//TYPE_LIST_HPP

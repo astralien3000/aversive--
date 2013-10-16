@@ -40,4 +40,19 @@ struct StaticListLooper<List1, List2, 1> {
   }
 };
 
+template<typename Operator, typename List1, typename List2, int _SIZE = List1::SIZE>
+struct StaticListOperation {
+  static inline void exec(void) {
+    Operator::exec(List1::ELEM, List2::ELEM);
+    StaticListOperation<Operator, typename List1::Next, typename List2::Next, (_SIZE - 1)>::exec();
+  }
+};
+
+template<typename Operator, typename List1, typename List2>
+struct StaticListOperation<Operator, List1, List2, 1> {
+  static inline void exec(void) {
+    Operator::exec(List1::ELEM, List2::ELEM);
+  }
+};
+
 #endif//STATIC_LIST_HPP

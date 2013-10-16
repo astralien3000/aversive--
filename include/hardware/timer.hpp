@@ -3,8 +3,6 @@
 
 #include "../base/singleton.hpp"
 
-class TimerEventPrivateData;
-
 //! \brief Interface for microcontroller's Timer/Counter
 //! \param ID : The index of the Timer
 template<int ID>
@@ -36,7 +34,7 @@ public:
   /*!
     The number of available Events depends on the timer and the microcontroller
    */
-  template<int EID = 0, typename EventImpl = TimerEventPrivateData>
+  template<int EID = 0>
   class Event {
   public:
     //! \brief Enable interruption for coprarison event
@@ -62,7 +60,8 @@ public:
     inline void exec(void);
 
   private:
-    EventImpl data;
+    class PrivateData;
+    PrivateData data;
   };
 
   //! \brief Get Timer's event

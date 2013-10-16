@@ -31,4 +31,19 @@ struct StaticContainerIterator<SC, 0> {
   }
 };
 
+template<int BEG, int END, template<int PARAM> class Template>
+struct EnumerateStaticContainer {
+  typedef EnumerateTypeList<BEG, END, Template> Types;
+  typedef EnumerateStaticContainer<BEG+1, END, Template> NextContainer;
+  Template<BEG> elem;
+  NextContainer next;
+};
+
+template<int END, template<int PARAM> class Template>
+struct EnumerateStaticContainer<END, END, Template> {
+  typedef EnumerateTypeList<END, END, Template> Types;
+  Template<END> elem;
+};
+
+
 #endif//STATIC_CONTAINER_HPP

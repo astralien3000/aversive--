@@ -34,6 +34,7 @@ int main(int argc, char* argv[]) {
   Timer0& timer = Timer0::instance();
   timer.init();
 
+  
   Timer0::Event<0>& evt = timer.event<0>();
   evt.set([](void){ 
       debug_puts("A\n");
@@ -58,6 +59,7 @@ int main(int argc, char* argv[]) {
   }
 
   Interrupts::clear();
+  
   return 0;
 }
 
