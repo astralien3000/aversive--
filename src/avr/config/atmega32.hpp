@@ -125,6 +125,39 @@ namespace AVR {
     typedef StaticList<(1 << OCIE1B), 0> Match;
   };
 
+
+  template<int ID> struct Uart;
+
+  template<> struct Uart<0> {
+    typedef StaticList<(int)&UCSRA, (int)&UCSRB, (int)&UCSRC> Control;
+    typedef StaticList<(int)&UBRRH, (int)&UBRRL> Baudrate;
+
+    typedef StaticList<0, (1<<TXEN), 0> EnableSend;
+    typedef StaticList<0, (1<<RXEN), 0> EnableRecv;
+    typedef StaticList<0, (1<<TXEN)|(1<<RXEN), 0> EnableComm;
+
+    template<int NBITS> struct CharacterSize;
+  };
+
+#define MACRO_CHARACTER_SIZE(nbits, bit2, bit1, bit0)			\
+  template<> struct Uart<0>::CharacterSize<nbits> {			\
+  typedef StaticList<0, (bit2<<UCSZ2), (bit1<<UCSZ1)|(bit0<<UCSZ0)> Config; \
+  };
+
+  MACRO_CHARACTER_SIZE(5, 0, 0, 0)
+  MACRO_CHARACTER_SIZE(6, 0, 0, 1)
+  MACRO_CHARACTER_SIZE(7, 0, 1, 0)
+  MACRO_CHARACTER_SIZE(8, 0, 1, 1)
+  MACRO_CHARACTER_SIZE(9, 1, 1, 1)
+
 }
+
+template<int SIZE = 8>
+inline typename Integer<SIZE>::Unsigned & REG(int r) {
+  return *(typename Integer<SIZE>::Unsigned*)r;
+}
+
+typedef void (*InterruptFunc)(void);
+
 
 #endif//ATMEGA32

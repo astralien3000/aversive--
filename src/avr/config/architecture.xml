@@ -1,0 +1,56 @@
+<architecture name="AVR">
+    <hardware name="Timer">
+        <param-list>
+            <param name="ID" type="int" />
+        </param-list>
+        
+        <attribute name="SIZE" type="int" />
+        
+        <register name="Control" />
+        <register name="Counter" />
+        
+        <config-list name="WGM" apply-on="Control">
+            <config name="Normal" />
+            <config name="PWM" />
+            <config name="CTC" />
+            <config name="FastPWM" />
+        </config-list>
+        
+        <config-list name="Prescaler" apply-on="Control">
+            <config name="0" />
+            <config name="8" />
+            <config name="32" />
+            <config name="64" />
+            <config name="128" />
+            <config name="256" />
+            <config name="1024" />
+        </config-list>
+        
+        <hardware name="Event">
+            <param-list>
+                <param name="ID" type="int" />
+            </param-list>
+        
+            <register name="Comparator" />
+        
+            <config-list name="InterruptMask" apply-on="Control">
+                <config name="Match" />
+            </config-list>
+        </hardware>
+    </hardware>
+    
+    <hardware name="UART">
+        <param-list>
+            <param name="ID" type="int" />
+        </param-list>
+        
+        <register name="Control" />
+        <register name="Baudrate" />
+        
+        <config-list name="Enable" apply-to="Control">
+            <config name="Send" />
+            <config name="Recv" />
+            <config name="Comm" />
+        </config-list>
+    </hardware>
+</architecture>

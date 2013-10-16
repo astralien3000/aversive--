@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
     });
   
   evt.setComparator<u8>(50);
-  timer.setPrescaler<64>();
+  timer.setPrescaler<32>();
   evt.start();
 
   Interrupts::set();

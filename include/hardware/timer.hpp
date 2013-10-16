@@ -3,14 +3,13 @@
 
 #include "../base/singleton.hpp"
 
-template<int ID> class TimerPrivateData;
 class TimerEventPrivateData;
 
 //! \brief Interface for microcontroller's Timer/Counter
 //! \param ID : The index of the Timer
-template<int ID, typename TimerImpl = TimerPrivateData<ID>>
-class Timer : public Singleton<Timer<ID, TimerImpl>> {
-  friend Singleton<Timer<ID, TimerImpl>>;
+template<int ID>
+class Timer : public Singleton<Timer<ID>> {
+  friend Singleton<Timer<ID>>;
 
 public:
   //! \brief Configure the Timer, to enable Events
@@ -74,7 +73,8 @@ private:
   //! \brief Private Constructor, to init singleton
   Timer();
 
-  TimerImpl data;
+  class PrivateData;
+  PrivateData data;
 };
 
 #endif//TIMER_HPP
