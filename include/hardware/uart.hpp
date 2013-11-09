@@ -14,7 +14,7 @@ public:
   //! \brief Configure Uart
   inline void init(void);
   //! \brief Make UART available for an other purpose
-  inline void quit(void);
+  inline void reset(void);
 
   //! \brief Receive 1 character from RX
   template<typename T, bool WAIT = false> inline T recv(void);

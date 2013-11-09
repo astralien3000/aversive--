@@ -1,16 +1,26 @@
 #ifndef ADC_HPP
 #define ADC_HPP
 
+#include "../base/singleton.hpp"
+
 //! \brief class providing routines for microcontroller's analog-to-digital functionalities management
-//! \todo Not completely defined yet...
-class Adc {
+//! \param ID : the ID of the ADC port to use
+tempate<int ID>
+class Adc : public Singleton<Adc> {
 public:
-  static inline void init(void);
-  static inline void quit(void);
+  inline void init(void);
+  inline void reset(void);
 
-  static inline ArchiHandler::AdcType getValue(int bit);
+  template<typename T> inline T getValue(void);
 
-  template<typename Callable> static inline void setEvent(Callable func);
+  template<typename Callable> inline void setEvent(Callable func);
+  inline void launch(void);
+
+private:
+  inline Adc(void);
+
+  class PrivateData;
+  PrivateData data;
 };
 
 #endif//ADC_HPP

@@ -13,7 +13,7 @@ public:
   //! \brief Configure the Timer, to enable Events
   inline void init(void);
   //! \brief Makes the Timer available for an other purpose
-  inline void quit(void);
+  inline void reset(void);
 
   //! \brief Access to the counter
   //! \param T (template) : Type requested, available types are hardware-dependent
