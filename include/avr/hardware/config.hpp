@@ -90,34 +90,6 @@ public:
   }
 };
 
-template<int SIZE>
-class ConfigVal {
-protected:
-  typename Integer<SIZE>::Unsigned conf;
-public:
-  inline Config(void);
-
-  template<typename OtherConfig>
-  inline const ConfigInter<SIZE, Config<SIZE, ID>, OtherConfig> operator&(const OtherConfig& other) const {
-    return ConfigInter<SIZE, Config<SIZE, ID>, OtherConfig>(this, &other);
-  }
-
-  template<typename OtherConfig>
-  inline const ConfigUnion<SIZE, Config<SIZE, ID>, OtherConfig> operator|(const OtherConfig& other) const {
-    return ConfigUnion<SIZE, Config<SIZE, ID>, OtherConfig>(this, &other);
-  }
-
-  template<typename OtherConfig>
-  inline const ConfigNeg<SIZE, Config<SIZE, ID> > operator~(void) const {
-    return ConfigNeg<SIZE, Config<SIZE, ID> >(this);
-  }
-
-  inline typename Integer<SIZE>::Unsigned value(int i) const {
-    return conf[i];
-  }
-};
-
-
 #define CFG(c) Config<c::SIZE,c::CONFIG>()
 
 #endif//CONFIG_HPP
