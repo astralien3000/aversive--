@@ -72,9 +72,7 @@ public:
   inline SafeType& operator>>(const SafeType&) const;
 };
 
-#undef MACRO_SAFE_TYPE_OPERATOR
-
-#include "types.hpp"
+#include "integer.hpp"
 
 #define MACRO_SAFE_SHORT_NAME(size)					\
   typedef SafeType<typename Integer<size>::Signed>   s##size##_safe;	\
@@ -86,7 +84,5 @@ MACRO_SAFE_SHORT_NAME(32)
 MACRO_SAFE_SHORT_NAME(64)
 
 #undef MACRO_SAFE_SHORT_NAME
-
-#include "debug.hpp"
 
 #endif//SAFE_TYPE_HPP

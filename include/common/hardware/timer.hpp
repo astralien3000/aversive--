@@ -6,8 +6,8 @@
 //! \brief Interface for microcontroller's Timer/Counter
 //! \param ID : The index of the Timer
 template<int ID>
-class Timer : public Singleton<Timer<ID>> {
-  friend Singleton<Timer<ID>>;
+class Timer : public Singleton< Timer<ID> > {
+  friend Singleton< Timer<ID> >;
 
 public:
   //! \brief Configure the Timer, to enable Events
@@ -33,9 +33,9 @@ public:
   //! \param EID (template) : index of the Event
   /*!
     The number of available Events depends on the timer and the microcontroller
-   */
+  */
   template<int EID = 0>
-  class Event {
+  class Event : public Singleton< Event<EID> > {
   public:
     //! \brief Enable interruption for coprarison event
     inline void start(void);
@@ -60,7 +60,7 @@ public:
     inline void exec(void);
 
   private:
-    class PrivateData;
+    struct PrivateData;
     PrivateData data;
   };
 
@@ -72,7 +72,7 @@ private:
   //! \brief Private Constructor, to init singleton
   Timer();
 
-  class PrivateData;
+  struct PrivateData;
   PrivateData data;
 };
 

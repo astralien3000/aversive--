@@ -5,7 +5,7 @@
 
 //! \brief Container of several objects (called members) with different types
 //! \param T{N} type of the N-th member
-template<typename T1, typename ...TArgs>
+template<typename ...TArgs>
 class Tuple : public Tuple<TArgs...> {
 public:
   typedef TypeList<T1, TArgs...> ElementTypeList;
@@ -21,8 +21,15 @@ public:
   //! \brief Copy Operator
   inline Tuple& operator=(const Tuple&);
 
-  //! \brief Access to the N-th member
-  template<int ID = 0> inline TypeListIterator<ElementTypeList, ID>& get();
+private:
+  class PrivateData;
+  PrivateData data;
 };
+
+
+//! \brief Access to the N-th member
+template<int ID = 0, class ...TArgs> TypeListIterator<TArgs..., ID>& get(Tuple<TArgs...>&);
+
+#include <base/tuple_private_data.hpp>
 
 #endif//TUPLE_HPP
