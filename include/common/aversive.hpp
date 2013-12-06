@@ -15,4 +15,10 @@
 //! - The resulting code for the application should not be hardware dependent, but if the hardware dosen't
 //!   provide a functionnality, the error message should be explicit
 
+class Aversive {
+public:
+  static inline void init();
+  static inline void sleep(int ms = 0);
+};
+
 #endif//AVERSIVE_HPP
