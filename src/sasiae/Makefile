@@ -2,10 +2,11 @@ export CC=g++
 export CFLAGS=-Wall -Wextra
 export BUILD=../../build/sasiae
 export INCLUDE=../../include/sasiae
+export LIB=$(BUILD)/libaversive.a
 
 SUB_DIRS= # add the sub directory's names here
 
-all: build $(SUB_DIRS) lib
+all: build $(SUB_DIRS) $(LIB)
 
 # to build local sources
 build: $(BUILD)/aversive.o
@@ -17,5 +18,5 @@ $(BUILD)/%.o: %.cpp
 $(SUB_DIRS):
 	$(MAKE) -C $@
 
-lib: $(BUILD)/aversive.o
-	ar r $(BUILD)/libaversive.a $?
+$(LIB): $(BUILD)/aversive.o
+	ar r $(LIB) $?
