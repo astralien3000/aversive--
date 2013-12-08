@@ -14,3 +14,6 @@ exporthpp:
 
 mrproper: clean
 	@rm -rf build/avr/* build/sasiae/*
+
+clean_doc: 
+	@rm -rf doc_build/*
