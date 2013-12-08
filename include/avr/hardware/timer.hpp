@@ -22,9 +22,6 @@ struct Timer<ID>::PrivateData {};
 template<int ID>
 inline Timer<ID>::Timer() {}
 
-// TODO : MOVE !!!
-#define _VALUE(i) template value<i>
-
 template<int ID>
 inline void Timer<ID>::init(void) {
   // Set Waveform Generator Mode to Normal
@@ -34,10 +31,9 @@ inline void Timer<ID>::init(void) {
     CFG(timer<ID>::control::prescaler::_VALUE(0));
   
   // Set Counter to 0
-  // ERROR !!! size can be more than 8 bits
-  //REG(timer<ID>::counter) = 0;
+  REG(timer<ID>::counter) = VAL(0);
 }
-/*
+
 template<int ID> template<int PRESCALE>
 inline void Timer<ID>::setPrescaler(void) {
   // Set to 0 all prescaler bits
@@ -49,13 +45,14 @@ inline void Timer<ID>::setPrescaler(void) {
     CFG(timer<0>::control::prescaler::value<PRESCALE>);
 }
 
+// Warning ! interrupts need to be sat with Interrupts::set()
 template<int ID> template<int EID>
 inline void Timer<ID>::Event<EID>::start(void) {
   // Enable event interrupt bit
   REG(timer<0>::imask) =
     CFG(timer<0>::imask::match<0>);
 }
-*/
+
 
 
 #endif//AVR_TIMER_HPP

@@ -9,7 +9,7 @@ class Register {
   typename Integer<SIZE>::Unsigned* const reg[3];
 public:
   inline Register(void);
-
+  
   template<typename Config>
   inline Register& operator=(const Config& cfg) {
     for(int i = 0 ; i < reg_size ; i++) {

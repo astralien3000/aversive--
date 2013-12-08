@@ -25,7 +25,6 @@ public:
     return ConfigUnion<SIZE, ConfigOp<SIZE, C1, C2>, OtherConfig>(this, &other);
   }
 
-  template<typename OtherConfig>
   inline const ConfigNeg<SIZE, ConfigOp<SIZE, C1, C2> > operator~(void) const {
     return ConfigNeg<SIZE, ConfigOp<SIZE, C1, C2> >(this);
   }
@@ -66,7 +65,7 @@ public:
 template<int SIZE, int ID>
 class Config {
 protected:
-  typename Integer<SIZE>::Unsigned conf[3];
+  typename Integer<SIZE>::Unsigned const conf[3];
 public:
   inline Config(void);
 
@@ -80,7 +79,6 @@ public:
     return ConfigUnion<SIZE, Config<SIZE, ID>, OtherConfig>(this, &other);
   }
 
-  template<typename OtherConfig>
   inline const ConfigNeg<SIZE, Config<SIZE, ID> > operator~(void) const {
     return ConfigNeg<SIZE, Config<SIZE, ID> >(this);
   }
@@ -90,6 +88,34 @@ public:
   }
 };
 
+template<int SIZE>
+class ConfigVal {
+protected:
+  typename Integer<SIZE>::Unsigned const val;
+public:
+  inline ConfigVal(typename Integer<SIZE>::Unsigned v) : val(v) {}
+
+  template<typename OtherConfig>
+  inline const ConfigInter<SIZE, ConfigVal<SIZE>, OtherConfig> operator&(const OtherConfig& other) const {
+    return ConfigInter<SIZE, ConfigVal<SIZE>, OtherConfig>(this, &other);
+  }
+
+  template<typename OtherConfig>
+  inline const ConfigUnion<SIZE, ConfigVal<SIZE>, OtherConfig> operator|(const OtherConfig& other) const {
+    return ConfigUnion<SIZE, ConfigVal<SIZE>, OtherConfig>(this, &other);
+  }
+
+  inline const ConfigNeg<SIZE, ConfigVal<SIZE> > operator~(void) const {
+    return ConfigNeg<SIZE, ConfigVal<SIZE> >(this);
+  }
+
+  inline typename Integer<SIZE>::Unsigned value(int i) const {
+    return val >> (i * SIZE);
+  }
+};
+
+
 #define CFG(c) Config<c::SIZE,c::CONFIG>()
+#define VAL(r, v) ConfigVal<r::SIZE>(v)
 
 #endif//CONFIG_HPP

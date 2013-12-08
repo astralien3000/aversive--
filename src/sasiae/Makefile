@@ -13,7 +13,7 @@ all: build $(SUB_DIRS) $(LIB)
 # to build local sources
 build: $(BUILD)/aversive.o
 
-$(BUILD)/aversive.o: aversive.cpp
+$(BUILD)/aversive.o: aversive.cpp $(shell echo $(INCLUDE)/aversive.hpp)
 $(BUILD)/%.o: %.cpp
 	$(CC) $(CFLAGS) $(shell echo -I$(INCLUDE)) -o $@ -c $<
 

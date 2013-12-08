@@ -63,14 +63,14 @@ int main(int argc, char* argv[]) {
   REG(timer<1>::control) = 
     CFG(timer<1>::control::wgm::normal) | 
     CFG(timer<1>::control::prescaler::value<64>);
-
+  
   REG(timer<1>::imask) =
     CFG(timer<1>::imask::match<0>);
+  
+  REG(timer<1>::counter) = VAL(timer<1>::counter, 257);
 
-  REG(timer<1>::counter) = 0;
-
-  Interrupts::set();
-
+  //Interrupts::set();
+  
   wait();
 
   u8* mem = MOTEUR1;
@@ -86,4 +86,4 @@ int main(int argc, char* argv[]) {
   return 0;
 }
 
-#include <trash/interrupts.cpp>
+//#include <trash/interrupts.cpp>
