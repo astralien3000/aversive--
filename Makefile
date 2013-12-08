@@ -4,7 +4,7 @@ sasiae avr:
 	@$(MAKE) -sC src/$@
 
 clean:
-	rm -f $(shell find . -name "*~" -o -name "#*#" -o -name "*.o")
+	@rm -f $(shell find . -name "*~" -o -name "#*#" -o -name "*.o")
 
 newhpp:
 	@./script/newhpp.sh
