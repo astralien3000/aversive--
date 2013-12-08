@@ -1,10 +1,16 @@
 all: sasiae avr
 
 sasiae avr:
-	$(MAKE) -C src/$@
+	@$(MAKE) -sC src/$@
 
 clean:
-	@rm -f $(shell find . -name "*~") $(shell find . -name "#*#") $(shell find build -name "*.o")
+	@rm -f $(shell find . -name "*~" -o -name "#*#" -o -name "*.o")
+
+newhpp:
+	@./script/newhpp.sh
+
+exporthpp:
+	@./script/exporthpp.sh
 
 mrproper: clean
 	@rm -rf build/avr/* build/sasiae/*
