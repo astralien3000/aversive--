@@ -5,7 +5,7 @@
 template<typename T>
 class Input {
 public:
-  T& getInput(void);
+  T& getValue(void);
 };
 
 #endif//INPUT_HPP

@@ -9,7 +9,7 @@ class OutputDevice : public Output<T>, public Device {
 public:
   inline OutputDevice(const char* name) : Device(name) {}
   
-  inline void setOutput(T&);
+  inline void setValue(T&);
 
 private:
   struct PrivateData;

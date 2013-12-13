@@ -9,7 +9,7 @@ class InputDevice : public Input<T>, public Device {
 public:
   inline InputDevice(const char* name) : Device(name) {}
   
-  inline T& getInput(void);
+  inline T& getValue(void);
 
 private:
   struct PrivateData;

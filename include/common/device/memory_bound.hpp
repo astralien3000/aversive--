@@ -17,8 +17,8 @@ class MemoryBound : public Input<T>, public Output<T> {
 public:
   inline MemoryBound(void);
 
-  inline T& getInput(void);
-  inline void setOutput(T&);
+  inline T& getValue(void);
+  inline void setValue(T&);
 };
 
 #endif//MEMORY_BOUND_HPP
