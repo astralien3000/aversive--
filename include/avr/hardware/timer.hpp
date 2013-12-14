@@ -6,13 +6,6 @@
 
 ////////////////////////////////////////////////////////
 // DATA ////////////////////////////////////////////////
-typedef void (*InterruptFunc)(void);
-
-template<int ID> template<int EID>
-struct Timer<ID>::Event<EID>::PrivateData {
-  InterruptFunc func = 0;
-};
-
 template<int ID>
 struct Timer<ID>::PrivateData {};
 
@@ -31,7 +24,13 @@ inline void Timer<ID>::init(void) {
     CFG(timer<ID>::control::prescaler::_VALUE(0));
   
   // Set Counter to 0
-  REG(timer<ID>::counter) = VAL(0);
+  REG(timer<ID>::counter) = VAL(timer<ID>::counter, 0);
+}
+
+template<int ID> template<typename T>
+inline void Timer<ID>::setCounter(const T& val) {
+  REG(timer<0>::counter) = 
+    VAL(timer<0>::counter, val);
 }
 
 template<int ID> template<int PRESCALE>
@@ -45,14 +44,38 @@ inline void Timer<ID>::setPrescaler(void) {
     CFG(timer<0>::control::prescaler::value<PRESCALE>);
 }
 
+template<int ID> template<int EID>
+inline Timer<ID>::ComparEvent<EID>& Timer<ID>::comparEvent(void) {
+  static Timer<ID>::ComparEvent<EID> evt;
+  return evt;
+}
+
+////////////////////////////////////////////////////////
+// Timer::ComparEvent //////////////////////////////////
+
+template<int ID> template<int EID>
+inline Timer<ID>::ComparEvent<EID>::ComparEvent(void) : HardwareEvent() {}
+
 // Warning ! interrupts need to be sat with Interrupts::set()
 template<int ID> template<int EID>
-inline void Timer<ID>::Event<EID>::start(void) {
+inline void Timer<ID>::ComparEvent<EID>::start(void) {
   // Enable event interrupt bit
-  REG(timer<0>::imask) =
+  REG(timer<0>::imask) |=
     CFG(timer<0>::imask::match<0>);
 }
 
+template<int ID> template<int EID>
+inline void Timer<ID>::ComparEvent<EID>::stop(void) {
+  // Disable event interrupt bit
+  REG(timer<0>::imask) &=
+    ~CFG(timer<0>::imask::match<0>);
+}
 
+template<int ID> template<int EID> template<typename T>
+inline void Timer<ID>::ComparEvent<EID>::setComparator(const T& val) {
+  // Disable event interrupt bit
+  REG(timer<0>::compare<0>) =
+    VAL(timer<0>::compare<0>, val);
+}
 
 #endif//AVR_TIMER_HPP

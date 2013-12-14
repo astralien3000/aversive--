@@ -33,6 +33,24 @@ public:
     }
     return *this;
   }
+
+  template<typename Config>
+  inline bool operator&(const Config& cfg) {
+    bool ret = true;
+    for(int i = 0 ; i < reg_size ; i++) {
+      ret = ret && (*reg[i] & cfg.value(i));
+    }
+    return ret;
+  }
+
+  template<typename T>
+  inline operator T(void) {
+    T ret = 0;
+    for(int i = 0 ; i < reg_size ; i++) {
+      ret = (*reg[i]) << (SIZE * i);
+    }
+    return ret;
+  }
 };
 
 #define REG(r) Register<r::SIZE, r::REG>()

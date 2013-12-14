@@ -3,8 +3,7 @@
 
 //! \brief Queue interface
 //! \param _Impl : The implementation chosen
-template<typename _Impl>
-class Queue : protected _Impl {
+class Queue {
 public:
   //! \brief Default Constructor
   inline Queue();

@@ -1,7 +1,7 @@
 #ifndef CONFIG_HPP
 #define CONFIG_HPP
 
-#include <base/integer.hpp>
+#include "../../common/base/integer.hpp"
 
 template<int SIZE, typename C1, typename C2> class ConfigInter;
 template<int SIZE, typename C1, typename C2> class ConfigUnion;
