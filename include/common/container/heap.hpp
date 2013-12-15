@@ -4,17 +4,16 @@
 //! \brief Heap interface
 //! \param _Impl : The implementation chosen
 /*!
+
   The heap enable to extract easily the maximum of a set of values.
   Once the element is inserted, it is compared to others to order it.
-  The only element accessible and deletable is the maximum.
-  The maximum is the element for which the comparison function returns true 
-  foreach comparision with others element in the heap.
- */
-template<typename _HeapImpl>
-class Heap : protected _HeapImpl {
-public:
-  typedef _Impl::ElementType ElementType;
+  The only element accessible and deletable is the maximum.  The
+  maximum is the element for which the comparison function returns
+  true foreach comparision with others element in the heap.
 
+ */
+class Heap {
+public:
   //! \brief Default Constructor
   inline Heap();
   //! \brief Copy Constructor

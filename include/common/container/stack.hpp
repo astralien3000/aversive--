@@ -4,15 +4,15 @@
 //! \brief Stack Interface
 //! \param _Impl : The implementation chosen
 /*!
-  It is the interface for a "last in first out" container, wich mean that the last added element ("pushed"), 
-  is also the first that is deleted from the container ("poped").
-  You can only access to the first element (the "head").
+
+  It is the interface for a "last in first out" container, wich mean
+  that the last added element ("pushed"), is also the first that is
+  deleted from the container ("poped").  You can only access to the
+  first element (the "head").
+
  */
-template<typename _Impl>
-class Stack : protected _Impl {
+class Stack {
 public:
-  typedef typename _Impl::ElementType ElementType;
-  
   //! \brief Default Constructor
   inline Stack();
   //! \brief Copy Constructor

@@ -1,7 +1,7 @@
 #ifndef AVR_INTERRUPTS_HPP
 #define AVR_INTERRUPTS_HPP
 
-#include "../../../common/hardware/interrupts.hpp"
+#include "../../common/hardware/interrupts.hpp"
 
 inline void Interrupts::clear(void) {
   __asm__ __volatile__ ("CLI\n");

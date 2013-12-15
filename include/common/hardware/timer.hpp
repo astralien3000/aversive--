@@ -3,11 +3,13 @@
 
 #include "../base/singleton.hpp"
 
+#include "hardware_event.hpp"
+
 //! \brief Interface for microcontroller's Timer/Counter
 //! \param ID : The index of the Timer
 template<int ID>
 class Timer : public Singleton< Timer<ID> > {
-  friend Singleton< Timer<ID> >;
+  friend class Singleton< Timer<ID> >;
 
 public:
   //! \brief Configure the Timer, to enable Events
@@ -20,7 +22,9 @@ public:
   /*!
     Will throw a compile-time error if type is unapropriate
    */
-  template<typename T> inline T& counter(void);
+  template<typename T> inline const T& counter(void);
+
+  template<typename T> inline void setCounter(const T&);
   
   //! \brief Set the prescaler, with a value determined on compile-time
   //! \param PRESCALE (template) : the prescaler, availables values are hardware-dependent
@@ -35,38 +39,44 @@ public:
     The number of available Events depends on the timer and the microcontroller
   */
   template<int EID = 0>
-  class Event : public Singleton< Event<EID> > {
+  class ComparEvent : public HardwareEvent {
+    friend class Timer;
+
+  private:
+    //! \brief Default Constructor (Private)
+    inline ComparEvent(void);
+    
   public:
     //! \brief Enable interruption for coprarison event
     inline void start(void);
     //! \brief Disable interruption for coprarison event
     inline void stop (void);
 
-    //! \brief Set the function to call when interruption occurs
-    //! \param func : A callable object which must be convertible into a "void (function*)(void)"
-    template<typename Callable> inline void set(Callable func);
-
     //! \brief Access to the comparator's value
     //! \param T (template) : Type requested, available types are hardware-dependent
     /*!
       Will throw a compile-time error if type is unappropriate
      */
-    template<typename T> inline void setComparator(T);
+    template<typename T> inline void setComparator(const T&);
 
     //! \brief Returns true if the event is activ
     inline bool activated(void);
-
-    //! \brief Calls the event function
-    inline void exec(void);
-
-  private:
-    struct PrivateData;
-    PrivateData data;
   };
 
-  //! \brief Get Timer's event
+  //! \brief Timer Overflow Event
+  /*!
+    This event occurs when the timer's compter is at it's maximum value.
+  */
+  class OverflowEvent : public HardwareEvent {
+  public:
+  };
+
+  //! \brief Get Timer's comparison event
   //! \param EID (template) : Index of the event
-    template<int EID = 0> inline Event<EID>& event(void);
+  template<int EID = 0> inline ComparEvent<EID>& comparEvent(void);
+
+  //! \brief Get Timer's overflow event
+  inline OverflowEvent& overflowEvent(void);
  
 private:
   //! \brief Private Constructor, to init singleton

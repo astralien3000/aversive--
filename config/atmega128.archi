@@ -47,13 +47,30 @@ hardware timer[1]
 hardware uart[0]
     register8 control UCSR0A, UCSR0B, UCSR0C
         config-list enable
-	    config send 0, (1 << TXEN), 0
-	    config recv 0, (1 << RXEN), 0
-	    config comm 0, (1 << TXEN) | (1 << RXEN), 0
+	    config send 0, (1 << TXEN0), 0
+	    config recv 0, (1 << RXEN0), 0
+	config-list ienable
+	    config send 0, (1 << RXCIE0), 0
+	    config recv 0, (1 << TXCIE0), 0
+	    config empty 0, (1 << UDRIE0), 0
+	config-list flag
+	    config recvend (1 << RXC0), 0, 0
+	    config sendend (1 << TXC0), 0, 0
+	    config empty (1 << UDRE0), 0, 0
 	config-list charsize
 	    config 5 0, (0 << UCSZ2), (0 << UCSZ1) | (0 << UCSZ0)
 	    config 6 0, (0 << UCSZ2), (0 << UCSZ1) | (1 << UCSZ0)
 	    config 7 0, (0 << UCSZ2), (1 << UCSZ1) | (0 << UCSZ0)
 	    config 8 0, (0 << UCSZ2), (1 << UCSZ1) | (1 << UCSZ0)
 	    config 9 0, (1 << UCSZ2), (1 << UCSZ1) | (1 << UCSZ0)
-    register8 baudrate UBRRH, UBRRL
+	config synchronous 0, 0, (1 << UMSEL0)
+	config-list parity
+	    config disabled 0, 0, 0
+	    config even 0, 0, (1 << UPM01)
+	    config odd 0, 0, (1 << UPM01) | (1 << UPM00)
+	config-list stopbit
+	    config 1 0, 0, 0
+	    config 2 0, 0, (1 << USBS0)
+    register8 baudrate UBRR0H, UBRR0L
+    register8 data UDR0
+    
