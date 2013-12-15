@@ -3,6 +3,9 @@ all: sasiae avr
 sasiae avr:
 	@$(MAKE) -sC src/$@
 
+doc: Doxyfile
+	@doxygen
+
 clean:
 	@rm -f $(shell find . -name "*~" -o -name "#*#" -o -name "*.o")
 
@@ -12,8 +15,8 @@ newhpp:
 exporthpp:
 	@./script/exporthpp.sh
 
-mrproper: clean
+mrproper: clean clean_doc
 	@rm -rf build/avr/* build/sasiae/*
 
 clean_doc: 
-	@rm -rf doc_build/*
+	@rm -rf build/doc/*

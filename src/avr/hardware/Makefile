@@ -8,13 +8,13 @@ OBJS= timer uart
 
 all: build $(SUB_DIRS) $(LIB)
 
-build: $(addprefix $(BUILD)/,$(addsuffix .o,$(OBJS)))
+build: $(addprefix $(BUILD)/$(MMCU)/,$(addsuffix .o,$(OBJS)))
 
-$(BUILD)/%.o: %.cpp $(INCLUDE)/hardware/%.hpp
+$(BUILD)/$(MMCU)/%.o: %.cpp $(INCLUDE)/hardware/%.hpp
 	$(CC) $(CFLAGS) -I$(INCLUDE) -o $@ -c $<
 
 $(SUB_DIRS):
 	$(MAKE) -C $@
 
-$(LIB): $(addprefix $(BUILD)/,$(addsuffix .o,$(OBJS)))
+$(LIB): $(addprefix $(BUILD)/$(MMCU)/,$(addsuffix .o,$(OBJS)))
 	ar cr $(LIB) $?
