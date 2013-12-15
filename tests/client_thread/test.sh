@@ -4,5 +4,6 @@ make > /dev/null
 
 ./server &
 towait=$!
-./client MyAwesomeRobot > /dev/null
+ROBOT=MyAwesomeRobot
+./client $ROBOT > /dev/null
 wait $towait

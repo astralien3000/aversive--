@@ -28,7 +28,8 @@ protected:
   ~ClientThread(void);
   void setId(const char* id);
   void quit(void);
-  bool isReady();
+  bool isGoing(void);
+  bool isReady(void);
   void run(void) Q_DECL_OVERRIDE;
 
 public:

@@ -30,7 +30,11 @@ void ClientThread::quit(void) {
   _keep_going = false;
 }
 
-bool ClientThread::isReady() {
+bool ClientThread::isGoing(void) {
+  return _keep_going;
+}
+
+bool ClientThread::isReady(void) {
   return (_sck != NULL && _sck->state() == QLocalSocket::ConnectedState);
 }
 
@@ -42,6 +46,7 @@ void ClientThread::run(void) {
   
   if(_id == 0) {
     std::cerr << "Client ID hasn't been set" << std::endl;
+    _keep_going = false;
     return;
   }
   
@@ -49,9 +54,10 @@ void ClientThread::run(void) {
 
   _sck->connectToServer(HOST);
   if(!_sck->isValid()) {
-    std::cerr << "Error occured while connecting to server" << std::endl;
+    std::cerr << "Error while connecting to server" << std::endl;
     delete _sck;
     _sck = NULL;
+    _keep_going = false;
     return;
   }
   
@@ -63,6 +69,7 @@ void ClientThread::run(void) {
     std::cerr << "Error while waiting for being connected" << std::endl;
     delete _sck;
     _sck = NULL;
+    _keep_going = false;
     return;
   }
   
@@ -71,6 +78,7 @@ void ClientThread::run(void) {
     std::cerr << "Error while saying hello" << std::endl;
     delete _sck;
     _sck = NULL;
+    _keep_going = false;
     return;
   }
   
@@ -83,10 +91,10 @@ void ClientThread::run(void) {
     }
     else if(read == -1) {
       std::cerr << "Error while retrieving data" << std::endl;
+      _keep_going = false;
     }
     else {
       // We got a message to route
-      _devices_mutex.lock();
       if((pos = strchr(buffer, ' ')) == NULL) {
 	// No space were found, we can not identify the concerned device
 	sendData(err_detect);
@@ -95,6 +103,7 @@ void ClientThread::run(void) {
 	name = new char[pos-buffer+1];
 	strncpy(name, buffer, pos-buffer);
 	name[pos-buffer] = '\0';
+	_devices_mutex.lock();
 	if(!_devices.contains(name)) {
 	  // Unknown device
 	  snprintf(buffer, (size_t) BUFFER_SIZE, err_unknown, name);
@@ -104,9 +113,9 @@ void ClientThread::run(void) {
 	  // Device is known, we give its interpreter function the message
 	  _devices[name](buffer);
 	}
+	_devices_mutex.unlock();
 	delete[] name;
       }
-      _devices_mutex.unlock();
     }
   }
   sendData(msg_bye);

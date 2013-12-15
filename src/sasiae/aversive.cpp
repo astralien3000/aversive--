@@ -10,10 +10,10 @@ bool Aversive::init(int argc, char** argv) {
     ClientThread& client = ClientThread::instance();
     client.setId(argv[1]);
     client.start();
-    while(!client.isReady()) {
+    while(!client.isReady() && client.isGoing()) {
       QThread::msleep(10);
     }
-    return true;
+    return client.isGoing();
   }
 }
 
