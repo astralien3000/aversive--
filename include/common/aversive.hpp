@@ -17,8 +17,9 @@
 
 class Aversive {
 public:
-  static inline void init();
-  static inline void sleep(int ms = 0);
+  static bool init(int argc, char** argv);
+  static void sleep(int ms = 0);
+  static void exit(void);
 };
 
 #endif//AVERSIVE_HPP
