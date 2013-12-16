@@ -7,7 +7,7 @@ doc: Doxyfile
 	@doxygen
 
 archiparser:
-	@$(MAKE) -C tools/archi_parser
+	@$(MAKE) -sC tools/archi_parser
 
 clean:
 	@rm -f $(shell find . -name "*~" -o -name "#*#" -o -name "*.o")
@@ -25,4 +25,4 @@ clean_doc:
 	@rm -rf build/doc/*
 
 clean_archiparser:
-	@$(MAKE) clean -C tools/archi_parser
+	@$(MAKE) clean -sC tools/archi_parser
