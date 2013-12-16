@@ -3,18 +3,19 @@
 #include <iostream>
 
 bool Aversive::init(int argc, char** argv) {
-  if(argc == 1) {
-    return false;
-  }
-  else {
-    ClientThread& client = ClientThread::instance();
-    client.setId(argv[1]);
-    client.start();
-    while(!client.isReady() && client.isGoing()) {
-      QThread::msleep(10);
-    }
-    return client.isGoing();
-  }
+  // if(argc == 1) {
+  //   return false;
+  // }
+  // else {
+  //   ClientThread& client = ClientThread::instance();
+  //   client.setId(argv[1]);
+  //   client.start();
+  //   while(!client.isReady() && client.isGoing()) {
+  //     QThread::msleep(10);
+  //   }
+  //   return client.isGoing();
+  // }
+  return true;
 }
 
 void Aversive::sleep(int ms) {
@@ -25,8 +26,8 @@ void Aversive::sleep(int ms) {
 
 void Aversive::exit(void) {
   // Do stuff to free used memory or anything else that would need to be end properly
-  ClientThread& client = ClientThread::instance();
-  client.quit();
-  client.wait();
+  // ClientThread& client = ClientThread::instance();
+  // client.quit();
+  // client.wait();
   return;
 }
