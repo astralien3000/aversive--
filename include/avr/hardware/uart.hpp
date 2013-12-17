@@ -52,20 +52,20 @@ inline void Uart<ID>::setNBits(void) {
 template<int ID> template<typename T>
 inline void Uart<ID>::send(T val) {
   // Wait for empty transmit buffer
-  while( ! (REG(uart<ID>::control) & 
-	    CFG(uart<ID>::control::flag::empty)));
+  while( ! (REG(uart<ID>::control) & CFG(uart<ID>::control::flag::empty)));
 
   // Put data into buffer
   REG(uart<ID>::data) =
     VAL(uart<ID>::data, val);
+
+  for(volatile int i = 255 ; i > 0 ; i--);
 }
 
 // WARNING : 9th bit not managed !!
 template<int ID> template<typename T>
 inline T Uart<ID>::recv(void) {
   // Wait for data to be received
-  while( ! (REG(uart<ID>::control) & 
-	    CFG(uart<ID>::control::flag::recvend)));
+  while( ! (REG(uart<ID>::control) & CFG(uart<ID>::control::flag::recvend)));
 
   // Get and return received data from buffer
   return (T)REG(uart<ID>::data);

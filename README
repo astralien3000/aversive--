@@ -6,3 +6,6 @@ simulavr -f a.out -d  atmega** -R 0xFA -W 0xFF
 
 avr-objcopy -O ihex *.elf *.hex
 sudo avarice -j /dev/ttyUSB0 --erase --program -f *.hex
+
+TODO :
+Parseur : le dernier registre n'est pas parsé

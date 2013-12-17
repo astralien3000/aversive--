@@ -21,7 +21,7 @@ inline void Timer<ID>::init(void) {
   // Set Prescaler to 0
   REG(timer<ID>::control) = 
     CFG(timer<ID>::control::wgm::normal) |
-    CFG(timer<ID>::control::prescaler::_VALUE(0));
+    CFG(timer<ID>::control::prescaler::template value<0>);
   
   // Set Counter to 0
   REG(timer<ID>::counter) = VAL(timer<ID>::counter, 0);
@@ -29,19 +29,19 @@ inline void Timer<ID>::init(void) {
 
 template<int ID> template<typename T>
 inline void Timer<ID>::setCounter(const T& val) {
-  REG(timer<0>::counter) = 
-    VAL(timer<0>::counter, val);
+  REG(timer<ID>::counter) = 
+    VAL(timer<ID>::counter, val);
 }
 
 template<int ID> template<int PRESCALE>
 inline void Timer<ID>::setPrescaler(void) {
-  // Set to 0 all prescaler bits
-  REG(timer<0>::control) &= 
-    ~CFG(timer<0>::control::prescaler::disable);
+  // Set to ID all prescaler bits
+  REG(timer<ID>::control) &= 
+    ~CFG(timer<ID>::control::prescaler::disable);
 
   // Set prescaler value
-  REG(timer<0>::control) |= 
-    CFG(timer<0>::control::prescaler::value<PRESCALE>);
+  REG(timer<ID>::control) |= 
+    CFG(timer<ID>::control::prescaler::template value<PRESCALE>);
 }
 
 template<int ID> template<int EID>
@@ -60,22 +60,22 @@ inline Timer<ID>::ComparEvent<EID>::ComparEvent(void) : HardwareEvent() {}
 template<int ID> template<int EID>
 inline void Timer<ID>::ComparEvent<EID>::start(void) {
   // Enable event interrupt bit
-  REG(timer<0>::imask) |=
-    CFG(timer<0>::imask::match<0>);
+  REG(timer<ID>::imask) |=
+    CFG(timer<ID>::imask::template match<EID>);
 }
 
 template<int ID> template<int EID>
 inline void Timer<ID>::ComparEvent<EID>::stop(void) {
   // Disable event interrupt bit
-  REG(timer<0>::imask) &=
-    ~CFG(timer<0>::imask::match<0>);
+  REG(timer<ID>::imask) &=
+    ~CFG(timer<ID>::imask::template match<EID>);
 }
 
 template<int ID> template<int EID> template<typename T>
 inline void Timer<ID>::ComparEvent<EID>::setComparator(const T& val) {
   // Disable event interrupt bit
-  REG(timer<0>::compare<0>) =
-    VAL(timer<0>::compare<0>, val);
+  REG(timer<ID>::template compare<EID>) =
+    VAL(timer<ID>::template compare<EID>, val);
 }
 
 #endif//AVR_TIMER_HPP

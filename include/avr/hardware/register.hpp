@@ -35,10 +35,10 @@ public:
   }
 
   template<typename Config>
-  inline bool operator&(const Config& cfg) {
-    bool ret = true;
+  inline bool operator&(const Config& cfg) const {
+    typename Integer<SIZE>::Unsigned ret = 0;
     for(int i = 0 ; i < reg_size ; i++) {
-      ret = ret && (*reg[i] & cfg.value(i));
+      ret |= *reg[i] & cfg.value(i);
     }
     return ret;
   }

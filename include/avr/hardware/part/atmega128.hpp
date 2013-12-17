@@ -263,6 +263,10 @@ template<> struct uart<0> {
     enum { REG = 12, SIZE = 8 };
   };
 
+  struct data {
+    enum { REG = 13, SIZE = 8 };
+  };
+
 };
 
 template<> template<> struct uart<0>::control::charsize::value<5> {
@@ -349,4 +353,5 @@ template<> inline Config<8, 35>::Config(void) : conf{0, 0, ( 1 << UPM01 )} {}
 template<> inline Config<8, 36>::Config(void) : conf{0, 0, ( 1 << UPM01 ) | ( 1 << UPM00 )} {}
 template<> inline Config<8, 42>::Config(void) : conf{0, 0, 0} {}
 template<> inline Config<8, 43>::Config(void) : conf{0, 0, ( 1 << USBS0 )} {}
-template<> inline Register<8, 12>::Register(void) : reg_size(2), reg{(u8*)&UBRR0H, (u8*)&UBRR0L} {}
+template<> inline Register<8, 12>::Register(void) : reg_size(2), reg{(u8*)&UBRR0L, (u8*)&UBRR0H} {}
+template<> inline Register<8, 13>::Register(void) : reg_size(1), reg{(u8*)&UDR0} {}
