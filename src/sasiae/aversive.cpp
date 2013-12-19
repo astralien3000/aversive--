@@ -2,19 +2,42 @@
 #include <client_thread.hpp>
 #include <iostream>
 
+class AversiveClientThread : public ClientThread {
+public:
+  AversiveClientThread(void) : ClientThread() { }
+  ~AversiveClientThread(void) { }
+  
+  void quit(void) {
+    _keep_going = true;
+  }
+  
+  void start(void) {
+    ClientThread::start();
+  }
+  
+  bool wait(unsigned long time = ULONG_MAX) {
+    return ClientThread::wait(time);
+  }
+  
+  bool isFinished(void) const {
+    return ClientThread::isFinished();
+  }
+  
+  bool isRunning(void) const {
+    return ClientThread::isRunning();
+  }
+  
+  static AversiveClientThread* instance(void) {
+    return (AversiveClientThread*) _this;
+  }
+};
+
 bool Aversive::init(int argc, char** argv) {
-  // if(argc == 1) {
-  //   return false;
-  // }
-  // else {
-  //   ClientThread& client = ClientThread::instance();
-  //   client.setId(argv[1]);
-  //   client.start();
-  //   while(!client.isReady() && client.isGoing()) {
-  //     QThread::msleep(10);
-  //   }
-  //   return client.isGoing();
-  // }
+  (void) argc;
+  (void) argv;
+  
+  AversiveClientThread* client = new AversiveClientThread;
+  client->start();
   return true;
 }
 
@@ -25,9 +48,9 @@ void Aversive::sleep(int ms) {
 }
 
 void Aversive::exit(void) {
-  // Do stuff to free used memory or anything else that would need to be end properly
-  // ClientThread& client = ClientThread::instance();
-  // client.quit();
-  // client.wait();
+  AversiveClientThread* client = AversiveClientThread::instance();
+  client->quit();
+  client->wait();
+  delete client;
   return;
 }

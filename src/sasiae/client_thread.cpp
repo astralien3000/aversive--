@@ -3,40 +3,24 @@
 #include <cstring>
 #include <iostream>
 
-#define HOST "SASIAE-SRV"
-#define BUFFER_SIZE 1024
+#define DEFAULT_BUFFER_SIZE 64
 
-static const char* msg_hello = "Hello %s\n";
-static const char* msg_bye = "Bye\n";
-static const char* err_detect = "Error impossible to detect device's name\n";
-static const char* err_unknown = "Error unknown \"%s\" device\n";
+//static const char* msg_hello = "Hello %s\n";
+//static const char* msg_bye = "Bye\n";
+//static const char* err_detect = "Error impossible to detect device's name\n";
+//static const char* err_unknown = "Error unknown \"%s\" device\n";
 
 ClientThread::ClientThread(void) : QThread() {
-  _sck = NULL;
-  _id = 0;
   _keep_going = true;
+  _this = this;
+  _buffer = new char[DEFAULT_BUFFER_SIZE];
+  _length = DEFAULT_BUFFER_SIZE;
 }
 
 ClientThread::~ClientThread(void) {
+  delete[] _buffer;
+  _this = NULL;
 }
-
-// void ClientThread::setId(const char* id) {
-//   if(!isRunning()) {
-//     _id = id;
-//   }
-// }
-
-// void ClientThread::quit(void) {
-//   _keep_going = false;
-// }
-
-// bool ClientThread::isGoing(void) {
-//   return _keep_going;
-// }
-
-// bool ClientThread::isReady(void) {
-//   return (_sck != NULL && _sck->state() == QLocalSocket::ConnectedState);
-// }
 
 // void ClientThread::run(void) {
 //   char buffer[BUFFER_SIZE];
@@ -125,30 +109,24 @@ ClientThread::~ClientThread(void) {
 // }
 
 bool ClientThread::sendData(const char* data) {
-  // ClientThread &ct = ClientThread::instance();
-  // if(!ct.isReady()) {
-  //   return false;
-  // }
-  // ct._sck_mutex.lock();
-  // ct._sck->write(data);
-  // ct._sck->flush();
-  // ct._sck_mutex.unlock();
+  _com_mutex.lock();
+  std::cout << data << "\n";
+  std::cout.flush();
+  _com_mutex.unlock();
   return true;
 }
 
 bool ClientThread::registerDevice(const char* name, const std::function<void(char*)>& interpreter) {
-  // QString device = name;
-  // ClientThread &ct = ClientThread::instance();
-  // ct._devices_mutex.lock();
-  // if(ct._devices.contains(device)) {
-  //   // If the device is already registered
-  //   ct._devices_mutex.unlock();
-  //   return false;
-  // }
-  // else {
-  //   ct._devices.insert(device, interpreter);
-  //   ct._devices_mutex.unlock();
-  //   return true;
-  // }
-  return true;
+  QString device = name;
+  _devices_mutex.lock();
+  if(_devices.contains(device)) {
+    // If the device is already registered
+    _devices_mutex.unlock();
+    return false;
+  }
+  else {
+    _devices.insert(device, interpreter);
+    _devices_mutex.unlock();
+    return true;
+  }
 }
