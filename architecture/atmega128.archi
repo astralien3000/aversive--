@@ -20,6 +20,7 @@ hardware timer[0]
     register8 compare[0] OCR0
     register8 imask TIMSK
         config match[0] (1 << OCIE0)
+	config overflow (1 << TOIE0)
     register8 iflag TIFR
 
 hardware timer[1]
@@ -42,6 +43,7 @@ hardware timer[1]
     register8 imask TIMSK
         config match[0] (1 << OCIE1A)
         config match[1] (1 << OCIE1B)
+	config overflow (1 << TOIE1)
     register8 iflag TIFR
 
 hardware uart[0]
