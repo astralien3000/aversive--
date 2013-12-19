@@ -10,9 +10,22 @@
     reti();								\
   }
 
+
+#define MACRO_OVERFLOW_INTERRUPT_BIND(timer)				\
+  ISR(TIMER##timer##_OVF_vect, ISR_NAKED) {				\
+    uint8_t flags = SREG;						\
+    Timer<timer>::instance().overflowEvent().execFunction();		\
+    SREG = flags;							\
+    reti();								\
+  }
+
+MACRO_OVERFLOW_INTERRUPT_BIND(0)
+
 MACRO_INTERRUPT_BIND(0,,0)
 MACRO_INTERRUPT_BIND(1,A,0)
 MACRO_INTERRUPT_BIND(1,B,1)
 #if defined (__AVR_ATmega128__)
 MACRO_INTERRUPT_BIND(1,C,2)
 #endif
+
+

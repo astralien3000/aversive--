@@ -20,7 +20,7 @@ public:
   //! \brief Access to the counter
   //! \param T (template) : Type requested, available types are hardware-dependent
   /*!
-    Will throw a compile-time error if type is unapropriate
+1    Will throw a compile-time error if type is unapropriate
    */
   template<typename T> inline const T& counter(void);
 
@@ -69,6 +69,10 @@ public:
   */
   class OverflowEvent : public HardwareEvent {
   public:
+    //! \brief Enable interruption for coprarison event
+    inline void start(void);
+    //! \brief Disable interruption for coprarison event
+    inline void stop (void);
   };
 
   //! \brief Get Timer's comparison event

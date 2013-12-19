@@ -28,6 +28,11 @@ inline void Timer<ID>::init(void) {
 }
 
 template<int ID> template<typename T>
+inline const T& Timer<ID>::counter(void) {
+  return REG(timer<ID>::counter);
+}
+
+template<int ID> template<typename T>
 inline void Timer<ID>::setCounter(const T& val) {
   REG(timer<ID>::counter) = 
     VAL(timer<ID>::counter, val);
@@ -47,6 +52,12 @@ inline void Timer<ID>::setPrescaler(void) {
 template<int ID> template<int EID>
 inline Timer<ID>::ComparEvent<EID>& Timer<ID>::comparEvent(void) {
   static Timer<ID>::ComparEvent<EID> evt;
+  return evt;
+}
+
+template<int ID>
+inline typename Timer<ID>::OverflowEvent& Timer<ID>::overflowEvent(void) {
+  static Timer<ID>::OverflowEvent evt;
   return evt;
 }
 
@@ -76,6 +87,24 @@ inline void Timer<ID>::ComparEvent<EID>::setComparator(const T& val) {
   // Disable event interrupt bit
   REG(timer<ID>::template compare<EID>) =
     VAL(timer<ID>::template compare<EID>, val);
+}
+
+////////////////////////////////////////////////////////
+// Timer::Overflow /////////////////////////////////////
+
+// Warning ! interrupts need to be sat with Interrupts::set()
+template<int ID>
+inline void Timer<ID>::OverflowEvent::start(void) {
+  // Enable event interrupt bit
+  REG(timer<ID>::imask) |=
+    CFG(timer<ID>::imask::overflow);
+}
+
+template<int ID>
+inline void Timer<ID>::OverflowEvent::stop(void) {
+  // Disable event interrupt bit
+  REG(timer<ID>::imask) &=
+    ~CFG(timer<ID>::imask::overflow);
 }
 
 #endif//AVR_TIMER_HPP
