@@ -1,6 +1,7 @@
 #include <hardware/architecture.hpp>
 
 #include<avr/interrupt.h>
+#include <stdio.h>
 
 #include <hardware/interrupts.hpp>
 
@@ -20,10 +21,10 @@ u8 toogle = 0;
 #define MOTEUR1 ((u8*)0x8000); 
 #define MOTEUR2 ((u8*)0x8001);
 
-#define COMPTEUR1    ((u32*)0x8092)
-#define COMPTEUR2    ((u32*)0x8096)
-#define COMPTEUR3    ((u32*)0x809A)
-#define COMPTEUR4    ((u32*)0x809E)
+#define COMPTEUR1    ((u32*)0x8094)
+#define COMPTEUR2    ((u32*)0x8098)
+#define COMPTEUR3    ((u32*)0x809C)
+#define COMPTEUR4    ((u32*)0x80A0)
 
 void test(void) {
   cnt++;
@@ -194,6 +195,10 @@ int main(int argc, char* argv[]) {
   u32* c2 = COMPTEUR2;
   u32* c3 = COMPTEUR3;
   u32* c4 = COMPTEUR4;
+  u8* A = (u8*)COMPTEUR4;
+  u8* B = (u8*)COMPTEUR4 + 1;
+  u8* C = (u8*)COMPTEUR4 + 2;
+  u8* D = (u8*)COMPTEUR4 + 3;
 
   OutputStream<255> cout;
   //uart_init<16000000, 16, 9600>();
@@ -201,6 +206,11 @@ int main(int argc, char* argv[]) {
   while(1) {
     //uart_send('a');
     cout << *c1 << " " << *c2 << " " << *c3 << " " << *c4 << "\n";
+    //cout << *A << " ";
+    //cout << *B << "  ";
+    //cout << *C << " ";
+    //cout << *D << "\n";
+    //printf("\n \n%ld \n", *c1);
     cout.flushOutput();
     _delay_ms(500);
   }

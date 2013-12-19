@@ -45,6 +45,10 @@ hardware timer[1]
     register8 iflag TIFR
 
 hardware uart[0]
+    register8 flag UCSR0A
+	config recvend (1 << RXC0)
+	config sendend (1 << TXC0)
+	config empty (1 << UDRE0)
     register8 control UCSR0A, UCSR0B, UCSR0C
 	config synchronous 0, 0, (1 << UMSEL0)
         config-list enable

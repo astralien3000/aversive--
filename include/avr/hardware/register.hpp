@@ -6,7 +6,7 @@
 template<int SIZE, int ID>
 class Register {
   const int reg_size;
-  typename Integer<SIZE>::Unsigned* const reg[3];
+  volatile typename Integer<SIZE>::Unsigned* const reg[3];
 public:
   inline Register(void);
   
