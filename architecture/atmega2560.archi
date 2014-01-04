@@ -1,0 +1,83 @@
+uc atmega32
+
+hardware timer[0]
+    register8 control TCCR0A, TCCR0B
+        config-list wgm
+	    config normal 0, 0
+	    config pwm (1 << WGM00) | (1 << WGM01), 0
+	    config ctc 0, (1 << WGM02)
+	    config fastpwm (1 << WGM00) | (1 << WGM01), (1 << WGM02)
+	config-list prescaler
+	    config disable 0, (0 << CS02) | (0 << CS01) | (0 << CS00)
+	    config 0 0, (0 << CS02) | (0 << CS01) | (1 << CS00)
+	    config 8 0, (0 << CS02) | (1 << CS01) | (0 << CS00)
+	    config 64 0, (0 << CS02) | (1 << CS01) | (1 << CS00)
+	    config 256 0, (1 << CS02) | (0 << CS01) | (0 << CS00)
+	    config 1024 0, (1 << CS02) | (0 << CS01) | (1 << CS00)
+    register8 counter TCNT0
+    register8 compare[0] OCR0A
+    register8 compare[1] OCR0B
+    register8 imask TIMSK0
+        config match[0] (1 << OCIE0A)
+        config match[1] (1 << OCIE0B)
+	config overflow (1 << TOIE0)
+    register8 iflag TIFR0
+
+
+hardware timer[1]
+    register8 control TCCR1A, TCCR1B, TCCR1C
+        config-list wgm
+	    config normal 0, 0, 0
+	    config pwm (1 << WGM10) | (1 << WGM11), 0, 0
+	    config ctc 0, (1 << WGM12), 0
+	    config fastpwm (1 << WGM10) | (1 << WGM11), (1 << WGM12), 0
+	config-list prescaler
+	    config disable 0, (0 << CS12) | (0 << CS11) | (0 << CS10), 0
+	    config 0 0, (0 << CS12) | (0 << CS11) | (1 << CS10), 0
+	    config 8 0, (0 << CS12) | (1 << CS11) | (0 << CS10), 0
+	    config 64 0, (0 << CS12) | (1 << CS11) | (1 << CS10), 0
+	    config 256 0, (1 << CS12) | (0 << CS11) | (0 << CS10), 0
+	    config 1024 0, (1 << CS12) | (0 << CS11) | (1 << CS10), 0
+    register16 counter TCNT1
+    register16 compare[0] OCR1A
+    register16 compare[1] OCR1B
+    register8 imask TIMSK0
+        config match[0] (1 << OCIE1A)
+        config match[1] (1 << OCIE1B)
+	config overflow (1 << TOIE1)
+    register8 iflag TIFR0
+
+hardware uart[0]
+    register8 flag UCSR0A
+	config recvend (1 << RXC0)
+	config sendend (1 << TXC0)
+	config empty (1 << UDRE0)
+    register8 control UCSR0A, UCSR0B, UCSR0C
+        config-list enable
+	    config send 0, (1 << TXEN0), 0
+	    config recv 0, (1 << RXEN0), 0
+	config-list ienable
+	    config send 0, (1 << RXCIE0), 0
+	    config recv 0, (1 << TXCIE0), 0
+	    config empty 0, (1 << UDRIE0), 0
+	config-list flag
+	    config recvend (1 << RXC0), 0, 0
+	    config sendend (1 << TXC0), 0, 0
+	    config empty (1 << UDRE0), 0, 0
+	config-list charsize
+	    config 5 0, (0 << UCSZ02), (0 << UCSZ01) | (0 << UCSZ00)
+	    config 6 0, (0 << UCSZ02), (0 << UCSZ01) | (1 << UCSZ00)
+	    config 7 0, (0 << UCSZ02), (1 << UCSZ01) | (0 << UCSZ00)
+	    config 8 0, (0 << UCSZ02), (1 << UCSZ01) | (1 << UCSZ00)
+	    config 9 0, (1 << UCSZ02), (1 << UCSZ01) | (1 << UCSZ00)
+	config-list parity
+	    config disabled 0, 0, 0
+	    config even 0, 0, (1 << UPM01)
+	    config odd 0, 0, (1 << UPM01) | (1 << UPM00)
+	config-list stopbit
+	    config 1 0, 0, 0
+	    config 2 0, 0, (1 << USBS0)
+    register8 baudrate UBRR0L, UBRR0H
+    register8 data UDR0
+    register8 dummy 0
+    
