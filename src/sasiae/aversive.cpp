@@ -1,6 +1,7 @@
 #include <aversive.hpp>
 #include <client_thread.hpp>
 #include <iostream>
+#include <unistd.h>
 
 class AversiveClientThread : public ClientThread {
 public:
@@ -8,9 +9,10 @@ public:
   ~AversiveClientThread(void) { }
   
   void quit(void) {
-    _keep_going = true;
+    close(STDIN_FILENO);
+    _keep_going = false;
   }
-  
+
   void start(void) {
     ClientThread::start();
   }
@@ -27,8 +29,8 @@ public:
     return ClientThread::isRunning();
   }
   
-  static AversiveClientThread* instance(void) {
-    return (AversiveClientThread*) _this;
+  static AversiveClientThread& instance(void) {
+    return *((AversiveClientThread*) _inst);
   }
 };
 
@@ -48,7 +50,7 @@ void Aversive::sleep(int ms) {
 }
 
 void Aversive::exit(void) {
-  AversiveClientThread* client = AversiveClientThread::instance();
+  AversiveClientThread* client = &AversiveClientThread::instance();
   client->quit();
   client->wait();
   delete client;

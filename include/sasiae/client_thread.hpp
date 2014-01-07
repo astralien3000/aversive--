@@ -11,22 +11,24 @@
 class ClientThread : protected QThread {
 private:
   void expandBuffer(void);
-  void readLine(void);
+  bool readLine(void);
   
 protected:
   bool _keep_going;
   
   char* _buffer;
-  quint32 _length;
+  unsigned long _length;
   QMutex _com_mutex;
   
   QMap<QString, std::function<void(char*)> > _devices;
   QMutex _devices_mutex;
 
-  static ClientThread* _this;
+  static ClientThread* _inst;
 
   ClientThread(void);
-  ~ClientThread(void);
+  virtual ~ClientThread(void);
+  
+  void run(void) Q_DECL_OVERRIDE;
 
 public:
   //! \brief Output devices should use this to send data to SASIAE (thread-safe method)
