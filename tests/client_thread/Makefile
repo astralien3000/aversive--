@@ -1,14 +1,20 @@
 CC=g++
-CFLAGS=-Wall -Wextra --std=c++11 -DQT_CORE_LIB -DQT_NETWORK_LIB -I/usr/include/qt5 -I/usr/include/qt5/QtCore -fpic -I../../include/sasiae -g
-LDFLAGS=-L../../build/sasiae -laversive -lQt5Core -lpthread
+CFLAGS=-Wall -Wextra --std=c++11 -DQT_CORE_LIB -I/usr/include/qt5 -I/usr/include/qt5/QtCore -fpic -g
+LDFLAGS=-lQt5Core -lpthread
 
-all: client
+all: client server
 
 client: client.cpp ../../build/sasiae/libaversive.a
-	$(CC) $(CFLAGS) $(IFLAGS) -o $@ $< $(LDFLAGS)
+	@$(CC) $(CFLAGS) -I../../include/sasiae -o $@ $< -L../../build/sasiae -laversive $(LDFLAGS)
+
+server: server.cpp
+	@$(CC) $(CFLAGS) $(IFLAGS) -o $@ $< $(LDFLAGS)
 
 clean:
 	@rm -rf *~ \#*\#
 
+test: all
+	@./server
+
 mrproper: clean
-	@rm -rf client
+	@rm -rf client server

@@ -1,4 +1,0 @@
-D TESTER hello
-D Bouh ah
-Y uauvjrhvbhrbbhrbv
-D TESTER Stop

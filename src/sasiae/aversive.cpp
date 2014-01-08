@@ -9,24 +9,12 @@ public:
   AversiveClientThread(void) : ClientThread() { }
   ~AversiveClientThread(void) { }
   
-  void quit(void) {
-    ClientThread::quit();
-  }
-
   void start(void) {
     ClientThread::start();
   }
   
   bool wait(unsigned long time = ULONG_MAX) {
     return ClientThread::wait(time);
-  }
-  
-  bool isFinished(void) const {
-    return ClientThread::isFinished();
-  }
-  
-  bool isRunning(void) const {
-    return ClientThread::isRunning();
   }
   
   static AversiveClientThread& instance(void) {
@@ -60,7 +48,7 @@ void Aversive::stop(void) {
 inline void aversiveExit(void) {
   Aversive::stop();
   AversiveClientThread* client = &AversiveClientThread::instance();
-  client->quit();
+  client->sendData("S");
   client->wait();
   delete client;
   return;

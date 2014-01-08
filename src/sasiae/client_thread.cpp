@@ -44,17 +44,14 @@ void ClientThread::readLine(void) {
     }
   }
   _buffer[i] = '\0';
-  //std::cout << "I read: \"" << _buffer << "\"" << std::endl;
-  //std::cout << "And last char was: \"" << (int) c << "\"" << std::endl;
   if(c == -1) {
     Aversive::stop();
+    quit();
   }
 }
 
 void ClientThread::quit(void) {
   _keep_going = false;
-  close(STDIN_FILENO);
-  //std::cout << "I closed it!" << std::endl;
 }
 
 void ClientThread::run(void) {
