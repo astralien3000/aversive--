@@ -1,7 +1,8 @@
 #include <aversive.hpp>
 #include <client_thread.hpp>
+#include <cstdlib>
 #include <iostream>
-#include <unistd.h>
+#include <QThread>
 
 class AversiveClientThread : public ClientThread {
 public:
@@ -9,8 +10,7 @@ public:
   ~AversiveClientThread(void) { }
   
   void quit(void) {
-    close(STDIN_FILENO);
-    _keep_going = false;
+    ClientThread::quit();
   }
 
   void start(void) {
@@ -34,25 +34,55 @@ public:
   }
 };
 
-bool Aversive::init(int argc, char** argv) {
+static bool keep_going;
+
+inline bool aversiveInit(int argc, char** argv) {
   (void) argc;
   (void) argv;
   
   AversiveClientThread* client = new AversiveClientThread;
   client->start();
+  keep_going = true;
   return true;
 }
 
 void Aversive::sleep(int ms) {
   // Do synchronisation stuff or simply wait if already synchronised
   (void) ms;
+  QThread::sleep(0);
   return;
 }
 
-void Aversive::exit(void) {
+void Aversive::stop(void) {
+  keep_going = false;
+}
+
+inline void aversiveExit(void) {
+  Aversive::stop();
   AversiveClientThread* client = &AversiveClientThread::instance();
   client->quit();
   client->wait();
   delete client;
   return;
+}
+
+int main(int argc, char** argv) {
+  if(!aversiveInit(argc, argv)) {
+   std::cerr << "Error while initializing Aversive++" << std::endl;
+    return EXIT_FAILURE;
+  }
+ 
+  if(!robotInit()) {
+    std::cerr << "Error while initializing the robot" << std::endl;
+    return EXIT_FAILURE;
+  }
+  
+  while(keep_going) {
+    robotLoop();
+    Aversive::sleep(0);
+  }
+  
+  robotExit();
+  aversiveExit();
+  return EXIT_SUCCESS;
 }

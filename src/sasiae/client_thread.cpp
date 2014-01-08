@@ -1,7 +1,9 @@
 #include <client_thread.hpp>
+#include <aversive.hpp>
 #include <cstdio>
 #include <cstring>
 #include <iostream>
+#include <unistd.h>
 
 #define DEFAULT_BUFFER_SIZE 64
 
@@ -32,17 +34,27 @@ void ClientThread::expandBuffer(void) {
   _buffer = new_buffer;
 }
 
-bool ClientThread::readLine(void) {
+void ClientThread::readLine(void) {
   unsigned int i = 0;
   int c;
   while((c = getchar()) && c != '\n' && c != -1) {
     _buffer[i++] = (char) c;
-    if(i > _length) {
+    if(i >= _length) {
       expandBuffer();
     }
   }
   _buffer[i] = '\0';
-  return (c == '\n');
+  //std::cout << "I read: \"" << _buffer << "\"" << std::endl;
+  //std::cout << "And last char was: \"" << (int) c << "\"" << std::endl;
+  if(c == -1) {
+    Aversive::stop();
+  }
+}
+
+void ClientThread::quit(void) {
+  _keep_going = false;
+  close(STDIN_FILENO);
+  //std::cout << "I closed it!" << std::endl;
 }
 
 void ClientThread::run(void) {
@@ -91,7 +103,7 @@ void ClientThread::run(void) {
     }
     else if(_buffer[0] == 'S') {
       // Stop message
-      _keep_going = false;
+      Aversive::stop();
     }
     else {
       // Unknown command

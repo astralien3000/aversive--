@@ -27,9 +27,19 @@
 
 class Aversive {
 public:
-  static bool init(int argc, char** argv);
   static void sleep(int ms = 0);
-  static void exit(void);
+  static void stop(void);
 };
+
+//! \brief Robot initialization function.
+//! \brief It must declare and set up the different devices used by the code robot and some other stuff (like the scheduler for example)
+//! \return True on success, false otherwise
+bool robotInit();
+
+//! \brief Robot main loop function. It must be non-blocking.
+void robotLoop();
+
+//! \brief Robot exit function. Use it if you need to properly stop devices or communications by doing specific things.
+void robotExit();
 
 #endif//AVERSIVE_HPP

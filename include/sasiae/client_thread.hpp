@@ -11,7 +11,7 @@
 class ClientThread : protected QThread {
 private:
   void expandBuffer(void);
-  bool readLine(void);
+  void readLine(void);
   
 protected:
   bool _keep_going;
@@ -28,6 +28,7 @@ protected:
   ClientThread(void);
   virtual ~ClientThread(void);
   
+  void quit(void);
   void run(void) Q_DECL_OVERRIDE;
 
 public:
