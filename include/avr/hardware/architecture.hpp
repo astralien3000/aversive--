@@ -6,6 +6,7 @@
 #include <avr/io.h>
 //#include "part/atmega32.hpp"
 #include "part/atmega128.hpp"
+//#include "part/atmega2560.hpp"
 
 #define _VALUE(i) template value<i>
 

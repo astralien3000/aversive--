@@ -13,9 +13,6 @@ struct Timer<ID>::PrivateData {};
 // Timer ///////////////////////////////////////////////
 
 template<int ID>
-inline Timer<ID>::Timer() {}
-
-template<int ID>
 inline void Timer<ID>::init(void) {
   // Set Waveform Generator Mode to Normal
   // Set Prescaler to 0

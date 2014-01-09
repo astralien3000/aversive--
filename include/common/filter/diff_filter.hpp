@@ -23,25 +23,11 @@ private:
   
 public:
   //! \brief Default Constructor
-  DiffFilter(void) : _first_call(true), _last_in(0), _delta(1) {}
+  DiffFilter(void);
   
-  void setDelta(CoeffType d) {
-    _delta = d;
-  }
+  void setDelta(CoeffType d);
 
-  OutputType doFilter(InputType in) {
-    if(!_first_call) {
-      OutputType ret = (in - _last_in) / _delta;
-      _last_in = in;
-      return ret;
-    }
-    else {
-      _first_call = false;
-      _last_in = in;
-      return 0;
-    }
-  }
-
+  OutputType doFilter(InputType in);
 };
 
 #endif//DIFF_FILTER_HPP

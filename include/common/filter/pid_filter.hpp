@@ -2,19 +2,20 @@
 #define PID_FILTER_HPP
 
 #include "../base/integer.hpp"
+#include "filter.hpp"
 
 //! \brief PID Filter
 /*!
   \todo
  */
-template<typename IT = s32, typename OT = s32, typename CT = s32>
-class PidFilter {
+class PidFilter : public Filter<s32> {
 public:
-  typedef IT InputType;
-  typedef OT OutputType;
-  typedef CT CoeffType;
+  typedef s32 InputType;
+  typedef s32 OutputType;
 
 private:
+  typedef s32 CoeffType;
+
   InputType _last_in;
   InputType _sum_in;
 
@@ -26,61 +27,14 @@ private:
 
 public:
   //! \brief Constructor with initialisation of all gains
-  PidFilter(CoeffType p = 0, CoeffType i = 0, CoeffType d = 0) {
-    _last_in = 0;
-    _sum_in = 0;
-    
-    _gain_p = p;
-    _gain_i = i;
-    _gain_d = d;
-    
-    _max_i = 0;
-  }
+  PidFilter(CoeffType p = 0, CoeffType i = 0, CoeffType d = 0);
   
-  void setGains(CoeffType p, CoeffType i, CoeffType d) {
-    _gain_p = p;
-    _gain_i = i;
-    _gain_d = d;
-  }
+  void setGains(CoeffType p, CoeffType i, CoeffType d);
 
   //! \brief Sets the limit for integral output
-  void setMaxIntegral(OutputType val) {
-    _max_i = val;
-  }
+  void setMaxIntegral(OutputType val);
 
-
-  template<typename T>
-  inline static T __min(T v1, T v2) {
-    if(v1 < v2) return v1;
-    else return v2;
-  }
-
-  template<typename T>
-  inline static T __max(T v1, T v2) {
-    if(v1 > v2) return v1;
-    else return v2;
-  }
-
-  OutputType doFilter(InputType in) {
-    // proportional
-    OutputType p = in * _gain_p;
-
-    // integral
-    if(0 < _sum_in + in) {
-      _sum_in = __min(_max_i, _sum_in + in);
-    }
-    else {
-      _sum_in = __max(-_max_i, _sum_in + in);
-    }
-    OutputType i = _sum_in * _gain_i;
-
-    // derivate
-    OutputType d = (_last_in - in) * _gain_d;
-
-    // out
-    _last_in = in;
-    return p + i + d;
-  }
+  OutputType doFilter(InputType in);
 };
 
 #endif//PID_FILTER_HPP

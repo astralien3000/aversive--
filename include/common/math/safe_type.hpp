@@ -1,14 +1,14 @@
-#ifndef SAFE_TYPE_HPP
-#define SAFE_TYPE_HPP
+#ifndef SAFE_INTEGER_HPP
+#define SAFE_INTEGER_HPP
 
 //! \brief An overload of basic integers to enable some safety checks during runtime
-template<typename Type>
-class SafeType {
+template<typename Integer>
+class SafeInteger {  
 public:
   //! \brief Default Constructor
-  inline SafeType();
+  inline SafeInteger();
   //! \brief Copy Constructor
-  inline SafeType(const SafeType&);
+  inline SafeInteger(const SafeInteger&);
 
   //! \brief Converter Constructor
   //!
@@ -16,7 +16,7 @@ public:
   //! If size is bigger, check if the value is under target's type's max.
   //! If cannot convert because value, throw error.
   template<typename T>
-  inline SafeType(T);
+  inline SafeInteger(T);
 
   //! \brief Converter Cast
   //!
@@ -27,56 +27,56 @@ public:
   inline operator T(void);
 
   //! \brief Copy Operator
-  inline SafeType& operator=(const SafeType&);
+  inline SafeInteger& operator=(const SafeInteger&);
 
   // Math
-  inline SafeType& operator+=(const SafeType&);
-  inline SafeType& operator-=(const SafeType&);
-  inline SafeType& operator*=(const SafeType&);
-  inline SafeType& operator/=(const SafeType&);
-  inline SafeType& operator%=(const SafeType&);
+  inline SafeInteger& operator+=(const SafeInteger&);
+  inline SafeInteger& operator-=(const SafeInteger&);
+  inline SafeInteger& operator*=(const SafeInteger&);
+  inline SafeInteger& operator/=(const SafeInteger&);
+  inline SafeInteger& operator%=(const SafeInteger&);
 
-  inline SafeType& operator++();
-  inline SafeType& operator++(int);
-  inline SafeType& operator--();
-  inline SafeType& operator--(int);
+  inline SafeInteger& operator++();
+  inline SafeInteger& operator++(int);
+  inline SafeInteger& operator--();
+  inline SafeInteger& operator--(int);
 
-  inline SafeType& operator+(const SafeType&) const;
-  inline SafeType& operator-(const SafeType&) const;
-  inline SafeType& operator*(const SafeType&) const;
-  inline SafeType& operator/(const SafeType&) const;
-  inline SafeType& operator%(const SafeType&) const;
+  inline SafeInteger& operator+(const SafeInteger&) const;
+  inline SafeInteger& operator-(const SafeInteger&) const;
+  inline SafeInteger& operator*(const SafeInteger&) const;
+  inline SafeInteger& operator/(const SafeInteger&) const;
+  inline SafeInteger& operator%(const SafeInteger&) const;
 
   // Logical
-  //inline SafeType& operator&&=(const SafeType&);
-  //inline SafeType& operator||=(const SafeType&);
+  //inline SafeInteger& operator&&=(const SafeInteger&);
+  //inline SafeInteger& operator||=(const SafeInteger&);
 
-  inline SafeType& operator&&(const SafeType&) const;
-  inline SafeType& operator||(const SafeType&) const;
-  inline SafeType& operator! (void) const;
+  inline SafeInteger& operator&&(const SafeInteger&) const;
+  inline SafeInteger& operator||(const SafeInteger&) const;
+  inline SafeInteger& operator! (void) const;
 
   // Bitwise
-  inline SafeType& operator&=(const SafeType&);
-  inline SafeType& operator|=(const SafeType&);
-  inline SafeType& operator^=(const SafeType&);
+  inline SafeInteger& operator&=(const SafeInteger&);
+  inline SafeInteger& operator|=(const SafeInteger&);
+  inline SafeInteger& operator^=(const SafeInteger&);
 
-  inline SafeType& operator<<=(const SafeType&);
-  inline SafeType& operator>>=(const SafeType&);
+  inline SafeInteger& operator<<=(const SafeInteger&);
+  inline SafeInteger& operator>>=(const SafeInteger&);
 
-  inline SafeType& operator&(const SafeType&) const;
-  inline SafeType& operator|(const SafeType&) const;
-  inline SafeType& operator^(const SafeType&) const;
-  inline SafeType& operator~(void) const;
+  inline SafeInteger& operator&(const SafeInteger&) const;
+  inline SafeInteger& operator|(const SafeInteger&) const;
+  inline SafeInteger& operator^(const SafeInteger&) const;
+  inline SafeInteger& operator~(void) const;
 
-  inline SafeType& operator<<(const SafeType&) const;
-  inline SafeType& operator>>(const SafeType&) const;
+  inline SafeInteger& operator<<(const SafeInteger&) const;
+  inline SafeInteger& operator>>(const SafeInteger&) const;
 };
 
 #include "integer.hpp"
 
 #define MACRO_SAFE_SHORT_NAME(size)					\
-  typedef SafeType<typename Integer<size>::Signed>   s##size##_safe;	\
-  typedef SafeType<typename Integer<size>::Unsigned> u##size##_safe;
+  typedef SafeInteger<typename Integer<size>::Signed>   s##size##_safe;	\
+  typedef SafeInteger<typename Integer<size>::Unsigned> u##size##_safe;
 
 MACRO_SAFE_SHORT_NAME(8)
 MACRO_SAFE_SHORT_NAME(16)
@@ -85,4 +85,4 @@ MACRO_SAFE_SHORT_NAME(64)
 
 #undef MACRO_SAFE_SHORT_NAME
 
-#endif//SAFE_TYPE_HPP
+#endif//SAFE_INTEGER_HPP

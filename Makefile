@@ -1,7 +1,7 @@
 all: sasiae avr
 
 sasiae avr:
-	@$(MAKE) -sC src/$@
+	$(MAKE) -C src/$@
 
 doc: Doxyfile
 	@doxygen

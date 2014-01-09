@@ -6,25 +6,30 @@ export BUILD_EXPORT=../../build/avr
 INCLUDE=../../include/avr
 export INCLUDE_EXPORT=$(INCLUDE)
 
-LIB=$(BUILD)/libaversive_$(MMCU).a
+export LIBNAME=libaversive_$(MMCU)
+
+LIB=$(BUILD)/$(LIBNAME).a
 SUB_DIRS= hardware # add the sub directory's names here
 
 OBJS = # add object to compile
 
-all: $(BUILD) $(BUILD)/$(MMCU) build subdirs $(LIB)
+all: $(BUILD) $(BUILD) build $(addsuffix .d,$(SUB_DIRS)) common $(LIB)
 
 # to build local sources
-build: $(addprefix $(BUILD)/$(MMCU)/,$(addsuffix .o,$(OBJS)))
+build: $(addprefix $(BUILD)/,$(addsuffix .o,$(OBJS)))
 
 $(BUILD):
 $(BUILD)/$(MMCU):
 	mkdir $@
 
-$(BUILD)/$(MMCU)/%.o: %.cpp
+$(BUILD)/%.o: %.cpp
 	$(CC) $(CFLAGS) -I$(INCLUDE) -o $@ -c $<
 
-subdirs: 
-	$(MAKE) -C $(SUB_DIRS)
+hardware.d: 
+	$(MAKE) -C $(@:.d=)
 
-$(LIB):	$(addprefix $(BUILD)/$(MMCU)/,$(addsuffix .o,$(OBJS)))
-	ar cr $(LIB) $?
+$(LIB):
+	avr-ar r $(LIB) $(BUILD)/*.o
+
+common:
+	$(MAKE) -C ../common

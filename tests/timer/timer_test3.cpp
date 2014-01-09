@@ -39,11 +39,11 @@ void debug_puts_counter(void) {
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-// #define MACRO_OVERFLOW_INTERRUPT_BIND(timer)				\
-// ISR(TIMER##timer##_OVF_vect, ISR_NAKED) { \
-//   debug_puts("TEST\n");\
+// #define MACRO_OVERFLOW_INTERRUPT_BIND(timer)			\
+// ISR(TIMER##timer##_OVF_vect, ISR_NAKED) {			\
+//   debug_puts("TEST\n");					\
 //   Timer<timer>::instance().overflowEvent().execFunction();	\
-// }\
+// }								\
 
 // MACRO_OVERFLOW_INTERRUPT_BIND(0)
 
@@ -53,22 +53,20 @@ int main(int argc, char* argv[]) {
 
   Timer0::OverflowEvent& evt = timer.overflowEvent();
   evt.setFunction([](void){ 
-      debug_puts("Victoire\n");
-      Timer0::instance().setCounter(0);
+      //debug_puts("Victoire\n");
+      //Timer0::instance().setCounter(0);
     });
   
 
   timer.setPrescaler<32>();
-  evt.start();
+  //evt.start();
 
-  TIMSK = (1 << TOIE0);
-  
   Interrupts::set();
   
   int i = 0;
   while(1) {
-    debug_puts_counter();
-    debug_puts("\n");
+    //debug_puts_counter();
+    debug_puts("a");
     i++;
   }
 

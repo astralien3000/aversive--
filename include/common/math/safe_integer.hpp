@@ -1,12 +1,12 @@
 #ifndef SAFE_INTEGER_HPP
 #define SAFE_INTEGER_HPP
 
-#define MUL_OVERFLOW_CALLBACK(value, ret) cout << "MUL ERR " << value << " " << ret << endl;
-#define DIF_OVERFLOW_CALLBACK(value, ret) cout << "DIF ERR " << value << " " << ret << endl;
-#define ADD_OVERFLOW_CALLBACK(value, ret) cout << "ADD ERR " << value << " " << ret << endl;
-#define DIV_ON_ERROR_CALLBACK(value, ret) cout << "DIV ERR " << value << " " << ret << endl;
+#define MUL_OVERFLOW_CALLBACK(value, ret) //cout << "MUL ERR " << value << " " << ret << endl;
+#define DIF_OVERFLOW_CALLBACK(value, ret) //cout << "DIF ERR " << value << " " << ret << endl;
+#define ADD_OVERFLOW_CALLBACK(value, ret) //cout << "ADD ERR " << value << " " << ret << endl;
+#define DIV_ON_ERROR_CALLBACK(value, ret) //cout << "DIV ERR " << value << " " << ret << endl;
 
-#define CPY_ON_ERROR_CALLBACK(value, ret) cout << "CPY ERR in = " << value << "  out = " << ret << endl;
+#define CPY_ON_ERROR_CALLBACK(value, ret) //cout << "CPY ERR in = " << value << "  out = " << ret << endl;
 
 //! Private Define TYPED_OPERATION
 #define TYPED_OPERATION(type, op, v1, v2) (type)((type) v1 op (type) v2)

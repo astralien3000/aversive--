@@ -2,14 +2,16 @@
 #define QUADRAMP_FILTER_HPP
 
 #include "../base/integer.hpp"
+#include "filter.hpp"
 
-class QuadrampFilter {
+class QuadrampFilter : public Filter<s32> {
 public:
   typedef s32 InputType;
   typedef s32 OutputType;
-  typedef s32 CoeffType;
 
 private:
+  typedef s32 CoeffType;
+
   OutputType _prev_out;
   OutputType _prev_var;
 
@@ -21,10 +23,11 @@ private:
 public:
   QuadrampFilter(void);
   
-  void setFirstOrderLimit(CoeffType,CoeffType);
-  void setSecondOrderLimit(CoeffType,CoeffType);
+  void setFirstOrderLimit(CoeffType pos, CoeffType neg);
 
-  OutputType doFilter(InputType);
+  void setSecondOrderLimit(CoeffType pos, CoeffType neg);
+
+  OutputType doFilter(InputType in);
 };
 
 

@@ -1,7 +1,5 @@
-BUILD=../../build/common
-export BUILD_EXPORT=$(BUILD)
-INCLUDE=../../include/common
-export INCLUDE_EXPORT=$(INCLUDE)
+BUILD=$(BUILD_EXPORT)
+INCLUDE=$(INCLUDE_EXPORT)
 
 SUB_DIRS= filter # add the sub directory's names here
 

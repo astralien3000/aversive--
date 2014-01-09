@@ -4,17 +4,21 @@
 #include "device.hpp"
 #include "output.hpp"
 
+#ifndef OUTPUT_DEVICE_PRIVATE_DATA
+#define OUTPUT_DEVICE_PRIVATE_DATA
+#endif//OUTPUT_DEVICE_PRIVATE_DATA
+
 template<typename T>
 class OutputDevice : public Output<T>, public Device {
 public:
   inline OutputDevice(const char* name) : Device(name) {}
   
-  inline void setValue(T&);
+  inline void setValue(T);
 
 private:
-  struct PrivateData;
-  PrivateData _data;
+  OUTPUT_DEVICE_PRIVATE_DATA
 };
 
+#undef  OUTPUT_DEVICE_PRIVATE_DATA
 
 #endif//OUTPUT_DEVICE_HPP

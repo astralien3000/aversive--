@@ -1,7 +1,16 @@
 #include <filter/pid_filter.hpp>
-/*
-PidFilter::PidFilter(void) {
-  PidFilter(0,0,0);
+
+
+template<typename T>
+inline static T __min(T v1, T v2) {
+  if(v1 < v2) return v1;
+  else return v2;
+}
+
+template<typename T>
+inline static T __max(T v1, T v2) {
+  if(v1 > v2) return v1;
+  else return v2;
 }
 
 PidFilter::PidFilter(CoeffType p, CoeffType i, CoeffType d) {
@@ -26,18 +35,15 @@ void PidFilter::setMaxIntegral(OutputType val) {
 }
 
 typename PidFilter::OutputType PidFilter::doFilter(InputType in) {
-  /* proportional 
   OutputType p = in * _gain_p;
-
-  /* integral 
+ 
   _sum_in = __min(_max_i, _sum_in + in);
   OutputType i = _sum_in * _gain_i;
 
-  /* derivate 
   OutputType d = (_last_in - in) * _gain_d;
 
-  /* out 
   _last_in = in;
   return p + i + d;
 }
-*/
+  
+

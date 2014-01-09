@@ -3,7 +3,7 @@ INCLUDE=../$(INCLUDE_EXPORT)
 
 SUB_DIRS= # add the sub directory's names here
 
-OBJS = pid_filter quadramp_filter diff_filter # add object to compile
+OBJS = diff_filter pid_filter quadramp_filter # add object to compile
 
 all: $(BUILD) $(BUILD) build
 

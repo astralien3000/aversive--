@@ -5,7 +5,7 @@
 template<typename T>
 class Output {
 public:
-  void setValue(T&);
+  void setValue(T);
 };
 
 #endif//OUTPUT_HPP

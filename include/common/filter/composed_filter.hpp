@@ -2,9 +2,10 @@
 #define COMPOSED_FILTER_HPP
 
 #include "../base/integer.hpp"
+#include "filter.hpp"
 
 template<class Filter1, class Filter2>
-class ComposedFilter {
+class ComposedFilter : public Filter<typename Filter1::InputType> {
 public:
   typedef typename Filter1::InputType InputType;
   typedef typename Filter2::OutputType OutputType;
@@ -16,7 +17,7 @@ private:
 public:
   inline ComposedFilter(Filter1& f1, Filter2& f2) : _f1(f1), _f2(f2) {}
   
-  inline OutputType doFilter(InputType in) {
+  OutputType doFilter(InputType in) {
     return _f2.doFilter(_f1.doFilter(in));
   }
 };
