@@ -2,7 +2,7 @@
 #define BUFFER_HPP
 
 #include <assert.h>
-#include <cstdint>
+#include <stdint.h>
 #include "../base/array.hpp"
 
 typedef uint_fast16_t buffer_t;
