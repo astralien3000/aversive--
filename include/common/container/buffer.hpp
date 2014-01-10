@@ -2,9 +2,18 @@
 #define BUFFER_HPP
 
 #include <assert.h>
+#include <cstdint>
 #include "../base/array.hpp"
 
-static inline bool is_power_of_two(int x) {
+typedef uint_fast16_t buffer_t;
+
+//! \brief Maximum number of elements the buffer can handle
+static const buffer_t MAX_BUFFER_SIZE = 1 << 15;
+
+//! \bried Default buffer size
+static const buffer_t DEFAULT_BUFFER_SIZE = 64;
+
+static inline bool is_power_of_two(buffer_t x) {
   return x != 0 && (x & (x - 1)) == 0;
 }
 
@@ -12,16 +21,16 @@ static inline bool is_power_of_two(int x) {
 //! \attention SIZE must be a power of 2, it is verified with an assert
 //! \param SIZE the number of elements the buffer can handle at any given time
 //! \param _ElementType type of the buffered elements
-template <int SIZE, typename _ElementType>
+template <buffer_t SIZE = DEFAULT_BUFFER_SIZE, typename _ElementType = char>
 class Buffer {
 public:
   typedef _ElementType ElementType;
-  static const int size = SIZE;
+  static const buffer_t size = SIZE;
   
 private:
-  Array<SIZE, ElementType, int> _list;
-  int _reads;
-  int _writes;
+  Array<SIZE, ElementType, buffer_t> _list;
+  buffer_t _reads;
+  buffer_t _writes;
   
 public:
   //! \brief Default Constructor
@@ -76,12 +85,12 @@ public:
   }
   
   //! \brief Give the space currently in use in the buffer
-  inline int usedSpace(void) const {
+  inline buffer_t usedSpace(void) const {
     return _writes - _reads;
   }
   
   //! \brief Give the space currently free to use in the buffer
-  inline int freeSpace(void) const {
+  inline buffer_t freeSpace(void) const {
     return SIZE - usedSpace();
   }
 };

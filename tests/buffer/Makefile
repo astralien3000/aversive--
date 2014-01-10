@@ -4,7 +4,7 @@ LDFLAGS= -lpthread
 
 all: buffer
 
-buffer: buffer.cpp
+buffer: buffer.cpp ../../include/common/container/buffer.hpp
 	@$(CC) $(CFLAGS) -I../../include/common -o $@ $< $(LDFLAGS)
 
 clean:
