@@ -52,20 +52,22 @@ public:
   }
 
   //! \brief Delete the oldest element
-  inline void dequeue(void) {
+  inline bool dequeue(void) {
     if(isEmpty()) {
-      return;
+      return false;
     }
     _reads++;
+    return true;
   }
   
   //! \brief Add an element to the buffer
-  inline void enqueue(const ElementType& element) {
+  inline bool enqueue(const ElementType& element) {
     if(isFull()) {
-      return;
+      return false;
     }
     _list[_writes % SIZE] = element;
     _writes++;
+    return true;
   }
   
   //! \brief Access to the oldest element
