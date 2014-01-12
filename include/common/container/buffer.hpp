@@ -1,14 +1,12 @@
 #ifndef BUFFER_HPP
 #define BUFFER_HPP
 
-#include <assert.h>
-#include <stdint.h>
-#include "../base/array.hpp"
+#include <base/array.hpp>
 
-typedef uint_fast16_t buffer_t;
+typedef array_t buffer_t;
 
 //! \brief Maximum number of elements the buffer can handle
-static const buffer_t MAX_BUFFER_SIZE = 1 << 15;
+static const buffer_t MAX_BUFFER_SIZE = 1 << (ARRAY_INDEX_LENGTH - 1);
 
 //! \bried Default buffer size
 static const buffer_t DEFAULT_BUFFER_SIZE = 64;
@@ -17,14 +15,13 @@ static const buffer_t DEFAULT_BUFFER_SIZE = 64;
 //! \attention SIZE must be a power of 2, it is verified with an assert
 //! \param SIZE the number of elements the buffer can handle at any given time
 //! \param _ElementType type of the buffered elements
-template <buffer_t SIZE = DEFAULT_BUFFER_SIZE, typename _ElementType = char>
+template <buffer_t SIZE = DEFAULT_BUFFER_SIZE, typename ElementType = char>
 class Buffer {
 public:
-  typedef _ElementType ElementType;
   static const buffer_t size = SIZE;
   
 private:
-  Array<SIZE, ElementType, buffer_t> _list;
+  Array<SIZE, ElementType> _list;
   buffer_t _reads;
   buffer_t _writes;
   

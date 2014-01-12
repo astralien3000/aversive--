@@ -12,43 +12,43 @@ static const uint8_t SHORT_STR_LENGTH = 7;
 static const uint8_t LONG_STR_LENGTH = 12;
 static const uint8_t DOUBLE_STR_LENGTH = 25;
 
-template<int CHANNEL, buffer_t SIZE>
-UartStream<CHANNEL, SIZE>::UartStream(void) :
+template<int CHANNEL>
+UartStream<CHANNEL>::UartStream(void) :
 _out_buff(), _in_buff() {
   Uart<CHANNEL>::instance().init();
 }
 
-template<int CHANNEL, buffer_t SIZE>
-inline UartStream<CHANNEL, SIZE>::~UartStream(void) {
+template<int CHANNEL>
+inline UartStream<CHANNEL>::~UartStream(void) {
 }
 
-template<int CHANNEL, buffer_t SIZE>
-inline typename UartStream<CHANNEL, SIZE>::Mode UartStream<CHANNEL, SIZE>::mode() const {
+template<int CHANNEL>
+inline typename UartStream<CHANNEL>::Mode UartStream<CHANNEL>::mode() const {
   return _m;
 }
 
-template<int CHANNEL, buffer_t SIZE>
-inline void UartStream<CHANNEL, SIZE>::setMode(UartStream<CHANNEL, SIZE>::Mode m) {
+template<int CHANNEL>
+inline void UartStream<CHANNEL>::setMode(UartStream<CHANNEL>::Mode m) {
   _m = m;
 }
 
-template<int CHANNEL, buffer_t SIZE>
-inline typename UartStream<CHANNEL, SIZE>::StrMode UartStream<CHANNEL, SIZE>::strMode() const {
+template<int CHANNEL>
+inline typename UartStream<CHANNEL>::StrMode UartStream<CHANNEL>::strMode() const {
   return _s;
 }
 
-template<int CHANNEL, buffer_t SIZE>
-inline void UartStream<CHANNEL, SIZE>::setStrMode(UartStream<CHANNEL, SIZE>::StrMode s) {
+template<int CHANNEL>
+inline void UartStream<CHANNEL>::setStrMode(UartStream<CHANNEL>::StrMode s) {
   _s = s;
 }
 
-template<int CHANNEL, buffer_t SIZE>
-bool UartStream<CHANNEL, SIZE>::binaryWrite(uint8_t data) {
+template<int CHANNEL>
+bool UartStream<CHANNEL>::binaryWrite(uint8_t data) {
   return _out_buff.enqueue(data);
 }
 
-template<int CHANNEL, buffer_t SIZE>
-bool UartStream<CHANNEL, SIZE>::binaryRead(uint8_t& data) {
+template<int CHANNEL>
+bool UartStream<CHANNEL>::binaryRead(uint8_t& data) {
   if(_in_buff.isEmpty()) {
     return false;
   }
@@ -56,24 +56,24 @@ bool UartStream<CHANNEL, SIZE>::binaryRead(uint8_t& data) {
   return _in_buff.dequeue();
 }
 
-template<int CHANNEL, buffer_t SIZE>
-bool UartStream<CHANNEL, SIZE>::complexBinaryWrite(const char* str) {
+template<int CHANNEL>
+bool UartStream<CHANNEL>::complexBinaryWrite(const char* str) {
   const uint8_t* ptr = reinterpret_cast<const uint8_t*>(str);
   for(; (*ptr) != '\0' && binaryWrite(*ptr); ptr++) { }
   return (*ptr) == '\0';
 }
 
-template<int CHANNEL, buffer_t SIZE>
+template<int CHANNEL>
 template<typename T>
-bool UartStream<CHANNEL, SIZE>::complexBinaryWrite(const T& val) {
+bool UartStream<CHANNEL>::complexBinaryWrite(const T& val) {
   const uint8_t* ptr = reinterpret_cast<const uint8_t*>(&val);
   int i;
   for(i = 0; i < sizeof(T) && binaryWrite(*ptr); i++, ptr++) { }
   return i == sizeof(T);
 }
 
-template<int CHANNEL, buffer_t SIZE>
-bool UartStream<CHANNEL, SIZE>::complexBinaryRead(char* str, uint_fast16_t limit) {
+template<int CHANNEL>
+bool UartStream<CHANNEL>::complexBinaryRead(char* str, uint_fast16_t limit) {
   if(limit == 1) {
     *str = '\0';
     return true;
@@ -98,134 +98,134 @@ bool UartStream<CHANNEL, SIZE>::complexBinaryRead(char* str, uint_fast16_t limit
   return true;
 }
 
-template<int CHANNEL, buffer_t SIZE>
+template<int CHANNEL>
 template<typename T>
-bool UartStream<CHANNEL, SIZE>::complexBinaryRead(T& val) {
+bool UartStream<CHANNEL>::complexBinaryRead(T& val) {
   uint8_t* ptr = reinterpret_cast<uint8_t*>(&val);
   int i;
   for(i = 0; i < sizeof(T) && binaryRead(*ptr); i++, ptr++) { }
   return i == sizeof(T);
 }
 
-template<int CHANNEL, buffer_t SIZE>
-inline bool UartStream<CHANNEL, SIZE>::formattedWrite(const char& val) {
+template<int CHANNEL>
+inline bool UartStream<CHANNEL>::formattedWrite(const char& val) {
   return binaryWrite(*reinterpret_cast<uint8_t*>(&val));
 }
 
-template<int CHANNEL, buffer_t SIZE>
-inline bool UartStream<CHANNEL, SIZE>::formattedWrite(const unsigned char& val) {
+template<int CHANNEL>
+inline bool UartStream<CHANNEL>::formattedWrite(const unsigned char& val) {
   return binaryWrite(*reinterpret_cast<uint8_t*>(&val));
 }
 
-template<int CHANNEL, buffer_t SIZE>
-bool UartStream<CHANNEL, SIZE>::formattedWrite(const short& val) {
+template<int CHANNEL>
+bool UartStream<CHANNEL>::formattedWrite(const short& val) {
   char str[SHORT_STR_LENGTH];
   snprintf(str, SHORT_STR_LENGTH, "%hd", val);
   return complexBinaryWrite(str);
 }
 
-template<int CHANNEL, buffer_t SIZE>
-bool UartStream<CHANNEL, SIZE>::formattedWrite(const unsigned short& val) {
+template<int CHANNEL>
+bool UartStream<CHANNEL>::formattedWrite(const unsigned short& val) {
   char str[SHORT_STR_LENGTH];
   snprintf(str, SHORT_STR_LENGTH, "%hu", val);
   return complexBinaryWrite(str);
 }
 
-template<int CHANNEL, buffer_t SIZE>
-bool UartStream<CHANNEL, SIZE>::formattedWrite(const long int& val) {
+template<int CHANNEL>
+bool UartStream<CHANNEL>::formattedWrite(const long int& val) {
   char str[LONG_STR_LENGTH];
   snprintf(str, LONG_STR_LENGTH, "%ld", val);
   return complexBinaryWrite(str);
 }
 
-template<int CHANNEL, buffer_t SIZE>
-bool UartStream<CHANNEL, SIZE>::formattedWrite(const unsigned long int& val) {
+template<int CHANNEL>
+bool UartStream<CHANNEL>::formattedWrite(const unsigned long int& val) {
   char str[LONG_STR_LENGTH];
   snprintf(str, LONG_STR_LENGTH, "%lu", val);
   return complexBinaryWrite(str);
 }
 
-template<int CHANNEL, buffer_t SIZE>
-bool UartStream<CHANNEL, SIZE>::formattedWrite(const float& val) {
+template<int CHANNEL>
+bool UartStream<CHANNEL>::formattedWrite(const float& val) {
   char str[DOUBLE_STR_LENGTH];
   snprintf(str, DOUBLE_STR_LENGTH, "%E", val);
   return complexBinaryWrite(str);
 }
 
-template<int CHANNEL, buffer_t SIZE>
-bool UartStream<CHANNEL, SIZE>::formattedWrite(const double& val) {
+template<int CHANNEL>
+bool UartStream<CHANNEL>::formattedWrite(const double& val) {
   char str[DOUBLE_STR_LENGTH];
   snprintf(str, DOUBLE_STR_LENGTH, "%E", val);
   return complexBinaryWrite(str);
 }
 
-template<int CHANNEL, buffer_t SIZE>
-inline bool UartStream<CHANNEL, SIZE>::formattedRead(char& val) {
+template<int CHANNEL>
+inline bool UartStream<CHANNEL>::formattedRead(char& val) {
   return binaryRead(*reinterpret_cast<uint8_t*>(&val));
 }
 
-template<int CHANNEL, buffer_t SIZE>
-inline bool UartStream<CHANNEL, SIZE>::formattedRead(unsigned char& val) {
+template<int CHANNEL>
+inline bool UartStream<CHANNEL>::formattedRead(unsigned char& val) {
   return binaryRead(*reinterpret_cast<uint8_t*>(&val));
 }
 
-template<int CHANNEL, buffer_t SIZE>
-bool UartStream<CHANNEL, SIZE>::formattedRead(short& val) {
+template<int CHANNEL>
+bool UartStream<CHANNEL>::formattedRead(short& val) {
   long int val2;
   bool res = formattedRead(val2);
   val = static_cast<short>(val2);
   return res;
 }
 
-template<int CHANNEL, buffer_t SIZE>
-bool UartStream<CHANNEL, SIZE>::formattedRead(unsigned short& val) {
+template<int CHANNEL>
+bool UartStream<CHANNEL>::formattedRead(unsigned short& val) {
   unsigned long int val2;
   bool res = formattedRead(val2);
   val = static_cast<unsigned short>(val2);
   return res;
 }
 
-template<int CHANNEL, buffer_t SIZE>
-bool UartStream<CHANNEL, SIZE>::formattedRead(long int& val) {
+template<int CHANNEL>
+bool UartStream<CHANNEL>::formattedRead(long int& val) {
   char str[LONG_STR_LENGTH];
   complexBinaryRead(str, LONG_STR_LENGTH);
   val = strtol(str, NULL, 10);
   return true;
 }
 
-template<int CHANNEL, buffer_t SIZE>
-bool UartStream<CHANNEL, SIZE>::formattedRead(unsigned long int& val) {
+template<int CHANNEL>
+bool UartStream<CHANNEL>::formattedRead(unsigned long int& val) {
   char str[LONG_STR_LENGTH];
   complexBinaryRead(str, LONG_STR_LENGTH);
   val = strtoul(str, NULL, 10);
   return true;
 }
 
-template<int CHANNEL, buffer_t SIZE>
-bool UartStream<CHANNEL, SIZE>::formattedRead(float& val) {
+template<int CHANNEL>
+bool UartStream<CHANNEL>::formattedRead(float& val) {
   double val2;
   bool res = formattedRead(val2);
   val = static_cast<float>(val2);
   return res;
 }
 
-template<int CHANNEL, buffer_t SIZE>
-bool UartStream<CHANNEL, SIZE>::formattedRead(double& val) {
+template<int CHANNEL>
+bool UartStream<CHANNEL>::formattedRead(double& val) {
   char str[DOUBLE_STR_LENGTH];
   complexBinaryRead(str, DOUBLE_STR_LENGTH);
   val = strtod(str, NULL);
   return true;
 }
 
-template<int CHANNEL, buffer_t SIZE>
-inline UartStream<CHANNEL, SIZE>& UartStream<CHANNEL, SIZE>::operator<<(const char* str) {
+template<int CHANNEL>
+inline UartStream<CHANNEL>& UartStream<CHANNEL>::operator<<(const char* str) {
   complexBinaryWrite(str);
   return (*this);
 }
 
-template<int CHANNEL, buffer_t SIZE>
+template<int CHANNEL>
 template<typename T>
-UartStream<CHANNEL, SIZE>& UartStream<CHANNEL, SIZE>::operator<<(const T& val) {
+UartStream<CHANNEL>& UartStream<CHANNEL>::operator<<(const T& val) {
   if(_m == BINARY) {
     complexBinaryWrite(val);
   }
@@ -235,15 +235,15 @@ UartStream<CHANNEL, SIZE>& UartStream<CHANNEL, SIZE>::operator<<(const T& val) {
   return (*this);
 }
 
-template<int CHANNEL, buffer_t SIZE>
-inline UartStream<CHANNEL, SIZE>& UartStream<CHANNEL, SIZE>::operator>>(char* str) {
+template<int CHANNEL>
+inline UartStream<CHANNEL>& UartStream<CHANNEL>::operator>>(char* str) {
   complexBinaryRead(str);
   return (*this);
 }
 
-template<int CHANNEL, buffer_t SIZE>
+template<int CHANNEL>
 template<typename T>
-UartStream<CHANNEL, SIZE>& UartStream<CHANNEL, SIZE>::operator>>(T& val) {
+UartStream<CHANNEL>& UartStream<CHANNEL>::operator>>(T& val) {
   if(_m == BINARY) {
     complexBinaryRead(val);
   }

@@ -5,13 +5,15 @@
 #include <container/buffer.hpp>
 #include <stdint.h>
 
+static const buffer_t STREAM_BUFFER_SIZE = 64;
+
 //! \brief Uart stream which uses "thread-safe" Buffer implementation
 //! \attention SIZE must be a power of 2
 //! \param CHANNEL which Uart connection the stream must be bound to
 //! \param SIZE the number of characters input and output buffers can both handle at any given time
-template<int CHANNEL, buffer_t SIZE = DEFAULT_BUFFER_SIZE>
-class UartStream : public Singleton<UartStream<CHANNEL, SIZE>> {
-  friend class Singleton<UartStream<CHANNEL, SIZE>>;
+template<int CHANNEL>
+class UartStream : public Singleton<UartStream<CHANNEL>> {
+  friend class Singleton<UartStream<CHANNEL>>;
 public:
   //! \brief Mode represents the different modes the stream can be in (default is FORMATTED)
   enum Mode { BINARY, FORMATTED };
@@ -20,8 +22,8 @@ public:
   enum StrMode { WORD, LINE };
   
 protected:
-  Buffer<SIZE, uint8_t> _out_buff;
-  Buffer<SIZE, uint8_t> _in_buff;
+  Buffer<STREAM_BUFFER_SIZE, uint8_t> _out_buff;
+  Buffer<STREAM_BUFFER_SIZE, uint8_t> _in_buff;
   Mode _m = FORMATTED;
   StrMode _s = WORD;
   
@@ -74,20 +76,20 @@ public:
   void setStrMode(StrMode s);
   
   //! \brief Write a string into the stream
-  UartStream<CHANNEL, SIZE>& operator<<(const char* str);
+  UartStream<CHANNEL>& operator<<(const char* str);
   
   //! \brief Write anything into the stream
   template<typename T>
-  UartStream<CHANNEL, SIZE>& operator<<(const T& val);
+  UartStream<CHANNEL>& operator<<(const T& val);
   
   //! \brief Read a string from the stream
   //! \attention Its behavior depends on the string mode the stream is currently in
-  UartStream<CHANNEL, SIZE>& operator>>(char* str);
+  UartStream<CHANNEL>& operator>>(char* str);
   
   //! \brief Read anything from the stream
   //! \attention Its behavior depends on the mode (binary or formatted) the stream is currently in
   template<typename T>
-  UartStream<CHANNEL, SIZE>& operator>>(T& val);
+  UartStream<CHANNEL>& operator>>(T& val);
 };
 
 #endif//UART_STREAM_HPP
