@@ -118,8 +118,16 @@ bool ClientThread::sendData(const char* data) {
   return true;
 }
 
-bool ClientThread::registerDevice(const char* name, const std::function<void(char*)>& interpreter) {
-  QString device = name;
+bool ClientThread::sendDeviceMessage(const Device& dev, const char* msg) {
+  return sendData((std::string("D ") + dev.name() + " " + msg).c_str());
+}
+
+bool ClientThread::sendMessage(MessageLevel lvl, const char* msg) {
+  //return sendData((std::string("D ") + dev.name() + " " + msg).c_str());
+}
+
+bool ClientThread::registerDevice(const Device& dev, const std::function<void(char*)>& interpreter) {
+  QString device = dev.name();
   _devices_mutex.lock();
   if(_devices.contains(device)) {
     // If the device is already registered

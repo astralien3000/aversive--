@@ -1,7 +1,7 @@
 #ifndef ENCODER_HPP
 #define ENCODER_HPP
 
-#include "../input_device.hpp"
+#include <device/input_device.hpp>
 #include "../../base/integer.hpp"
 
 #ifndef ENCODER_PRIVATE_DATA

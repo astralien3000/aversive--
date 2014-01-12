@@ -10,7 +10,7 @@ public:
   inline Device(const char* name) : _name(name) {}
   
   //! \brief Returns the name of the device
-  inline const char* getName(void) {
+  inline const char* name(void) const {
     return _name;
   }
 };

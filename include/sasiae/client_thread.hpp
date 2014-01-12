@@ -7,6 +7,8 @@
 #include <QString>
 #include <functional>
 
+#include <device/device.hpp>
+
 //! \brief ClientThread handles the communication between SASIAE and the different devices
 class ClientThread : protected QThread {
 private:
@@ -31,19 +33,37 @@ protected:
   void quit(void);
   void run(void) Q_DECL_OVERRIDE;
 
-public:
-  //! \brief Output devices should use this to send data to SASIAE (thread-safe method)
+  //! \brief Raw data sent to SASIAE
   //! \brief The function adds a '\n' to the message, therefore the device does not have to do it
   //! \param data : the complete message to send to SASIAE, must be a zero-terminated string
   //! \return True on success, false otherwise
   bool sendData(const char* data);
+
+public:
+  //! \brief Output devices should use this to send data to SASIAE (thread-safe method)
+  //! \param data : the complete message to send to SASIAE, must be a zero-terminated string
+  //! \return True on success, false otherwise
+  bool sendDeviceMessage(const Device& dev, const char* msg);
+
+  //! \brief Type of the message to send, used in sendMessage method
+  enum MessageLevel {
+    ERROR,
+    INFO,
+    DEBUG, 
+    WARNING
+  };
   
+  //! \brief Output devices should use this to send data to SASIAE (thread-safe method)
+  //! \param data : the complete message to send to SASIAE, must be a zero-terminated string
+  //! \return True on success, false otherwise
+  bool sendMessage(MessageLevel lvl, const char* msg);
+
   //! \brief Input devices should use this to register themselves so ClientThread can route the message it gets to the proper device (thread-safe method)
   //! \warning This does not declare the device to SASIAE as initialized, the device has to do it by its own
   //! \param name : the device's name (id)
   //! \param interpreter : the thread-safe function that interprets the message intended to the given device
   //! \return True on success, false otherwise
-  bool registerDevice(const char* name, const std::function<void(char*)>& interpreter);
+  bool registerDevice(const Device& dev, const std::function<void(char*)>& interpreter);
   
   //! \brief Get the unique instance of the Client Thread
   //! \warning Should not be called before Aversive::init !

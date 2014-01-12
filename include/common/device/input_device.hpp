@@ -4,21 +4,15 @@
 #include "device.hpp"
 #include "input.hpp"
 
-#ifndef INPUT_DEVICE_PRIVATE_DATA
-#define INPUT_DEVICE_PRIVATE_DATA
-#endif//INPUT_DEVICE_PRIVATE_DATA
-
 template<typename T>
 class InputDevice : public Input<T>, public Device {
 public:
-  inline InputDevice(const char* name) : Device(name) {}
+  InputDevice(const char* name);
   
-  inline T getValue(void);
+  T getValue(void);
 
 private:
-  INPUT_DEVICE_PRIVATE_DATA
+  InputDevicePrivateData<T> _data;
 };
-
-#undef  INPUT_DEVICE_PRIVATE_DATA
 
 #endif//INPUT_DEVICE_HPP
