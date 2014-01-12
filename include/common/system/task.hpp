@@ -3,14 +3,10 @@
 
 #include <base/integer.hpp>
 
-class Scheduler;
-
 typedef void(*TaskFunc)(void);
 
 //! \brief Define the period and priority of a function called by the scheduler
 class Task {
-  friend class Scheduler;
-
 private:
   TaskFunc _func;
     

@@ -16,7 +16,7 @@ public:
 bool robotInit(void) {
 
   Task t1([]() {
-      Robot::instance().out.setValue(100);
+      Robot::instance().out.setValue(1);
     });
 
   Task t2([]() {
