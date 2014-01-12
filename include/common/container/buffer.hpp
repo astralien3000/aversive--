@@ -13,10 +13,6 @@ static const buffer_t MAX_BUFFER_SIZE = 1 << 15;
 //! \bried Default buffer size
 static const buffer_t DEFAULT_BUFFER_SIZE = 64;
 
-static inline bool is_power_of_two(buffer_t x) {
-  return x != 0 && (x & (x - 1)) == 0;
-}
-
 //! \brief Buffer implementation which is thread-safe if there are only one provider and one consumer
 //! \attention SIZE must be a power of 2, it is verified with an assert
 //! \param SIZE the number of elements the buffer can handle at any given time
@@ -36,7 +32,7 @@ public:
   //! \brief Default Constructor
   inline Buffer() :
     _list(), _reads(0), _writes(0) {
-    assert(is_power_of_two(SIZE));
+    static_assert((SIZE != 0 && (SIZE & (SIZE - 1)) == 0), "Buffer size must be a power of 2.");
   }
   
   //! \brief Copy Constructor
