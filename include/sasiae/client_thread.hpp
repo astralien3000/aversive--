@@ -25,6 +25,8 @@ protected:
   QMap<QString, std::function<void(char*)> > _devices;
   QMutex _devices_mutex;
 
+  std::function<void(int)> _sync_func;
+
   static ClientThread* _inst;
 
   ClientThread(void);
@@ -33,13 +35,13 @@ protected:
   void quit(void);
   void run(void) Q_DECL_OVERRIDE;
 
+public:
   //! \brief Raw data sent to SASIAE
   //! \brief The function adds a '\n' to the message, therefore the device does not have to do it
   //! \param data : the complete message to send to SASIAE, must be a zero-terminated string
   //! \return True on success, false otherwise
   bool sendData(const char* data);
 
-public:
   //! \brief Output devices should use this to send data to SASIAE (thread-safe method)
   //! \param data : the complete message to send to SASIAE, must be a zero-terminated string
   //! \return True on success, false otherwise
@@ -64,6 +66,8 @@ public:
   //! \param interpreter : the thread-safe function that interprets the message intended to the given device
   //! \return True on success, false otherwise
   bool registerDevice(const Device& dev, const std::function<void(char*)>& interpreter);
+  
+  bool setSyncFunction(const std::function<void(int)>& interpreter);
   
   //! \brief Get the unique instance of the Client Thread
   //! \warning Should not be called before Aversive::init !

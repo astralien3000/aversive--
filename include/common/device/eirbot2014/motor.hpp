@@ -1,12 +1,8 @@
 #ifndef MOTOR_HPP
 #define MOTOR_HPP
 
-#include "../output_device.hpp"
+#include <device/output_device.hpp>
 #include "../../base/integer.hpp"
-
-#ifndef MOTOR_PRIVATE_DATA
-#define MOTOR_PRIVATE_DATA
-#endif//MOTOR_PRIVATE_DATA
 
 //! \brief A propulsion motor, used by Eirbot in 2014
 //! \param ADDR : the address where to set the motor pwm
@@ -20,15 +16,10 @@
 template<s32* ADDR>
 class Motor : public OutputDevice<s32> {
 public:
-  inline Motor(const char*);
+  Motor(const char*);
 
-  inline void setValue(s32);
-
-private:
-  MOTOR_PRIVATE_DATA
+  void setValue(s32);
 };
-
-#undef  MOTOR_PRIVATE_DATA
 
 #endif//MOTOR_HPP
 

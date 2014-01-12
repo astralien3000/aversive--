@@ -64,6 +64,9 @@ void ClientThread::run(void) {
     }
     else if(_buffer[0] == 'T') {
       // Synchronization message
+      long long timestamp = 0;
+      sscanf((_buffer + 2), "%lld", &timestamp);
+      _sync_func(timestamp);
     }
     else if(_buffer[0] == 'D') {
       // Device message
@@ -122,8 +125,26 @@ bool ClientThread::sendDeviceMessage(const Device& dev, const char* msg) {
   return sendData((std::string("D ") + dev.name() + " " + msg).c_str());
 }
 
+
+
 bool ClientThread::sendMessage(MessageLevel lvl, const char* msg) {
-  //return sendData((std::string("D ") + dev.name() + " " + msg).c_str());
+  char msg_lvl[] = "I\0";
+  switch(lvl) {
+  case ERROR:
+    msg_lvl[0] = 'E';
+    break;
+  case INFO:
+    msg_lvl[0] = 'I';
+    break;
+  case DEBUG:
+    msg_lvl[0] = 'D';
+    break;
+  case WARNING:
+    msg_lvl[0] = 'W';
+    break;
+  }
+
+  return sendData((std::string("M ") + msg_lvl + " " + msg).c_str());
 }
 
 bool ClientThread::registerDevice(const Device& dev, const std::function<void(char*)>& interpreter) {
@@ -139,6 +160,11 @@ bool ClientThread::registerDevice(const Device& dev, const std::function<void(ch
     _devices_mutex.unlock();
     return true;
   }
+}
+
+bool ClientThread::setSyncFunction(const std::function<void(int)>& interpreter) {
+  _sync_func = interpreter;
+  return true;
 }
 
 ClientThread& ClientThread::instance() {

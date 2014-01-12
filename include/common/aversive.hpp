@@ -21,8 +21,6 @@
   dependent, but if the hardware dosen't provide a functionnality, the
   error message should be explicit
 
-  -... (TODO)
-
 */
 
 class Aversive {

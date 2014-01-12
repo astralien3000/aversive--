@@ -2,7 +2,6 @@
 #define QUEUE_HPP
 
 //! \brief Queue interface
-//! \param _Impl : The implementation chosen
 class Queue {
 public:
   //! \brief Default Constructor

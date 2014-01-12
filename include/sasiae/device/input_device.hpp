@@ -10,7 +10,16 @@ struct InputDevicePrivateData {
 #include "../client_thread.hpp"
 
 template<typename T>
+void get_value_from_msg(T* dest, const char* msg) {
+  long long in;
+  sscanf(msg, "%lld", &in);
+  *dest = (T)in;
+}
+
+template<typename T>
 InputDevice<T>::InputDevice(const char* name) : Device(name) {
+  _data.last_in = 0;
+
   ClientThread::instance().
     registerDevice(name,
 		   std::function<void(char*)>([&] (char* msg) mutable -> void {
@@ -18,11 +27,17 @@ InputDevice<T>::InputDevice(const char* name) : Device(name) {
 		       sscanf(msg, "%s %s", cmd, msg2);
 
 		       if(strcmp(cmd, "VALUE") == 0) {
-			 long in;
-			 sscanf(msg2, "%ld", &in);
-			 _data.last_in = in;
+			 get_value_from_msg(&_data.last_in, msg2);
 		       }
 		     }));
+
+  ClientThread::instance().
+    sendDeviceMessage(*this, "CALLME");
+}
+
+template<typename T>
+T InputDevice<T>::getValue(void) {
+  return _data.last_in;
 }
 
 #endif//SASIAE_INPUT_DEVICE_HPP
