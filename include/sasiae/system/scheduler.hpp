@@ -13,16 +13,17 @@
 class Scheduler;
 
 class TaskRef {
-  friend class Scheduler;
-
 private:
-  Task _task;
+  Task* _task;
   long long _origin;
 public:
-  TaskRef(void) : _origin(0) {}
-  TaskRef(const Task& t, long long origin) : _task(t), _origin(origin) {}
+  TaskRef(void) : _task((Task*)0), _origin(0) {}
+  TaskRef(Task& t, long long origin) : _task(&t), _origin(origin) {}
 
   TaskRef(const TaskRef& other) : _task(other._task), _origin(other._origin) {
+  }
+
+  TaskRef(const TaskRef& other, long long origin) : _task(other._task), _origin(origin) {
   }
 
   TaskRef& operator=(const TaskRef& other) {
@@ -35,17 +36,38 @@ public:
     return _task == other._task;
   }
 
+  long long nextCall(void) const {
+    return _origin + _task->period();
+  }
+  
+  void exec(void) {
+    _task->exec();
+  }
+
+  bool unique(void) {
+    return _task->unique();
+  }
+
+  void setPriority(u16 p) {
+    _task->setPriority(p);
+  }
+
+  void setPeriod(u16 p) {
+    _task->setPriority(p);
+  }
+
   bool operator<(const TaskRef& other) const {
-    return _origin + _task.period() > other._origin + other._task.period();
+    return nextCall() > other.nextCall();
   }
 
   bool operator>(const TaskRef& other) const {
-    return _origin + _task.period() < other._origin + other._task.period();
+    return nextCall() < other.nextCall();
   }
 };
 
 struct SchedulerPrivateData {
   Heap<SCHEDULER_MAX_TASKS, TaskRef> tasks;
+  Array<SCHEDULER_MAX_TASKS, Task> save;
   int current;
 };
 
@@ -57,29 +79,47 @@ Scheduler::Scheduler(void) {
   ClientThread::instance().setSyncFunction([&](long long t){
       _data.current = t;
 
-      TaskRef tsk = _data.tasks.max();
+      if(!_data.tasks.empty()) {
+	TaskRef tsk = _data.tasks.max();
 
-      while(!_data.tasks.empty() && _data.current > tsk._origin + tsk._task._period) {
-	_data.tasks.pop();
-	if(tsk._task._func) {
-	  tsk._task._func();
-	}
+	while(!_data.tasks.empty() && _data.current > tsk.nextCall()) {
 
-	tsk._origin += tsk._task._period;
+	
+	  _data.tasks.pop();
+	  tsk.exec();
 
-	if(!tsk._task._unique) {
-	  _data.tasks.insert(tsk);
-	}
+	  if(!tsk.unique()) {
+	    tsk.setPeriod(0);
+	    _data.tasks.insert(TaskRef(tsk, tsk.nextCall()));
+	  }
 
-	if(!_data.tasks.empty()) {
-	  tsk = _data.tasks.max();
+	  if(!_data.tasks.empty()) {
+	    tsk = _data.tasks.max();
+	  }
 	}
       }
     });
 }
 
-void Scheduler::addTask(Task& task) {
-  _data.tasks.insert(TaskRef(task, _data.current));
+bool Scheduler::addTask(Task& task) {
+  for(int i = 0 ; i < SCHEDULER_MAX_TASKS ; i++) {
+    if(_data.save[i].period() == 0) {
+      _data.save[i] = task;
+      _data.tasks.insert(TaskRef(_data.save[i], _data.current));
+      return true;
+    }
+  }
+  return false;
+}
+
+bool Scheduler::rmTask(Task& task) {
+  for(int i = 0 ; i < SCHEDULER_MAX_TASKS ; i++) {
+    if(_data.save[i] == task) {
+      _data.save[i] = Task();
+      return true;
+    }
+  }
+  return false;
 }
 
 

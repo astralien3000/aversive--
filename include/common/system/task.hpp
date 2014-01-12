@@ -21,10 +21,10 @@ private:
 public:
 
   //! \brief Default constructor
-  Task(void) : _func(0), _unique(true) {}
+  Task(void) : _func(0), _period(0), _priority(0), _unique(true) {}
 
   //! \brief Task constructor
-  Task(TaskFunc f) : _func(f), _unique(true) {}
+  Task(TaskFunc f) : _func(f), _period(0), _priority(0), _unique(true) {}
 
   //! \brief Copy Constructor
   Task(const Task& other) {
@@ -67,12 +67,22 @@ public:
     _unique = true;
   }
 
-  inline int period(void) const {
+  inline u16 period(void) const {
     return _period;
+  }
+
+  inline bool unique(void) const {
+    return _unique;
   }
 
   bool operator==(const Task& other) const {
     return _func == other._func;
+  }
+
+  void exec(void) {
+    if(_func) {
+      _func();
+    }
   }
 };
 

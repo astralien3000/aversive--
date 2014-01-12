@@ -21,10 +21,11 @@ public:
   Scheduler(void);
 
   //! \brief Add a task to execute
-  void addTask(Task& tsk);
+  bool addTask(Task& tsk);
   
-  //! \brief Remove manually a task (tasks can be removed by the scheduler when they won't be called anymore)
-  void rmTask(Task& tsk);
+  //! \brief Remove a Task, it won't be executed anymore
+  //! \warning The Task data is only removed from the scheduler at the next scheduler update, so you are not sure to be able to add a Task after that
+  bool rmTask(Task& tsk);
 
 
 private:
