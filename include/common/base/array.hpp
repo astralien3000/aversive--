@@ -48,6 +48,13 @@ public:
   inline const ElementType& operator[](int i) const {
     return this->element[i];
   }
+
+  //! \brief Access to a constant element with index
+  //! \param index : The index of element to access
+  //! \return The element contained at the specified index
+  inline const ElementType& operator[](IndexType i) const {
+    return this->element[i];
+  }
 };
 
 
