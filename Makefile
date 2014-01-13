@@ -3,7 +3,7 @@ all: sasiae avr
 sasiae avr:
 	$(MAKE) -C src/$@
 
-doc: Doxyfile
+doc.d:
 	@doxygen
 
 archiparser:
