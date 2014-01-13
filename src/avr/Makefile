@@ -11,7 +11,7 @@ export LIBNAME=libaversive_$(MMCU)
 LIB=$(BUILD)/$(LIBNAME).a
 SUB_DIRS= hardware # add the sub directory's names here
 
-OBJS = # add object to compile
+OBJS = aversive # add object to compile
 
 all: $(BUILD) $(BUILD) build $(addsuffix .d,$(SUB_DIRS)) common $(LIB)
 
