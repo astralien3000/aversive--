@@ -3,8 +3,8 @@ AVERSIVE_BASE=/home/astralien3000/Bureau/aversive++
 MMCU=atmega2560
 
 CXX=avr-g++
-CXX_FLAGS=-Wall -L$(AVERSIVE_BASE)/build/avr -I$(AVERSIVE_BASE)/include/avr -mmcu=$(MMCU) -std=c++11 -fno-threadsafe-statics -O3 -D__STDC_LIMIT_MACROS
-CXX_LIBS=-laversive_$(MMCU)
+CXX_FLAGS=-Wall -L$(AVERSIVE_BASE)/build/avr -I$(AVERSIVE_BASE)/include/avr -mmcu=$(MMCU) -std=c++11 -fno-threadsafe-statics -O3 -D__STDC_LIMIT_MACROS 
+CXX_LIBS=-laversive_$(MMCU) -Wl,-u,vfprintf -lprintf_flt
 
 OBJCOPY=avr-objcopy
 

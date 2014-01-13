@@ -26,6 +26,7 @@ protected:
   Buffer<STREAM_BUFFER_SIZE, uint8_t> _in_buff;
   Mode _m = FORMATTED;
   StrMode _s = WORD;
+  bool _sending = false;
   
   UartStream(void);
   

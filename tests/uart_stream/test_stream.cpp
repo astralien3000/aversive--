@@ -40,10 +40,15 @@ bool robotInit() {
 }
 
 void robotLoop() {
-  //_delay_ms(5000);
+  _delay_ms(5000);
   //char c = Uart<0>::instance().recv<u8>();
   //Uart<0>::instance().send('a');
-  UartStream<0>::instance() << "test : " << 10l << "\n";
+  UartStream<0>::instance() << " :: " << (u8)i++;
+  UartStream<0>::instance() << " :: " << (u16)i++;
+  UartStream<0>::instance() << " :: " << (u32)i++;
+  UartStream<0>::instance() << " :: " << (double)i++;
+  UartStream<0>::instance() << " :: " << (double)i++;
+  UartStream<0>::instance() << " !!\n";
 }
 
 void robotExit() {

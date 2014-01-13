@@ -33,14 +33,29 @@ void UartStream<CHANNEL>::read(void) {
   stream._in_buff.enqueue(c);
 }
 
+#include <hardware/interrupts.hpp>
+
 template<int CHANNEL>
 void UartStream<CHANNEL>::write(void) {
   UartStream<CHANNEL>& stream = UartStream<CHANNEL>::instance();
   if(stream._out_buff.usedSpace()) {
-    Uart<CHANNEL>::instance().send(stream._out_buff.head());
+    stream._sending = true;
+    u8 c = stream._out_buff.head();
     stream._out_buff.dequeue();
+    Uart<CHANNEL>::instance().send(c);
+  }
+  else {
+    stream._sending = false;
   }
 }
+
+#define tryFlush()				\
+  Interrupts::clear();				\
+  if(!_sending) {				\
+    _sending = true;				\
+    UartStream<CHANNEL>::write();		\
+  }						\
+  Interrupts::set();
 
 template<int CHANNEL>
 inline typename UartStream<CHANNEL>::Mode UartStream<CHANNEL>::mode() const {
@@ -64,6 +79,9 @@ inline void UartStream<CHANNEL>::setStrMode(UartStream<CHANNEL>::StrMode s) {
 
 template<int CHANNEL>
 bool UartStream<CHANNEL>::binaryWrite(uint8_t data) {
+  while(_out_buff.isFull()) {
+    tryFlush();
+  }
   return _out_buff.enqueue(data);
 }
 
@@ -139,42 +157,42 @@ inline bool UartStream<CHANNEL>::formattedWrite(const unsigned char& val) {
 
 template<int CHANNEL>
 bool UartStream<CHANNEL>::formattedWrite(const short& val) {
-  char str[SHORT_STR_LENGTH];
+  char str[SHORT_STR_LENGTH] = {0};
   snprintf(str, SHORT_STR_LENGTH, "%hd", val);
   return complexBinaryWrite(str);
 }
 
 template<int CHANNEL>
 bool UartStream<CHANNEL>::formattedWrite(const unsigned short& val) {
-  char str[SHORT_STR_LENGTH];
+  char str[SHORT_STR_LENGTH] = {0};
   snprintf(str, SHORT_STR_LENGTH, "%hu", val);
   return complexBinaryWrite(str);
 }
 
 template<int CHANNEL>
 bool UartStream<CHANNEL>::formattedWrite(const long int& val) {
-  char str[LONG_STR_LENGTH];
+  char str[LONG_STR_LENGTH] = {0};
   snprintf(str, LONG_STR_LENGTH, "%ld", val);
   return complexBinaryWrite(str);
 }
 
 template<int CHANNEL>
 bool UartStream<CHANNEL>::formattedWrite(const unsigned long int& val) {
-  char str[LONG_STR_LENGTH];
+  char str[LONG_STR_LENGTH] = {0};
   snprintf(str, LONG_STR_LENGTH, "%lu", val);
   return complexBinaryWrite(str);
 }
 
 template<int CHANNEL>
 bool UartStream<CHANNEL>::formattedWrite(const float& val) {
-  char str[DOUBLE_STR_LENGTH];
-  snprintf(str, DOUBLE_STR_LENGTH, "%E", val);
+  char str[DOUBLE_STR_LENGTH] = {0};
+  snprintf(str, DOUBLE_STR_LENGTH, "%E", (double)val);
   return complexBinaryWrite(str);
 }
 
 template<int CHANNEL>
 bool UartStream<CHANNEL>::formattedWrite(const double& val) {
-  char str[DOUBLE_STR_LENGTH];
+  char str[DOUBLE_STR_LENGTH] = {0};
   snprintf(str, DOUBLE_STR_LENGTH, "%E", val);
   return complexBinaryWrite(str);
 }
@@ -239,25 +257,25 @@ bool UartStream<CHANNEL>::formattedRead(double& val) {
 
 template<int CHANNEL>
 inline UartStream<CHANNEL>& UartStream<CHANNEL>::operator<<(const char* str) {
-  if(*str == '\n') {
-    UartStream<CHANNEL>::write();
-    binaryWrite(*str);
-  }
-  else {
-    complexBinaryWrite(str);
-  }
+
+  complexBinaryWrite(str);
+
+  tryFlush();
   return (*this);
 }
 
 template<int CHANNEL>
 template<typename T>
 UartStream<CHANNEL>& UartStream<CHANNEL>::operator<<(const T& val) {
+
   if(_m == BINARY) {
     complexBinaryWrite(val);
   }
   else {
     formattedWrite(val);
   }
+  
+  tryFlush();
   return (*this);
 }
 
