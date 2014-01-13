@@ -60,9 +60,10 @@ protected:
   bool formattedRead(float& val);
   bool formattedRead(double& val);
   
-public:  
-  ~UartStream(void);
+  static void read(void);
+  static void write(void);
   
+public:  
   //! \brief Give the current mode which the stream is in
   Mode mode() const;
   
