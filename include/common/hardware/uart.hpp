@@ -12,33 +12,33 @@ class Uart : public Singleton< Uart<ID> > {
 
 public:
   //! \brief Configure Uart
-  inline void init(void);
+  void init(void);
   //! \brief Make UART available for an other purpose
-  inline void reset(void);
+  void reset(void);
 
   //! \brief Receive 1 character from RX
-  template<typename T> inline T recv(void);
+  template<typename T> T recv(void);
   //! \brief Transmit 1 character from TX
-  template<typename T> inline void send(T);
+  template<typename T> void send(T);
 
   //! \brief Set the size in bits of transmitted characters
-  template<int NBITS> inline void setNBits(void);
+  template<int NBITS> void setNBits(void);
   //! \brief Set the baudrate
-  template<typename T> inline void setBaudrate(const T&);
+  template<typename T> void setBaudrate(const T&);
 
   class RecvEvent : public HardwareEvent {
     friend class Uart;
 
   private:
     //! \brief Default Constructor (Private)
-    inline RecvEvent(void);
+    RecvEvent(void);
   public:
     //! \brief Enable interruption for receive complete event
-    inline void start(void);
+    void start(void);
     //! \brief Disable interruption for receive complete event
-    inline void stop (void);
+    void stop (void);
     //! \brief Returns true if the event is activ
-    inline bool activated(void);
+    bool activated(void);
   };
 
   class SendEvent : public HardwareEvent {
@@ -46,14 +46,14 @@ public:
 
   private:
     //! \brief Default Constructor (Private)
-    inline SendEvent(void);
+    SendEvent(void);
   public:
     //! \brief Enable interruption for send complete event
-    inline void start(void);
+    void start(void);
     //! \brief Disable interruption for send complete event
-    inline void stop (void);
+    void stop (void);
     //! \brief Returns true if the event is activ
-    inline bool activated(void);
+    bool activated(void);
   };
 
   class EmptyEvent : public HardwareEvent {
@@ -61,23 +61,23 @@ public:
 
   private:
     //! \brief Default Constructor (Private)
-    inline EmptyEvent(void);
+    EmptyEvent(void);
   public:
     //! \brief Enable interruption for empty event
-    inline void start(void);
+    void start(void);
     //! \brief Disable interruption for empty event
-    inline void stop (void);
+    void stop (void);
     //! \brief Returns true if the event is activ
-    inline bool activated(void);
+    bool activated(void);
   };
 
-  inline RecvEvent& recvEvent(void);
-  inline SendEvent& sendEvent(void);
-  inline EmptyEvent& emptyEvent(void);
+  RecvEvent& recvEvent(void);
+  SendEvent& sendEvent(void);
+  EmptyEvent& emptyEvent(void);
 
 private:
   //! \brief Private Constructor (Singleton)
-  inline Uart(void);
+  Uart(void);
 };
 
 #endif//UART_HPP

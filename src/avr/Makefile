@@ -1,4 +1,4 @@
-export MMCU=atmega128
+export MMCU=atmega2560
 export CC=avr-g++
 export CFLAGS=-Wall -Wextra --std=c++11 -mmcu=$(MMCU) -fno-threadsafe-statics -D__STDC_LIMIT_MACROS
 BUILD=../../build/avr

@@ -17,9 +17,6 @@ struct UartPrivateData {
 #define DIV 16l
 
 template<int ID>
-inline Uart<ID>::Uart(void) {}
-
-template<int ID>
 inline void Uart<ID>::init(void) {
   setBaudrate(9600);
   setNBits<8>();
@@ -55,7 +52,7 @@ inline void Uart<ID>::setNBits(void) {
 template<int ID> template<typename T>
 inline void Uart<ID>::send(T val) {
   // Wait for empty transmit buffer
-  while( ! (REG(uart<ID>::control) & CFG(uart<ID>::control::flag::sendend)));
+  while( ! (REG(uart<ID>::control) & CFG(uart<ID>::control::flag::empty)));
 
   // Put data into buffer
   REG(uart<ID>::data) =

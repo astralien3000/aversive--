@@ -5,8 +5,12 @@
 
 #include <avr/io.h>
 //#include "part/atmega32.hpp"
-#include "part/atmega128.hpp"
-//#include "part/atmega2560.hpp"
+
+//#if defined (__AVR_ATxmega128__)
+//#include "part/atmega128.hpp"
+//#elif defined (__AVR_ATxmega2560__)
+#include "part/atmega2560.hpp"
+//#endif
 
 #define _VALUE(i) template value<i>
 

@@ -1,5 +1,9 @@
 #include <hardware/uart.hpp>
 
+template<int ID> Uart<ID>::Uart() {}
+
+template Uart<0>::Uart();
+
 #include <avr/interrupt.h>
 
 #define MACRO_INTERRUPT_BIND(uart, method, vect)			\

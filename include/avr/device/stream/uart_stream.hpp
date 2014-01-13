@@ -17,23 +17,27 @@ UartStream<CHANNEL>::UartStream(void) :
 _out_buff(), _in_buff() {
   Uart<CHANNEL>& uart = Uart<CHANNEL>::instance();
   uart.init();
+  
   uart.recvEvent().setFunction(UartStream<CHANNEL>::read);
-  uart.recvEvent().start();
   uart.sendEvent().setFunction(UartStream<CHANNEL>::write);
+  
+  uart.recvEvent().start();
   uart.sendEvent().start();
 }
 
 template<int CHANNEL>
 void UartStream<CHANNEL>::read(void) {
   UartStream<CHANNEL>& stream = UartStream<CHANNEL>::instance();
-  stream._in_buff.enqueue(Uart<CHANNEL>::instance().template recv<uint8_t>());
+  char c = Uart<CHANNEL>::instance().template recv<uint8_t>();
+  Uart<CHANNEL>::instance().send(c);
+  stream._in_buff.enqueue(c);
 }
 
 template<int CHANNEL>
 void UartStream<CHANNEL>::write(void) {
   UartStream<CHANNEL>& stream = UartStream<CHANNEL>::instance();
   if(stream._out_buff.usedSpace()) {
-    Uart<CHANNEL>::instance().template send<uint8_t>(stream._out_buff.head());
+    Uart<CHANNEL>::instance().send(stream._out_buff.head());
     stream._out_buff.dequeue();
   }
 }
@@ -84,7 +88,7 @@ template<typename T>
 bool UartStream<CHANNEL>::complexBinaryWrite(const T& val) {
   const uint8_t* ptr = reinterpret_cast<const uint8_t*>(&val);
   int i;
-  for(i = 0; i < sizeof(T) && binaryWrite(*ptr); i++, ptr++) { }
+  for(i = 0; i < (int)sizeof(T) && binaryWrite(*ptr); i++, ptr++) { }
   return i == sizeof(T);
 }
 
@@ -235,7 +239,13 @@ bool UartStream<CHANNEL>::formattedRead(double& val) {
 
 template<int CHANNEL>
 inline UartStream<CHANNEL>& UartStream<CHANNEL>::operator<<(const char* str) {
-  complexBinaryWrite(str);
+  if(*str == '\n') {
+    UartStream<CHANNEL>::write();
+    binaryWrite(*str);
+  }
+  else {
+    complexBinaryWrite(str);
+  }
   return (*this);
 }
 
