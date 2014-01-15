@@ -223,11 +223,11 @@ template<> struct uart<0> {
     };
 
     struct ienable {
-      struct send {
+      struct recv {
         enum { CONFIG = 33, SIZE = 8 };
       };
 
-      struct recv {
+      struct send {
         enum { CONFIG = 34, SIZE = 8 };
       };
 

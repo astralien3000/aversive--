@@ -38,7 +38,7 @@ void UartStream<CHANNEL>::read(void) {
 template<int CHANNEL>
 void UartStream<CHANNEL>::write(void) {
   UartStream<CHANNEL>& stream = UartStream<CHANNEL>::instance();
-  if(stream._out_buff.usedSpace()) {
+  if(0 < stream._out_buff.usedSpace()) {
     stream._sending = true;
     u8 c = stream._out_buff.head();
     stream._out_buff.dequeue();
@@ -48,14 +48,6 @@ void UartStream<CHANNEL>::write(void) {
     stream._sending = false;
   }
 }
-
-#define tryFlush()				\
-  Interrupts::clear();				\
-  if(!_sending) {				\
-    _sending = true;				\
-    UartStream<CHANNEL>::write();		\
-  }						\
-  Interrupts::set();
 
 template<int CHANNEL>
 inline typename UartStream<CHANNEL>::Mode UartStream<CHANNEL>::mode() const {
@@ -80,8 +72,9 @@ inline void UartStream<CHANNEL>::setStrMode(UartStream<CHANNEL>::StrMode s) {
 template<int CHANNEL>
 bool UartStream<CHANNEL>::binaryWrite(uint8_t data) {
   while(_out_buff.isFull()) {
-    tryFlush();
+    write();
   }
+
   return _out_buff.enqueue(data);
 }
 
@@ -257,25 +250,19 @@ bool UartStream<CHANNEL>::formattedRead(double& val) {
 
 template<int CHANNEL>
 inline UartStream<CHANNEL>& UartStream<CHANNEL>::operator<<(const char* str) {
-
   complexBinaryWrite(str);
-
-  tryFlush();
   return (*this);
 }
 
 template<int CHANNEL>
 template<typename T>
 UartStream<CHANNEL>& UartStream<CHANNEL>::operator<<(const T& val) {
-
   if(_m == BINARY) {
     complexBinaryWrite(val);
   }
   else {
     formattedWrite(val);
   }
-  
-  tryFlush();
   return (*this);
 }
 
