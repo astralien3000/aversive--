@@ -53,6 +53,7 @@ template<int ID> template<typename T>
 inline void Uart<ID>::send(T val) {
   // Wait for empty transmit buffer
   while( ! (REG(uart<ID>::control) & CFG(uart<ID>::control::flag::empty)));
+  //if( (REG(uart<ID>::control) & CFG(uart<ID>::control::flag::empty)))
 
   // Put data into buffer
   REG(uart<ID>::data) =

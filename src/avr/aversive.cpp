@@ -1,5 +1,6 @@
 #include <aversive.hpp>
 #include <stdlib.h>
+#include <device/stream/uart_stream.hpp>
 
 static bool keep_going;
 

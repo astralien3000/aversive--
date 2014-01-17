@@ -18,15 +18,15 @@ static const buffer_t DEFAULT_BUFFER_SIZE = 64;
 //! \attention SIZE must be a power of 2, it is verified with an assert
 //! \param SIZE the number of elements the buffer can handle at any given time
 //! \param _ElementType type of the buffered elements
-template <buffer_t SIZE = DEFAULT_BUFFER_SIZE, typename ElementType = char>
+template <buffer_t SIZE = DEFAULT_BUFFER_SIZE, typename ElementType = uint8_t>
 class Buffer {
 public:
   static const buffer_t size = SIZE;
   
 private:
   Array<SIZE, ElementType> _list;
-  buffer_t _reads;
-  buffer_t _writes;
+  volatile buffer_t _reads;
+  volatile buffer_t _writes;
   
 public:
   //! \brief Default Constructor
@@ -79,7 +79,7 @@ public:
   
   //! \brief Test if the buffer is full
   inline bool isFull(void) const {
-    return usedSpace() == SIZE;
+    return usedSpace() >= SIZE;
   }
   
   //! \brief Give the space currently in use in the buffer
@@ -89,7 +89,7 @@ public:
   
   //! \brief Give the space currently free to use in the buffer
   inline buffer_t freeSpace(void) const {
-    return SIZE - usedSpace();
+    return usedSpace() <= SIZE;
   }
 };
 
