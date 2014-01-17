@@ -16,4 +16,13 @@ template Uart<0>::Uart();
 
 MACRO_INTERRUPT_BIND(0, recvEvent, USART0_RX_vect)
 MACRO_INTERRUPT_BIND(0, sendEvent, USART0_TX_vect)
+
 MACRO_INTERRUPT_BIND(0, emptyEvent, USART0_UDRE_vect)
+
+#include <hardware/interrupts.hpp>
+/*
+ISR(USART0_UDRE_vect, ISR_NAKED) {
+  UDR0 = 'a';
+  reti();
+}
+*/

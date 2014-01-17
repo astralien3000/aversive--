@@ -57,8 +57,8 @@ hardware uart[0]
 	    config send 0, (1 << TXEN0), 0
 	    config recv 0, (1 << RXEN0), 0
 	config-list ienable
-	    config send 0, (1 << RXCIE0), 0
-	    config recv 0, (1 << TXCIE0), 0
+	    config recv 0, (1 << RXCIE0), 0
+	    config send 0, (1 << TXCIE0), 0
 	    config empty 0, (1 << UDRIE0), 0
 	config-list flag
 	    config recvend (1 << RXC0), 0, 0

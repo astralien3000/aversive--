@@ -80,19 +80,9 @@ int main(void) {
 }
 */
 
-static u16 i = 0;
-
 bool robotInit() {
   (void)UartStream<0>::instance();
-  /*
-  Uart<0>::instance().init();
-
-  Uart<0>::instance().recvEvent().setFunction([]() {
-      char c = Uart<0>::instance().recv<u8>();      
-      Uart<0>::instance().send(c);
-    });
-  Uart<0>::instance().recvEvent().start();
-  
+ /* 
   Uart<0>::instance().sendEvent().setFunction([]() {
     });
   Uart<0>::instance().sendEvent().start();
@@ -102,15 +92,12 @@ bool robotInit() {
   reset_fpga();
   //UartStream<0>::instance() << "123456789\n";
   Uart<0>::instance().send('a');
+
   return true;
 }
 
 void robotLoop() {
-  //_delay_ms(3000);
-  //char c = Uart<0>::instance().recv<u8>();
   //UartStream<0>::instance() << "123456789012345678901234567890123456789012345678901234567890123456789\n";// << (u16)++i;
-  for(i=0;i<64;i++)
-    UartStream<0>::instance() << (double)14;
 /*
   UartStream<0>::instance() << "" << (u8)++i;
   UartStream<0>::instance() << " :: " << (u16)i;
@@ -118,6 +105,9 @@ void robotLoop() {
   UartStream<0>::instance() << " :: " << (float)i;
   //UartStream<0>::instance() << " :: " << (double)i;
   UartStream<0>::instance() << "128372819120\n";*/
+  _delay_ms(100);
+  UartStream<0>::instance() << "Bonjour  !\n" << (float)100000 << "                                 " << (float)458012665 << "                                t\n";
+  
 }
 
 void robotExit() {
