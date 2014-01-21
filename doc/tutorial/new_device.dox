@@ -2,6 +2,49 @@
 
 \page "HOWTO Create a device"
 
-\todo
+The first thing to create a device is to create it's header. Go to the
+root of the project and call the commande "make newhpp". It will ask
+you the path to the header to create. For a device, it must be in a
+subdirectory of device/. The current subdirectories available are
+eirbot2014 and stream. eirbot2014 gather all actuators and sensors
+used by eirbot. stream is used for communication, with UART for
+example. These directories may change.
+
+The public interface of the class is located in /include/common/, you
+may declare there all methods available for a robot developper.
+
+A device must inherit from either OutputDevice or InputDevice,
+depending if the robots program is sending commands or receiving
+information. If the device can send and receive information, it may
+better inherit from three classes : Device, Input and Output, since the
+diammond heritage pattern can cause some problems.
+
+If the device is likely to have different needs in data memory
+depending on the architecture (SASIAE, AVR, ARM...), you may use a
+structure which contains all class attributes, and is not defined. It
+is ok, this structure wille be defined later. The recommended name of
+this structure is the name of the device followed by "PrivateData",
+all in one word and in upper CamelCase.
+
+You should declare the methods declared in Output or Input classes,
+which are the standard methods to send/receive information.
+
+Once the public interface is finised, you can work on the
+implementation. In the case you want to use it for SASIAE, go in the
+directory /include/sasiae, and you will find the header at the same
+place as in include/common.
+
+The file must contain an "include" preprocessor instruction. You have
+to define the structure previously used BEFORE the "include".
+
+Once done, you have two possibilities, if the class was a template,
+you may write the code AFTER the "include". If not, you may at least
+define some inline functions at the same place. And then you may
+create some source files in the /src/sasiae directory. It's better
+that the file would be at the same pathe pattern as in the "include"
+directory.
+
+Once done, you may add the file (without the ".cpp") to the Makefile
+using the OBJS variable.
 
 */
