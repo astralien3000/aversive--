@@ -2,6 +2,37 @@
 
 \page "HOWTO Create a project"
 
-\todo
+To create an new project, you need to copy the template Makefile in
+your project's directory, and add the sources to compile to the OBJS
+variable.
+
+\todo describe more the make file, AND DO IT (doesn't exist yet)
+
+An aversive project doesn't begin with the main function. Actually,
+the main function is defined in the library itself, and the user has
+three functions to define instead. These functions are aversiveInit,
+aversiveLoop, aversiveExit.
+
+aversiveInit is called once as the robot is swithed on. Its aim is to
+initialize correctly all the systems who are used in aversiveLoop and
+interruptions.
+
+aversiveLoop is called constantly after aversiveInit and until
+Aversive::stop() is called. Ths function should not be blocking (no
+while(1), etc), but you are the master, it's just an advice !
+
+aversiveExit is called after the call of Aversive::stop(), at the end
+of aversiveLoop. It is not often useful, since the program may reset
+after that (on AVR), but may be used to qui properly communication,
+systems, etc...
+
+The developper should inculde ONLY the headers located in
+/include/common, if he want his program to be hardware independent.
+
+\warning Currently, if a device is defined in the global scope, the
+SASIAE part of Aversive++ will Seg fault, because the device try to
+connect before the connection is created. If the user want to have
+global-like device, he should create a Singleton class, and create the
+instance in aversiveInit.
 
 */
