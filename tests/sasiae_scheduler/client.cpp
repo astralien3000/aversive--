@@ -24,7 +24,7 @@ bool robotInit(void) {
     });
   
   t1.setPeriod(10);
-  t2.setPeriod(13);
+  t2.setPeriod(10);
 
   t1.setRepeat();
   t2.setRepeat();

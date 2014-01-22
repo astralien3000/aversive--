@@ -8,9 +8,14 @@
 char buffer[BUFFER_SIZE];
 
 bool readLine(QProcess& client) {
-  client.waitForReadyRead();
   unsigned int i = 0;
   char c;
+  if(!client.getChar(&c)) {
+    client.waitForReadyRead();
+  }
+  else {
+    buffer[i++] = c;
+  }
   while(client.getChar(&c) && c != '\n') {
     buffer[i++] = c;
   }
