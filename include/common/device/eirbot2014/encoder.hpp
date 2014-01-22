@@ -1,12 +1,15 @@
-#ifndef GP2_HPP
-#define GP2_HPP
+#ifndef ENCODER_HPP
+#define ENCODER_HPP
 
 #include <device/input_device.hpp>
 #include "../../base/integer.hpp"
 
+#ifndef ENCODER_PRIVATE_DATA
+#define ENCODER_PRIVATE_DATA
+#endif//ENCODER_PRIVATE_DATA
 
-//! \brief An incremental GP2, used by Eirbot in 2014
-//! \param ADDR : the address where to get the GP2 value
+//! \brief An incremental encoder, used by Eirbot in 2014
+//! \param ADDR : the address where to get the encoder value
 /*! 
 
   This sensor is actually connected to a FPGA, which is viewed as an
@@ -15,11 +18,16 @@
 
 */
 template<u32* ADDR>
-class GP2 : public InputDevice<u32> {
+class Encoder : public InputDevice<u32> {
 public:
-  GP2(const char*);
+  inline Encoder(const char*);
 
-  u32 getValue(void);
+  inline u32 getValue(void);
+
+private:
+  ENCODER_PRIVATE_DATA
 };
 
-#endif//GP2_HPP
+#undef  ENCODER_PRIVATE_DATA
+
+#endif//ENCODER_HPP

@@ -1,15 +1,15 @@
-#ifndef SASIAE_GP2_HPP
-#define SASIAE_GP2_HPP
+#ifndef SASIAE_ENCODER_HPP
+#define SASIAE_ENCODER_HPP
 
-#include "../../../common/device/eirbot2014/GP2.hpp"
+#include "../../../common/device/eirbot2014/encoder.hpp"
 
 template<u32* ADDR>
-GP2<ADDR>::GP2(const char* name) : InputDevice(name) {
+Encoder<ADDR>::Encoder(const char* name) : InputDevice(name) {
 }
 
 template<u32* ADDR>
-u32 GP2<ADDR>::getValue(void) {
+u32 Encoder<ADDR>::getValue(void) {
   return *ADDR = InputDevice::getValue();
 }
 
-#endif//SASIAE_GP2_HPP
+#endif//SASIAE_ENCODER_HPP

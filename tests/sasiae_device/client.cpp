@@ -21,7 +21,7 @@ public:
 bool robotInit(void) {
   (void) Robot::instance();
 
-  ClientThread::instance().sendMessage(ClientThread::INFO, "Send value 10 to intest to end the program");
+  //ClientThread::instance().sendMessage(ClientThread::INFO, "Send value 10 to intest to end the program");
   
   return 1;
 }
