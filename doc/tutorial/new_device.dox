@@ -1,6 +1,8 @@
 /*!
 
-\page "HOWTO Create a device"
+\page "Create a device" Create a device
+
+\section sec1 The common interface
 
 The first thing to do to create a device is to create its header file.
 Go to the root of the project and type the command "make newhpp". It will ask
@@ -28,6 +30,8 @@ all in one word and in upper CamelCase.
 
 You should declare the methods declared in Output or Input classes,
 which are the standard methods to send/receive information.
+
+\section sec2 The implementation
 
 Once the public interface is finised, you can work on the
 implementation. In the case you want to use it for SASIAE, go in the

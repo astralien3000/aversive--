@@ -5,9 +5,6 @@
 #include "filter.hpp"
 
 //! \brief PID Filter
-/*!
-  \todo
- */
 class PidFilter : public Filter<s32> {
 public:
   typedef s32 InputType;

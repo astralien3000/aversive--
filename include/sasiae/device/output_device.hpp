@@ -13,6 +13,8 @@ struct OutputDevicePrivateData {
 
 template<typename T>
 OutputDevice<T>::OutputDevice(const char* name) : Device(name) {
+  (void)AversiveInitializer::instance();
+
   ClientThread::instance().
     registerDevice(name,
 		   std::function<void(char*)>([&] (char*) mutable -> void {}));

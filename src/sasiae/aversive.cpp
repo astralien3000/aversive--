@@ -4,6 +4,8 @@
 #include <iostream>
 #include <QThread>
 
+#include <device/device.hpp>
+
 class AversiveClientThread : public ClientThread {
 public:
   AversiveClientThread(void) : ClientThread() { }
@@ -24,14 +26,10 @@ public:
 
 static bool keep_going;
 
-inline bool aversiveInit(int argc, char** argv) {
-  (void) argc;
-  (void) argv;
-  
+void aversiveInit(void) {
   AversiveClientThread* client = new AversiveClientThread;
   client->start();
   keep_going = true;
-  return true;
 }
 
 void Aversive::sleep(int ms) {
@@ -55,11 +53,10 @@ inline void aversiveExit(void) {
 }
 
 int main(int argc, char** argv) {
-  if(!aversiveInit(argc, argv)) {
-   std::cerr << "Error while initializing Aversive++" << std::endl;
-    return EXIT_FAILURE;
-  }
- 
+  (void)argc;
+  (void)argv;
+  (void)AversiveInitializer::instance(); // To call aversiveInit even if there is no Device
+
   if(!robotInit()) {
     std::cerr << "Error while initializing the robot" << std::endl;
     return EXIT_FAILURE;

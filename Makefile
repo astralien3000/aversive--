@@ -1,9 +1,11 @@
+.PHONY: all doc test clean avr sasiae
+
 all: sasiae avr
 
 sasiae avr:
 	$(MAKE) -C src/$@
 
-doc.d:
+doc:
 	@doxygen
 
 archiparser:
@@ -26,3 +28,6 @@ clean_doc:
 
 clean_archiparser:
 	@$(MAKE) clean -sC tools/archi_parser
+
+test:
+	$(MAKE) -C tests/sasiae

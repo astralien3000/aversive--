@@ -1,12 +1,16 @@
 /*!
 
-\page "HOWTO Create a project"
+\page "Create a project" Create a project
+
+\section Makefile
 
 To create an new project, you need to copy the template Makefile in
 your project's directory, and add the sources to compile to the OBJS
 variable.
 
 \todo describe more the make file, AND DO IT (doesn't exist yet)
+
+\section Coding
 
 An aversive project doesn't begin with the main function. Actually,
 the main function is defined in the library itself, and the user has

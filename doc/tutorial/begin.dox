@@ -1,8 +1,6 @@
 /*!
 
-\page "Begining Tutorial"
-
-\title "Begining Tutorial"
+\page "Begining Tutorial" Begining Tutorial
 
 Aversive++ can be currently used to develop applications on AVR or
 with the SASIAE simulator.  It can be compiled for both
@@ -36,9 +34,7 @@ To compile eiter the AVR or the SASIAE part, you may call "make avr"
 or "make sasiae".
 
 To compile the last version of this present documentation. You may
-call "make doc.d"
-
-\fixme change "make doc.d"
+call "make doc"
 
 The library is compiled !
 Now, you can go to "HOWTO Create a Project" tutorial to use it.
