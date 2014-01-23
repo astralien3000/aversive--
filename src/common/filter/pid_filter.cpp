@@ -1,5 +1,5 @@
 #include <filter/pid_filter.hpp>
-
+#include <math/saturate.hpp>
 
 template<typename T>
 inline static T __min(T v1, T v2) {
@@ -37,13 +37,13 @@ void PidFilter::setMaxIntegral(OutputType val) {
 typename PidFilter::OutputType PidFilter::doFilter(InputType in) {
   OutputType p = in * _gain_p;
  
-  _sum_in = __min(_max_i, _sum_in + in);
+  _sum_in = saturate<-_max_i, _max_i>(_sum_in + in);
   OutputType i = _sum_in * _gain_i;
 
   OutputType d = (_last_in - in) * _gain_d;
 
   _last_in = in;
-  return p + i + d;
+  return (p + i + d);
 }
   
 

@@ -14,6 +14,8 @@
 
 #include "../../../common/device/eirbot2014/odometer.hpp"
 
+#include <device/stream/uart_stream.hpp>
+
 template<class EL, class ER>
 inline Odometer<EL, ER>::Odometer(const char* name, EL& el, ER& er) : 
   InputDevice<Vect<2, s32>>(name), 
@@ -37,9 +39,6 @@ void Odometer<EL, ER>::update(void) {
   SafeInteger<s32> diff_l = s32(_enc_l.getValue()) - s32(_last_enc_l);
   SafeInteger<s32> diff_r = s32(_enc_r.getValue()) - s32(_last_enc_r);
 
-  //cout << (s32) diff_l << " " << (*ADDR_L) << " " << _enc_l << endl;
-  //cout << (s32) diff_r << " " << (*ADDR_R) << " " << _enc_r << endl;
- 
   _dist += (s32)(diff_l + diff_r);
   _angle += (s32)(diff_l - diff_r);
 

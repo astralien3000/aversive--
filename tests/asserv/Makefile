@@ -1,7 +1,7 @@
 AVERSIVE_BASE=../../
 
 CXX=avr-g++
-CXX_FLAGS=-Wall -L$(AVERSIVE_BASE)/build/avr -I$(AVERSIVE_BASE)/include/avr -mmcu=atmega128 -std=c++11 -fno-threadsafe-statics -O0 -D__STDC_LIMIT_MACROS
+CXX_FLAGS=-Wall -L$(AVERSIVE_BASE)/build/avr -I$(AVERSIVE_BASE)/include/avr -mmcu=atmega128 -std=c++11 -fno-threadsafe-statics -O1 -D__STDC_LIMIT_MACROS
 CXX_LIBS=-laversive_atmega128
 
 OBJCOPY=avr-objcopy
