@@ -74,7 +74,10 @@ bool UartStream<CHANNEL>::binaryWrite(uint8_t data) {
   while(_out_buff.isFull()) {
     write();
   }
-
+  if(!_sending) {
+    //Uart<0>::instance().send('x');
+     write();
+  }
   return _out_buff.enqueue(data);
 }
 

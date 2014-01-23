@@ -84,7 +84,7 @@ public:
   
   //! \brief Give the space currently in use in the buffer
   inline buffer_t usedSpace(void) const {
-    return _writes - _reads;
+    return (_writes - _reads);
   }
   
   //! \brief Give the space currently free to use in the buffer

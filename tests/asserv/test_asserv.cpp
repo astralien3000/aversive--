@@ -4,6 +4,7 @@
 #include <filter/feedback_loop_filter.hpp>
 #include <filter/composed_filter.hpp>
 
+#include <device/stream/uart_stream.hpp>
 #include <math/safe_integer.hpp>
 
 #include <device/eirbot2014/encoder.hpp>
@@ -15,16 +16,27 @@
 #include <math/vect.hpp>
 #include <math/matrix.hpp>
 
-#include <hardware/uart.hpp>
+//#include <hardware/uart.hpp>
 
-#define _ENC_L (*(volatile u32*)0x80A0)
-#define _ENC_R (*(volatile u32*)0x8094)
+#include <hardware/interrupts.hpp>
 
-#define _MOT_L (*(volatile u8*)0x8000)
-#define _MOT_R (*(volatile u8*)0x8001)
+#define _ENC_R (*(volatile u32*)0x80A0)
+#define _ENC_L (*(volatile u32*)0x8098)
+#define _ENC_MOT_R (*(volatile u32*)0x8094)
+#define _ENC_MOT_L (*(volatile u32*)0x809C)
+
+#define _MOT_R (*(volatile s8*)0x8000)
+#define _MOT_L (*(volatile s8*)0x8001)
+#define _RESET_FPGA (*(volatile u8*)0x807F)
 
 u32 ENC_L = _ENC_L;
+u32 ENC_MOT_L = _ENC_MOT_L;
+u32 INIT_ENC_L = 0;
+u32 INIT_ENC_MOT_L = 0;
 u32 ENC_R = _ENC_R;
+u32 ENC_MOT_R = _ENC_MOT_R;
+u32 INIT_ENC_R = 0;
+u32 INIT_ENC_MOT_R = 0;
 s32 MOT_L = _MOT_L;
 s32 MOT_R = _MOT_R;
 
@@ -40,8 +52,8 @@ void update(void) {
   ENC_L = _ENC_L;
   ENC_R = _ENC_R;
 
-  _MOT_L = -(u8)MOT_L;
-  _MOT_R = (u8)MOT_R;
+ // _MOT_L = -(u8)MOT_L;
+ // _MOT_R = (u8)MOT_R;
 }
 
 class VidarBot {
@@ -135,78 +147,30 @@ public:
 #include <util/delay.h>
 
 
-template<int SIZE>
-class OutputStream {
-protected:
-  Array<SIZE, char> buff;
-  int i = 0;
-public:
-  OutputStream(void) {
-    Uart<0>::instance().init();
-  }
-  
-  void setOutput(const Array<SIZE, char>& ar) {
-    buff = ar;
-  }
-
-  OutputStream<SIZE>& operator<<(const char* str) {
-    const char* it = str;
-    while((*it) != '\0' && i < SIZE) {
-      buff[i] = *it;
-      i++;
-      if(*it == '\n') {
-	buff[i] = '\0';
-	flushOutput();
-      }
-      it++;
-    }
-    buff[i] = '\0';
-    return (*this);
-  }
-
-  template<typename T>
-  OutputStream<SIZE>& operator<<(T val) {
-    int beg = i;
-    while(val != 0 && i < SIZE) {
-      buff[i] = '0' + (val % 10);
-      val /= 10;
-      i++;
-    }
-    
-    for(int j = 0; j <= (i-beg-1)/2 ; j++) {
-      char aux = buff[beg + j];
-      buff[beg + j] = buff[i - j - 1];
-      buff[i - j - 1] = aux;
-    }
-    buff[i] = '\0';
-    return (*this);
-  }
-
-  void flushOutput(void) {
-    for(int j = 0 ; j < SIZE && buff[j] != '\0' ; j++) {
-      Uart<0>::instance().send(buff[j]);
-    }
-    i = 0;
-  }
-};
-
-
-
-int main(int argc, char* argv[]) {
-  _delay_ms(1000);
+//int main(int argc, char* argv[]) {
+bool robotInit() {
   XMCRA |= (1 << SRW11) | (1 << SRW00);
   MCUCR |= (1 << SRE);
-  _delay_ms(300);  
-  DDRB = 1;
-  PORTB = 0;
+//reset  FPGA  
+_delay_ms(300);
+DDRB |= (1<<0); 
+_delay_ms(300);
+  PORTB &= ~(1<<0);
+_delay_ms(300);
   _delay_ms(300);
-  PORTB = 1; // RESET ??
+  PORTB |= (1<<0);
+_delay_ms(300);
+  PORTB &= ~(1<<0);
   _delay_ms(300);
-  PORTB = 0; // RESET ??
-  _delay_ms(300);
-
   //VidarBot bot;
+for(unsigned int i=0x8000;i<0x807F;i++)
+(*(volatile u8*)i) = 0;
+_RESET_FPGA = 255;  
+_delay_ms(300);
+_RESET_FPGA =0;  
 
+
+  
   //_MOT_R = -60;
   //_MOT_L = 60;  
   QuadrampFilter qr;
@@ -218,17 +182,29 @@ int main(int argc, char* argv[]) {
   // qr.setSecondOrderLimit(1,1);
   //FeedbackLoopFilter<QuadrampFilter, MPidFilter, MPidFilter> cs(qr, fb, er);
 
-  OutputStream<255> cout;
+  //OutputStream<255> cout;
 
-  _MOT_R = 20;
+  _MOT_R = 0;
+  _MOT_L = 0;
+  Interrupts::set();
 
-  while(1) {
-    //uart.send('v');
+INIT_ENC_L = _ENC_L;
+INIT_ENC_R = _ENC_R;
+INIT_ENC_MOT_L = _ENC_MOT_L;
+INIT_ENC_MOT_R = _ENC_MOT_R;
+      _MOT_R = (s8) 10;
+      _MOT_L = (s8) 10;
+  return true;
+}
+
+//  while(1) {
+void robotLoop() {
+    //UartStream<0>::instance() << ">";
   //for(int i = 0 ; i < 100 ; i++) {
     //bot.update();
     //update();
 
-    #define MAX 100
+    #define MAX 30
     /*
     s32 test_r = (500 - (s32)_ENC_R/10) / 4;
     if(test_r > MAX) {
@@ -240,10 +216,40 @@ int main(int argc, char* argv[]) {
     else {
       _MOT_R = test_r;
     }
-    //*/
-    cout << _ENC_L << "\n";
-    s32 test_l = (500 - ((s32)_ENC_L)/10) / 4;
-    if(test_l > MAX) {
+    */
+    int32_t mencl = _ENC_MOT_L ;//- INIT_ENC_MOT_L;
+    int32_t mencr = _ENC_MOT_R ;//- INIT_ENC_MOT_R;
+    int32_t encl = _ENC_L ;//- INIT_ENC_L;
+    int32_t encr = _ENC_R ;//- INIT_ENC_R;
+    //UartStream<0>::instance()  << "L:" << mencl << ")\t";
+    //UartStream<0>::instance()  << "R:" << mencr << ")\t";
+   UartStream<0>::instance()  << "L:" << encl ;//<< "(init:" << INIT_ENC_L << ")\t";
+    UartStream<0>::instance()  << "R:" << encr ;//<< "(init:" << INIT_ENC_R << ")\n";
+    UartStream<0>::instance() << "\n";
+   //_delay_ms(1000);
+   
+    #define SPEED_L 30
+    #define SPEED_R 30
+    #define RANGE 100
+    #define MRANGE -100
+    if(encl > RANGE)
+      _MOT_L = (s8) 1*SPEED_L;
+    else if(encl < MRANGE)
+      _MOT_L = (s8) -1*SPEED_L;
+    else
+      _MOT_L = (s8) 0;
+    if(encr > RANGE)
+      _MOT_R = (s8) 1*SPEED_R;
+    else if(encr < MRANGE)
+      _MOT_R = (s8) -1*SPEED_R;
+    else
+      _MOT_R = (s8) 0;
+  
+  /*
+    s8 test_l = (s8) (-1*((s32)encl)/100);
+    _MOT_L = -1*(encl/80);
+  */
+    /*if(test_l > MAX) {
       _MOT_L = MAX;
     }
     else if(test_l < -MAX) {
@@ -251,9 +257,9 @@ int main(int argc, char* argv[]) {
     }
     else {
       _MOT_L = test_l;
-    }
+    }*/
 
-  }
+}
 
-  return 0;
+void robotExit() {
 }
