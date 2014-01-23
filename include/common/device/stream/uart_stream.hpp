@@ -63,7 +63,6 @@ protected:
   
   static void read(void);
   static void write(void);
-  static void empty(void);
 
 public:  
   //! \brief Give the current mode which the stream is in

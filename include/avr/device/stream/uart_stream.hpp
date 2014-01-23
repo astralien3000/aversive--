@@ -33,8 +33,6 @@ void UartStream<CHANNEL>::read(void) {
   stream._in_buff.enqueue(c);
 }
 
-#include <hardware/interrupts.hpp>
-
 template<int CHANNEL>
 void UartStream<CHANNEL>::write(void) {
   UartStream<CHANNEL>& stream = UartStream<CHANNEL>::instance();

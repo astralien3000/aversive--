@@ -1,3 +1,15 @@
+POUR COMMENCER
+
+À la racine du projet, faire make doc pour générer la documentation.
+
+Ouvrir le fichier build/doc/html/index.html avec n'importe quel navigateur.
+
+//////////////////////////////////////////////////////////////////////////////////
+POUR EXECUTER TOUT LES TESTS UNITAIRES
+
+make test
+
+///////////////////////////////////////////////////////////////////////////////////
 commandes utiles (pour mémoire)
 
 avr-g++ -std=c++11 -mmcu=*** -I./include/

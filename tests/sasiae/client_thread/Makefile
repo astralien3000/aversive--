@@ -4,8 +4,8 @@ LDFLAGS=-lQt5Core -lpthread
 
 all: client server
 
-client: client.cpp ../../build/sasiae/libaversive.a
-	@$(CC) $(CFLAGS) -I../../include/sasiae -o $@ $< -L../../build/sasiae -laversive $(LDFLAGS)
+client: client.cpp ../../../build/sasiae/libaversive.a
+	@$(CC) $(CFLAGS) -I../../../include/sasiae -o $@ $< -L../../../build/sasiae -laversive $(LDFLAGS)
 
 server: server.cpp
 	@$(CC) $(CFLAGS) $(IFLAGS) -o $@ $< $(LDFLAGS)

@@ -1,5 +1,7 @@
 Convention de nommage :
 
+fichier/dossier: nom_de_fichier    (lower underscore case)
+
 classe : NomDeClasse               (upper camel case)
 fonction membre : nomDeMembre      (lower camel case)
 attribut : _nom_attribut           (lower underscore case underscore first)

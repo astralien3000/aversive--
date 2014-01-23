@@ -4,6 +4,9 @@
 #include <device/input_device.hpp>
 #include "../../base/integer.hpp"
 
+#ifndef ENCODER_PRIVATE_DATA
+#define ENCODER_PRIVATE_DATA
+#endif//ENCODER_PRIVATE_DATA
 
 //! \brief An incremental encoder, used by Eirbot in 2014
 //! \param ADDR : the address where to get the encoder value
@@ -17,9 +20,14 @@
 template<u32* ADDR>
 class Encoder : public InputDevice<u32> {
 public:
-  Encoder(const char*);
+  inline Encoder(const char*);
 
-  u32 getValue(void);
+  inline u32 getValue(void);
+
+private:
+  ENCODER_PRIVATE_DATA
 };
+
+#undef  ENCODER_PRIVATE_DATA
 
 #endif//ENCODER_HPP

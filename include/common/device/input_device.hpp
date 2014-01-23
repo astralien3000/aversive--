@@ -1,8 +1,8 @@
 #ifndef INPUT_DEVICE_HPP
 #define INPUT_DEVICE_HPP
 
-#include "device.hpp"
-#include "input.hpp"
+#include <device/device.hpp>
+#include <device/input.hpp>
 
 template<typename T>
 class InputDevice : public Input<T>, public Device {

@@ -9,10 +9,10 @@
 #define ODOMETER_PRIVATE_DATA
 #endif//ODOMETER_PRIVATE_DATA
 
-template<class LeftEncoder, class RightEncoder>
+template<class LeftGP2, class RightGP2>
 class Odometer : public InputDevice<Vect<2, s32>> {
 public:
-  inline Odometer(const char*, LeftEncoder&, RightEncoder&);
+  inline Odometer(const char*, LeftGP2&, RightGP2&);
 
   inline Vect<2, s32> getValue(void);
 
@@ -20,7 +20,7 @@ public:
   inline s32 angle(void) const;
 
   inline void setImpPerCm(s32);
-  inline void setDistEncoders(s32);
+  inline void setDistGP2s(s32);
 
   void update(void);
 private:
@@ -28,9 +28,9 @@ private:
 };
 
 namespace OdometerMaker {
-  template<class LeftEncoder, class RightEncoder>
-  inline Odometer<LeftEncoder, RightEncoder> make(const char* name, LeftEncoder& le, RightEncoder& re) {
-    return Odometer<LeftEncoder, RightEncoder>(name, le, re);
+  template<class LeftGP2, class RightGP2>
+  inline Odometer<LeftGP2, RightGP2> make(const char* name, LeftGP2& le, RightGP2& re) {
+    return Odometer<LeftGP2, RightGP2>(name, le, re);
   }
 }
 

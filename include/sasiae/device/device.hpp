@@ -3,6 +3,6 @@
 
 #include "../../common/device/device.hpp"
 
-
+#include <aversive.hpp>
 
 #endif//SASIAE_DEVICE_HPP
