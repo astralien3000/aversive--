@@ -22,6 +22,8 @@ private:
 
   OutputType _max_i;
 
+  CoeffType _out_shift;
+
 public:
   //! \brief Constructor with initialisation of all gains
   PidFilter(CoeffType p = 0, CoeffType i = 0, CoeffType d = 0);
@@ -30,6 +32,9 @@ public:
 
   //! \brief Sets the limit for integral output
   void setMaxIntegral(OutputType val);
+
+  //! \brief Sets the output divided by 2^shift
+  void setOutShift(CoeffType shift);
 
   OutputType doFilter(InputType in);
 };

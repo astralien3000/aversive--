@@ -3,9 +3,17 @@
 
 namespace Math {
 
-  //! \brief Ensures that an integer is contained into an interval
+  //! \brief Ensures that an integer is contained into an interval (template version)
   template<int min, int max, typename T>
   inline const T saturate(T val) {
+    if(val > (T)max) return max;
+    else if(val < (T)min) return min;
+    return val;
+  }
+
+  //! \brief Ensures that an integer is contained into an interval
+  template<typename T>
+  inline const T saturate(T val, T min, T max) {
     if(val > (T)max) return max;
     else if(val < (T)min) return min;
     return val;

@@ -17,6 +17,7 @@
 #include <math/matrix.hpp>
 
 //#include <hardware/uart.hpp>
+#include <hardware/timer.hpp>
 
 #include <hardware/interrupts.hpp>
 
@@ -71,6 +72,7 @@ private:
 
   typedef RobotController<LeftController, RightController, MyOdometer, QuadrampFilter, PidFilter, PidFilter> MyRobot;
 
+public:
   // Devices
   LeftEncoder enc_l;
   RightEncoder enc_r;
@@ -103,37 +105,39 @@ public:
     id.setGains(1, 0, 0);
 
     // MotorControl
-    diff_l.setDelta(39);
-    pid_l.setGains(1, 0, 0);
+    diff_l.setDelta(1);
+    pid_l.setGains(800, 0, 0);
     pid_l.setMaxIntegral(1000);
-  
-    diff_r.setDelta(39);
-    pid_r.setGains(1, 0, 0);
+    pid_l.setOutShift(11);
+
+    diff_r.setDelta(1);
+    pid_r.setGains(800, 0, 0);
     pid_r.setMaxIntegral(1000);
+    pid_r.setOutShift(11);
 
     // Odometer
     odo.setImpPerCm(100);
-    odo.setDistEncoders(30);
+    odo.setDistEncoders(15);
 
     // Robot
-    pid_a.setGains(50, 0, 0);
-    pid_a.setMaxIntegral(1000);
+    pid_a.setGains(1000, 10, 800);
+    pid_a.setMaxIntegral(10000);
+    pid_a.setOutShift(6);
   
-    pid_d.setGains(1, 0, 0);
-    pid_d.setMaxIntegral(1000);
+    pid_d.setGains(1000, 15, 100);
+    pid_d.setMaxIntegral(2000);
+    pid_d.setOutShift(8);
 
-    qramp_a.setFirstOrderLimit(1,1);
+    qramp_a.setFirstOrderLimit(2,2);
     qramp_a.setSecondOrderLimit(1,1);
 
-    qramp_d.setFirstOrderLimit(1,1);
+    qramp_d.setFirstOrderLimit(2,2);
     qramp_d.setSecondOrderLimit(1,1);
   }
   
-  void update(void) {
-    Vect<2, s32> cmd;
-    cmd.coord(0) = 100;
-    cmd.coord(1) = 0;
+  Vect<2, s32> cmd;
 
+  void update(void) {
     //motc_l.setValue(-80);
     //motc_r.setValue(-80);
     robot.setValue(cmd);
@@ -149,6 +153,16 @@ public:
 
 
 VidarBot bot;
+
+
+u16 i = 0;
+
+void asserv_update(void) {
+  if(i++ % 8 == 0) {
+    bot.update();
+    update();
+  }
+}
 
 //int main(int argc, char* argv[]) {
 bool robotInit() {
@@ -171,106 +185,44 @@ bool robotInit() {
   _delay_ms(300);
   _RESET_FPGA =0;
 
-
-  
-  //_MOT_R = -60;
-  //_MOT_L = 60;  
-  //QuadrampFilter qr;
-  //PidFilter fb, er;
-
-  // fb.setGains(1,0,0);
-  // er.setGains(1,0,0);
-  // qr.setFirstOrderLimit(10,10);
-  // qr.setSecondOrderLimit(1,1);
-  //FeedbackLoopFilter<QuadrampFilter, MPidFilter, MPidFilter> cs(qr, fb, er);
-
-  //OutputStream<255> cout;
-
   _MOT_R = 0;
   _MOT_L = 0;
-  //Interrupts::set();
 
-  /*
-  INIT_ENC_L = _ENC_L;
-  INIT_ENC_R = _ENC_R;
-  INIT_ENC_MOT_L = _ENC_MOT_L;
-  INIT_ENC_MOT_R = _ENC_MOT_R;
-      _MOT_R = (s8) 10;
-      _MOT_L = (s8) 10;
-  */
+  bot.cmd.coord(0) = -100;
+  bot.cmd.coord(1) = 20;
+
+  Timer<0>& timer = Timer<0>::instance();
+  timer.init();
+  timer.setPrescaler<8>();
+  Timer<0>::OverflowEvent& evt = timer.overflowEvent();
+  evt.setFunction([]() {
+      if(i++ % 15 == 0) {
+	bot.update();
+	update();
+      }
+
+      if(i%2000== 0) {
+	//bot.cmd.coord(1) += 1;
+      }
+    });
+  evt.start();
+
+  Interrupts::set();
   return true;
 }
 
-//  while(1) {
 void robotLoop() {
   /* static int i;
   i++;
   if(i%100==0)
     UartStream<0>::instance() << "L>" << (s16)_MOT_L << " R>" << (s16)_MOT_R << "\n";
-  //*/
-  bot.update();
-  update();
+  //*/	
+  
+  //bot.update();
+  //update();
+  //_MOT_R = 40;
+  //_MOT_L = 40;
   _delay_ms(10);
-
-
-#define MAX 30
-  /*
-    s32 test_r = (500 - (s32)_ENC_R/10) / 4;
-    if(test_r > MAX) {
-    _MOT_R = MAX;
-    }
-    else if(test_r < -MAX) {
-    _MOT_R = -MAX;
-    }
-    else {
-    _MOT_R = test_r;
-    }
-  */
-  /*
-    int32_t mencl = _ENC_MOT_L ;//- INIT_ENC_MOT_L;
-    int32_t mencr = _ENC_MOT_R ;//- INIT_ENC_MOT_R;
-    int32_t encl = _ENC_L ;//- INIT_ENC_L;
-    int32_t encr = _ENC_R ;//- INIT_ENC_R;
-  */
-  //UartStream<0>::instance()  << "L:" << mencl << ")\t";
-  //UartStream<0>::instance()  << "R:" << mencr << ")\t";
-  /*
-    UartStream<0>::instance()  << "L:" << encl ;//<< "(init:" << INIT_ENC_L << ")\t";
-    UartStream<0>::instance()  << "R:" << encr ;//<< "(init:" << INIT_ENC_R << ")\n";
-    UartStream<0>::instance() << "\n";
-    //_delay_ms(1000);
-   
-    #define SPEED_L 30
-    #define SPEED_R 30
-    #define RANGE 100
-    #define MRANGE -100
-    if(encl > RANGE)
-    _MOT_L = (s8) 1*SPEED_L;
-    else if(encl < MRANGE)
-    _MOT_L = (s8) -1*SPEED_L;
-    else
-    _MOT_L = (s8) 0;
-    if(encr > RANGE)
-    _MOT_R = (s8) 1*SPEED_R;
-    else if(encr < MRANGE)
-    _MOT_R = (s8) -1*SPEED_R;
-    else
-    _MOT_R = (s8) 0;
-  
-  
-    s8 test_l = (s8) (-1*((s32)encl)/100);
-    _MOT_L = -1*(encl/80);
-  */
-  /*if(test_l > MAX) {
-    _MOT_L = MAX;
-    }
-    else if(test_l < -MAX) {
-    _MOT_L = -MAX;
-    }
-    else {
-    _MOT_L = test_l;
-    }*/
-
 }
 
 void robotExit() {

@@ -22,6 +22,8 @@ PidFilter::PidFilter(CoeffType p, CoeffType i, CoeffType d) {
   _gain_d = d;
 
   _max_i = 0;
+  
+  _out_shift = 0;
 }
 
 void PidFilter::setGains(CoeffType p, CoeffType i, CoeffType d) {
@@ -34,16 +36,28 @@ void PidFilter::setMaxIntegral(OutputType val) {
   _max_i = val;
 }
 
+void PidFilter::setOutShift(CoeffType shift) {
+  _out_shift = shift;
+}
+
 typename PidFilter::OutputType PidFilter::doFilter(InputType in) {
   OutputType p = in * _gain_p;
  
-  _sum_in = saturate<-_max_i, _max_i>(_sum_in + in);
+  _sum_in = Math::saturate(_sum_in + in, -_max_i, _max_i);
   OutputType i = _sum_in * _gain_i;
 
   OutputType d = (_last_in - in) * _gain_d;
 
   _last_in = in;
-  return (p + i + d);
+  
+  OutputType out = (p + i + d);
+  if(out < 0) {
+    out = -((-out) >> _out_shift);
+  }
+  else {
+    out = out >> _out_shift;
+  }
+  return out;
 }
   
 
