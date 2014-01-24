@@ -3,12 +3,10 @@
 
 #include "../../../common/device/eirbot2014/servomotor.hpp"
 
-template<s32* ADDR>
-Servomotor<ADDR>::Servomotor(const char* name) : OutputDevice(name) {}
+Servomotor::Servomotor(const char* name) : OutputDevice<u32>(name) {}
 
-template<s32* ADDR>
-void Servomotor<ADDR>::setValue(s32 val) {
-  OutputDevice::setValue(*ADDR = val);
+void Servomotor::setValue(u32 val) {
+  OutputDevice<u32>::setValue(val);
 }
 
 
