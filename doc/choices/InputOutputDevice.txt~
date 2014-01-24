@@ -1,0 +1,9 @@
+Device -- Module
+
+cf schema.
+
+We chose to implement a class IODevice which 
+inherits from InputDevice and Output and which dupplicates
+the code of OutputDevice. 
+
+An other solution would has been to create
