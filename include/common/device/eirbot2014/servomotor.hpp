@@ -4,15 +4,14 @@
 #include <device/output_device.hpp>
 #include "../../base/integer.hpp"
 
-//! \brief A servomotor, used by Eirbot in 2014
-//! \param ADDR : the address where to set the motor pwm
+//! \brief A servomotor INTERFACE, used by Eirbot in 2014. Can not be used (see ServomotorFpga or ServomotorPin).
 
-template<s32* ADDR>
-class Servomotor : public OutputDevice<s32> {
+
+class Servomotor : public OutputDevice<u32> {
 public:
   Servomotor(const char*);
 
-  void setValue(s32);
+  void setValue(u32);
 };
 
 #endif//SERVOMOTOR_HPP
