@@ -70,7 +70,7 @@ inline void UartStream<CHANNEL>::setStrMode(UartStream<CHANNEL>::StrMode s) {
 template<int CHANNEL>
 bool UartStream<CHANNEL>::binaryWrite(uint8_t data) {
   while(_out_buff.isFull()) {
-    write();
+    //write();
   }
   if(!_sending) {
     //Uart<0>::instance().send('x');
