@@ -75,7 +75,7 @@ public:
     return _func == other._func;
   }
 
-  void exec(void) {
+  void operator()(void) {
     if(_func) {
       _func();
     }
