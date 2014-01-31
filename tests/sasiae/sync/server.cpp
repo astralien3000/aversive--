@@ -73,17 +73,32 @@ int main(int argc, char** argv) {
     return EXIT_FAILURE;
   }
 
+  client.write("T 2 100\n");
+  
+  for(int i = 10; i < 110; i++) {
+    sprintf(buffer2, "D TESTER value is %d", i);
+    if(!checkMsg(client, buffer2)) {
+      res(false, 13 + i);
+      return EXIT_FAILURE;
+    }
+  }
+  
+  if(!checkMsg(client, "T")) {
+    res(false, 113);
+    return EXIT_FAILURE;
+  }
+
   client.write("S\n");
 
   if(!checkMsg(client, "S")) {
-    res(false, 13);
+    res(false, 114);
     return EXIT_FAILURE;
   }
 
   client.closeWriteChannel();
   
   if(!client.waitForFinished()) {
-    res(false, 14);
+    res(false, 115);
     return EXIT_FAILURE;
   }
 
