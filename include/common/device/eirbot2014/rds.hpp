@@ -2,27 +2,35 @@
 #define RDS_HPP
 
 
-#include <device/stream/uart_stream.hpp>
+#include <device/io_device.hpp>
+#include <base/array.hpp>
+#include <stdint.h>
 
 //! \brief A complex sensor which gives the relative position of others robots
-//! \param CHANNEL : uart channel where to get messages.
+//! \param CHANNEL : uart channel to get the messages from.
 /*!
-  This sensor can possibly return the position of all robots in a radius of 2 meters.
-  The protocol is [number of robots] [position robot1] [position robot2] where
-  position is a couple of ints.
-  For example : 2 120 65 -20 30
+  This sensor can possibly return the position of all robots in a 2-meter radius.
+  The protocol is [nb of robots] [x_r1 y_r1] [x_r2 y_r2] ...
+  For example : 2 120 65 -20 30 means 2 robots at (120, 65) and (-20, 30)
+  The values returned depend on the choosen mode (cartesian or polar).
 */
 
 template<int CHANNEL>
-class Rds : public UartStream<CHANNEL> {
+class Rds : public IODevice<Array<13, int16_t> > {
+private:
+  Array<13, int16_t> _values;
+
+public:
   Rds(void);
 
-  //! \param [CARTESIAN/POLAR] : how to get relative positions (default is CARTESIAN)
-  void setMode(int mode);
+  //! \bried Default mode is CARTESIAN. 
+  void setModeCartesian(void);
+  void setModePolar(void);
 
-  //! \brief Writes in tab the position of robots as : [number of robots] [position1] [position2] where a position is a couple (x, y) or (a, r); see setMode.
-  void getPositions(int* tab);
+  //! \brief Return the position of robots as : [number of robots] [position1] [position2] where a position is a couple (x, y) or (a, r); see setMode{Cartesian,Polar}().
+  const Array<13, int16_t>& getValue(void) const;
 
-}
+};
+
 
 #endif//RDS_HPP
