@@ -1,4 +1,4 @@
-SUBDIRS=client_thread device scheduler
+SUBDIRS=client_thread device scheduler sync
 
 .PHONY: $(SUBDIRS)
 
