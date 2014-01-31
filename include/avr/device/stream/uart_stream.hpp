@@ -69,14 +69,12 @@ inline void UartStream<CHANNEL>::setStrMode(UartStream<CHANNEL>::StrMode s) {
 
 template<int CHANNEL>
 bool UartStream<CHANNEL>::binaryWrite(uint8_t data) {
-  while(_out_buff.isFull()) {
-    //write();
-  }
+  while(_out_buff.isFull()) { }
+  bool ret = _out_buff.enqueue(data);
   if(!_sending) {
-    //Uart<0>::instance().send('x');
      write();
   }
-  return _out_buff.enqueue(data);
+  return ret;
 }
 
 template<int CHANNEL>
