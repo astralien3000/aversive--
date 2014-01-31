@@ -3,6 +3,7 @@
 
 #include <QThread>
 #include <QMutex>
+#include <QSemaphore>
 #include <QMap>
 #include <QString>
 #include <functional>
@@ -21,6 +22,13 @@ protected:
   char* _buffer;
   unsigned long _length;
   QMutex _com_mutex;
+
+  unsigned long int _time;
+  QSemaphore _iteration;
+
+  bool _timed_task_done;
+  bool _synchronized;
+  QMutex _sync_mutex;
   
   QMap<QString, std::function<void(char*)> > _devices;
   QMutex _devices_mutex;
@@ -34,6 +42,8 @@ protected:
   
   void quit(void);
   void run(void) Q_DECL_OVERRIDE;
+  
+  void sync(void);
 
 public:
   //! \brief Raw data sent to SASIAE
@@ -72,6 +82,8 @@ public:
   //! \brief Get the unique instance of the Client Thread
   //! \warning Should not be called before Aversive::init !
   static ClientThread& instance(void);
+
+  unsigned long int time() const;
 };
 
 #endif//CLIENT_THREAD_HPP

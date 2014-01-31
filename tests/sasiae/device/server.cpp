@@ -65,7 +65,8 @@ int main(int argc, char** argv) {
 
   client.write("D intest VALUE 20\n");
   client.write("D intest VALUE 10\n");
-
+  client.write("T 1 1\n");
+  
   if(!checkMsg(client, "D outtest VALUE 10")) {
     res(false, 3);
     return EXIT_FAILURE;

@@ -41,7 +41,7 @@ public:
   }
   
   inline void exec(void) {
-    _task->exec();
+    (*_task)();
   }
 
   inline bool unique(void) {

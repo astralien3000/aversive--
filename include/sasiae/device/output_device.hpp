@@ -7,7 +7,8 @@ struct OutputDevicePrivateData {
 };
 
 #include "../../common/device/output_device.hpp"
-#include "../client_thread.hpp"
+
+#include <client_thread.hpp>
 
 #include <sstream>
 
@@ -16,7 +17,7 @@ OutputDevice<T>::OutputDevice(const char* name) : Device(name) {
   (void)AversiveInitializer::instance();
 
   ClientThread::instance().
-    registerDevice(name,
+    registerDevice(*this,
 		   std::function<void(char*)>([&] (char*) mutable -> void {}));
 }
 

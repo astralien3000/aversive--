@@ -57,7 +57,7 @@ int main(int argc, char** argv) {
     return EXIT_FAILURE;
   }
 
-  client.write("T 11\n");
+  client.write("T 11 0\n");
 
   client.waitForReadyRead();
   if(!checkMsg(client, "D out VALUE 1")) {
@@ -70,26 +70,42 @@ int main(int argc, char** argv) {
     return EXIT_FAILURE;
   }
 
-  client.write("T 31\n");
+  if(!checkMsg(client, "T")) {
+    res(false, 3);
+    return EXIT_FAILURE;
+  }
+
+  client.write("T 31 0\n");
 
   client.waitForReadyRead();
   for(int i = 0 ; i < 2 ; i++) {
     if(!checkMsg(client, "D out VALUE 1")) {
-      res(false, 3+i*2);
+      res(false, 4 + 2 * i);
       return EXIT_FAILURE;
     }
   
     if(!checkMsg(client, "D out VALUE 20")) {
-      res(false, 4+i*2);
+      res(false, 5 + 2 * i);
       return EXIT_FAILURE;
     }
   }
+
+  if(!checkMsg(client, "T")) {
+    res(false, 8);
+    return EXIT_FAILURE;
+  }
   
   client.write("S\n");
+
+  if(!checkMsg(client, "S")) {
+    res(false, 9);
+    return EXIT_FAILURE;
+  }
+
   client.closeWriteChannel();
   
   if(!client.waitForFinished()) {
-    res(false, 5);
+    res(false, 10);
     return EXIT_FAILURE;
   }
 

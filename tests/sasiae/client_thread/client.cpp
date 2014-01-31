@@ -1,5 +1,6 @@
 #include <aversive.hpp>
 #include <client_thread.hpp>
+#include <device/device.hpp>
 
 #include <functional>
 #include <cstdlib>
@@ -7,9 +8,11 @@
 #include <iostream>
 #include <QThread>
 
+Device mole_device("TESTER");
+
 bool robotInit(void) {
   bool ok = ClientThread::instance().
-    registerDevice("TESTER",
+    registerDevice(mole_device,
 		   std::function<void(char*)>([] (char* msg) mutable -> void {
 		       if(strcmp(msg, "Stop") == 0) {
 			 ClientThread::instance().sendData("D TESTER Stop? :'(");

@@ -7,9 +7,10 @@
 
 #define DEFAULT_BUFFER_SIZE 64
 
-static const char* const err_detect_device = "M E Impossible to detect device's name";
-static const char* const err_unknown_device = "M E Unknown device \"%s\"";
-static const char* const err_unknown_command = "M E Unknown command %c";
+static const char* const err_detect_device = "Impossible to detect device's name";
+static const char* const err_unknown_device = "Unknown device \"%s\"";
+static const char* const err_unknown_command = "Unknown command %c";
+static const char* const err_invalid_synchro = "Invalid synchro message";
 
 ClientThread* ClientThread::_inst = NULL;
 
@@ -18,6 +19,9 @@ ClientThread::ClientThread(void) : QThread() {
   _inst = this;
   _buffer = new char[DEFAULT_BUFFER_SIZE];
   _length = DEFAULT_BUFFER_SIZE;
+  _time = 0;
+  _sync_func = NULL;
+  _timed_task_done = _synchronized = true;
 }
 
 ClientThread::~ClientThread(void) {
@@ -57,16 +61,55 @@ void ClientThread::quit(void) {
 void ClientThread::run(void) {
   while(_keep_going) {
     readLine();
-    if(!_keep_going)
+    if(!_keep_going) {
       break;
+    }
     
     if(_buffer[0] == '\0') {
     }
     else if(_buffer[0] == 'T') {
       // Synchronization message
-      long long timestamp = 0;
-      sscanf((_buffer + 2), "%lld", &timestamp);
-      _sync_func(timestamp);
+      if(_buffer[1] != ' ') {
+	sendMessage(ERROR, err_invalid_synchro);
+	continue;
+      }
+      
+      char* ptr = _buffer + 2;
+      while(isdigit(*ptr)) {
+	++ptr;
+      }
+      
+      if(*ptr != ' ') {
+	sendMessage(ERROR, err_invalid_synchro);
+	continue;
+      }
+      
+      char* second_field = ++ptr;
+      while(isdigit(*ptr)) {
+	++ptr;
+      }
+      
+      if(*ptr != '\0') {
+	sendMessage(ERROR, err_invalid_synchro);
+	continue;
+      }
+      
+      _time = strtoul(_buffer + 2, NULL, 10);
+      int it = (int) strtol(second_field, NULL, 10);
+      _timed_task_done = false;
+      _synchronized = false;
+      
+      // We let the robot loop iterating for some time
+      _iteration.release(it);
+      
+      // We execute the scheduler
+      if(_sync_func) {
+	_sync_func(_time);
+      }
+      _timed_task_done = true;
+      
+      // Let synchronize
+      sync();
     }
     else if(_buffer[0] == 'D') {
       // Device message
@@ -75,7 +118,7 @@ void ClientThread::run(void) {
       if(_buffer[e] == '\0') {
 	// Impossible to detect device's name
 	snprintf(_buffer, (size_t) _length, err_detect_device);
-	sendData(_buffer);
+	sendMessage(ERROR, _buffer);
 	continue;
       }
       
@@ -88,7 +131,7 @@ void ClientThread::run(void) {
 	// Unknown device
 	_devices_mutex.unlock();
 	snprintf(_buffer, (size_t) _length, err_unknown_device, name);
-	sendData(_buffer);
+	sendMessage(ERROR, _buffer);
       }
       else {
 	// Device is known, we give its interpreter function the message
@@ -104,13 +147,25 @@ void ClientThread::run(void) {
     else if(_buffer[0] == 'S') {
       // Stop message
       Aversive::stop();
+      // To unblock the main thread if it's waiting
+      _iteration.release();
     }
     else {
       // Unknown command
-      snprintf(_buffer, (size_t) _length, err_unknown_command, _buffer[0]);
-      sendData(_buffer);
+      char cmd = _buffer[0];
+      snprintf(_buffer, (size_t) _length, err_unknown_command, cmd);
+      sendMessage(ERROR, _buffer);
     }
   }
+}
+
+void ClientThread::sync(void) {
+  _sync_mutex.lock();
+  if(!_synchronized && _timed_task_done && _iteration.available() == 0) {
+    sendData("T");
+    _synchronized = true;
+  }
+  _sync_mutex.unlock();
 }
 
 bool ClientThread::sendData(const char* data) {
@@ -125,22 +180,20 @@ bool ClientThread::sendDeviceMessage(const Device& dev, const char* msg) {
   return sendData((std::string("D ") + dev.name() + " " + msg).c_str());
 }
 
-
-
 bool ClientThread::sendMessage(MessageLevel lvl, const char* msg) {
-  char msg_lvl[] = "I\0";
+  char msg_lvl = 'I';
   switch(lvl) {
   case ERROR:
-    msg_lvl[0] = 'E';
+    msg_lvl = 'E';
     break;
   case INFO:
-    msg_lvl[0] = 'I';
+    msg_lvl = 'I';
     break;
   case DEBUG:
-    msg_lvl[0] = 'D';
+    msg_lvl = 'D';
     break;
   case WARNING:
-    msg_lvl[0] = 'W';
+    msg_lvl = 'W';
     break;
   }
 
@@ -162,11 +215,15 @@ bool ClientThread::registerDevice(const Device& dev, const std::function<void(ch
   }
 }
 
+ClientThread& ClientThread::instance() {
+  return *_inst;
+}
+
 bool ClientThread::setSyncFunction(const std::function<void(int)>& interpreter) {
   _sync_func = interpreter;
   return true;
 }
 
-ClientThread& ClientThread::instance() {
-  return *_inst;
+unsigned long int ClientThread::time() const {
+  return _time;
 }

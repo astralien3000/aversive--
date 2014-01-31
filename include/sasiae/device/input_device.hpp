@@ -7,7 +7,8 @@ struct InputDevicePrivateData {
 };
 
 #include "../../common/device/input_device.hpp"
-#include "../client_thread.hpp"
+
+#include <client_thread.hpp>
 
 template<typename T>
 void get_value_from_msg(T* dest, const char* msg) {
@@ -22,7 +23,7 @@ InputDevice<T>::InputDevice(const char* name) : Device(name) {
   _data.last_in = 0;
 
   ClientThread::instance().
-    registerDevice(name,
+    registerDevice(*this,
 		   std::function<void(char*)>([&] (char* msg) mutable -> void {
 		       char cmd[32], msg2[1000];
 		       sscanf(msg, "%s %s", cmd, msg2);
