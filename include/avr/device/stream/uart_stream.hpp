@@ -70,7 +70,7 @@ inline void UartStream<CHANNEL>::setStrMode(UartStream<CHANNEL>::StrMode s) {
 template<int CHANNEL>
 bool UartStream<CHANNEL>::binaryWrite(uint8_t data) {
   while(_out_buff.isFull()) {
-    //write();
+    write();
   }
   if(!_sending) {
     //Uart<0>::instance().send('x');
@@ -135,7 +135,7 @@ template<typename T>
 bool UartStream<CHANNEL>::complexBinaryRead(T& val) {
   uint8_t* ptr = reinterpret_cast<uint8_t*>(&val);
   int i;
-  for(i = 0; i < sizeof(T) && binaryRead(*ptr); i++, ptr++) { }
+  for(i = 0; i < (int)sizeof(T) && binaryRead(*ptr); i++, ptr++) { }
   return i == sizeof(T);
 }
 
