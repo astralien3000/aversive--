@@ -2,8 +2,9 @@ AVERSIVE_BASE=../../
 
 MMCU=atmega128
 
+OPTI=-O0
 CXX=avr-g++
-CXX_FLAGS=-Wall -L$(AVERSIVE_BASE)/build/avr -I$(AVERSIVE_BASE)/include/avr -mmcu=$(MMCU) -std=c++11 -fno-threadsafe-statics -O0 -D__STDC_LIMIT_MACROS 
+CXX_FLAGS=-Wall -L$(AVERSIVE_BASE)/build/avr -I$(AVERSIVE_BASE)/include/avr -mmcu=$(MMCU) -std=c++11 -fno-threadsafe-statics $(OPTI) -D__STDC_LIMIT_MACROS 
 CXX_LIBS=-laversive_$(MMCU) -Wl,-u,vfprintf -lprintf_flt
 
 OBJCOPY=avr-objcopy
@@ -13,6 +14,9 @@ HEX=stream.hex
 DEV=/dev/ttyUSB0
 
 all: $(HEX)
+
+asm: test_stream.cpp
+	$(CXX) $(CXX_FLAGS) -S $^ -o test_stream.asm $(CXX_LIBS)
 
 load: $(HEX)
 #	sudo avrdude -cwiring -p$(MMCU) -P $(DEV) -U flash:w:$(HEX) -D

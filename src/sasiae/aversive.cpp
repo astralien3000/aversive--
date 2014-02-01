@@ -18,6 +18,18 @@ public:
   bool wait(unsigned long time = ULONG_MAX) {
     return ClientThread::wait(time);
   }
+
+  void unlock(void) {
+    _iteration.release();
+  }
+  
+  void iterate(void) {
+    // Let synchronize if we have finished
+    if(_iteration.available() == 0) {
+      sync();
+    }
+    _iteration.acquire();
+  }
   
   static AversiveClientThread& instance(void) {
     return *((AversiveClientThread*) _inst);
@@ -26,21 +38,24 @@ public:
 
 static bool keep_going;
 
-void aversiveInit(void) {
+inline void aversiveInit(void) {
   AversiveClientThread* client = new AversiveClientThread;
   client->start();
   keep_going = true;
 }
 
 void Aversive::sleep(int ms) {
-  // Do synchronisation stuff or simply wait if already synchronised
+  // Do synchronisation stuff
   (void) ms;
-  QThread::sleep(0);
+  AversiveClientThread* client = &AversiveClientThread::instance();
+  client->iterate();
   return;
 }
 
 void Aversive::stop(void) {
   keep_going = false;
+  AversiveClientThread* client = &AversiveClientThread::instance();
+  client->unlock();
 }
 
 inline void aversiveExit(void) {
@@ -55,7 +70,9 @@ inline void aversiveExit(void) {
 int main(int argc, char** argv) {
   (void)argc;
   (void)argv;
-  (void)AversiveInitializer::instance(); // To call aversiveInit even if there is no Device
+  
+  // To call aversiveInit even if there is no Device
+  (void)AversiveInitializer::instance();
 
   if(!robotInit()) {
     std::cerr << "Error while initializing the robot" << std::endl;
@@ -63,8 +80,11 @@ int main(int argc, char** argv) {
   }
   
   while(keep_going) {
-    robotLoop();
     Aversive::sleep(0);
+    if(!keep_going) {
+      break;
+    }
+    robotLoop();
   }
   
   robotExit();
