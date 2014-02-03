@@ -12,12 +12,10 @@ inline void Interrupts::set(void) {
 }
 
 template<typename T> inline void Interrupts::lock(T& flag) {
-  flag = SREG;
   Interrupts::clear();
 }
 
 template<typename T> inline void Interrupts::unlock(T& flag) {
-  SREG = flag;
   Interrupts::set();
 }
 

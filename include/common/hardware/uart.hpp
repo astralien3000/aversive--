@@ -18,6 +18,10 @@ public:
 
   //! \brief Receive 1 character from RX
   template<typename T> T recv(void);
+
+  //! \brief Receive 1 character from RX
+  template<typename T> void recv(T&);
+
   //! \brief Transmit 1 character from TX
   template<typename T> void send(T);
 

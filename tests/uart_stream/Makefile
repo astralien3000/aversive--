@@ -1,17 +1,17 @@
 AVERSIVE_BASE=../../
 
-MMCU=atmega128
+MMCU=atmega2560
 
-OPTI=-O0
+OPTI=-O3
 CXX=avr-g++
 CXX_FLAGS=-Wall -L$(AVERSIVE_BASE)/build/avr -I$(AVERSIVE_BASE)/include/avr -mmcu=$(MMCU) -std=c++11 -fno-threadsafe-statics $(OPTI) -D__STDC_LIMIT_MACROS 
-CXX_LIBS=-laversive_$(MMCU) -Wl,-u,vfprintf -lprintf_flt
+CXX_LIBS=-laversive_$(MMCU)
 
 OBJCOPY=avr-objcopy
 
 ELF=stream.elf
 HEX=stream.hex
-DEV=/dev/ttyUSB0
+DEV=/dev/ttyACM0
 
 all: $(HEX)
 
@@ -19,8 +19,8 @@ asm: test_stream.cpp
 	$(CXX) $(CXX_FLAGS) -S $^ -o test_stream.asm $(CXX_LIBS)
 
 load: $(HEX)
-#	sudo avrdude -cwiring -p$(MMCU) -P $(DEV) -U flash:w:$(HEX) -D
-	sudo avarice -j /dev/ttyUSB0 --erase --program -f $(HEX)
+	sudo avrdude -cwiring -p$(MMCU) -P $(DEV) -U flash:w:$(HEX) -D
+#	sudo avarice -j /dev/ttyUSB0 --erase --program -f $(HEX)
 
 clean:
 	rm -f $(ELF) $(HEX)

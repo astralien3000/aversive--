@@ -70,6 +70,16 @@ inline T Uart<ID>::recv(void) {
   return (T)REG(uart<ID>::data);
 }
 
+// WARNING : 9th bit not managed !!
+template<int ID> template<typename T>
+inline void Uart<ID>::recv(T& ret) {
+  // Wait for data to be received
+  while( ! (REG(uart<ID>::control) & CFG(uart<ID>::control::flag::recvend)));
+
+  // Get and return received data from buffer
+  ret = (T)REG(uart<ID>::data);
+}
+
 template<int ID>
 inline typename Uart<ID>::RecvEvent& Uart<ID>::recvEvent(void) {
   static typename Uart<ID>::RecvEvent evt;
