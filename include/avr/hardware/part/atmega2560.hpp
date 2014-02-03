@@ -317,6 +317,51 @@ template<> template<> struct uart<0>::control::stopbit::value<2> {
   enum { CONFIG = 46, SIZE = 8 };
 };
 
+template<int ID> struct eeprom;
+template<> struct eeprom<0> {
+  struct address {
+    enum { REG = 16, SIZE = 8 };
+  };
+
+  struct data {
+    enum { REG = 17, SIZE = 8 };
+  };
+
+  struct control {
+    struct masterwrite {
+      enum { CONFIG = 47, SIZE = 8 };
+    };
+
+    struct write {
+      enum { CONFIG = 48, SIZE = 8 };
+    };
+
+    struct read {
+      enum { CONFIG = 49, SIZE = 8 };
+    };
+
+    enum { REG = 18, SIZE = 8 };
+  };
+
+};
+
+template<int ID> struct xmem;
+template<> struct xmem<0> {
+  struct control {
+    struct enable {
+      enum { CONFIG = 50, SIZE = 8 };
+    };
+
+    struct defaultwait {
+      enum { CONFIG = 51, SIZE = 8 };
+    };
+
+    enum { REG = 19, SIZE = 8 };
+  };
+
+};
+
+struct dummy;
 template<> inline Register<8, 0>::Register(void) : reg_size(2), reg{(u8*)&TCCR0A, (u8*)&TCCR0B} {}
 template<> inline Config<8, 0>::Config(void) : conf{0, 0} {}
 template<> inline Config<8, 1>::Config(void) : conf{( 1 << WGM00 ) | ( 1 << WGM01 ), 0} {}
@@ -380,3 +425,12 @@ template<> inline Config<8, 45>::Config(void) : conf{0, 0, 0} {}
 template<> inline Config<8, 46>::Config(void) : conf{0, 0, ( 1 << USBS0 )} {}
 template<> inline Register<8, 14>::Register(void) : reg_size(2), reg{(u8*)&UBRR0L, (u8*)&UBRR0H} {}
 template<> inline Register<8, 15>::Register(void) : reg_size(1), reg{(u8*)&UDR0} {}
+template<> inline Register<8, 16>::Register(void) : reg_size(2), reg{(u8*)&EEARL, (u8*)&EEARH} {}
+template<> inline Register<8, 17>::Register(void) : reg_size(1), reg{(u8*)&EEDR} {}
+template<> inline Register<8, 18>::Register(void) : reg_size(1), reg{(u8*)&EECR} {}
+template<> inline Config<8, 47>::Config(void) : conf{( 1 << EEMPE )} {}
+template<> inline Config<8, 48>::Config(void) : conf{( 1 << EEPE )} {}
+template<> inline Config<8, 49>::Config(void) : conf{( 1 << EERE )} {}
+template<> inline Register<8, 19>::Register(void) : reg_size(1), reg{(u8*)&XMCRA} {}
+template<> inline Config<8, 50>::Config(void) : conf{( 1 << SRE )} {}
+template<> inline Config<8, 51>::Config(void) : conf{( 1 << SRW11 ) | ( 1 << SRW00 )} {}

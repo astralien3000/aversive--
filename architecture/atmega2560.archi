@@ -79,5 +79,19 @@ hardware uart[0]
 	    config 2 0, 0, (1 << USBS0)
     register8 baudrate UBRR0L, UBRR0H
     register8 data UDR0
-    register8 dummy 0
     
+hardware eeprom[0]
+    register8 address EEARL, EEARH
+    register8 data EEDR
+    register8 control EECR
+        config masterwrite (1 << EEMPE)
+	config write (1 << EEPE)
+	config read (1 << EERE)
+
+hardware xmem[0]
+    register8 control XMCRA
+        config enable (1 << SRE)
+	config defaultwait (1 << SRW11) | (1 << SRW00)
+
+hardware dummy
+    register8 dummy 0
