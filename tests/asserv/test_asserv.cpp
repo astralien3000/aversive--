@@ -18,7 +18,7 @@
 
 //#include <hardware/uart.hpp>
 #include <hardware/timer.hpp>
-
+#include <hardware/xmem.hpp>
 #include <hardware/interrupts.hpp>
 
 #define _ENC_R (*(volatile u32*)0x80A0)
@@ -166,8 +166,7 @@ void asserv_update(void) {
 
 //int main(int argc, char* argv[]) {
 bool robotInit() {
-  XMCRA |= (1 << SRW11) | (1 << SRW00);
-  MCUCR |= (1 << SRE);
+  Xmem::instance().init();
   //reset  FPGA  
   _delay_ms(300);
   DDRB |= (1<<0); 
