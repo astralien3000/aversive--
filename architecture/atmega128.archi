@@ -1,4 +1,4 @@
-uc atmega32
+uc atmega128
 
 hardware timer[0]
     register8 control TCCR0
@@ -79,5 +79,19 @@ hardware uart[0]
 	    config 2 0, 0, (1 << USBS0)
     register8 baudrate UBRR0L, UBRR0H
     register8 data UDR0
-    register8 dummy 0
     
+hardware eeprom[0]
+    register8 address EEARL, EEARH
+    register8 data EEDR
+    register8 control EECR
+        config masterwrite (1 << EEMWE)
+	config write (1 << EEWE)
+	config read (1 << EERE)
+
+hardware xmem[0]
+    register8 control MCUCR, XMCRA
+        config enable (1 << SRE), 0
+	config defaultwait 0, (1 << SRW11) | (1 << SRW00)
+
+hardware dummy
+    register8 dummy 0
