@@ -14,12 +14,22 @@ private:
   Motor& _mot;
   GP2& _enc;
 
+  bool _inv;
+
 public:
-  inline MotorController(const char* name, Motor& mot, GP2& enc, ConsignFilter& cf, FeedbackFilter& ff, ErrorFilter& ef) : OutputDevice<s32>(name), _loop(cf, ff, ef), _mot(mot), _enc(enc) {}
+  inline MotorController(const char* name, Motor& mot, GP2& enc, ConsignFilter& cf, FeedbackFilter& ff, ErrorFilter& ef) : OutputDevice<s32>(name), _loop(cf, ff, ef), _mot(mot), _enc(enc), _inv(false) {}
 
   inline void setValue(s32 val) {
     _loop.setFeedback(_enc.getValue());
-    _mot.setValue(_loop.doFilter(val));
+    val = Math::saturate<-127,127>(_loop.doFilter(val));
+    if(_inv) {
+      val = -val;
+    }
+    _mot.setValue(val);
+  }
+
+  inline void inverse(void) {
+    _inv = !_inv;
   }
 };
 

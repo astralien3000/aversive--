@@ -13,12 +13,15 @@
   user, so I hope you know how your FPGA works ;) !
 
 */
-template<s32* ADDR>
-class Motor : public OutputDevice<s32> {
+template<typename T>
+class Motor : public OutputDevice<T> {
 public:
-  Motor(const char*);
+  Motor(const char*, T*);
 
-  void setValue(s32);
+  void setValue(T);
+
+private:
+  T* _addr;
 };
 
 #endif//MOTOR_HPP

@@ -5,12 +5,12 @@
 
 #include <math/saturate.hpp>
 
-template<s32* ADDR>
-inline Motor<ADDR>::Motor(const char* name) : OutputDevice<s32>(name) {}
+template<typename T>
+inline Motor<T>::Motor(const char* name, T* addr) : OutputDevice<T>(name), _addr(addr) {}
 
-template<s32* ADDR>
-inline void Motor<ADDR>::setValue(s32 val) {
-  (*ADDR) = Math::saturate<-127,127>(val);
+template<typename T>
+inline void Motor<T>::setValue(T val) {
+  *_addr = val;
 }
 
 #endif//AVR_MOTOR_HPP
