@@ -10,7 +10,7 @@ Rds::Rds(const char* name) : InputDevice(name) {
   ClientThread::instance().registerDevice(*this, std::function<void(char*)>([this] (char* msg) mutable -> void {
 	if (strncmp(msg, "values ", 7)) {
 	  ClientThread::instance().sendMessage(ERROR, "RDS device : invalid message (\"values\" expected)");
-	  return:
+	  return;
 	}
 	msg += 7;
 	char* nmsg;

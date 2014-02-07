@@ -2,7 +2,7 @@
 #define RDS_HPP
 
 
-#include <device/io_device.hpp>
+#include <device/input_device.hpp>
 #include <math/vect.hpp>
 #include <stdint.h>
 
