@@ -8,8 +8,8 @@
 u32 ENC;
 s32 MOT;
 
-Encoder<&ENC> _id("intest");
-Motor<&MOT> _od("outtest");
+Encoder<u32> _id("intest", &ENC);
+Motor<s32> _od("outtest", &MOT);
 
 bool robotInit(void) {
   //ClientThread::instance().sendMessage(ClientThread::INFO, "Send value 10 to intest to end the program");
