@@ -1,16 +1,18 @@
 BUILD=$(BUILD_EXPORT)
 INCLUDE=$(INCLUDE_EXPORT)
 
-SUB_DIRS= filter # add the sub directory's names here
+SUB_DIRS= filter device # add the sub directory's names here
 
 OBJS = # add object to compile
 
-all: $(BUILD) build $(addsuffix .d,$(SUB_DIRS))
+.PHONY: $(SUB_DIRS) all build
+
+all: $(BUILD) build $(SUB_DIRS)
 
 # to build local sources
 build: $(addprefix $(BUILD)/,$(addsuffix .o,$(OBJS)))
 
-filter.d:
+$(SUB_DIRS):
 	$(MAKE) -C $(@:.d=)
 
 $(BUILD):
