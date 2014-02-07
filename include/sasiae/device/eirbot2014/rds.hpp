@@ -6,26 +6,26 @@
 #include <client_thread.hpp>
 
 
-Rds::Rds(const char* name) : InputDevice(name) {
+Rds::Rds(const char* name) : InputDevice<Array<6, Vect<2, int16_t> > > (name) {
   ClientThread::instance().registerDevice(*this, std::function<void(char*)>([this] (char* msg) mutable -> void {
 	if (strncmp(msg, "values ", 7)) {
-	  ClientThread::instance().sendMessage(ERROR, "RDS device : invalid message (\"values\" expected)");
+	  ClientThread::instance().sendMessage(ClientThread::ERROR, "RDS device : invalid message (\"values\" expected)");
 	  return;
 	}
 	msg += 7;
 	char* nmsg;
 	int16_t n = strtol(msg, &nmsg, 10);
 	this->_nb = n;
-	Vect<6, int16_t> tmp;
+	Vect<2, int16_t> tmp;
 	for (int i=0; i<n; i++) {
 	  for (int j=0; j<2; j++) {
 	    if (nmsg[0] == '\0') {
-	      ClientThread::instance().sendMessage(ERROR, "RDS device : invalid size of argument array");
+	      ClientThread::instance().sendMessage(ClientThread::ERROR, "RDS device : invalid size of argument array");
 	      break;
 	    }
 	    tmp.coord(j) = (int16_t) strtol(nmsg + 1, &nmsg, 10);
 	  }
-	  this->_pos.coord(i) = tmp;
+	  this->_pos[i] = tmp;
 	}
       }));
 }
@@ -39,10 +39,7 @@ void Rds::setModePolar(void) {
 }
 
 const Vect<2, int16_t>& Rds::getPosition(uint8_t index) const {
-  if (index < this->_nb) {
-    return &(_pos.coord((int) index));
-  }
-  return NULL;
+  return this->_pos[index];
 }
 
 uint8_t Rds::robotsNumber(void) const {

@@ -31,6 +31,11 @@ public:
     return _coord[index];
   }
 
+  //! \brief Access to the N-th element (const version)
+  inline const ElementType& coord(int index) const {
+    return _coord[index];
+  }
+
   //! \brief Operate the addition with an other vector
   inline Vect& operator+=(const Vect& other) {
     for(int i = 0 ; i < DIM ; i++) {

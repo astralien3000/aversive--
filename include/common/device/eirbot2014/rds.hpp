@@ -4,6 +4,7 @@
 
 #include <device/input_device.hpp>
 #include <math/vect.hpp>
+#include <base/array.hpp>
 #include <stdint.h>
 
 //! \brief A complex sensor which gives the relative position of others robots
@@ -14,10 +15,10 @@
   The values returned depend on the choosen mode (cartesian or polar).
 */
 
-class Rds : public InputDevice<Vect<6, Vect<2, int16_t> > > {
+class Rds : public InputDevice<Array<6, Vect<2, int16_t> > > {
 private:
   uint8_t _nb;
-  Vect<6, Vect<2, int16_t> > _pos;
+  Array<6, Vect<2, int16_t> > _pos;
 
 public:
   Rds(const char* name);
