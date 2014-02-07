@@ -14,7 +14,7 @@
 
 */
 template<typename T>
-class Motor : public OutputDevice<T> {
+class Motor : public SimpleOutputDevice<T> {
 public:
   Motor(const char*, T*);
 

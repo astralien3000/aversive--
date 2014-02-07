@@ -14,7 +14,7 @@
 
 */
 template<typename T>
-class Encoder : public InputDevice<T> {
+class Encoder : public SimpleInputDevice<T> {
 public:
   inline Encoder(const char*, T*);
 
