@@ -2,3 +2,5 @@
 *~
 *.hex
 *build*
+client
+server
