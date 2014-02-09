@@ -5,7 +5,7 @@
 
 class RandomAccessStream : public Stream {
 private:
-  u16 _cursor = 0;
+  volatile u16 _cursor = 0;
   
 protected:
   //! \brief gives the cursor's position
@@ -13,7 +13,7 @@ protected:
 
 public:
   //! \brief Default Constructor
-  RandomAccessStream(void);
+  RandomAccessStream(const char*);
 
   //! \brief Place the cursor at the position
   void seek(u16);

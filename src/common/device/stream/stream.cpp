@@ -21,7 +21,8 @@ Stream& Stream::operator<<(const T& val) {
 
   if(_mode == BINARY) {
     for(u16 i = 0 ; i < sizeof(val) ; i++) {
-      str[i] = val >> (i * 8) % 256;
+      //str[i] = (char)val >> ((sizeof(val) - 1 - i) * 8);
+      setValue(((u64)val >> (i * 8)) % 256);
     }
   }
   else if(_mode == FORMATTED) {
@@ -51,9 +52,10 @@ Stream& Stream::operator<<(const T& val) {
       i--;
       beg++;
     }
+    *this << (const char*)str;
   }
 
-  return *this << (const char*)str;
+  return *this;
 }
 
 Stream& Stream::operator>>(char* str) {
@@ -82,17 +84,18 @@ Stream& Stream::operator>>(char* str) {
 
 template<typename T>
 Stream& Stream::operator>>(T& val) {
-  char str[32] = {0};
-  *this >> str;
-
   val = 0;
   
   if(_mode == BINARY) {
     for(u16 i = 0 ; i < sizeof(val) ; i++) {
-      val += str[i] << (i * 8);
+      //val += str[i] << (i * 8);
+      val += getValue() << (i * 8) % 256;
     }
   }
   else if(_mode == FORMATTED) {
+    char str[32] = {0};
+    *this >> str;
+
     u16 beg = 0;
     if(str[0] == '-') {
       beg = 1;

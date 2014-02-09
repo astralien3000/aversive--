@@ -26,10 +26,14 @@ public:
   Stream(const char*);
 
   //! \brief Change the mode the stream is currently in
-  void setMode(Mode m);
+  inline void setMode(Mode m) {
+    _mode = m;
+  }
 
   //! \brief Change the string mode the stream is currently in
-  void setSepMode(SepMode s);
+  inline void setSepMode(SepMode s) {
+    _sep = s;
+  }
 
   //! \brief Write a string into the stream (const version)
   Stream& operator<<(const char*);
