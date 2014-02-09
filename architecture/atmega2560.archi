@@ -1,4 +1,4 @@
-uc atmega32
+uc atmega128
 
 hardware timer[0]
     register8 control TCCR0A, TCCR0B

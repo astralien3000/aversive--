@@ -2,7 +2,7 @@
 #define SASIAE_OUTPUT_DEVICE_HPP
 
 template<typename T>
-struct OutputDevicePrivateData {
+struct SimpleOutputDevicePrivateData {
 
 };
 
@@ -14,7 +14,7 @@ struct OutputDevicePrivateData {
 #include <sstream>
 
 template<typename T>
-OutputDevice<T>::OutputDevice(const char* name) : Device(name) {
+SimpleOutputDevice<T>::SimpleOutputDevice(const char* name) : Device(name) {
   Aversive::init();
 
   ClientThread::instance().
@@ -23,7 +23,7 @@ OutputDevice<T>::OutputDevice(const char* name) : Device(name) {
 }
 
 template<typename T>
-void OutputDevice<T>::setValue(T val) {
+void SimpleOutputDevice<T>::setValue(T val) {
   std::ostringstream oss;
   oss << "VALUE " << val;
 

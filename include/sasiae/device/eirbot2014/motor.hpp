@@ -3,12 +3,12 @@
 
 #include "../../../common/device/eirbot2014/motor.hpp"
 
-template<s32* ADDR>
-Motor<ADDR>::Motor(const char* name) : OutputDevice(name) {}
+template<typename T>
+Motor<T>::Motor(const char* name, T* addr) : SimpleOutputDevice<T>(name), _addr(addr) {}
 
-template<s32* ADDR>
-void Motor<ADDR>::setValue(s32 val) {
-  OutputDevice::setValue(*ADDR = val);
+template<typename T>
+void Motor<T>::setValue(T val) {
+  SimpleOutputDevice<T>::setValue(*_addr = val);
 }
 
 

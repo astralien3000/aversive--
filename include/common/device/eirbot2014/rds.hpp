@@ -2,34 +2,36 @@
 #define RDS_HPP
 
 
-#include <device/io_device.hpp>
+#include <device/input_device.hpp>
+#include <math/vect.hpp>
 #include <base/array.hpp>
 #include <stdint.h>
 
 //! \brief A complex sensor which gives the relative position of others robots
-//! \param CHANNEL : uart channel to get the messages from.
 /*!
   This sensor can possibly return the position of all robots in a 2-meter radius.
-  The protocol is [nb of robots] [x_r1 y_r1] [x_r2 y_r2] ...
+  The protocol is [nb of robots] [x_r1] [y_r1] [x_r2] [y_r2] ...
   For example : 2 120 65 -20 30 means 2 robots at (120, 65) and (-20, 30)
   The values returned depend on the choosen mode (cartesian or polar).
 */
 
-template<int CHANNEL>
-class Rds : public IODevice<Array<13, int16_t> > {
+class Rds : public InputDevice<Array<6, Vect<2, int16_t> > > {
 private:
-  Array<13, int16_t> _values;
+  uint8_t _nb;
+  Array<6, Vect<2, int16_t> > _pos;
 
 public:
-  Rds(void);
+  Rds(const char* name);
 
   //! \bried Default mode is CARTESIAN. 
   void setModeCartesian(void);
   void setModePolar(void);
 
-  //! \brief Return the position of robots as : [number of robots] [position1] [position2] where a position is a couple (x, y) or (a, r); see setMode{Cartesian,Polar}().
-  const Array<13, int16_t>& getValue(void) const;
+  //! \brief Return the position (x, y) (or (d, a) depending the mode) of the spceficied robot.
+  const Vect<2, int16_t>& getPosition(uint8_t index) const;
 
+  //! \brief Return the number of robots seen by the RDS.
+  uint8_t robotsNumber(void) const;
 };
 
 

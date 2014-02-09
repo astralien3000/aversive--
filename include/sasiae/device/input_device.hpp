@@ -2,7 +2,7 @@
 #define SASIAE_INPUT_DEVICE_HPP
 
 template<typename T>
-struct InputDevicePrivateData {
+struct SimpleInputDevicePrivateData {
   T last_in;
 };
 
@@ -19,7 +19,7 @@ void get_value_from_msg(T* dest, const char* msg) {
 }
 
 template<typename T>
-InputDevice<T>::InputDevice(const char* name) : Device(name) {
+SimpleInputDevice<T>::SimpleInputDevice(const char* name) : Device(name) {
   Aversive::init();
   _data.last_in = 0;
 
@@ -39,7 +39,7 @@ InputDevice<T>::InputDevice(const char* name) : Device(name) {
 }
 
 template<typename T>
-T InputDevice<T>::getValue(void) {
+T SimpleInputDevice<T>::getValue(void) {
   return _data.last_in;
 }
 

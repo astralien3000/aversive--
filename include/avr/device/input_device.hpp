@@ -2,7 +2,7 @@
 #define AVR_INPUT_DEVICE_HPP
 
 template<typename T>
-struct InputDevicePrivateData {
+struct SimpleInputDevicePrivateData {
 
 };
 
@@ -11,12 +11,12 @@ struct InputDevicePrivateData {
 #include <aversive.hpp>
 
 template<typename T>
-InputDevice<T>::InputDevice(const char* name) : Device(name) {
+SimpleInputDevice<T>::SimpleInputDevice(const char* name) : Device(name) {
   Aversive::init();
 }
 
 template<typename T>
-T InputDevice<T>::getValue(void) {
+T SimpleInputDevice<T>::getValue(void) {
   return 0;
 }
 

@@ -6,12 +6,12 @@
 #include <aversive.hpp>
 
 template<typename T>
-OutputDevice<T>::OutputDevice(const char* name) : Device(name) {
+SimpleOutputDevice<T>::SimpleOutputDevice(const char* name) : Device(name) {
   Aversive::init();
 }
 
 template<typename T>
-void OutputDevice<T>::setValue(T val) {
+void SimpleOutputDevice<T>::setValue(T val) {
   (void)val;
 }
 

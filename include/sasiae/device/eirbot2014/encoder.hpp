@@ -3,13 +3,13 @@
 
 #include "../../../common/device/eirbot2014/encoder.hpp"
 
-template<u32* ADDR>
-Encoder<ADDR>::Encoder(const char* name) : InputDevice(name) {
+template<typename T>
+Encoder<T>::Encoder(const char* name, T* addr) : SimpleInputDevice<T>(name), _addr(addr) {
 }
 
-template<u32* ADDR>
-u32 Encoder<ADDR>::getValue(void) {
-  return *ADDR = InputDevice::getValue();
+template<typename T>
+T Encoder<T>::getValue(void) {
+  return *_addr = SimpleInputDevice<T>::getValue();
 }
 
 #endif//SASIAE_ENCODER_HPP

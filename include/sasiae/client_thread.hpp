@@ -1,7 +1,7 @@
 #ifndef CLIENT_THREAD_HPP
 #define CLIENT_THREAD_HPP
 
-#include <QThread>
+#include <QtCore/QThread>
 #include <QMutex>
 #include <QSemaphore>
 #include <QMap>

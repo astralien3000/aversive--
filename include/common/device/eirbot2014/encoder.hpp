@@ -4,10 +4,6 @@
 #include <device/input_device.hpp>
 #include "../../base/integer.hpp"
 
-#ifndef ENCODER_PRIVATE_DATA
-#define ENCODER_PRIVATE_DATA
-#endif//ENCODER_PRIVATE_DATA
-
 //! \brief An incremental encoder, used by Eirbot in 2014
 //! \param ADDR : the address where to get the encoder value
 /*! 
@@ -17,17 +13,15 @@
   user, so I hope you know how your FPGA works ;) !
 
 */
-template<u32* ADDR>
-class Encoder : public InputDevice<u32> {
+template<typename T>
+class Encoder : public SimpleInputDevice<T> {
 public:
-  inline Encoder(const char*);
+  inline Encoder(const char*, T*);
 
-  inline u32 getValue(void);
+  inline T getValue(void);
 
 private:
-  ENCODER_PRIVATE_DATA
+  T* _addr;
 };
-
-#undef  ENCODER_PRIVATE_DATA
 
 #endif//ENCODER_HPP

@@ -8,7 +8,7 @@ public:
   typedef T OutputType;
 
 public:
-  T doFilter(T);
+  virtual T doFilter(T) = 0;
 };
 
 #endif//FILTER_HPP

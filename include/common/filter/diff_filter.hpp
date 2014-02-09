@@ -1,7 +1,8 @@
 #ifndef DIFF_FILTER_HPP
 #define DIFF_FILTER_HPP
 
-#include "../base/integer.hpp"
+#include <base/integer.hpp>
+#include <filter/filter.hpp>
 
 //! \brief Differential Filter
 /*!  
@@ -10,7 +11,7 @@
   previous input.
 
  */
-class DiffFilter {
+class DiffFilter : public Filter<s32> {
 public:
   typedef s32 InputType;
   typedef s32 OutputType;

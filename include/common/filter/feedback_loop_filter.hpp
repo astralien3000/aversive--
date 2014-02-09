@@ -1,25 +1,25 @@
 #ifndef FEEDBACK_LOOP_FILTER_HPP
 #define FEEDBACK_LOOP_FILTER_HPP
 
-#include "../base/integer.hpp"
+#include <base/integer.hpp>
+#include <filter/filter.hpp>
 
-template <class ConsignFilter, class FeedbackFilter, class ErrorFilter>
-class FeedbackLoopFilter {
+class FeedbackLoopFilter : Filter<s32> {
 public:
-  typedef typename ConsignFilter::InputType InputType;
-  typedef typename ErrorFilter::OutputType OutputType;
+  typedef s32 InputType;
+  typedef s32 OutputType;
 
-  typedef typename FeedbackFilter::InputType FeedbackInputType;
+  typedef s32 FeedbackInputType;
 
 private:
-  ConsignFilter& _cf;
-  FeedbackFilter& _ff;
-  ErrorFilter& _ef;
+  Filter& _cf;
+  Filter& _ff;
+  Filter& _ef;
 
   FeedbackInputType feedback;
 
 public:
-  inline FeedbackLoopFilter(ConsignFilter& cf, FeedbackFilter& ff, ErrorFilter& ef) : _cf(cf), _ff(ff), _ef(ef), feedback(0) {}
+  inline FeedbackLoopFilter(Filter& cf, Filter& ff, Filter& ef) : _cf(cf), _ff(ff), _ef(ef), feedback(0) {}
 
   inline void setFeedback(FeedbackInputType val) {
     feedback = val;

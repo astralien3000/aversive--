@@ -3,12 +3,12 @@
 
 #include "../../../common/device/eirbot2014/encoder.hpp"
 
-template<u32* ADDR>
-inline Encoder<ADDR>::Encoder(const char* name) : InputDevice<u32>(name) {}
+template<typename T>
+inline Encoder<T>::Encoder(const char* name, T* addr) : SimpleInputDevice<T>(name), _addr(addr) {}
 
-template<u32* ADDR>
-inline u32 Encoder<ADDR>::getValue(void) {
-  return (*ADDR);
+template<typename T>
+inline T Encoder<T>::getValue(void) {
+  return *_addr;
 }
 
 

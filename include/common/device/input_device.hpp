@@ -1,18 +1,18 @@
-#ifndef INPUT_DEVICE_HPP
-#define INPUT_DEVICE_HPP
+#ifndef SIMPLE_INPUT_DEVICE_HPP
+#define SIMPLE_INPUT_DEVICE_HPP
 
 #include <device/device.hpp>
 #include <device/input.hpp>
 
 template<typename T>
-class InputDevice : public Input<T>, public Device {
+class SimpleInputDevice : public Input<T>, public Device {
 public:
-  InputDevice(const char* name);
+  SimpleInputDevice(const char* name);
   
   T getValue(void);
 
 private:
-  InputDevicePrivateData<T> _data;
+  SimpleInputDevicePrivateData<T> _data;
 };
 
-#endif//INPUT_DEVICE_HPP
+#endif//SIMPLE_INPUT_DEVICE_HPP

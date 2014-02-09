@@ -1,20 +1,18 @@
 export CC=g++
-export CFLAGS=-Wall -Wextra -std=c++11 -DQT_CORE_LIB -DQT_NETWORK_LIB -I/usr/include/qt5 -I/usr/include/qt5/QtCore -I/usr/include/qt5/QtNetwork -fPIE -g
+export CFLAGS=-Wall -Wextra --std=c++11 -fno-threadsafe-statics -D__STDC_LIMIT_MACROS -O3 -DQT_CORE_LIB -I/usr/include/qt5 -I/usr/include/qt5/QtCore -fPIE -g
 BUILD=../../build/sasiae
 export BUILD_EXPORT=$(BUILD)
 INCLUDE=../../include/sasiae
 export INCLUDE_EXPORT=$(INCLUDE)
 LIB=$(BUILD)/../libaversive_sasiae.a
-OBJ=$(BUILD)/aversive.o $(BUILD)/client_thread.o
-
-SHELL=/bin/bash
+OBJ=aversive client_thread
 
 SUB_DIRS=system # add the sub directory's names here
 
-all: $(BUILD) build system.d $(LIB)
+all: $(BUILD) build $(addsuffix .d,$(SUB_DIRS)) common $(LIB)
 
 # to build local sources
-build: $(OBJ)
+build: $(addprefix $(BUILD)/,$(addsuffix .o,$(OBJ)))
 
 $(BUILD):
 	mkdir -p $@
@@ -27,5 +25,8 @@ $(BUILD)/%.o: %.cpp
 system.d:
 	$(MAKE) -C $(@:.d=)
 
-$(LIB): $(OBJ)
-	ar cr $(LIB) $(BUILD)/*.o
+$(LIB):
+	ar r $(LIB) $(BUILD)/*.o
+
+common:
+	$(MAKE) -C ../common

@@ -1,6 +1,6 @@
 AVERSIVE_BASE=../../
 
-MMCU=atmega2560
+MMCU=atmega128
 
 OPTI=-O3
 CXX=avr-g++
@@ -11,7 +11,7 @@ OBJCOPY=avr-objcopy
 
 ELF=stream.elf
 HEX=stream.hex
-DEV=/dev/ttyACM0
+DEV=/dev/ttyUSB1
 
 all: $(HEX)
 
@@ -19,8 +19,8 @@ asm: test_stream.cpp
 	$(CXX) $(CXX_FLAGS) -S $^ -o test_stream.asm $(CXX_LIBS)
 
 load: $(HEX)
-	sudo avrdude -cwiring -p$(MMCU) -P $(DEV) -U flash:w:$(HEX) -D
-#	sudo avarice -j /dev/ttyUSB0 --erase --program -f $(HEX)
+#	sudo avrdude -cwiring -p$(MMCU) -P $(DEV) -U flash:w:$(HEX) -D
+	sudo avarice -j /dev/ttyUSB0 --erase --program -f $(HEX)
 
 clean:
 	rm -f $(ELF) $(HEX)

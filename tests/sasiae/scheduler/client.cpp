@@ -3,7 +3,7 @@
 
 #include <device/output_device.hpp>
 
-OutputDevice<int> out("out");
+SimpleOutputDevice<int> out("out");
 
 bool robotInit(void) {
 
