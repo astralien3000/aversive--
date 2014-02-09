@@ -1,11 +1,18 @@
-.PHONY: all doc test clean avr sasiae
+.PHONY: all doc test clean sasiae avr atmega128 atmega2560
 
-all: sasiae avr
+all: sasiae atmega128 atmega2560
+
+atmega128: export MMCU=atmega128
+atmega128: avr
+
+atmega2560: export MMCU=atmega2560
+atmega2560: avr
 
 sasiae avr:
 	$(MAKE) -C src/$@
 
 doc:
+	mkdir -p build/doc
 	@doxygen
 
 archiparser:
@@ -20,8 +27,8 @@ newhpp:
 exporthpp:
 	@./script/exporthpp.sh
 
-mrproper: clean clean_doc clean_archiparser
-	@rm -rf build/avr/* build/sasiae/*
+mrproper: clean clean_archiparser
+	@rm -rf build/*
 
 clean_doc: 
 	@rm -rf build/doc/*

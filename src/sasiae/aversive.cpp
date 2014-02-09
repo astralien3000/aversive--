@@ -4,8 +4,6 @@
 #include <iostream>
 #include <QThread>
 
-#include <device/device.hpp>
-
 class AversiveClientThread : public ClientThread {
 public:
   AversiveClientThread(void) : ClientThread() { }
@@ -36,58 +34,55 @@ public:
   }
 };
 
-static bool keep_going;
+static bool initialized = false;
+static bool running = false;
+static int ret = 0;
 
-inline void aversiveInit(void) {
-  AversiveClientThread* client = new AversiveClientThread;
-  client->start();
-  keep_going = true;
+void Aversive::init(void) {
+  if(!initialized) {
+    AversiveClientThread& client = *(new AversiveClientThread);
+    client.start();
+    running = initialized = true;
+  }
+}
+
+void Aversive::sleep(void) {
+  // Synchronisation
+  AversiveClientThread& client = AversiveClientThread::instance();
+  client.iterate();
 }
 
 void Aversive::sleep(int ms) {
-  // Do synchronisation stuff
   (void) ms;
-  AversiveClientThread* client = &AversiveClientThread::instance();
-  client->iterate();
-  return;
 }
 
 void Aversive::stop(void) {
-  keep_going = false;
-  AversiveClientThread* client = &AversiveClientThread::instance();
-  client->unlock();
+  running = false;
+  AversiveClientThread& client = AversiveClientThread::instance();
+  client.unlock();
 }
 
-inline void aversiveExit(void) {
+int Aversive::exit(void) {
   Aversive::stop();
-  AversiveClientThread* client = &AversiveClientThread::instance();
-  client->sendData("S");
-  client->wait();
-  delete client;
-  return;
+  AversiveClientThread& client = AversiveClientThread::instance();
+  client.sendData("S");
+  client.wait();
+  delete &client;
+  return ret;
 }
 
-int main(int argc, char** argv) {
-  (void)argc;
-  (void)argv;
-  
-  // To call aversiveInit even if there is no Device
-  (void)AversiveInitializer::instance();
+bool Aversive::isInitialized(void) {
+  return initialized;
+}
 
-  if(!robotInit()) {
-    std::cerr << "Error while initializing the robot" << std::endl;
-    return EXIT_FAILURE;
-  }
-  
-  while(keep_going) {
-    Aversive::sleep(0);
-    if(!keep_going) {
-      break;
-    }
-    robotLoop();
-  }
-  
-  robotExit();
-  aversiveExit();
-  return EXIT_SUCCESS;
+bool Aversive::isRunning(void) {
+  return running;
+}
+
+int Aversive::returnCode(void) {
+  return ret;
+}
+
+void Aversive::setReturnCode(int returnCode) {
+  ret = returnCode;
 }

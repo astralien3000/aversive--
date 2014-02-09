@@ -8,6 +8,7 @@ struct InputDevicePrivateData {
 
 #include "../../common/device/input_device.hpp"
 
+#include <aversive.hpp>
 #include <client_thread.hpp>
 
 template<typename T>
@@ -19,7 +20,7 @@ void get_value_from_msg(T* dest, const char* msg) {
 
 template<typename T>
 InputDevice<T>::InputDevice(const char* name) : Device(name) {
-  (void)AversiveInitializer::instance();
+  Aversive::init();
   _data.last_in = 0;
 
   ClientThread::instance().

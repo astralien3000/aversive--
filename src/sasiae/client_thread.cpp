@@ -5,7 +5,7 @@
 #include <iostream>
 #include <unistd.h>
 
-#define DEFAULT_BUFFER_SIZE 64
+static const int DEFAULT_BUFFER_SIZE = 64;
 
 static const char* const err_detect_device = "Impossible to detect device's name";
 static const char* const err_unknown_device = "Unknown device \"%s\"";

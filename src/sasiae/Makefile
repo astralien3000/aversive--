@@ -4,17 +4,20 @@ BUILD=../../build/sasiae
 export BUILD_EXPORT=$(BUILD)
 INCLUDE=../../include/sasiae
 export INCLUDE_EXPORT=$(INCLUDE)
-LIB=$(BUILD)/libaversive.a
+LIB=$(BUILD)/../libaversive_sasiae.a
 OBJ=$(BUILD)/aversive.o $(BUILD)/client_thread.o
 
 SHELL=/bin/bash
 
 SUB_DIRS=system # add the sub directory's names here
 
-all: build system.d $(LIB)
+all: $(BUILD) build system.d $(LIB)
 
 # to build local sources
 build: $(OBJ)
+
+$(BUILD):
+	mkdir -p $@
 
 $(BUILD)/aversive.o: $(INCLUDE)/aversive.hpp
 $(BUILD)/client_thread.o: $(INCLUDE)/client_thread.hpp $(INCLUDE)/base/singleton.hpp

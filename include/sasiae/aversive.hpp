@@ -3,17 +3,6 @@
 
 #include "../common/aversive.hpp"
 
-#include <base/singleton.hpp>
 
-void aversiveInit(void);
-
-// A class defined to correctly init the ClientThread before creating any Device.
-class AversiveInitializer : public Singleton<AversiveInitializer> {
-  friend class Singleton<AversiveInitializer>;
-private:
-  inline AversiveInitializer() {
-    aversiveInit();
-  }
-};
 
 #endif//SASIAE_AVERSIVE_HPP

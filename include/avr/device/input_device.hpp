@@ -8,8 +8,11 @@ struct InputDevicePrivateData {
 
 #include "../../common/device/input_device.hpp"
 
+#include <aversive.hpp>
+
 template<typename T>
 InputDevice<T>::InputDevice(const char* name) : Device(name) {
+  Aversive::init();
 }
 
 template<typename T>

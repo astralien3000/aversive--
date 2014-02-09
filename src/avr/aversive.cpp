@@ -1,46 +1,42 @@
 #include <aversive.hpp>
-#include <stdlib.h>
-#include <device/stream/uart_stream.hpp>
 
-static bool keep_going;
+static bool initialized = false;
+static bool running = false;
+static int ret = 0;
 
-inline bool aversiveInit(int argc, char** argv) {
-  (void) argc;
-  (void) argv;
-  keep_going = true;
-  return true;
+void Aversive::init(void) {
+  if(!initialized) {
+    running = initialized = true;
+  }
 }
+
+void Aversive::sleep(void) { }
 
 void Aversive::sleep(int ms) {
   (void) ms;
-  return;
 }
 
 void Aversive::stop(void) {
-  keep_going = false;
+  running = false;
 }
 
-inline void aversiveExit(void) {
+int Aversive::exit(void) {
   Aversive::stop();
-  keep_going = false;
-  return;
+  return ret;
 }
 
-int main(int argc, char** argv) {
-  if(!aversiveInit(argc, argv)) {
-    return 1;
-  }
- 
-  if(!robotInit()) {
-    return 1;
-  }
-  
-  while(keep_going) {
-    robotLoop();
-    Aversive::sleep(0);
-  }
-  
-  robotExit();
-  aversiveExit();
-  return 0;
+bool Aversive::isInitialized(void) {
+  return initialized;
+}
+
+bool Aversive::isRunning(void) {
+  return running;
+}
+
+int Aversive::returnCode(void) {
+  return ret;
+}
+
+void Aversive::setReturnCode(int returnCode) {
+  ret = returnCode;
 }

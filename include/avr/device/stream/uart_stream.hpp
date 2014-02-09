@@ -3,10 +3,12 @@
 
 #include "../../../common/device/stream/uart_stream.hpp"
 
+#include <aversive.hpp>
 #include <hardware/uart.hpp>
 
 template<int CHANNEL>
 UartStream<CHANNEL>::UartStream(void) {
+  Aversive::init();
   Uart<CHANNEL>& uart = Uart<CHANNEL>::instance();
   uart.init();
 }

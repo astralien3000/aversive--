@@ -8,13 +8,14 @@ struct OutputDevicePrivateData {
 
 #include "../../common/device/output_device.hpp"
 
+#include <aversive.hpp>
 #include <client_thread.hpp>
 
 #include <sstream>
 
 template<typename T>
 OutputDevice<T>::OutputDevice(const char* name) : Device(name) {
-  (void)AversiveInitializer::instance();
+  Aversive::init();
 
   ClientThread::instance().
     registerDevice(*this,

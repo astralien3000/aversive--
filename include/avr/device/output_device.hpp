@@ -3,8 +3,11 @@
 
 #include "../../common/device/output_device.hpp"
 
+#include <aversive.hpp>
+
 template<typename T>
 OutputDevice<T>::OutputDevice(const char* name) : Device(name) {
+  Aversive::init();
 }
 
 template<typename T>

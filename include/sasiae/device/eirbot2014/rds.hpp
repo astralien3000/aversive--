@@ -8,6 +8,8 @@
 
 template<int CHANNEL>
 Rds<CHANNEL>::Rds(void) : {
+  Aversive::init();
+  
   ClientThread::instance().registerDevice(*this, std::function<void(char*)>([this] (char* msg) mutable -> void {
 	if (strncmp(msg, "values ", 7)) {
 	  ClientThread::instance().sendMessage(ERROR, "RDS device : invalid message (\"values\" expected)");
