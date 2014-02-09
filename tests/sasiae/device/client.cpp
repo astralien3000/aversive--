@@ -8,24 +8,29 @@
 u32 ENC;
 s32 MOT;
 
-Encoder<u32> _id("intest", &ENC);
-Motor<s32> _od("outtest", &MOT);
-
-bool robotInit(void) {
-  //ClientThread::instance().sendMessage(ClientThread::INFO, "Send value 10 to intest to end the program");
+int main(int argc, char** argv) {
+  (void) argc;
+  (void) argv;
   
-  return 1;
-}
+  Aversive::init();
+  // Declare your devices here
+  // Initialize your stuff here
+  Encoder<u32> _id("intest", &ENC);
+  Motor<s32> _od("outtest", &MOT);
 
-void robotLoop(void) {
-  if(_id.getValue() == 10) {
-    Aversive::stop();
+  while(Aversive::isRunning()) {
+    // Your while(1) code
+    if(_id.getValue() == 10) {
+      Aversive::stop();
+    }
+    Aversive::sleep(); // Very important for simulation purpose
   }
-  return;
-}
-
-void robotExit(void) {
-  _od.setValue(_id.getValue());
   
-  return;
+  // You can have several "while(Aversive::isRunning())" loops if needed
+  // Keep the "Aversive::sleep()" at the end of the loop in each of your loops
+  
+  // Unintialize your stuff here
+  _od.setValue(_id.getValue());
+  Aversive::setReturnCode(0); // Optional; default value is already 0
+  return Aversive::exit();
 }
