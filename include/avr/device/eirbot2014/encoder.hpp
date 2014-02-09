@@ -4,7 +4,7 @@
 #include "../../../common/device/eirbot2014/encoder.hpp"
 
 template<typename T>
-inline Encoder<T>::Encoder(const char* name, T* addr) : InputDevice<T>(name), _addr(addr) {}
+inline Encoder<T>::Encoder(const char* name, T* addr) : SimpleInputDevice<T>(name), _addr(addr) {}
 
 template<typename T>
 inline T Encoder<T>::getValue(void) {

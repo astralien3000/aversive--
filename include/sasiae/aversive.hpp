@@ -5,7 +5,7 @@
 
 #include <base/singleton.hpp>
 
-void aversiveInit(void);
+extern void aversiveInit(void);
 
 // A class defined to correctly init the ClientThread before creating any Device.
 class AversiveInitializer : public Singleton<AversiveInitializer> {

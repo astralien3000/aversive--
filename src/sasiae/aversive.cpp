@@ -38,7 +38,7 @@ public:
 
 static bool keep_going;
 
-inline void aversiveInit(void) {
+void aversiveInit(void) {
   AversiveClientThread* client = new AversiveClientThread;
   client->start();
   keep_going = true;

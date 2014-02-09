@@ -2,7 +2,7 @@
 #define MOTOR_HPP
 
 #include <device/output_device.hpp>
-#include "../../base/integer.hpp"
+#include <base/integer.hpp>
 
 //! \brief A propulsion motor, used by Eirbot in 2014
 //! \param ADDR : the address where to set the motor pwm

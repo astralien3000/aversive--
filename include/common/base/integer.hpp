@@ -1,6 +1,8 @@
 #ifndef TYPE_HPP
 #define TYPE_HPP
 
+#include <stdint.h>
+
 //! \brief boundaries infos on integers with specified size
 //! \param SIZE : size of integer in bits
 //! \param S : signed integer type
@@ -20,12 +22,12 @@ template<int SIZE>
 struct Integer : public Integer<((SIZE/8)+1) * 8> {};
 
 #define MACRO_INTEGER(s, t) \
-  template<> struct Integer<s> { typedef signed t Signed; typedef unsigned t Unsigned; typedef IntegerInfo<s, Signed, Unsigned> Info; };
+  template<> struct Integer<s> { typedef t Signed; typedef u##t Unsigned; typedef IntegerInfo<s, Signed, Unsigned> Info; };
 
-MACRO_INTEGER( 8, char     )
-MACRO_INTEGER(16, short    )
-MACRO_INTEGER(32, long     )
-MACRO_INTEGER(64, long long)
+MACRO_INTEGER( 8, int8_t)
+MACRO_INTEGER(16, int16_t)
+MACRO_INTEGER(32, int32_t)
+MACRO_INTEGER(64, int64_t)
 
 #undef MACRO_INTEGER
 

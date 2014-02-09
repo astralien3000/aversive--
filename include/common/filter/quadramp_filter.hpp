@@ -1,8 +1,8 @@
 #ifndef QUADRAMP_FILTER_HPP
 #define QUADRAMP_FILTER_HPP
 
-#include "../base/integer.hpp"
-#include "filter.hpp"
+#include <base/integer.hpp>
+#include <filter/filter.hpp>
 
 class QuadrampFilter : public Filter<s32> {
 public:

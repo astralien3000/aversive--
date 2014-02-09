@@ -11,13 +11,13 @@
 template<int CHANNEL>
 class UartStream : public Stream {
 public:  
-  UartStream(void);
+  UartStream(const char*);
   
-  //! \brief Write a character into the stream
-  Stream& operator<<(char);
+  //! \brief Write a char in stream
+  char getValue(void);
 
-  //! \brief Read a characte from the stream
-  Stream& operator>>(char&);
+  //! \brief Read a char from stream
+  void setValue(char);
 };
 
 #endif//UART_STREAM_HPP

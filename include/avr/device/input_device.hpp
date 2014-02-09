@@ -2,18 +2,18 @@
 #define AVR_INPUT_DEVICE_HPP
 
 template<typename T>
-struct InputDevicePrivateData {
+struct SimpleInputDevicePrivateData {
 
 };
 
 #include "../../common/device/input_device.hpp"
 
 template<typename T>
-InputDevice<T>::InputDevice(const char* name) : Device(name) {
+SimpleInputDevice<T>::SimpleInputDevice(const char* name) : Device(name) {
 }
 
 template<typename T>
-T InputDevice<T>::getValue(void) {
+T SimpleInputDevice<T>::getValue(void) {
   return 0;
 }
 

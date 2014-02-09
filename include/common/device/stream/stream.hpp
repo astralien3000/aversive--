@@ -1,9 +1,12 @@
 #ifndef STREAM_HPP
 #define STREAM_HPP
 
+#include <device/device.hpp>
+#include <device/input.hpp>
+#include <device/output.hpp>
 #include <base/integer.hpp>
 
-class Stream {
+class Stream : public Device, public Input<char>, public Output<char> {
 public:
     //! \brief Mode represents the different modes the stream can be in (default is FORMATTED)
   enum Mode { BINARY, FORMATTED };
@@ -20,21 +23,13 @@ protected:
 
 public:
   //! \brief Default Constructor
-  Stream(void);
+  Stream(const char*);
 
   //! \brief Change the mode the stream is currently in
   void setMode(Mode m);
 
   //! \brief Change the string mode the stream is currently in
   void setSepMode(SepMode s);
-
-  //! \brief Write a char in stream
-  //! \warning virtual operation
-  virtual Stream& operator<<(char);
-
-  //! \brief Read a char from stream
-  //! \warning virtual operation
-  virtual Stream& operator>>(char&);
 
   //! \brief Write a string into the stream (const version)
   Stream& operator<<(const char*);
@@ -45,7 +40,7 @@ public:
   //! \brief Write anything into the stream
   template<typename T>
   Stream& operator<<(const T&);
-  
+
   //! \brief Read a string from the stream
   //! \attention Its behavior depends on the string mode the stream is currently in
   Stream& operator>>(char*);
@@ -54,6 +49,14 @@ public:
   //! \attention Its behavior depends on the mode (binary or formatted) the stream is currently in
   template<typename T>
   Stream& operator>>(T&);
+
+  //! \brief Write a char in stream
+  //! \warning virtual operation
+  virtual char getValue(void) = 0;
+
+  //! \brief Read a char from stream
+  //! \warning virtual operation
+  virtual void setValue(char) = 0;
 };
 
 #endif//STREAM_HPP

@@ -1,8 +1,8 @@
 #ifndef PID_FILTER_HPP
 #define PID_FILTER_HPP
 
-#include "../base/integer.hpp"
-#include "filter.hpp"
+#include <base/integer.hpp>
+#include <filter/filter.hpp>
 
 //! \brief PID Filter
 class PidFilter : public Filter<s32> {
@@ -24,6 +24,8 @@ private:
 
   CoeffType _out_shift;
 
+  OutputType _last_out;
+
 public:
   //! \brief Constructor with initialisation of all gains
   PidFilter(CoeffType p = 0, CoeffType i = 0, CoeffType d = 0);
@@ -37,6 +39,8 @@ public:
   void setOutShift(CoeffType shift);
 
   OutputType doFilter(InputType in);
+
+  OutputType out(void);
 };
 
 #endif//PID_FILTER_HPP

@@ -6,21 +6,21 @@
 #include <hardware/uart.hpp>
 
 template<int CHANNEL>
-UartStream<CHANNEL>::UartStream(void) {
+UartStream<CHANNEL>::UartStream(const char* name) : Stream(name) {
   Uart<CHANNEL>& uart = Uart<CHANNEL>::instance();
   uart.init();
 }
 
 template<int CHANNEL>
-Stream& UartStream<CHANNEL>::operator<<(char c) {
+void UartStream<CHANNEL>::setValue(char c) {
   Uart<CHANNEL>::instance().send(c);
-  return *this;
 }
 
 template<int CHANNEL>
-Stream& UartStream<CHANNEL>::operator>>(char& c) {
-  Uart<CHANNEL>::instance().recv(c);
-  return *this;
+char UartStream<CHANNEL>::getValue(void) {
+  char ret;
+  Uart<CHANNEL>::instance().recv(ret);
+  return ret;
 }
 
 #endif//AVR_UART_STREAM_HPP

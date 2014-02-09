@@ -10,11 +10,12 @@
 class RobotController : public Output<Vect<2, s32>> {
  private:
   FeedbackLoopFilter _loop_d, _loop_a;
-  Output<s32>& _mot_l, _mot_r;
+  Output<s32>& _mot_l;
+  Output<s32>& _mot_r;
   Input<Vect<2, s32>>& _odo;
   
  public:
-  RobotController(Output<s32>& mot_l, Output<s32>& mot_r, Input<Vect<2, s32>>& odo, Filter& cfd, Filter& ffd, Filter& efd, Filter& cfa, Filter& ffa, Filter& efa) : 
+  RobotController(Output<s32>& mot_l, Output<s32>& mot_r, Input<Vect<2, s32>>& odo, Filter<s32>& cfd, Filter<s32>& ffd, Filter<s32>& efd, Filter<s32>& cfa, Filter<s32>& ffa, Filter<s32>& efa) : 
     _loop_d(cfd, ffd, efd), _loop_a(cfa, ffa, efa), _mot_l(mot_l), _mot_r(mot_r), _odo(odo) {}
   
   void setValue(Vect<2, s32> val) {

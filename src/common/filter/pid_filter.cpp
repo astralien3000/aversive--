@@ -57,7 +57,11 @@ typename PidFilter::OutputType PidFilter::doFilter(InputType in) {
   else {
     out = out >> _out_shift;
   }
-  return out;
-}
-  
 
+  _last_out = out;
+  return _last_out;
+}
+
+typename PidFilter::OutputType PidFilter::out(void) {
+  return _last_out;
+}

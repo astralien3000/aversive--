@@ -6,7 +6,7 @@
 #include <math/saturate.hpp>
 
 template<typename T>
-inline Motor<T>::Motor(const char* name, T* addr) : OutputDevice<T>(name), _addr(addr) {}
+inline Motor<T>::Motor(const char* name, T* addr) : SimpleOutputDevice<T>(name), _addr(addr) {}
 
 template<typename T>
 inline void Motor<T>::setValue(T val) {

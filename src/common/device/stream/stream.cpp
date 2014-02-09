@@ -1,10 +1,11 @@
 #include <device/stream/stream.hpp>
 
-Stream::Stream(void) {}
+Stream::Stream(const char* name) : Device(name) {}
 
 Stream& Stream::operator<<(const char* str) {
   for( ; *str != '\0' ; str++) {
-    *this << *str;
+    setValue(*str);
+    //*this << *str;
   }
   return *this;
 }
@@ -59,8 +60,8 @@ Stream& Stream::operator>>(char* str) {
   bool keep = true;
   char* beg = str;
   while(keep && (str-beg) < 32) {
-    char c;
-    *this >> c;
+    char c = getValue();
+    //*this >> c;
     *str = c;
     if(_mode == FORMATTED) {
       if(_sep == WORD && c == ' ') {
@@ -70,7 +71,8 @@ Stream& Stream::operator>>(char* str) {
 	*str = '\n';
 	keep = false;
       }
-      *this << *str;
+      setValue(*str);
+      //*this << *str;
     }
     str++;	
   }
@@ -113,3 +115,28 @@ Stream& Stream::operator>>(T& val) {
   return *this;
 }
 
+// Input
+/*
+template Stream& Stream::operator>> <u8>(u32&);
+template Stream& Stream::operator>> <u16>(u16&);
+template Stream& Stream::operator>> <u32>(u32&);
+template Stream& Stream::operator>> <u64>(u64&);
+*/
+
+template Stream& Stream::operator>> <s8>(s8&);
+template Stream& Stream::operator>> <s16>(s16&);
+template Stream& Stream::operator>> <s32>(s32&);
+template Stream& Stream::operator>> <s64>(s64&);
+
+// Output
+/*
+template Stream& Stream::operator<< <u8>(const u8&);
+template Stream& Stream::operator<< <u16>(const u16&);
+template Stream& Stream::operator<< <u32>(const u32&);
+template Stream& Stream::operator<< <u64>(const u64&);
+*/
+
+template Stream& Stream::operator<< <s8>(const s8&);
+template Stream& Stream::operator<< <s16>(const s16&);
+template Stream& Stream::operator<< <s32>(const s32&);
+template Stream& Stream::operator<< <s64>(const s64&);
