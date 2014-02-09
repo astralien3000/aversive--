@@ -1,15 +1,17 @@
-.PHONY: all doc test clean sasiae avr atmega128 atmega2560
+.PHONY: all doc test clean sasiae atmega128 atmega2560
 
 all: sasiae atmega128 atmega2560
 
 atmega128: export MMCU=atmega128
-atmega128: avr
+atmega128:
+	$(MAKE) -C src/avr
 
 atmega2560: export MMCU=atmega2560
-atmega2560: avr
+atmega2560:
+	$(MAKE) -C src/avr
 
-sasiae avr:
-	$(MAKE) -C src/$@
+sasiae:
+	$(MAKE) -C src/sasiae
 
 doc:
 	mkdir -p build/doc
