@@ -3,13 +3,13 @@
 
 #include "../../../common/device/eirbot2014/gp2.hpp"
 
-template<u32* ADDR>
-GP2<ADDR>::GP2(const char* name) : InputDevice(name) {
+template<u8 PIN>
+GP2<PIN>::GP2(const char* name) : InputDevice(name) {
 }
 
-template<u32* ADDR>
-u32 GP2<ADDR>::getValue(void) {
-  return *ADDR = InputDevice::getValue();
+template<u8 PIN>
+u8 GP2<PIN>::getValue(void) {
+  return InputDevice::getValue();
 }
 
 #endif//SASIAE_GP2_HPP

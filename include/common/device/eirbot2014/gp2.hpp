@@ -3,7 +3,7 @@
 
 
 #include <device/input_device.hpp>
-#include "../../base/integer.hpp"
+#include <base/integer.hpp>
 
 
 //! \brief An infrared sensor, used by Eirbot in 2014
@@ -14,12 +14,12 @@
  Most of the Eirbot's GP2 are analogical and an ADC treatment must be applied.
 
 */
-template<u32* ADDR>
-class GP2 : public InputDevice<u32> {
+template<u8 PIN>
+class GP2 : public InputDevice<u16> {
 public:
   GP2(const char*);
 
-  u32 getValue(void);
+  u16 getValue(void);
 };
 
 #endif//GP2_HPP
