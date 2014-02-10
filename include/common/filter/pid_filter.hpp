@@ -41,6 +41,8 @@ public:
   OutputType doFilter(InputType in);
 
   OutputType out(void);
+
+  static PidFilter& identity(void);
 };
 
 #endif//PID_FILTER_HPP

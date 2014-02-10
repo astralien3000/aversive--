@@ -13,7 +13,7 @@ Stream::Stream(const char* name) : Device(name) {}
 void Stream::binaryWrite(const char* str, u16 size) {  
   const char* ptr = str;
   for( ; *ptr != '\0' && (ptr - str) < size  ; ptr++) {
-    setValue(*str);
+    setValue(*ptr);
   }
 }
 
@@ -82,7 +82,7 @@ inline void basic_formatted_integer_write(Stream& s, T val) {
     *(--ptr) = '-';
   }
   
-  if(ptr == str + MAX_BUFF) {
+  if(*ptr == '\0') {
     *(--ptr) = '0';
   }
   
