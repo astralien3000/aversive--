@@ -18,7 +18,7 @@ void Stream::binaryWrite(const char* str, u16 size) {
 }
 
 template<typename T>
-inline static void basic_binary_write(Stream& s, const T& val) {
+inline void basic_binary_write(Stream& s, const T& val) {
   for(u16 i = 0 ; i < sizeof(val) ; i++) {
     s.setValue((val >> (i * 8)) % 256);
   }
@@ -60,7 +60,7 @@ void Stream::binaryWrite(const u64& val) {
 // Formatted Write
 
 template<bool SIGNED = true, typename T>
-inline static void basic_formatted_integer_write(Stream& s, T val) {  
+inline void basic_formatted_integer_write(Stream& s, T val) {  
   char str[MAX_BUFF] = {0};
 
   char* ptr = str + MAX_BUFF;
@@ -147,7 +147,7 @@ void Stream::binaryRead(char* str, u16 size) {
 }
 
 template<typename T>
-inline static void basic_binary_read(Stream& s, T& val) {
+inline void basic_binary_read(Stream& s, T& val) {
   for(u16 i = 0 ; i < sizeof(val) ; i++) {
     val += s.getValue() << (i * 8) % 256;
   }

@@ -96,7 +96,7 @@ public:
 
   //! \brief Write anything into the stream
   template<typename T>
-  inline Stream& operator<<(const T& val) {
+  Stream& operator<<(const T& val) {
     if(_mode == BINARY) {
       binaryWrite(val);
     }

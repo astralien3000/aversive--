@@ -4,7 +4,7 @@ BUILD=../../build/sasiae
 export BUILD_EXPORT=$(BUILD)
 INCLUDE=../../include/sasiae
 export INCLUDE_EXPORT=$(INCLUDE)
-LIB=$(BUILD)/../libaversive_sasiae.a
+LIB=$(BUILD)/../libaversive_sasiae.so
 OBJ=aversive client_thread
 
 SUB_DIRS=system # add the sub directory's names here
