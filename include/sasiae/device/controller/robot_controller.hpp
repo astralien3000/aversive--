@@ -1,7 +1,7 @@
 #ifndef SASIAE_ROBOT_CONTROLLER_HPP
 #define SASIAE_ROBOT_CONTROLLER_HPP
 
-#include "../../../common/device/eirbot2014/robot_controller.hpp"
+#include "../../../common/device/controller/robot_controller.hpp"
 
 
 

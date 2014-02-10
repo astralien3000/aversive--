@@ -9,14 +9,18 @@ private:
   
 protected:
   //! \brief gives the cursor's position
-  u16 cursor(void);
+  inline u16 cursor(void) {
+    return _cursor;
+  }
 
 public:
   //! \brief Default Constructor
-  RandomAccessStream(const char*);
+  inline RandomAccessStream(const char* name) : Stream(name) {}
 
   //! \brief Place the cursor at the position
-  void seek(u16);
+  inline void seek(u16 cursor) {
+    _cursor = cursor;
+  }
 };
 
 #endif//RANDOM_ACCESS_STREAM

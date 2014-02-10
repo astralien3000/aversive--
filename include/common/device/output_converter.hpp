@@ -2,6 +2,7 @@
 #define OUTPUT_CONVERTER_HPP
 
 #include <device/output.hpp>
+#include <math/saturate.hpp>
 
 //! \brief Transform an output with some type in an output with another type
 //! \param ET : Externale type (what the user see)
