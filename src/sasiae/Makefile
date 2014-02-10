@@ -1,5 +1,5 @@
 export CC=g++
-export CFLAGS=-Wall -Wextra --std=c++11 -fno-threadsafe-statics -D__STDC_LIMIT_MACROS -O3 -DQT_CORE_LIB -I/usr/include/qt5 -I/usr/include/qt5/QtCore -fPIE -g
+export CFLAGS=-Wall -Wextra --std=c++11 -fno-threadsafe-statics -D__STDC_LIMIT_MACROS -O3 -DQT_CORE_LIB -I/usr/include/qt5 -I/usr/include/qt5/QtCore -g -fpic
 BUILD=../../build/sasiae
 export BUILD_EXPORT=$(BUILD)
 INCLUDE=../../include/sasiae
@@ -26,7 +26,8 @@ system.d:
 	$(MAKE) -C $(@:.d=)
 
 $(LIB):
-	ar r $(LIB) $(BUILD)/*.o
+#	ar r $(LIB) $(BUILD)/*.o
+	g++ -shared -o $(LIB) $(BUILD)/*.o
 
 common:
 	$(MAKE) -C ../common
