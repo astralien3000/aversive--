@@ -5,7 +5,7 @@
 template<typename T>
 class Input {
 public:
-  T getValue(void);
+  virtual T getValue(void)=0;
 };
 
 #endif//INPUT_HPP

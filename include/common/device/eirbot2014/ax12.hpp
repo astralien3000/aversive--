@@ -1,7 +1,10 @@
 #ifndef AX12_HPP
 #define AX12_HPP
 
-#include <device/output_device.hpp>
+#include <device/input.hpp>
+#include <device/output.hpp>
+#include <device/device.hpp>
+
 #include "../../base/integer.hpp"
 
 //! \brief A digital servomotor, used by Eirbot in 2014
@@ -14,7 +17,7 @@
 
 */
 
-class Ax12: public IODevice<u16,u16> {
+class Ax12: public Device, Input<u16>, Output<u16> {
 
 	ax12PrivateData data;
 
@@ -33,6 +36,8 @@ class Ax12: public IODevice<u16,u16> {
 		void setTorqueMax(u16 );
 
 };
+
+#include "../../../common/device/eirbot2014/ax12.hpp"
 
 
 #endif//AX12_HPP

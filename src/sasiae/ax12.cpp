@@ -1,6 +1,6 @@
 #include <device/eirbot2014/ax12.hpp>
 
-void send_set_message(Ax12& c, char* msg) {
+void send_set_message(Ax12& c, const char* msg) {
 	std::ostringstream oss;
 	oss << "SET " << msg;
 	ClientThread::instance().
@@ -9,10 +9,10 @@ void send_set_message(Ax12& c, char* msg) {
 	return;
 }
 
-void Ax12::parseAndAct(char* msg){
+void parseAndAct(char* msg){
 	QStringList list=QString(msg).split(" ");
 	QStringListIterator it=list.begin();
-	if(it++->compare("VALUE")==0)
+	if(!(*it++=="VALUE"))
 		return;
 	else {
 		if(*it=="SPEED")
@@ -38,26 +38,6 @@ Ax12::Ax12(char* name):IODevice(name){
 
 Ax12::~Ax12(){}
 
-
-u16 Ax12::getAngle() const{
-	if(data.wM==WHEEL)
-		return 0;
-	else {
-		setMode("position");
-		return getValue();
-	 }
-}
-
-u16 Ax12::getSpeed() const{
-	setMode("speed");
-	return getValue();
-}
-
-u16 Ax12::getTorque() const{
-	setMode("torque");
-	return getValue();
-}
-
 u16 Ax12::getValue() const {
 	switch(data.sM){
 		case POSITION:
@@ -79,6 +59,26 @@ void Ax12::setValue() const {
 		sendDeviceMessage(*this, 
 				oss.str().c_str());
 	return;
+}
+
+
+u16 Ax12::getAngle() const{
+	if(data.wM==WHEEL)
+		return 0;
+	else {
+		setMode("position");
+		return getValue();
+	 }
+}
+
+u16 Ax12::getSpeed() const{
+	setMode("speed");
+	return getValue();
+}
+
+u16 Ax12::getTorque() const{
+	setMode("torque");
+	return getValue();
 }
 
 void Ax12::setAngle(u16 val){
@@ -124,13 +124,13 @@ void Ax12::setMode(char* mode){
 	return;
 }
 
-void setAngleMax(u16 min, u16 max) {
+void Ax12::setAngleMax(u16 min, u16 max) {
 	std::ostringstream oss;
 	oss << "SET MAX ANGLE " << min << " " << max;
 	send_set_message(*this,oss.str().c_str());
 }
 
-void setTorqueMax(u16 max) {
+void Ax12::setTorqueMax(u16 max) {
 	std::ostringstream oss;
 	oss << "MAX TORQUE " << max;
 	send_set_message(*this,oss.str().c_str());
