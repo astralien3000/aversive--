@@ -13,12 +13,26 @@
 	that's why you should read UartStream instructions.
 
 */
-template<s32* ADDR>
-class Motor : public OutputDevice<s32> {
-public:
-  Motor(const char*);
 
-  void setValue(s32);
+class Ax12: public IODevice<u16,u16> {
+
+	ax12PrivateData data;
+
+	public:
+		Ax12(char*);
+		~Ax12();
+
+		u16 getAngle() const;
+		u16 getSpeed() const;
+		u16 getTorque() const;
+
+		void setAngle(u16 );
+		void setSpeed(u16 );
+		void setMode(char* );
+		void setAngleMax(u16, u16);
+		void setTorqueMax(u16 );
+
 };
+
 
 #endif//AX12_HPP

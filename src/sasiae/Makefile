@@ -1,5 +1,5 @@
 export CC=g++
-export CFLAGS=-Wall -Wextra -std=c++11 -DQT_CORE_LIB -DQT_NETWORK_LIB -I/usr/include/qt5 -I/usr/include/qt5/QtCore -I/usr/include/qt5/QtNetwork -fPIE -g
+export CFLAGS=-Wall -Wextra -std=c++0x -DQT_CORE_LIB -DQT_NETWORK_LIB -I/usr/include/qt5 -I/usr/include/qt5/QtCore -I/usr/include/qt5/QtNetwork -fPIE -g
 BUILD=../../build/sasiae
 export BUILD_EXPORT=$(BUILD)
 INCLUDE=../../include/sasiae

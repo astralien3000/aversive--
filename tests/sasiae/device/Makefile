@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-Wall -Wextra --std=c++11 -DQT_CORE_LIB -I/usr/include/qt5 -I/usr/include/qt5/QtCore -fpic -g
+CFLAGS=-Wall -Wextra --std=c++0x -DQT_CORE_LIB -I/usr/include/qt5 -I/usr/include/qt5/QtCore -fpic -g
 LDFLAGS=-lQt5Core -lpthread
 
 all: client server
