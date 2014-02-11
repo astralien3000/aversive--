@@ -3,7 +3,7 @@ INCLUDE=../$(INCLUDE_EXPORT)
 
 SUB_DIRS=  # add the sub directory's names here
 
-OBJS= timer uart
+OBJS=timer uart interrupts
 
 all: build $(SUB_DIRS)
 

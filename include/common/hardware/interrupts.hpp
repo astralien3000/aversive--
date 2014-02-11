@@ -1,24 +1,33 @@
 #ifndef INTERRUPTS_HPP
 #define INTERRUPTS_HPP
 
-//! \brief class providing static routines for interruptions management
+#include <base/integer.hpp>
+
+//! \brief Class providing routines for interruption management
 class Interrupts {
+  static u16 counter;
 public:
-  //! \brief An alias for "cli" instruction, disable interruptions
-  static inline void clear(void);
-  //! \brief An alias for "sei" instruction, enable interruptions
-  static inline void set  (void);
+  //! \brief Start the interruptions
+  static inline void init(void);
   
-  //! \brief Disable instructions and save some register
-  /*!
-    It was defined in aversive...
-   */
-  template<typename T> static inline void lock  (T&);
-  //! \brief Enable instructions and reset some register
-  /*!
-    It was defined in aversive...
-   */
-  template<typename T> static inline void unlock(T&);
+  //! \brief Stop the interruptions
+  static inline void stop(void);
+  
+  //! \brief Disable temporarily the interruptions if needed
+  //! \note Use it at the beginning of a critical section
+  static inline void lock(void);
+  
+  //! \brief Revive the interruptions if needed
+  //! \note Use it at the end of a critical section
+  static inline void unlock(void);
+  
+  //! \brief An alias for "cli" instruction, disable interruptions
+  //! \warning Use it only if you know what you are doing (see the other methods otherwise)
+  static inline void clear(void);
+  
+  //! \brief An alias for "sei" instruction, enable interruptions
+  //! \warning Use it only if you know what you are doing (see the other methods otherwise)
+  static inline void set(void);
 };
 
 #endif//INTERRUPTS_HPP

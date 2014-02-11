@@ -3,20 +3,36 @@
 
 #include "../../common/hardware/interrupts.hpp"
 
+inline void Interrupts::init(void) {
+  unlock();
+}
+
+inline void Interrupts::stop(void) {
+  lock();
+}
+
+inline void Interrupts::lock(void) {
+  if(!counter) {
+    clear();
+  }
+  counter++;
+}
+
+inline void Interrupts::unlock(void) {
+  if(counter) {
+    counter--;
+  }
+  if(!counter) {
+    set();
+  }
+}
+
 inline void Interrupts::clear(void) {
   __asm__ __volatile__ ("CLI\n");
 }
 
 inline void Interrupts::set(void) {
   __asm__ __volatile__ ("SEI\n");
-}
-
-template<typename T> inline void Interrupts::lock(T& flag) {
-  Interrupts::clear();
-}
-
-template<typename T> inline void Interrupts::unlock(T& flag) {
-  Interrupts::set();
 }
 
 #endif//AVR_INTERRUPTS_HPP
