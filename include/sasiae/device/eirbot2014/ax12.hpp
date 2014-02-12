@@ -2,6 +2,7 @@
 #define SASIAE_AX12_HPP
 
 #include <base/integer.hpp>
+#include <QStringList>
 #include <QString>
 #include <client_thread.hpp>
 #include <sstream>
@@ -15,7 +16,7 @@ struct ax12PrivateData{
 	u16 torque;
 	workingMode wM;
 	switchMode sM;
-}
+};
 
 
 #include "../../../common/device/eirbot2014/ax12.hpp"

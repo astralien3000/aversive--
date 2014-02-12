@@ -23,7 +23,8 @@ $(BUILD)/$(MMCU):
 	mkdir $@
 
 $(BUILD)/%.o: %.cpp
-	$(CC) $(CFLAGS) -I$(INCLUDE) -o $@ -c $<
+	@echo "Compiling avr lib"
+	@$(CC) $(CFLAGS) -I$(INCLUDE) -o $@ -c $<
 
 hardware.d: 
 	$(MAKE) -C $(@:.d=)

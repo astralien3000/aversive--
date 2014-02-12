@@ -19,10 +19,12 @@ build: $(OBJ)
 $(BUILD)/aversive.o: $(INCLUDE)/aversive.hpp
 $(BUILD)/client_thread.o: $(INCLUDE)/client_thread.hpp $(INCLUDE)/base/singleton.hpp
 $(BUILD)/%.o: %.cpp
-	$(CC) $(CFLAGS) -I$(INCLUDE) -o $@ -c $<
+	@echo "Compiling $@ ..."
+	@$(CC) $(CFLAGS) -I$(INCLUDE) -o $@ -c $<
 
 system.d:
-	$(MAKE) -C $(@:.d=)
+	@echo "Making system ..."
+	@$(MAKE) -C $(@:.d=)
 
 $(LIB): $(OBJ)
 	ar cr $(LIB) $(BUILD)/*.o

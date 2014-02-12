@@ -9,29 +9,23 @@ void send_set_message(Ax12& c, const char* msg) {
 	return;
 }
 
-void parseAndAct(char* msg){
-	QStringList list=QString(msg).split(" ");
-	QStringListIterator it=list.begin();
-	if(!(*it++=="VALUE"))
-		return;
-	else {
-		if(*it=="SPEED")
-			data.speed=(*(++it)).toInt();
-		else if(*it=="TORQUE")
-			data.speed=(*(++it)).toInt();
-		else
-			data.position=(*it).toInt();
-	}	
-	return;
-}
-
-
-Ax12::Ax12(char* name):IODevice(name){
+Ax12::Ax12(char* name):Device(name){
 	data={0,0,0,JOIN,POSITION};
 	ClientThread::instance().
 		registerDevice(*this,std::function<void(char*)>(
 					[this](char* msg) mutable -> void {
-						this->parseAndAct(msg);
+					QStringList list=QString(msg).split(" ");
+					QStringList::const_iterator it=list.constBegin();
+					if(!(*it++=="VALUE"))
+					return;
+					else {
+						if(*it=="SPEED")
+							data.speed=(*(++it)).toInt();
+						else if(*it=="TORQUE")
+							data.speed=(*(++it)).toInt();
+						else
+							data.angle=(*it).toInt();
+					}
 					}));
 
 }
@@ -44,16 +38,17 @@ u16 Ax12::getValue() const {
 			return data.angle;
 		case SPEED:
 			return data.speed;
-		case TORQUE;
+		case TORQUE:
 			return data.torque;
 		default:
 			return 0;
 	}
 }
 
-void Ax12::setValue() const {
+void Ax12::setValue(u16 val) {
 	std::ostringstream oss;
-	oss << (SPEED==data.sM)?"VALUE SPEED":"VALUE " << val;
+	oss << (SPEED==data.sM)?"VALUE SPEED ":"VALUE ";
+ 	oss	<< val;
 
 	ClientThread::instance().
 		sendDeviceMessage(*this, 
@@ -61,8 +56,33 @@ void Ax12::setValue() const {
 	return;
 }
 
+void Ax12::setMode(const char* bob){
+	QString mode = bob;
+	if(mode=="position") {
+		data.sM=POSITION;
+	}
 
-u16 Ax12::getAngle() const{
+	if(mode=="speed") {
+		data.sM=SPEED;
+	}
+
+	if(mode=="torque") {
+		data.sM=TORQUE;
+	}
+
+	if(mode=="wheel") {
+		data.wM=WHEEL;
+		send_set_message(*this, "WHEEL");
+	}
+	
+	if(mode=="join") {
+		data.wM=JOIN;
+		send_set_message(*this, "JOIN");
+	}
+	return;
+}
+
+u16 Ax12::getAngle() {
 	if(data.wM==WHEEL)
 		return 0;
 	else {
@@ -71,12 +91,12 @@ u16 Ax12::getAngle() const{
 	 }
 }
 
-u16 Ax12::getSpeed() const{
+u16 Ax12::getSpeed() {
 	setMode("speed");
 	return getValue();
 }
 
-u16 Ax12::getTorque() const{
+u16 Ax12::getTorque() {
 	setMode("torque");
 	return getValue();
 }
@@ -95,32 +115,6 @@ void Ax12::setSpeed(u16 val){
 		setMode("speed");
 		setValue(val);
 		setMode("position");
-	return;
-}
-
-void Ax12::setMode(char* mode){
-	QString bob(mode);
-	if(bob=="position") {
-		data.sM=POSITION;
-	}
-
-	if(bob=="speed") {
-		data.sM=SPEED;
-	}
-
-	if(bob=="torque") {
-		data.sM=TORQUE;
-	}
-
-	if(bob=="wheel") {
-		data.wM=WHEEL;
-		send_set_message(*this, "WHEEL");
-	}
-	
-	if(bob=="join") {
-		data.wM=JOIN;
-		send_set_message(*this, "JOIN");
-	}
 	return;
 }
 
