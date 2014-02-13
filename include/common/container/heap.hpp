@@ -111,7 +111,22 @@ public:
   bool empty(void) const {
     return _size == 0;
   }
-
+  
+  //! \brief Test if the Heap is full
+  bool full(void) const {
+    return _size == S;
+  }
+  
+  //! \brief Return the amount of free space
+  int freeSpace(void) const {
+    return S - _size;
+  }
+  
+  //! \brief Return the amount of used space
+  int usedSpace(void) const {
+    return _size;
+  }
+  
   //! \brief To execute an operation on all elements contained
   void doForeach(void (*func)(T&)) {
     for(int i = 0 ; i < S ; i++) {
