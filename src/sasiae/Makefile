@@ -5,7 +5,7 @@ export BUILD_EXPORT=$(BUILD)
 INCLUDE=../../include/sasiae
 export INCLUDE_EXPORT=$(INCLUDE)
 LIB=$(BUILD)/libaversive.a
-OBJ=$(BUILD)/aversive.o $(BUILD)/client_thread.o $(BUILD)/ax12.o
+OBJ=$(BUILD)/aversive.o $(BUILD)/client_thread.o
 
 SHELL=/bin/bash
 
