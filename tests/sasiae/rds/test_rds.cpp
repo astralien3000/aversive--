@@ -2,8 +2,12 @@
 #include <iostream>
 
 
-int main() {
+//int main() {
 
+void robotLoop(void) {}
+void robotExit(void) {}
+
+bool robotInit(void) {
   Rds rds("RDS");
   
   std::cout << "robotsNumber = " << rds.robotsNumber() << std::endl;
