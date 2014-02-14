@@ -4,7 +4,7 @@
 
 #include <device/input_device.hpp>
 #include <math/vect.hpp>
-#include <base/array.hpp>
+#include <container/list.hpp>
 #include <stdint.h>
 
 //! \brief A complex sensor which gives the relative position of others robots
@@ -15,10 +15,10 @@
   The values returned depend on the choosen mode (cartesian or polar).
 */
 
-class Rds : public InputDevice<Array<6, Vect<2, int16_t> > > {
+class Rds : public Device, public Input <List<6, Vect<2, int16_t> > > {
 private:
   uint8_t _nb;
-  Array<6, Vect<2, int16_t> > _pos;
+  List<6, Vect<2, int16_t> > _values;
 
 public:
   Rds(const char* name);
@@ -29,6 +29,7 @@ public:
 
   //! \brief Return the position (x, y) (or (d, a) depending the mode) of the spceficied robot.
   const Vect<2, int16_t>& getPosition(uint8_t index) const;
+  const List<6, Vect<2, int16_t> >& getValues(void) const;
 
   //! \brief Return the number of robots seen by the RDS.
   uint8_t robotsNumber(void) const;

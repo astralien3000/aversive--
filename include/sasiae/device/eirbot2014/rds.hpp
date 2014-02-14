@@ -3,11 +3,10 @@
 
 
 #include "../../../common/device/eirbot2014/rds.hpp"
-#include <aversive.hpp>
 #include <client_thread.hpp>
 
-Rds::Rds(const char* name) : InputDevice<Array<6, Vect<2, int16_t> > > (name) {
-  Aversive::init();
+
+Rds::Rds(const char* name) : Device(name) {
   ClientThread::instance().registerDevice(*this, std::function<void(char*)>([this] (char* msg) mutable -> void {
 	if (strncmp(msg, "values ", 7)) {
 	  ClientThread::instance().sendMessage(ClientThread::ERROR, "RDS device : invalid message (\"values\" expected)");
@@ -26,7 +25,10 @@ Rds::Rds(const char* name) : InputDevice<Array<6, Vect<2, int16_t> > > (name) {
 	    }
 	    tmp.coord(j) = (int16_t) strtol(nmsg + 1, &nmsg, 10);
 	  }
-	  this->_pos[i] = tmp;
+	  this->_values.insert(i, tmp);
+	}
+	for (int i=n; i<6; i++) {
+	  this->_values.remove(i);
 	}
       }));
 }
@@ -40,7 +42,11 @@ void Rds::setModePolar(void) {
 }
 
 const Vect<2, int16_t>& Rds::getPosition(uint8_t index) const {
-  return this->_pos[index];
+  return this->_values.get(index);
+}
+
+const List<6, Vect<2, int16_t> >& Rds::getValues(void) const {
+  return this->_values;
 }
 
 uint8_t Rds::robotsNumber(void) const {

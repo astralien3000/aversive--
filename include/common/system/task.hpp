@@ -10,25 +10,25 @@ class Task {
 private:
   TaskFunc _func;
     
-  u16 _period;
+  u32 _period;
   u8 _priority;
   bool _unique;
 
 public:
 
   //! \brief Default constructor
-  Task(void) : _func(0), _period(0), _priority(0), _unique(true) {}
+  inline Task(void) : _func(0), _period(0), _priority(0), _unique(true) {}
 
   //! \brief Task constructor
-  Task(TaskFunc f) : _func(f), _period(0), _priority(0), _unique(true) {}
+  inline Task(TaskFunc f) : _func(f), _period(0), _priority(0), _unique(true) {}
 
   //! \brief Copy Constructor
-  Task(const Task& other) {
+  inline Task(const Task& other) {
     (*this) = other;
   }
 
   //! \brief Copy operation
-  Task& operator=(const Task& other) {
+  inline Task& operator=(const Task& other) {
     _func = other._func;
 
     _period = other._period;
@@ -38,7 +38,7 @@ public:
   }
 
   //! \brief Set the interval of time during two task call (in milliseconds)
-  inline void setPeriod(u16 period_ms) {
+  inline void setPeriod(u32 period_ms) {
     _period = period_ms;
   }
 
@@ -63,7 +63,7 @@ public:
     _unique = true;
   }
 
-  inline u16 period(void) const {
+  inline u32 period(void) const {
     return _period;
   }
 
@@ -71,11 +71,11 @@ public:
     return _unique;
   }
 
-  bool operator==(const Task& other) const {
+  inline bool operator==(const Task& other) const {
     return _func == other._func;
   }
 
-  void operator()(void) {
+  inline void operator()(void) const {
     if(_func) {
       _func();
     }

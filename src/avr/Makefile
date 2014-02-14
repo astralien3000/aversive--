@@ -8,7 +8,7 @@ export INCLUDE_EXPORT=$(INCLUDE)
 export LIBNAME=libaversive_$(MMCU)
 
 LIB=$(BUILD)/../$(LIBNAME).a
-SUB_DIRS= hardware # add the sub directory's names here
+SUB_DIRS= hardware system # add the sub directory's names here
 
 OBJS = aversive # add object to compile
 
@@ -23,7 +23,10 @@ $(BUILD):
 $(BUILD)/%.o: %.cpp
 	$(CC) $(CFLAGS) -I$(INCLUDE) -o $@ -c $<
 
-hardware.d: 
+hardware.d:
+	$(MAKE) -C $(@:.d=)
+
+system.d:
 	$(MAKE) -C $(@:.d=)
 
 $(LIB):
