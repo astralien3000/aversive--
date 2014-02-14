@@ -29,7 +29,7 @@ char UartStream<CHANNEL>::getValue(void) {
 template<int CHANNEL>
 void UartStream<CHANNEL>::setValue(char val) {
   std::ostringstream oss;
-  oss << "value " << (int)val;
+  oss << "value " << (unsigned int)val;
 
   ClientThread::instance().
     sendDeviceMessage(*this, 

@@ -19,7 +19,7 @@ char EepromStream::getValue(void) {
 
 void EepromStream::setValue(char val) {
   std::ostringstream oss;
-  oss << "value " << (int)val;
+  oss << "value " << (int)((u8)val);
 
   ClientThread::instance().
     sendDeviceMessage(*this, 

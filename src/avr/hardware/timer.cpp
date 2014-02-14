@@ -17,11 +17,10 @@ template Timer<1>::Timer();
 
 
 #define MACRO_OVERFLOW_INTERRUPT_BIND(timer)				\
-  ISR(TIMER##timer##_OVF_vect, ISR_NAKED) {				\
+  ISR(TIMER##timer##_OVF_vect) {					\
     uint8_t flags = SREG;						\
     Timer<timer>::instance().overflowEvent().execFunction();		\
     SREG = flags;							\
-    reti();								\
   }
 
 MACRO_OVERFLOW_INTERRUPT_BIND(0)
