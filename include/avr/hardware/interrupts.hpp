@@ -12,13 +12,12 @@ inline void Interrupts::stop(void) {
 }
 
 inline void Interrupts::lock(void) {
-  if(!counter) {
-    clear();
-  }
+  clear();
   counter++;
 }
 
 inline void Interrupts::unlock(void) {
+  clear();
   if(counter) {
     counter--;
   }
