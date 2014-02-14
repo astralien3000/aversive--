@@ -37,9 +37,9 @@ public:
     return *this;
   }
 
-  //! \brief Set the interval of time during two task call (in milliseconds)
-  inline void setPeriod(u32 period_ms) {
-    _period = period_ms;
+  //! \brief Set the interval of time during two task call (in microseconds)
+  inline void setPeriod(u32 period_us) {
+    _period = period_us;
   }
 
   //! \brief Set the priority of the task

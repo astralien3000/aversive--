@@ -6,96 +6,73 @@
 #include <system/task.hpp>
 #include <base/integer.hpp>
 
-#define SCHEDULER_MAX_TASKS 8
-#define SCHEDULER_TIMER_PRESCALER 0
-#define SCHEDULER_FREQ (16000000/(256 * ((SCHEDULER_TIMER_PRESCALER) ? SCHEDULER_TIMER_PRESCALER : 1)))
-#define SCHEDULER_GRANULARITY (1000000 / SCHEDULER_FREQ)
+const u32 SCHEDULER_MAX_TASKS = 8;
+const u32 SCHEDULER_TIMER_PRESCALER =  256;
+const u32 SCHEDULER_FREQ = (16000000/(256 * ((SCHEDULER_TIMER_PRESCALER) ? SCHEDULER_TIMER_PRESCALER : 1)));
+const u32 SCHEDULER_GRANULARITY = (1000000 / SCHEDULER_FREQ);
+
+
+#include "../../common/system/task.hpp"
+
+class Scheduler;
 
 class TaskRef {
 private:
-  const Task* _task;
-  u16 _next_call;
-  const u16* _counter;
-  
-  inline void updateNextCall(void) {
-    if(!_task) {
-      _next_call = 0;
-      return;
-    }
-    
-    if(_task->period() < SCHEDULER_GRANULARITY) {
-      _next_call = *_counter + 1;
-    }
-    else {
-      _next_call = *_counter + _task->period() / SCHEDULER_GRANULARITY;
-    }
-  }
-  
+  Task* _task;
+  long long _origin;
 public:
-  inline TaskRef(void) : _task(0), _next_call(0), _counter(0) {
+  TaskRef(void) : _task((Task*)0), _origin(0) {}
+  TaskRef(Task& t, long long origin) : _task(&t), _origin(origin) {}
+
+  TaskRef(const TaskRef& other) : _task(other._task), _origin(other._origin) {
   }
-  
-  inline TaskRef(const u16* counter) : _task(0), _next_call(0), _counter(counter) {
-  }
-  
-  inline TaskRef(const Task& other, const u16* counter) : _task(&other), _next_call(0), _counter(counter) {
-    updateNextCall();
-  }
-  
-  inline TaskRef(const TaskRef& other) {
-    *this = other;
+
+  TaskRef(const TaskRef& other, long long origin) : _task(other._task), _origin(origin) {
   }
 
   inline TaskRef& operator=(const TaskRef& other) {
     _task = other._task;
-    _next_call = other._next_call;
-    _counter = other._counter;
+    _origin = other._origin;
     return *this;
   }
-  
-  inline bool operator==(const TaskRef& other) {
-    return *_task == *(other._task);
+
+  inline bool operator==(const TaskRef& other) const {
+    return _task == other._task;
+  }
+
+  inline long long nextCall(void) const {
+    return _origin + _task->period();
   }
   
-  inline bool operator==(const Task& other) {
-    return *_task == other;
+  inline void exec(void) {
+    (*_task)();
   }
-  
-  inline bool operator()() const {
-    if(*_counter == _next_call) {
-      (*_task)();
-      if(_task->unique()) {
-	Task* tk = const_cast<Task*>(_task);
-	tk->setPeriod(0);
-      }
-      else {
-	TaskRef* tr = const_cast<TaskRef*>(this);
-	tr->updateNextCall();
-      }
-      return true;
-    }
-    else {
-      return false;
-    }
+
+  inline bool unique(void) {
+    return _task->unique();
   }
-  
-  inline u32 period(void) const {
-    return (_task) ? _task->period() : 0;
+
+  inline void setPriority(u16 p) {
+    _task->setPriority(p);
   }
-  
-  inline bool operator<(const TaskRef& other) const {
-    return (_next_call - *_counter) > (other._next_call - *_counter);
+
+  inline void setPeriod(u16 p) {
+    _task->setPeriod(p);
   }
-  
-  inline bool operator>(const TaskRef& other) const {
-    return (_next_call - *_counter) < (other._next_call - *_counter);
+
+  bool operator<(const TaskRef& other) const {
+    return nextCall() > other.nextCall();
+  }
+
+  bool operator>(const TaskRef& other) const {
+    return nextCall() < other.nextCall();
   }
 };
 
 struct SchedulerPrivateData {
   Array<SCHEDULER_MAX_TASKS, Task> tasks;
   Heap<SCHEDULER_MAX_TASKS, TaskRef> ordered_tasks;
-  u16 counter;
+  u16 current;
 };
 
 #include "../../common/system/scheduler.hpp"

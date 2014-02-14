@@ -16,7 +16,7 @@ Scheduler::Scheduler(void) {
 	  tsk.exec();
 
 	  if(!tsk.unique()) {
-	    tsk.setPeriod(0);
+	    //tsk.setPeriod(0);
 	    _data.tasks.insert(TaskRef(tsk, tsk.nextCall()));
 	  }
 

@@ -10,41 +10,39 @@ inline Scheduler& sched_instance(void) {
 }
 
 Scheduler::Scheduler(void) {
-  _data.counter = 0;
+  _data.current = 0;
   Timer<TIMER_ID>& t = Timer<TIMER_ID>::instance();
   t.init();
   t.setPrescaler<SCHEDULER_TIMER_PRESCALER>();
   t.overflowEvent().setFunction([](void){
       Interrupts::lock();
       Scheduler& s = sched_instance();
-      s._data.counter++;
-      
-      while(!s._data.ordered_tasks.empty()) {
-	TaskRef tr = s._data.ordered_tasks.max();
-	if(tr.period() == 0) {
-	  // This task has been removed so let's pop it and go to the next one
+      s._data.current++;
+      if(!s._data.ordered_tasks.empty()) {
+	TaskRef tsk = s._data.ordered_tasks.max();
+
+	while(!s._data.ordered_tasks.empty() && s._data.current > tsk.nextCall()) {
 	  s._data.ordered_tasks.pop();
-	  continue;
-	}
-	else {
-	  if(tr()) {
-	    s._data.ordered_tasks.pop();
-	    if(tr.period()) {
-	      // If it was not a one-shoot task, we add it again to the heap
-	      s._data.ordered_tasks.insert(tr);
-	    }
-	    continue;
+	  tsk.exec();
+	  
+	  if(!tsk.unique()) {
+	    s._data.ordered_tasks.insert(TaskRef(tsk, tsk.nextCall()));
 	  }
-	  else {
-	    // It is not time to execute the next task yet so we can stop browsing the heap
-	    break;
+
+	  if(!s._data.ordered_tasks.empty()) {
+	    tsk = s._data.ordered_tasks.max();
 	  }
+	  
 	}
       }
       Interrupts::unlock();
     });
   t.overflowEvent().start();
 }
+
+#include <device/stream/uart_stream.hpp>
+
+UartStream<0> test(0);
 
 bool Scheduler::addTask(Task& t) {
   if(!freeSlot()) {
@@ -55,7 +53,8 @@ bool Scheduler::addTask(Task& t) {
   for(u16 i = 0; i < SCHEDULER_MAX_TASKS; i++) {
     if(_data.tasks[i].period() == 0) {
       _data.tasks[i] = t;
-      _data.ordered_tasks.insert(TaskRef(t, &(_data.counter)));
+      _data.tasks[i].setPeriod(_data.tasks[i].period()/SCHEDULER_GRANULARITY);
+      _data.ordered_tasks.insert(TaskRef(_data.tasks[i], _data.current));
       Interrupts::unlock();
       return true;
     }
