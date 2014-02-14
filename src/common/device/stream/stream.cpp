@@ -12,7 +12,7 @@ Stream::Stream(const char* name) : Device(name) {}
 
 void Stream::binaryWrite(const char* str, u16 size) {  
   const char* ptr = str;
-  for( ; *ptr != '\0' && (ptr - str) < size  ; ptr++) {
+  for( ; *ptr != '\0' && (u16)(ptr - str) < size  ; ptr++) {
     setValue(*ptr);
   }
 }
@@ -59,33 +59,63 @@ void Stream::binaryWrite(const u64& val) {
 ////////////////////////////////////////
 // Formatted Write
 
+// This is a helper class to manage sign in integer parsing
+template<bool SIGNED, typename T>
+class SignChecker {
+private:
+  bool _neg = false;
+  char* _ptr;
+public:
+  inline SignChecker(T& val, char* ptr) : _ptr(ptr) {
+    if(SIGNED && val < 0) {
+      val = -val;
+      _neg = true;
+    }
+  }
+
+  inline ~SignChecker(void) {
+    if(SIGNED && _neg) {
+      *(--_ptr) = '-';
+    }
+  }
+};
+
+// This is a helper class to manage sign in integer parsing (usigned version)
+template<typename T>
+class SignChecker<false, T> {
+public:
+  inline SignChecker(T& val, char* ptr) {
+    (void)val;
+    (void)ptr;
+  }
+  inline ~SignChecker(void) {}
+};
+
+
 template<bool SIGNED = true, typename T>
-inline void basic_formatted_integer_write(Stream& s, T val) {  
+inline void basic_formatted_integer_write(Stream& s, T val) {
   char str[MAX_BUFF] = {0};
 
+  // Initialize string
   char* ptr = str + MAX_BUFF;
-  bool neg = false;
-
   *(--ptr) = '\0';
 
-  if(SIGNED && val < 0) {
-    val = -val;
-    neg = true;
-  }
+  // Parsing sign and digits
+  {
+    SignChecker<SIGNED, T> chk(val, ptr);
 
-  while(0 < val && str < ptr) {
-    *(--ptr) = '0' + (val % 10);
-    val /= 10;
-  }
-
-  if(SIGNED && neg) {
-    *(--ptr) = '-';
+    while(0 < val && str < ptr) {
+      *(--ptr) = '0' + (val % 10);
+      val /= 10;
+    }
   }
   
+  // If no digits found
   if(*ptr == '\0') {
     *(--ptr) = '0';
   }
   
+  // Send
   s << (const char*)ptr;
 }
 
@@ -127,7 +157,7 @@ void Stream::formattedWrite(const u64& val) {
 void Stream::binaryRead(char* str, u16 size) {
   bool keep = true;
   char* beg = str;
-  while(keep && (str-beg) < size) {
+  while(keep && (u16)(str-beg) < size) {
     char c = getValue();
     *str = c;
     if(_mode == FORMATTED) {
