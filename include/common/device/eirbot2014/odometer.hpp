@@ -13,6 +13,7 @@ class Odometer : public Input<Vect<2, s32>> {
   s32 _last_enc_l;
   s32 _last_enc_r;
   s32 _imp_per_cm;
+  s32 _imp_per_mm;
   s32 _dist_enc_imp;
   s32 _dist;
   s32 _angle;
@@ -21,7 +22,7 @@ class Odometer : public Input<Vect<2, s32>> {
   inline Odometer(Input<s32>& el, Input<s32>& er) : 
     _enc_l(el), _enc_r(er), 
     _last_enc_l(0), _last_enc_r(0), 
-    _imp_per_cm(1), _dist_enc_imp(1), 
+    _imp_per_mm(1), _imp_per_cm(10), _dist_enc_imp(1), 
     _dist(0), _angle(0) {}
   
   inline Vect<2, s32> getValue(void) {
@@ -30,6 +31,10 @@ class Odometer : public Input<Vect<2, s32>> {
     ret.coord(0) = distance();
     ret.coord(1) = angle();
     return ret;
+  }
+
+  inline s32 distanceMilli(void) const {
+    return (_dist / 2) / _imp_per_mm;
   }
 
   inline s32 distance(void) const {
@@ -42,6 +47,7 @@ class Odometer : public Input<Vect<2, s32>> {
 
   inline void setImpPerCm(s32 val) {
     _imp_per_cm = val;
+    _imp_per_mm = _imp_per_cm / 10;
   }
 
   inline void setDistEncoders(s32 val) {
@@ -60,7 +66,5 @@ class Odometer : public Input<Vect<2, s32>> {
   }
 
 };
-
-#undef  ODOMETER_PRIVATE_DATA
 
 #endif//ODOMETER_HPP

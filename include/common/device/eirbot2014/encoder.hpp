@@ -20,8 +20,11 @@ public:
 
   inline T getValue(void);
 
+  inline void inverse(void);
+  
 private:
   T* _addr;
+  bool _inverse;
 };
 
 #endif//ENCODER_HPP
