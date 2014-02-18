@@ -40,6 +40,26 @@ void PidFilter::setOutShift(CoeffType shift) {
   _out_shift = shift;
 }
 
+typename PidFilter::CoeffType PidFilter::getGainP(void) {
+  return _gain_p;
+}
+
+typename PidFilter::CoeffType PidFilter::getGainI(void) {
+  return _gain_i;
+}
+
+typename PidFilter::CoeffType PidFilter::getGainD(void) {
+  return _gain_d;
+}
+
+typename PidFilter::OutputType PidFilter::getMaxIntegral(void) {
+  return _max_i;
+}
+
+typename PidFilter::CoeffType PidFilter::getOutShift(void) {
+  return _out_shift;
+}
+
 typename PidFilter::OutputType PidFilter::doFilter(InputType in) {
   OutputType p = in * _gain_p;
  
@@ -61,11 +81,11 @@ typename PidFilter::OutputType PidFilter::doFilter(InputType in) {
   return _last_out = out;
 }
 
-typename PidFilter::OutputType PidFilter::out(void) {
+typename PidFilter::OutputType PidFilter::lastOut(void) {
   return _last_out;
 }
 
-PidFilter& PidFilter::identity(void) {
+PidFilter PidFilter::identity(void) {
   static PidFilter id(1,0,0);
   return id;
 }

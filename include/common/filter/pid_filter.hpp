@@ -9,10 +9,9 @@ class PidFilter : public Filter<s32> {
 public:
   typedef s32 InputType;
   typedef s32 OutputType;
-
-private:
   typedef s32 CoeffType;
 
+private:
   InputType _last_in;
   InputType _sum_in;
 
@@ -30,6 +29,7 @@ public:
   //! \brief Constructor with initialisation of all gains
   PidFilter(CoeffType p = 0, CoeffType i = 0, CoeffType d = 0);
   
+  //! \brief Set coefficients of the PID
   void setGains(CoeffType p, CoeffType i, CoeffType d);
 
   //! \brief Sets the limit for integral output
@@ -38,11 +38,29 @@ public:
   //! \brief Sets the output divided by 2^shift
   void setOutShift(CoeffType shift);
 
+  //! \brief Return Proportionnal Gain
+  CoeffType getGainP(void);
+
+  //! \brief Return Integral Gain
+  CoeffType getGainI(void);
+
+  //! \brief Return Derivate Gain
+  CoeffType getGainD(void);
+
+  //! \brief Return limit for integral output
+  OutputType getMaxIntegral(void);
+
+  //! \brief Return the log2 division of output
+  CoeffType getOutShift(void);
+
+  //! \brief Compute output in function of input
   OutputType doFilter(InputType in);
 
-  OutputType out(void);
+  //! \brief Return last computed output
+  OutputType lastOut(void);
 
-  static PidFilter& identity(void);
+  //! \brief Create a PID in which the output is the input
+  static PidFilter identity(void);
 };
 
 #endif//PID_FILTER_HPP

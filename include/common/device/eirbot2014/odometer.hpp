@@ -6,6 +6,8 @@
 #include <math/vect.hpp>
 #include <base/integer.hpp>
 
+#include <math/safe_integer.hpp>
+
 class Odometer : public Input<Vect<2, s32>> {
  private:
   Input<s32>& _enc_l;
@@ -22,7 +24,7 @@ class Odometer : public Input<Vect<2, s32>> {
   inline Odometer(Input<s32>& el, Input<s32>& er) : 
     _enc_l(el), _enc_r(er), 
     _last_enc_l(0), _last_enc_r(0), 
-    _imp_per_mm(1), _imp_per_cm(10), _dist_enc_imp(1), 
+    _imp_per_cm(10), _imp_per_mm(1), _dist_enc_imp(1), 
     _dist(0), _angle(0) {}
   
   inline Vect<2, s32> getValue(void) {

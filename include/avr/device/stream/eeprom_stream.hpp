@@ -5,17 +5,17 @@
 
 #include <hardware/eeprom.hpp>
 
-EepromStream::EepromStream(const char* name) : RandomAccessStream(name) {
+inline EepromStream::EepromStream(const char* name) : RandomAccessStream(name) {
   Eeprom::instance().init();
 }
 
-char EepromStream::getValue(void) {
+inline char EepromStream::getValue(void) {
   char ret = Eeprom::instance().read(cursor());
   seek(cursor()+1);
   return ret;
 }
 
-void EepromStream::setValue(char val) {
+inline void EepromStream::setValue(char val) {
   Eeprom::instance().write(cursor(), val);
   seek(cursor()+1);
 }
