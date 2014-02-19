@@ -28,11 +28,8 @@ class Odometer : public Input<Vect<2, s32>> {
     _dist(0), _angle(0) {}
   
   inline Vect<2, s32> getValue(void) {
-    Vect<2, s32> ret;
     update();
-    ret.coord(0) = distance();
-    ret.coord(1) = angle();
-    return ret;
+    return Vect<2, s32>(distance(), angle());
   }
 
   inline s32 distanceMilli(void) const {

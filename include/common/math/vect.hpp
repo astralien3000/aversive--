@@ -9,9 +9,27 @@ class Vect {
 private:
   ElementType _coord[DIM];
 
+  template<int NUM = 0, typename T1, typename... TArgs>
+  void set(T1 a1, TArgs... args) {
+    _coord[NUM] = a1;
+    set<NUM+1, TArgs...>(args...);
+  }
+
+  template<int NUM, typename T1>
+  void set(T1 a1) {
+    _coord[NUM] = a1;
+    static_assert(NUM < DIM, "ERROR : Too many elements in Vect constructor");
+  }
+
 public:
   //! \brief Default Constructor
   inline Vect(void) : _coord{0} {}
+
+  //! \brief Initializer Constructor
+  template<typename... TArgs>
+  inline Vect(TArgs... args) {
+    set<0, TArgs...>(args...);
+  }
 
   //! \brief Copy Constructor
   inline Vect(const Vect& other) : Vect() {
