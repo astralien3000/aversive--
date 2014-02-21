@@ -22,7 +22,7 @@ AVR_CC=avr-g++
 ## Flags
 GEN_CFLAGS=-Wall -Wextra --std=c++11
 SASIAE_CFLAGS=$(GEN_CFLAGS) -DQT_CORE_LIB -fpic
-AVR_CFLAGS=$(GEN_CFLAGS) -fno-threadsafe-statics -D__STD_LIMIT_MACROS -O3
+AVR_CFLAGS=$(GEN_CFLAGS) -fno-threadsafe-statics -D__STDC_LIMIT_MACROS -O3
 
 ## Include
 GEN_INCLUDE= -I$(AVERSIVE_ROOT)/include
