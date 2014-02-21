@@ -10,9 +10,7 @@ int main(int argc, char** argv) {
   // Declare your devices here
   // Initialize your stuff here
   
-  while(Aversive::isRunning()) {
-    Aversive::sleep(); // Very important for simulation purpose
-    // IT MUST STAY AT THE BEGINNING OF THE WHILE
+  while(Aversive::sync()) {
     // Your while(1) code
   }
   

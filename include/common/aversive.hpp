@@ -27,7 +27,7 @@ class Aversive {
 public:
   static void init(void);
   static void sleep(int ms);
-  static void sleep(void);
+  static bool sync(void);
   static void stop(void);
   static int exit(void);
   static bool isInitialized(void);

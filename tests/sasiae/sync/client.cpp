@@ -13,11 +13,10 @@ int main(int argc, char** argv) {
   int i = 0;
   char buffer[80];
 
-  while(Aversive::isRunning()) {
+  while(Aversive::sync()) {
     // Your while(1) code
     sprintf(buffer, "value is %d", i++);
     ClientThread::instance().sendDeviceMessage(d, buffer);
-    Aversive::sleep(); // Very important for simulation purpose
   }
   
   // You can have several "while(Aversive::isRunning())" loops if needed

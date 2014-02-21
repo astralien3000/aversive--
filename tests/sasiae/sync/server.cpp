@@ -57,7 +57,7 @@ int main(int argc, char** argv) {
     return EXIT_FAILURE;
   }
 
-  client.write("T 1 9\n"); // Not 10 since the 0 is printed before any msg is sent
+  client.write("T 1 10\n");
   
   char buffer2[80];
   for(int i = 0; i < 10; i++) {

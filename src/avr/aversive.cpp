@@ -10,7 +10,9 @@ void Aversive::init(void) {
   }
 }
 
-void Aversive::sleep(void) { }
+bool Aversive::sync(void) {
+  return Aversive::isRunning();
+}
 
 void Aversive::sleep(int ms) {
   (void) ms;
