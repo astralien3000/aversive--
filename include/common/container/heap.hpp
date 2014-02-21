@@ -198,10 +198,10 @@ public:
     return _size == S;
   }
   
-  // //! \brief Return the amount of free space
-  // int freeSpace(void) const {
-  //   return S - _size;
-  // }
+  //! \brief Return the amount of free space
+  int freeSpace(void) const {
+    return S - _size;
+  }
   
   // //! \brief Return the amount of used space
   // int usedSpace(void) const {
