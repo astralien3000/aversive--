@@ -11,8 +11,9 @@ int main(int argc, char** argv) {
   // Initialize your stuff here
   
   while(Aversive::isRunning()) {
-    // Your while(1) code
     Aversive::sleep(); // Very important for simulation purpose
+    // IT MUST STAY AT THE BEGINNING OF THE WHILE
+    // Your while(1) code
   }
   
   // You can have several "while(Aversive::isRunning())" loops if needed

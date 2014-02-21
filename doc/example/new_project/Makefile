@@ -4,13 +4,13 @@
 # User Configuration
 
 ## The root aversive directory
-AVERSIVE_ROOT=../../..
+AVERSIVE_ROOT=
 
 ## Your project's object .o files
-OBJ= main.o
+OBJ=main.o
 
 ## Your executable file name
-EXEC=robot.elf
+GEN_EXEC=robot
 
 ########################################
 # Automatic Configuration
@@ -37,7 +37,7 @@ AVR_LDFLAGS= $(GEN_LDFLAGS)
 ## Build Directory
 GEN_BUILD_DIR=build
 SASIAE_BUILD_DIR=$(GEN_BUILD_DIR)/sasiae
-AVR_BUILD_DIR=$(GEN_BUILD_DIR)/avr
+AVR_BUILD_DIR=$(GEN_BUILD_DIR)
 
 ########################################
 # Rules
@@ -53,6 +53,7 @@ sasiae: export CFLAGS=$(SASIAE_CFLAGS)
 sasiae: export INCLUDE=$(SASIAE_INCLUDE)
 sasiae: export LDFLAGS=$(SASIAE_LDFLAGS)
 sasiae: export BUILD_DIR=$(SASIAE_BUILD_DIR)
+sasiae: export EXEC=$(GEN_EXEC)_sasiae.elf
 sasiae: compile
 
 atmega128: export AVERSIVE_MMCU=atmega128
@@ -65,11 +66,12 @@ avr: export CC=$(AVR_CC)
 avr: export CFLAGS=$(AVR_CFLAGS) -mmcu=$(AVERSIVE_MMCU)
 avr: export INCLUDE=$(AVR_INCLUDE)
 avr: export LDFLAGS=$(AVR_LDFLAGS) -laversive_$(AVERSIVE_MMCU)
-avr: export BUILD_DIR=$(AVR_BUILD_DIR)
+avr: export BUILD_DIR=$(AVR_BUILD_DIR)/$(AVERSIVE_MMCU)
+avr: export EXEC=$(GEN_EXEC)_$(AVERSIVE_MMCU).elf
 avr: compile
 
 # Add additional files you need to compile
-# Add additional dependencies if needed for each .o files (apart from the .c file)
+# Add additional dependencies if needed for each .o files (apart from the .cpp file)
 %.o: %.cpp
 	$(CC) $(CFLAGS) $(INCLUDE) -o $(BUILD_DIR)/$@ -c $<
 
@@ -80,7 +82,7 @@ make_build_dir:
 	mkdir -p $(BUILD_DIR)
 
 clean:
-	rm -f $(shell find . -name "*~" -o -name "#*#" -o -name "*.o")
+	rm -rf $(shell find . -name "*~" -o -name "#*#" -o -name "*.o") $(GEN_BUILD_DIR)
 
 mrproper: clean
-	rm -rf $(GEN_BUILD_DIR)
+	rm -rf $(GEN_EXEC)_*.elf
