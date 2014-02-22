@@ -33,9 +33,8 @@ int main(int argc, char* argv[]) {
     ClientThread::instance().sendData("D TESTER I'm new");
   }
 
-  while(Aversive::isRunning()) {
+  while(Aversive::sync()) {
     // Your while(1) code
-    Aversive::sleep(); // Very important for simulation purpose
   }
   
   // You can have several "while(Aversive::isRunning())" loops if needed

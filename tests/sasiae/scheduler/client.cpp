@@ -32,9 +32,8 @@ int main(int argc, char** argv) {
   //Scheduler::instance().rmTask(t1);
   //Scheduler::instance().rmTask(t2);
   
-  while(Aversive::isRunning()) {
+  while(Aversive::sync()) {
     // Your while(1) code
-    Aversive::sleep(); // Very important for simulation purpose
   }
   
   // You can have several "while(Aversive::isRunning())" loops if needed
