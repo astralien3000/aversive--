@@ -12,6 +12,8 @@ SUB_DIRS= hardware system # add the sub directory's names here
 
 OBJS = aversive # add object to compile
 
+.PHONY: $(LIB)
+
 all: $(BUILD) build $(addsuffix .d,$(SUB_DIRS)) common $(LIB)
 
 # to build local sources

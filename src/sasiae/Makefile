@@ -9,6 +9,8 @@ OBJ=aversive client_thread
 
 SUB_DIRS=system # add the sub directory's names here
 
+.PHONY: $(LIB)
+
 all: $(BUILD) build $(addsuffix .d,$(SUB_DIRS)) common $(LIB)
 
 # to build local sources
