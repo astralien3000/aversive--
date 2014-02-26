@@ -29,13 +29,13 @@ SimpleInputDevice<T>::SimpleInputDevice(const char* name) : Device(name) {
 		       char cmd[32], msg2[1000];
 		       sscanf(msg, "%s %s", cmd, msg2);
 
-		       if(strcmp(cmd, "VALUE") == 0) {
+		       if(strcmp(cmd, "value") == 0) {
 			 get_value_from_msg(&_data.last_in, msg2);
 		       }
 		     }));
 
   ClientThread::instance().
-    sendDeviceMessage(*this, "CALLME");
+    sendDeviceMessage(*this, "init");
 }
 
 template<typename T>
