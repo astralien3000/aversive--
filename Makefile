@@ -29,7 +29,7 @@ newhpp:
 exporthpp:
 	@./script/exporthpp.sh
 
-mrproper: clean clean_archiparser
+mrproper: clean clean_archiparser clean_test
 	@rm -rf build/*
 
 clean_doc: 
@@ -38,5 +38,8 @@ clean_doc:
 clean_archiparser:
 	@$(MAKE) clean -sC tools/archi_parser
 
+clean_test:
+	@$(MAKE) clean -sC tests/sasiae
+
 test:
-	$(MAKE) -C tests/sasiae
+	$(MAKE) test -C tests/sasiae
