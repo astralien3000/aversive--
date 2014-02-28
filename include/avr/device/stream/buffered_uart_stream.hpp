@@ -13,6 +13,10 @@ struct BufferedUartStreamPrivateData {
 
 template<int CHANNEL>
 BufferedUartStream<CHANNEL>::BufferedUartStream(void) : InternalBufferedStream("NULL") {
+}
+
+template<>
+BufferedUartStream<0>::BufferedUartStream(void) : InternalBufferedStream("BufferedUartStream_0") {
   init();
 }
 
