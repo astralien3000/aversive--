@@ -89,7 +89,7 @@ public:
   
   //! \brief Give the space currently free to use in the buffer
   inline buffer_t freeSpace(void) const {
-    return usedSpace() <= SIZE;
+    return SIZE - usedSpace();
   }
 };
 
