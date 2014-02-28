@@ -10,7 +10,7 @@ class BufferedUartStream : public InternalBufferedStream, public Singleton<Buffe
   
   BufferedUartStreamPrivateData _data;
   
-  BufferedUartStream(const char*) : InternalBufferedStream(name) {
+  BufferedUartStream(const char* name) : InternalBufferedStream(name) {
   }
   
   BufferedUartStream(void);
