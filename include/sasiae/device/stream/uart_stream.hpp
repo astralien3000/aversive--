@@ -14,7 +14,7 @@ UartStream<CHANNEL>::UartStream(const char* name) : Stream(name) {
   ClientThread::instance().
     registerDevice(*this,
 		   std::function<void(char*)>([&] (char* msg) mutable -> void {
-		       
+		       (void) msg; //! \todo Write parser
 		     }));
 
   ClientThread::instance().

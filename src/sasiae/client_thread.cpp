@@ -22,6 +22,9 @@ ClientThread::ClientThread(void) : QThread() {
   _time = 0;
   _sync_func = NULL;
   _timed_task_done = _synchronized = true;
+
+  // To init cout, etc...
+  std::ios_base::Init();
 }
 
 ClientThread::~ClientThread(void) {
