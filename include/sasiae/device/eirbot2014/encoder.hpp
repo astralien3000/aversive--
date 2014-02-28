@@ -12,4 +12,9 @@ T Encoder<T>::getValue(void) {
   return *_addr = SimpleInputDevice<T>::getValue();
 }
 
+template<typename T>
+inline void Encoder<T>::inverse(void) {
+  _inverse = !_inverse;
+}
+
 #endif//SASIAE_ENCODER_HPP
