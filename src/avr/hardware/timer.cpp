@@ -8,11 +8,10 @@ template Timer<1>::Timer();
 #include <avr/interrupt.h>
 
 #define MACRO_INTERRUPT_BIND(timer, comp, ev)				\
-  ISR(TIMER##timer##_COMP##comp##_vect, ISR_NAKED) {			\
+  ISR(TIMER##timer##_COMP##comp##_vect) {				\
     uint8_t flags = SREG;						\
     Timer<timer>::instance().comparEvent<ev>().execFunction();		\
     SREG = flags;							\
-    reti();								\
   }
 
 
