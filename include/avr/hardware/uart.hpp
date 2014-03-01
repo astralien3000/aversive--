@@ -116,6 +116,11 @@ inline void Uart<ID>::RecvEvent::stop(void) {
     ~CFG(uart<ID>::control::ienable::recv);
 }
 
+template<int ID>
+inline bool Uart<ID>::RecvEvent::activated(void) {
+  return (REG(uart<ID>::control) & CFG(uart<ID>::control::ienable::recv)) != 0;
+}
+
 ////////////////////////////////////////////////////////
 // UART::SendEvent ////////////////////////////////////
 
@@ -132,6 +137,11 @@ template<int ID>
 inline void Uart<ID>::SendEvent::stop(void) {
   REG(uart<ID>::control) &=
     ~CFG(uart<ID>::control::ienable::send);
+}
+
+template<int ID>
+inline bool Uart<ID>::SendEvent::activated(void) {
+  return (REG(uart<ID>::control) & CFG(uart<ID>::control::ienable::send)) != 0;
 }
 
 ////////////////////////////////////////////////////////
@@ -152,5 +162,9 @@ inline void Uart<ID>::EmptyEvent::stop(void) {
     ~CFG(uart<ID>::control::ienable::empty);
 }
 
+template<int ID>
+inline bool Uart<ID>::EmptyEvent::activated(void) {
+  return (REG(uart<ID>::control) & CFG(uart<ID>::control::ienable::empty)) != 0;
+}
 
 #endif//AVR_UART_HPP

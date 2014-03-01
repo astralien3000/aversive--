@@ -7,8 +7,8 @@
 //! \brief Internal buffered stream interface
 class InternalBufferedStream : public BufferedStream {
 protected:
-  Buffer<> _output;
-  Buffer<> _input;
+  Buffer<64, char> _output;
+  Buffer<64, char> _input;
 public:
   InternalBufferedStream(const char*);
   
