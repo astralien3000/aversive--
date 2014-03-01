@@ -110,7 +110,7 @@ hardware adc[0]
     register8 control ADCSRA, ADCSRB
         config enable (1 << ADEN), 0
         config start (1 << ADSC), 0
-        config autotrigger (1 << ADATE), 0
+        config auto (1 << ADATE), 0
         config ended (1 << ADIF), 0
         config ienable (1 << ADIE), 0
         config-list reference
@@ -131,9 +131,16 @@ hardware adc[0]
             config 64 (1 << ADPS2) | (1 << ADPS1) | (0 << ADPS0), 0
             config 128 (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0), 0
         config-list trigger
+            config none 0, (0 << ADTS2) | (0 << ADTS1) | (0 << ADTS0)
+            config analog 0, (0 << ADTS2) | (0 << ADTS1) | (1 << ADTS0)
+            config external 0, (0 << ADTS2) | (1 << ADTS1) | (0 << ADTS0)
+            config timer0comp0 0, (0 << ADTS2) | (1 << ADTS1) | (1 << ADTS0)
             config timer0ovf 0, (1 << ADTS2) | (0 << ADTS1) | (0 << ADTS0)
+            config timer1comp1 0, (1 << ADTS2) | (0 << ADTS1) | (1 << ADTS0)
+            config timer1ovf 0, (1 << ADTS2) | (1 << ADTS1) | (0 << ADTS0)
+            config timer1capture 0, (1 << ADTS2) | (1 << ADTS1) | (1 << ADTS0)
     register8 disable DIDR0, DIDR2
-        config normal 0, 0
+        config default 0, 0
         config 0 ADC0D, 0
         config 1 ADC1D, 0
         config 2 ADC2D, 0
