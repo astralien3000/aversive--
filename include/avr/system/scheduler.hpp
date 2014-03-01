@@ -15,7 +15,7 @@ class Scheduler;
 class TaskRef {
 private:
   Task* _task;
-  long long _origin;
+  u32 _origin;
 public:
   TaskRef(void) : _task((Task*)0), _origin(0) {}
   TaskRef(Task& t, long long origin) : _task(&t), _origin(origin) {}
@@ -36,7 +36,7 @@ public:
     return _task == other._task;
   }
 
-  inline long long nextCall(void) const {
+  inline u32 nextCall(void) const {
     return _origin + _task->period();
   }
   
@@ -68,7 +68,7 @@ public:
 struct SchedulerPrivateData {
   Array<SCHEDULER_MAX_TASKS, Task> tasks;
   Heap<SCHEDULER_MAX_TASKS, TaskRef> ordered_tasks;
-  u16 current;
+  u32 current;
 };
 
 #include "../../common/system/scheduler.hpp"

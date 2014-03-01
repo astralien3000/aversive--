@@ -13,6 +13,10 @@ inline Scheduler& sched_instance(void) {
   return Scheduler::instance();
 }
 
+#include <device/stream/uart_stream.hpp>
+
+UartStream<0> test(0);
+
 Scheduler::Scheduler(void) {
   _data.current = 0;
   Timer<SCHEDULER_TIMER_ID>& t = Timer<SCHEDULER_TIMER_ID>::instance();
@@ -27,6 +31,7 @@ Scheduler::Scheduler(void) {
 
 	while(!s._data.ordered_tasks.empty() && s._data.current > tsk.nextCall()) {
 	  s._data.ordered_tasks.pop();
+	  //test << s._data.current << " ; next : " << tsk.nextCall() << "\n\r";
 	  tsk.exec();
 	  
 	  if(!tsk.unique()) {
@@ -43,10 +48,6 @@ Scheduler::Scheduler(void) {
     });
   t.overflowEvent().start();
 }
-
-#include <device/stream/uart_stream.hpp>
-
-UartStream<0> test(0);
 
 bool Scheduler::addTask(Task& t) {
   if(!freeSlot()) {
