@@ -2,6 +2,8 @@
 #include <system/scheduler.hpp>
 #include <device/stream/uart_stream.hpp>
 
+#include <hardware/interrupts.hpp>
+
 #include <aversive.hpp>
 
 extern "C" {
@@ -11,9 +13,10 @@ extern "C" {
 }
 
 UartStream<0>* st;
+long long count = 0;
 
 void inter(void) {
-  st->setValue('b');
+  *st << count++ << "\n\r";
 }
 
 int main(int argc, char** argv) {
@@ -27,13 +30,16 @@ int main(int argc, char** argv) {
   st = &stream;
   
   Task t(inter);
-  t.setPeriod(1000000);
+  t.setPeriod(10000);
   t.setRepeat();
   
   Scheduler::instance().addTask(t);
   
+  Interrupts::init();
+
   while(Aversive::sync()) {
     // Your while(1) code
+    st->setValue('a');
     //inter();
   }
   

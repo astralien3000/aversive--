@@ -6,13 +6,9 @@
 #include <system/task.hpp>
 #include <base/integer.hpp>
 
-const u32 SCHEDULER_MAX_TASKS = 8;
-const u32 SCHEDULER_TIMER_PRESCALER =  8;
-const u32 SCHEDULER_FREQ = (16000000/(256 * ((SCHEDULER_TIMER_PRESCALER) ? SCHEDULER_TIMER_PRESCALER : 1)));
-const u32 SCHEDULER_GRANULARITY = (1000000 / SCHEDULER_FREQ);
+#define SCHEDULER_MAX_TASKS 8
 
-
-#include "../../common/system/task.hpp"
+#include <system/task.hpp>
 
 class Scheduler;
 
