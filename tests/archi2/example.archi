@@ -1,0 +1,47 @@
+uc avrtest {
+  hardware timer[0] {
+    register[8] reg1 = { REG1, REG2 } {
+      config conf1 = { (1 << CFG1) | (0 << CFG2), 0 };
+      config conf2 = { (1 << CFG1) | (1 << CFG2), 0 };
+      config-list list1 {
+        config conf[1] = { (1 << TEST1), (1 << TEST2) };
+        config conf[2] = { 0, (1 << TEST2) };
+	config-list sub1 {
+          config conf[1] = { (1 << TEST1), (1 << TEST2) };
+          config conf[2] = { 0, (1 << TEST2) };
+	};
+      };
+    };
+  };
+
+  hardware uart[1] {
+    register[8] reg1 = { REG1, REG2 } {
+      config conf1 = { (1 << CFG1) | (0 << CFG2), 0 };
+      config conf2 = { (1 << CFG1) | (1 << CFG2), 0 };
+      config-list list1 {
+        config conf[1] = { (1 << TEST1), (1 << TEST2) };
+        config conf[2] = { 0, (1 << TEST2) };
+	config-list sub1 {
+          config conf[1] = { (1 << TEST1), (1 << TEST2) };
+          config conf[2] = { 0, (1 << TEST2) };
+	};
+      };
+    };
+  };
+
+  hardware timer[1] {
+    register[8] reg1 = { REG1 } {
+      config conf1 = { (1 << CFG1) | (0 << CFG2) };
+      config conf2 = { (1 << CFG1) | (1 << CFG2) };
+      config-list list1 {
+        config conf[1] = { (1 << TEST1) };
+        config conf[2] = { 0 };
+	config-list sub1 {
+          config conf[1] = { (1 << TEST1) };
+          config conf[2] = { 0 };
+	};
+      };
+    };
+    register[16] reg2 = { REG3, REG4 };
+  };
+};

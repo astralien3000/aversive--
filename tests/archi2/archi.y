@@ -1,0 +1,193 @@
+%{
+
+#include "y.tab.h"
+#include <iostream>
+
+  int yylex(void);
+
+%}
+
+%union { char id[1024]; int n; }
+
+%token <id>IDENTIFIER_TOKEN
+%token <n>NUMERIC_TOKEN
+
+%token UC_TOKEN
+%token TEMPLATE_TOKEN
+%token HARDWARE_TOKEN
+%token REGISTER_TOKEN
+%token CONFIG_TOKEN
+%token CONFIG_LIST_TOKEN
+
+%token SEP_BLOCK_TOKEN
+
+%token BEG_LIST_TOKEN
+%token END_LIST_TOKEN
+%token SEP_LIST_TOKEN
+
+%token ASSIGN_TOKEN
+
+%%
+
+ ////////////////////////////////////////
+ // UC
+
+UC
+: UC_DECL SEP_BLOCK_TOKEN
+| UC_DECL UC_BLOCK SEP_BLOCK_TOKEN
+;
+
+UC_DECL
+: UC_TOKEN IDENTIFIER_TOKEN
+;
+
+UC_BLOCK
+: BEG_LIST_TOKEN HARDWARE_LIST END_LIST_TOKEN
+;
+
+ ////////////////////////////////////////
+ // HARDWARE
+
+HARDWARE_LIST
+: HARDWARE
+| HARDWARE HARDWARE_LIST
+;
+
+HARDWARE
+: HARDWARE_DECL SEP_BLOCK_TOKEN
+| HARDWARE_DECL HARDWARE_BLOCK SEP_BLOCK_TOKEN
+;
+
+HARDWARE_DECL
+: HARDWARE_TOKEN ID_CASE
+;
+
+HARDWARE_BLOCK
+: BEG_LIST_TOKEN REGISTER_LIST END_LIST_TOKEN
+;
+
+ ////////////////////////////////////////
+ // REGISTER
+
+REGISTER_LIST
+: REGISTER
+| REGISTER REGISTER_LIST
+;
+
+REGISTER
+: REGISTER_DECL SEP_BLOCK_TOKEN
+| REGISTER_DECL REGISTER_BLOCK SEP_BLOCK_TOKEN
+;
+
+REGISTER_DECL
+: REGISTER_TOKEN ID_CASE ASSIGN_TOKEN REG_EXPR
+;
+
+REGISTER_BLOCK
+: BEG_LIST_TOKEN CONFIG_LIST END_LIST_TOKEN
+;
+
+REG_EXPR
+: BEG_LIST_TOKEN REG_LIST END_LIST_TOKEN
+;
+
+REG_LIST
+: IDENTIFIER_TOKEN
+| IDENTIFIER_TOKEN SEP_LIST_TOKEN REG_LIST
+;
+
+ ////////////////////////////////////////
+ // CONFIG_TREE
+
+CONFIG_LIST
+: CONFIG
+| CONFIG CONFIG_LIST
+;
+
+CONFIG
+: C
+| CL
+;
+
+ ////////////////////////////////////////
+ // CONFIG
+
+C
+: C_DECL
+;
+
+C_DECL
+: CONFIG_TOKEN ID_CASE ASSIGN_TOKEN CONF_EXPR
+;
+
+CONF_EXPR
+: BEG_LIST_TOKEN CONF_LIST END_LIST_TOKEN
+;
+
+CONF_LIST
+: EXPR
+| EXPR SEP_LIST_TOKEN CONF_LIST
+;
+
+ ////////////////////////////////////////
+ // CONFIG_LIST
+
+CL
+: CL_DECL CL_BLOCK
+;
+
+CL_DECL
+: CONFIG_LIST_TOKEN ID_CASE
+;
+
+CL_BLOCK
+: BEG_LIST_TOKEN CONFIG_LIST END_LIST_TOKEN
+;
+
+ ////////////////////////////////////////
+ // EXPR
+
+EXPR
+: F
+| F '|' EXPR
+;
+
+F
+: T
+| T '&' F
+;
+
+T
+: VAL
+| '(' VAL '<' VAL ')'
+| '(' VAL '>' VAL ')'
+| '~' VAL
+| '(' EXPR ')'
+;
+
+VAL
+: IDENTIFIER_TOKEN
+| NUMERIC_TOKEN
+;
+
+ ////////////////////////////////////////
+ // ID_CASE
+
+ID_CASE
+: IDENTIFIER_TOKEN
+| IDENTIFIER_TOKEN '[' NUMERIC_TOKEN ']'
+| NUMERIC_TOKEN
+;
+
+%%
+
+int yyerror(char* s) {
+  std::cerr << "ERROR!" << std::endl;
+}
+
+int main (int argc, char *argv[]) {
+
+  yyparse ();
+
+  return 0;
+}
