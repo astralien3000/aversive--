@@ -4,7 +4,7 @@
 # User Configuration
 
 ## The root aversive directory
-AVERSIVE_ROOT=/home/clm/Projets/aversive++
+AVERSIVE_ROOT=../../
 
 ## Your project's object .o files
 OBJ=main.o

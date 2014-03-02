@@ -49,7 +49,12 @@ void BufferedUartStream<CHANNEL>::send(void) {
 template<int CHANNEL>
 void BufferedUartStream<CHANNEL>::receive(void) {
   Interrupts::lock();
-  // TODO
+  BufferedUartStream<CHANNEL>& str = BufferedUartStream<CHANNEL>::instance();
+  Uart<CHANNEL>& channel = Uart<CHANNEL>::instance();
+  str._input.enqueue(channel.template recv<char>());
+  if(str._input.isFull()) {
+    channel.recvEvent().stop();
+  }
   Interrupts::unlock();
 }
 
@@ -63,7 +68,11 @@ void BufferedUartStream<CHANNEL>::setValue(char val) {
 
 template<int CHANNEL>
 char BufferedUartStream<CHANNEL>::getValue(void) {
-  return InternalBufferedStream::getValue();
+  char val = InternalBufferedStream::getValue();
+  if(!Uart<CHANNEL>::instance().recvEvent().activated()) {
+    Uart<CHANNEL>::instance().recvEvent().start();
+  }
+  return val;
 }
 
 #endif//AVR_BUFFERED_UART_STREAM_HPP

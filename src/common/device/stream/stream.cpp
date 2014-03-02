@@ -10,9 +10,9 @@ Stream::Stream(const char* name) : Device(name) {}
 ////////////////////////////////////////
 // Binary Write
 
-void Stream::binaryWrite(const char* str, u16 size) {  
+void Stream::binaryWrite(const char* str) {
   const char* ptr = str;
-  for( ; *ptr != '\0' && (u16)(ptr - str) < size  ; ptr++) {
+  for( ; *ptr != '\0' ; ptr++) {
     setValue(*ptr);
   }
 }
@@ -161,15 +161,13 @@ void Stream::binaryRead(char* str, u16 size) {
     char c = getValue();
     *str = c;
     if(_mode == FORMATTED) {
-      if(_sep == WORD && c == ' ') {
+      if(_sep == WORD && (c == ' ' || c == '\t')) {
 	keep = false;
       }
       else if(c == '\r' || c == '\n' || c == '\0') {
 	*str = '\n';
 	keep = false;
       }
-      setValue(*str);
-      //*this << *str;
     }
     str++;	
   }
