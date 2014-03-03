@@ -47,7 +47,7 @@ public:
   static void stop(void);
   
   //! \brief Uninitialize Aversive++.
-  //! \return The application's return code.
+  //! \return The current application's return code.
   //! It must be used to properly uninitialize Aversive++ before the main returns.
   //! Please refer to "Create a project" tutorial.
   static int exit(void);
@@ -59,6 +59,7 @@ public:
   static bool isRunning(void);
   
   //! \brief Tell the current return code of the application.
+  //! \return The current application's return code.
   static int returnCode(void);
   
   //! \brief Change the return code of the application.
