@@ -4,11 +4,12 @@
 //! \file buffer.hpp
 
 #include <base/array.hpp>
+#include <base/integer.hpp>
 
 typedef array_t buffer_t;
 
 //! \brief Maximum number of elements the buffer can handle
-static const buffer_t MAX_BUFFER_SIZE = 1 << (ARRAY_INDEX_LENGTH - 1);
+static const buffer_t MAX_BUFFER_SIZE = IntegerInfo<Array<>::ARRAY_INDEX_LENGTH>::UNSIGNED_MAX;
 
 //! \bried Default buffer size
 static const buffer_t DEFAULT_BUFFER_SIZE = 64;
