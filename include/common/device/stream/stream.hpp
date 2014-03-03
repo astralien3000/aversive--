@@ -6,6 +6,7 @@
 #include <device/output.hpp>
 #include <base/integer.hpp>
 
+//! \todo This class should not inherit Device. Only concret stream like UartStream.
 class Stream : public Device, public Input<char>, public Output<char> {
 public:
   //! \brief Mode represents the different modes the stream can be in (default is FORMATTED)
