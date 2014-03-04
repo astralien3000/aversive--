@@ -3,10 +3,8 @@
 
 #include <stdint.h>
 
-//! \brief boundaries infos on integers with specified size
-//! \param SIZE : size of integer in bits
-//! \param S : signed integer type
-//! \param U : unsigned integer type
+//! \brief Boundary infos of integer type with a specified size.
+//! \param SIZE : size of integers in bits.
 template<int SIZE>
 struct IntegerInfo {
   enum {
@@ -16,8 +14,9 @@ struct IntegerInfo {
   };
 };
 
-//! \brief Integer type definitions with specified size
-//! \param SIZE : size of integer in bits
+//! \brief Integer type definitions with a specified size.
+//! \param SIZE : size of integer type in bits.
+//! \param FAST : whether it is "fast" type or not.
 template<int SIZE, bool FAST = false>
 struct Integer : public Integer<((SIZE/8)+1) * 8, FAST> {};
 
