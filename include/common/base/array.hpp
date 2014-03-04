@@ -116,7 +116,7 @@ public:
     return (*this);
   }
   
-  //! \brief Add each element of two arraies together two-by-two
+  //! \brief Add each element of two arraies together two-by-two.
   //! \param other : the array to get the values to add from.
   //! \return The result array after the additions.
   inline Array operator+(const Array& other) {
@@ -127,7 +127,7 @@ public:
     return ret;
   }
   
-  //! \brief Substract each element of two arraies together two-by-two
+  //! \brief Substract each element of two arraies together two-by-two.
   //! \param other : the array to get the values to substract from.
   //! \return The result array after the substractions.
   inline Array operator-(const Array& other) {
@@ -138,7 +138,7 @@ public:
     return ret;
   }
   
-  //! \brief Multiply each element of two arraies together two-by-two
+  //! \brief Multiply each element of two arraies together two-by-two.
   //! \param other : the array to get the multipliers from.
   //! \return The result array after the multiplications.
   inline Array operator*(const Array& other) {
@@ -149,7 +149,7 @@ public:
     return ret;
   }
   
-  //! \brief Divide each element of two arraies together two-by-two
+  //! \brief Divide each element of two arraies together two-by-two.
   //! \param other : the array to get the divisors from.
   //! \return The result array after the divisions.
   inline Array operator/(const Array& other) {
@@ -160,13 +160,118 @@ public:
     return ret;
   }
   
-  //! \brief Apply a modulo on each element of two arraies together two-by-two
+  //! \brief Apply a modulo on each element of two arraies together two-by-two.
   //! \param other : the array to get the divisors from.
   //! \return The result array after the modulo operations.
   inline Array operator%(const Array& other) {
     Array ret;
     for(array_t i = 0 ; i < SIZE ; i++) {
       ret._elements[i] = _elements[i] % other._elements[i];
+    }
+    return ret;
+  }
+  
+  //! \brief Add to each element of the array another object.
+  //! \param o : the object to add.
+  //! \return A reference to the array the assignment has been done to.
+  inline Array& operator+=(const _ElementType& o) {
+    for(array_t i = 0 ; i < SIZE ; i++) {
+      _elements[i] += o;
+    }
+    return (*this);
+  }
+  
+  //! \brief Substract to each element of the array another object.
+  //! \param o : the object to substract.
+  //! \return A reference to the array the assignment has been done to.
+  inline Array& operator-=(const _ElementType& o) {
+    for(array_t i = 0 ; i < SIZE ; i++) {
+      _elements[i] -= o;
+    }
+    return (*this);
+  }
+  
+  //! \brief Multiply each element of the array with another object.
+  //! \param o : the multiplier.
+  //! \return A reference to the array the assignment has been done to.
+  inline Array& operator*=(const _ElementType& o) {
+    for(array_t i = 0 ; i < SIZE ; i++) {
+      _elements[i] *= o;
+    }
+    return (*this);
+  }
+  
+  //! \brief Divide each element of the array by another object.
+  //! \param o : the divisor.
+  //! \return A reference to the array the assignment has been done to.
+  inline Array& operator/=(const _ElementType& o) {
+    for(array_t i = 0 ; i < SIZE ; i++) {
+      _elements[i] /= o;
+    }
+    return (*this);
+  }
+  
+  //! \brief Get the modulo of each element of the array by another object.
+  //! \param o : the divisor.
+  //! \return A reference to the array the assignment has been done to.
+  inline Array& operator%=(const _ElementType& o) {
+    for(array_t i = 0 ; i < SIZE ; i++) {
+      _elements[i] %= o;
+    }
+    return (*this);
+  }
+  
+  //! \brief Add an oject to each element of the array.
+  //! \param o : the object to add.
+  //! \return The result array after the additions.
+  inline Array operator+(const _ElementType& o) {
+    Array ret;
+    for(array_t i = 0 ; i < SIZE ; i++) {
+      ret._elements[i] = _elements[i] + o;
+    }
+    return ret;
+  }
+  
+  //! \brief Substract an object to each element of the array.
+  //! \param other : the object to substract.
+  //! \return The result array after the substractions.
+  inline Array operator-(const _ElementType& o) {
+    Array ret;
+    for(array_t i = 0 ; i < SIZE ; i++) {
+      ret._elements[i] = _elements[i] - o;
+    }
+    return ret;
+  }
+  
+  //! \brief Multiply each element of the array by another object.
+  //! \param o : the multiplier.
+  //! \return The result array after the multiplications.
+  inline Array operator*(const _ElementType& o) {
+    Array ret;
+    for(array_t i = 0 ; i < SIZE ; i++) {
+      ret._elements[i] = _elements[i] * o;
+    }
+    return ret;
+  }
+  
+  //! \brief Divide each element of the array by another object.
+  //! \param other : the divisor.
+  //! \return The result array after the divisions.
+  inline Array operator/(const _ElementType& o) {
+    Array ret;
+    for(array_t i = 0 ; i < SIZE ; i++) {
+      ret._elements[i] = _elements[i] / o;
+    }
+    return ret;
+  }
+  
+  //! \brief Apply a modulo on each element of the array by another object.
+  //! \param other : the divisor.
+  //! \return The result array after the modulo operations.
+  inline Array operator%(const _ElementType& o) {
+    Array ret;
+    for(array_t i = 0 ; i < SIZE ; i++) {
+      ret._elements[i] = _elements[i] % o;
     }
     return ret;
   }
