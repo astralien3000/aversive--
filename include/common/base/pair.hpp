@@ -41,6 +41,7 @@ public:
   
   //! \brief Copy Operator.
   //! \param other : the pair to copy.
+  //! \return A reference to the pair that has been written.
   inline Pair& operator=(const Pair& other) {
     this->_left = other._left;
     this->_right = other._right;
