@@ -1,16 +1,23 @@
 #ifndef SINGLETON_HPP
 #define SINGLETON_HPP
 
-//! \brief Base class for all objects which must be single.
-template<class _Base>
+//! \brief Interface for classes that should have only one instance.
+//! \param _BASE : The class that should have only one instance.
+template<class _BASE>
 class Singleton {
 protected:
-  //! \brief Private Default Constructor, to avoid instanciation
-  Singleton(void) {}
+  //! \brief Protected default constructor, to avoid instanciation.
+  inline Singleton(void) {
+  }
+  
+  //! \brief Protected copy constructor, to avoid copy construction.
+  inline Singleton(const Singleton&) {
+  }
 public:
-  //! \brief Access to the single instance of the class
-  static inline _Base& instance(void) {
-    static _Base inst;
+  //! \brief Access to the single instance of the class.
+  //! \return A reference to the instance.
+  static inline _BASE& instance(void) {
+    static _BASE inst;
     return inst;
   }
 };

@@ -7,18 +7,31 @@
 //! \param SIZE : size of integers in bits.
 template<int SIZE>
 struct IntegerInfo {
-  enum {
-    UNSIGNED_MAX = (((long long)1 << SIZE) - 1)      ,
-    SIGNED_MAX   = (((long long)1 << (SIZE - 1)) - 1),
-    SIGNED_MIN   = (((long long)1 << (SIZE - 1)))
-  };
+  //! \brief Maximum value for an unsigned integer of SIZE bits.
+  static const uint64_t UNSIGNED_MAX = (static_cast<uint64_t>(1) << SIZE) - 1;
+  
+  //! \brief Maximum value for a signed integer of SIZE bits.
+  static const uint64_t SIGNED_MAX = (static_cast<uint64_t>(1) << (SIZE - 1)) - 1;
+  
+  //! \brief Minimum value for a signed integer of SIZE bits.
+  static const uint64_t SIGNED_MIN = static_cast<uint64_t>(1) << (SIZE - 1);
 };
 
 //! \brief Integer type definitions with a specified size.
 //! \param SIZE : size of integer type in bits.
 //! \param FAST : whether it is "fast" type or not.
 template<int SIZE, bool FAST = false>
-struct Integer : public Integer<((SIZE/8)+1) * 8, FAST> {};
+struct Integer : public Integer<((SIZE/8)+1) * 8, FAST> {
+  static_assert(SIZE > 64, "Integers with a lenght greater than 64 bits are not supported.");
+  //! \brief Signed type for integer of SIZE bits.
+  typedef void Signed;
+  
+  //! \brief Unsigned type for integer of SIZE bits.
+  typedef void Unsigned;
+  
+  //! \brief Informations for integer of SIZE bits.
+  typedef IntegerInfo<SIZE> Info;
+};
 
 #define MACRO_INTEGER(s) \
   template<> struct Integer<s, false> { typedef int##s##_t Signed; typedef uint##s##_t Unsigned; typedef IntegerInfo<s> Info; }; \
