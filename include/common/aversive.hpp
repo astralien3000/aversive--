@@ -1,30 +1,6 @@
 #ifndef AVERSIVE_HPP
 #define AVERSIVE_HPP
 
-/*!
-  
-  \mainpage Aversive++ documentation
-  
-  \section Introduction
-  
-  The aim of this library is to make easier the programmation
-  of a complex application on a microcontroller, without any
-  operating system running on it and that the application runs
-  as fast as possible.
-  
-  To fulfill this goal, it has been designed with a specific policy:
-  
-  - Most of the things should be determined at compile-time;
-  
-  - Most of the functions are inline, to avoid function call;
-  
-  - The code of the application should not be hardware dependent,
-  but if the hardware the code is compiled for does not support
-  a functionnality used in the code, an error message should be
-  displayed at compile-time.
-  
-*/
-
 //! \brief Aversive++ main class.
 class Aversive {
 public:
