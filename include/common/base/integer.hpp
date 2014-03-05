@@ -22,7 +22,7 @@ struct IntegerInfo {
 //! \param FAST : whether it is "fast" type or not.
 template<int SIZE, bool FAST = false>
 struct Integer : public Integer<((SIZE/8)+1) * 8, FAST> {
-  static_assert(SIZE > 64, "Integers with a lenght greater than 64 bits are not supported.");
+  static_assert(true, "Integers of 8, 16, 32 or 64 bits only are supported.");
   //! \brief Signed type for integer of SIZE bits.
   typedef void Signed;
   
