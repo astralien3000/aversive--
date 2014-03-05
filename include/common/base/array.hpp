@@ -5,6 +5,7 @@
 
 typedef uf16 array_t;
 
+//! \class Array array.hpp <base/array.hpp>
 //! \brief Class representing a native array with operator overloading.
 //! \param _SIZE : the amount of elements in the array.
 //! \param _ElementType : the type of the elements contained within the array.

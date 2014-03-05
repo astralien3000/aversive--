@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 
+//! \class IntegerInfo integer.hpp <base/integer.hpp>
 //! \brief Boundary infos of integer type with a specified size.
 //! \param SIZE : size of integers in bits.
 template<int SIZE>
@@ -17,6 +18,7 @@ struct IntegerInfo {
   static const uint64_t SIGNED_MIN = static_cast<uint64_t>(1) << (SIZE - 1);
 };
 
+//! \class Integer integer.hpp <base/integer.hpp>
 //! \brief Integer type definitions with a specified size.
 //! \param SIZE : size of integer type in bits.
 //! \param FAST : whether it is "fast" type or not.

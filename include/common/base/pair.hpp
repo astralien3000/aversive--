@@ -1,6 +1,7 @@
 #ifndef PAIR_HPP
 #define PAIR_HPP
 
+//! \class Pair pair.hpp <base/pair.hpp>
 //! \brief Two-member tuple.
 //! \param _LeftType : left member type.
 //! \param _RightType : right member type.

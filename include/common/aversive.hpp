@@ -1,6 +1,7 @@
 #ifndef AVERSIVE_HPP
 #define AVERSIVE_HPP
 
+//! \class Aversive <aversive.hpp>
 //! \brief Aversive++ main class.
 class Aversive {
 public:

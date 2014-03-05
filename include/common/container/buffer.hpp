@@ -6,7 +6,7 @@
 
 typedef array_t buffer_t;
 
-//! \class Buffer buffer.hpp container/buffer.hpp
+//! \class Buffer buffer.hpp <container/buffer.hpp>
 //! \brief Buffer implementation which is thread-safe if there are only one provider and one consumer.
 //! \warning SIZE must be a power of 2, it is verified with an assert.
 //! \param SIZE : the number of elements the buffer can handle at any given time.

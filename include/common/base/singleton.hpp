@@ -1,6 +1,7 @@
 #ifndef SINGLETON_HPP
 #define SINGLETON_HPP
 
+//! \class Singleton singleton.hpp <base/singleton.hpp>
 //! \brief Interface for classes that should have only one instance.
 //! \param _BASE : The class that should have only one instance.
 template<class _BASE>

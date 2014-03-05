@@ -1,7 +1,9 @@
 #ifndef BINARY_SEARCH_TREE_HPP
 #define BINARY_SEARCH_TREE_HPP
 
-//! \warning Not implemented !
+//! \class BinarySearchTree binary_search_tree.hpp <container/binary_search_tree.hpp>
+//! \brief Binary search tree (not implemented yet).
+//! \warning Not implemented!
 //! \todo To implement.
 //! \todo To document.
 template<int SIZE, typename _ElementType, typename _IndexType = int>
