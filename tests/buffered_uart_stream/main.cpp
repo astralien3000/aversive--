@@ -4,12 +4,6 @@
 #include <hardware/timer.hpp>
 #include <avr/io.h>
 
-extern "C" {
-  void __cxa_pure_virtual(void) {
-    while(1);
-  }
-}
-
 inline bool isOn(u16 p) {
   return (PORTB & (1<<p));
 }
