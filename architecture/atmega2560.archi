@@ -88,10 +88,69 @@ hardware eeprom[0]
 	config write (1 << EEPE)
 	config read (1 << EERE)
 
-hardware xmem[0]
-    register8 control XMCRA
-        config enable (1 << SRE)
-	config defaultwait (1 << SRW11) | (1 << SRW00)
+hardware adc[0]
+    register8 select ADCSRB, ADMUX
+        config 0 (0 << MUX5), (0 << MUX4) | (0 << MUX3) | (0 << MUX2) | (0 << MUX1) | (0 << MUX0)
+        config 1 (0 << MUX5), (0 << MUX4) | (0 << MUX3) | (0 << MUX2) | (0 << MUX1) | (1 << MUX0)
+        config 2 (0 << MUX5), (0 << MUX4) | (0 << MUX3) | (0 << MUX2) | (1 << MUX1) | (0 << MUX0)
+        config 3 (0 << MUX5), (0 << MUX4) | (0 << MUX3) | (0 << MUX2) | (1 << MUX1) | (1 << MUX0)
+        config 4 (0 << MUX5), (0 << MUX4) | (0 << MUX3) | (1 << MUX2) | (0 << MUX1) | (0 << MUX0)
+        config 5 (0 << MUX5), (0 << MUX4) | (0 << MUX3) | (1 << MUX2) | (0 << MUX1) | (1 << MUX0)
+        config 6 (0 << MUX5), (0 << MUX4) | (0 << MUX3) | (1 << MUX2) | (1 << MUX1) | (0 << MUX0)
+        config 7 (0 << MUX5), (0 << MUX4) | (0 << MUX3) | (1 << MUX2) | (1 << MUX1) | (1 << MUX0)
+        config 8 (1 << MUX5), (0 << MUX4) | (0 << MUX3) | (0 << MUX2) | (0 << MUX1) | (0 << MUX0)
+        config 9 (1 << MUX5), (0 << MUX4) | (0 << MUX3) | (0 << MUX2) | (0 << MUX1) | (1 << MUX0)
+        config 10 (1 << MUX5), (0 << MUX4) | (0 << MUX3) | (0 << MUX2) | (1 << MUX1) | (0 << MUX0)
+        config 11 (1 << MUX5), (0 << MUX4) | (0 << MUX3) | (0 << MUX2) | (1 << MUX1) | (1 << MUX0)
+        config 12 (1 << MUX5), (0 << MUX4) | (0 << MUX3) | (1 << MUX2) | (0 << MUX1) | (0 << MUX0)
+        config 13 (1 << MUX5), (0 << MUX4) | (0 << MUX3) | (1 << MUX2) | (0 << MUX1) | (1 << MUX0)
+        config 14 (1 << MUX5), (0 << MUX4) | (0 << MUX3) | (1 << MUX2) | (1 << MUX1) | (0 << MUX0)
+        config 15 (1 << MUX5), (0 << MUX4) | (0 << MUX3) | (1 << MUX2) | (1 << MUX1) | (1 << MUX0)
+        config mask (1 << MUX5), (1 << MUX4) | (1 << MUX3) | (1 << MUX2) | (1 << MUX1) | (1 << MUX0)
+    register8 control ADCSRA, ADCSRB
+        config enable (1 << ADEN), 0
+        config start (1 << ADSC), 0
+        config autotrigger (1 << ADATE), 0
+        config ended (1 << ADIF), 0
+        config ienable (1 << ADIE), 0
+        config-list reference
+            config external 0, (0 << REFS1) | (0 << REFS0)
+            config internal 0, (0 << REFS1) | (1 << REFS0)
+            config fifthinternal 0, (1 << REFS1) | (0 << REFS0)
+            config halfinternal 0, (1 << REFS1) | (1 << REFS0)
+        config-list align
+            config left 0, (1 << ADLAR)
+            config right 0, (0 << ADLAR)
+        config-list prescaler
+            config 1 (0 << ADPS2) | (0 << ADPS1) | (0 << ADPS0), 0
+            config 2 (0 << ADPS2) | (0 << ADPS1) | (1 << ADPS0), 0
+            config 4 (0 << ADPS2) | (1 << ADPS1) | (0 << ADPS0), 0
+            config 8 (0 << ADPS2) | (1 << ADPS1) | (1 << ADPS0), 0
+            config 16 (1 << ADPS2) | (0 << ADPS1) | (0 << ADPS0), 0
+            config 32 (1 << ADPS2) | (0 << ADPS1) | (1 << ADPS0), 0
+            config 64 (1 << ADPS2) | (1 << ADPS1) | (0 << ADPS0), 0
+            config 128 (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0), 0
+        config-list trigger
+            config timer0ovf 0, (1 << ADTS2) | (0 << ADTS1) | (0 << ADTS0)
+    register8 disable DIDR0, DIDR2
+        config normal 0, 0
+        config 0 ADC0D, 0
+        config 1 ADC1D, 0
+        config 2 ADC2D, 0
+        config 3 ADC3D, 0
+        config 4 ADC4D, 0
+        config 5 ADC5D, 0
+        config 6 ADC6D, 0
+        config 7 ADC7D, 0
+        config 8 0, ADC8D
+        config 9 0, ADC9D
+        config 10 0, ADC10D
+        config 11 0, ADC11D
+        config 12 0, ADC12D
+        config 13 0, ADC13D
+        config 14 0, ADC14D
+        config 15 0, ADC15D
+    register8 data ADCL, ADCH
 
-hardware dummy
+hardware dummy[0]
     register8 dummy 0

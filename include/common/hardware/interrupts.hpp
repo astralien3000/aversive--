@@ -5,7 +5,7 @@
 
 //! \brief Class providing routines for interruption management
 class Interrupts {
-  static u16 counter;
+  static volatile u16 counter;
 public:
   //! \brief Start the interruptions
   static inline void init(void);

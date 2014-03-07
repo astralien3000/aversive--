@@ -4,12 +4,14 @@ BUILD=../../build/sasiae
 export BUILD_EXPORT=$(BUILD)
 INCLUDE=../../include/sasiae
 export INCLUDE_EXPORT=$(INCLUDE)
-LIB=$(BUILD)/../libaversive_sasiae.so
+LIB=$(BUILD)/../libaversive_sasiae.a
 OBJ=aversive client_thread
 
-SUB_DIRS=system # add the sub directory's names here
+SUB_DIRS=system device # add the sub directory's names here
 
-all: $(BUILD) build $(addsuffix .d,$(SUB_DIRS)) common $(LIB)
+.PHONY: $(LIB) $(SUB_DIRS)
+
+all: $(BUILD) build $(SUB_DIRS) common $(LIB)
 
 # to build local sources
 build: $(addprefix $(BUILD)/,$(addsuffix .o,$(OBJ)))
@@ -22,12 +24,12 @@ $(BUILD)/client_thread.o: $(INCLUDE)/client_thread.hpp $(INCLUDE)/base/singleton
 $(BUILD)/%.o: %.cpp
 	$(CC) $(CFLAGS) -I$(INCLUDE) -o $@ -c $<
 
-system.d:
+$(SUB_DIRS):
 	$(MAKE) -C $(@:.d=)
 
 $(LIB):
-#	ar r $(LIB) $(BUILD)/*.o
-	g++ -shared -o $(LIB) $(BUILD)/*.o
+	ar r $(LIB) $(BUILD)/*.o
+#	g++ -shared -o $(LIB) $(BUILD)/*.o
 
 common:
 	$(MAKE) -C ../common

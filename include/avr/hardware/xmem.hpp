@@ -4,9 +4,9 @@
 #include "../../common/hardware/xmem.hpp"
 #include "architecture.hpp"
 
-Xmem::Xmem(void) {}
+inline Xmem::Xmem(void) {}
 
-void Xmem::init(void) {
+inline void Xmem::init(void) {
   REG(xmem<0>::control) |= CFG(xmem<0>::control::enable);
   REG(xmem<0>::control) |= CFG(xmem<0>::control::defaultwait);  
 }

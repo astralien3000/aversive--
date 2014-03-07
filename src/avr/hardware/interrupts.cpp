@@ -1,3 +1,3 @@
 #include <hardware/interrupts.hpp>
 
-u16 Interrupts::counter = 1;
+volatile u16 Interrupts::counter = 1;

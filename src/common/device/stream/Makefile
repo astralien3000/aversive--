@@ -3,7 +3,7 @@ INCLUDE=../$(INCLUDE_EXPORT)
 
 SUB_DIRS= # add the sub directory's names here
 
-OBJS = stream # add object to compile
+OBJS = stream buffered_stream internal_buffered_stream # add object to compile
 
 all: $(BUILD) $(BUILD) build
 

@@ -13,8 +13,9 @@
 
 //! Private Define CHECK_OPERATION
 #define CHECK_OPERATION(callback, big_t, tiny_t, op, v1, v2)		\
-  if(TYPED_OPERATION(big_t, op, v1, v2) != TYPED_OPERATION(tiny_t, op, v1, v2)) \
-    callback(TYPED_OPERATION(big_t, op, v1, v2), TYPED_OPERATION(tiny_t, op, v1, v2))
+  if(TYPED_OPERATION(big_t, op, v1, v2) != TYPED_OPERATION(tiny_t, op, v1, v2)) { \
+    callback(TYPED_OPERATION(big_t, op, v1, v2), TYPED_OPERATION(tiny_t, op, v1, v2)); \
+  }
 
 //! \brief An overload of basic integers to enable some safety checks during runtime
 template<typename Type>
@@ -35,7 +36,9 @@ public:
   //! If cannot convert because value, throw error.
   template<typename T>
   inline SafeInteger(T val) : _val(val) {
-    if(val != _val) CPY_ON_ERROR_CALLBACK(val, _val);
+    if(val != _val) {
+      CPY_ON_ERROR_CALLBACK(val, _val);
+    }
   }
 
   //! \brief Converter Cast
@@ -45,7 +48,9 @@ public:
   //! If cannot convert because value, throw error.
   template<typename T>
   inline operator T(void) {
-    if((T)_val != _val) CPY_ON_ERROR_CALLBACK((int)(T)_val, _val);
+    if((T)_val != _val) {
+      CPY_ON_ERROR_CALLBACK((int)(T)_val, _val);
+    }
     return (T)_val;
   }
 
@@ -112,12 +117,16 @@ public:
   }
 
   inline SafeInteger operator/(const SafeInteger& other) const {
-    if(other._val == 0) DIV_ON_ERROR_CALLBACK(0, 0);
+    if(other._val == 0) {
+      DIV_ON_ERROR_CALLBACK(0, 0);
+    }
     return SafeInteger(_val / other._val);
   }
 
   inline SafeInteger operator%(const SafeInteger& other) const {
-    if(other._val == 0) DIV_ON_ERROR_CALLBACK(0, 0);
+    if(other._val == 0) {
+      DIV_ON_ERROR_CALLBACK(0, 0);
+    }
     return SafeInteger(_val % other._val);
   }
 

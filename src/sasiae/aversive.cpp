@@ -46,10 +46,11 @@ void Aversive::init(void) {
   }
 }
 
-void Aversive::sleep(void) {
+bool Aversive::sync(void) {
   // Synchronisation
   AversiveClientThread& client = AversiveClientThread::instance();
   client.iterate();
+  return Aversive::isRunning();
 }
 
 void Aversive::sleep(int ms) {

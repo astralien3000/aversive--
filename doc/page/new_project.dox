@@ -2,8 +2,6 @@
 
 \page "Create a project" Create a project
 
-\warning This has not been tested yet!
-
 To create a new project, you need to copy the minimal main.cpp and Makefile files into your project's directory from /doc/example/new_project (you can see these files below too).
 
 These files are commented so read the comments for more details.

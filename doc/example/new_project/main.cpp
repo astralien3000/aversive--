@@ -10,13 +10,11 @@ int main(int argc, char** argv) {
   // Declare your devices here
   // Initialize your stuff here
   
-  while(Aversive::isRunning()) {
+  while(Aversive::sync()) {
     // Your while(1) code
-    Aversive::sleep(); // Very important for simulation purpose
   }
   
-  // You can have several "while(Aversive::isRunning())" loops if needed
-  // Keep the "Aversive::sleep()" at the end of the loop in each of your loops
+  // You can have several "while(Aversive::sync())" loops if needed
   
   // Unintialize your stuff here
   Aversive::setReturnCode(0); // Optional; default value is already 0

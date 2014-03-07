@@ -1,6 +1,9 @@
 #include <system/scheduler.hpp>
 
+#include <aversive.hpp>
+
 Scheduler::Scheduler(void) {
+  Aversive::init();
   _data.current = 0;
 
   ClientThread::instance().setSyncFunction([&](long long t){
@@ -16,7 +19,7 @@ Scheduler::Scheduler(void) {
 	  tsk.exec();
 
 	  if(!tsk.unique()) {
-	    tsk.setPeriod(0);
+	    //tsk.setPeriod(0);
 	    _data.tasks.insert(TaskRef(tsk, tsk.nextCall()));
 	  }
 

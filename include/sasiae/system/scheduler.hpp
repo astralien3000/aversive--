@@ -53,7 +53,7 @@ public:
   }
 
   inline void setPeriod(u16 p) {
-    _task->setPriority(p);
+    _task->setPeriod(p);
   }
 
   bool operator<(const TaskRef& other) const {

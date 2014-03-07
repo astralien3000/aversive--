@@ -18,12 +18,11 @@ int main(int argc, char** argv) {
   Encoder<u32> _id("intest", &ENC);
   Motor<s32> _od("outtest", &MOT);
 
-  while(Aversive::isRunning()) {
+  while(Aversive::sync()) {
     // Your while(1) code
     if(_id.getValue() == 10) {
       Aversive::stop();
     }
-    Aversive::sleep(); // Very important for simulation purpose
   }
   
   // You can have several "while(Aversive::isRunning())" loops if needed

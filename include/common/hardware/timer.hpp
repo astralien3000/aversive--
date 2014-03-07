@@ -13,25 +13,25 @@ class Timer : public Singleton< Timer<ID> > {
 
 public:
   //! \brief Configure the Timer, to enable Events
-  inline void init(void);
+  void init(void);
   //! \brief Makes the Timer available for an other purpose
-  inline void reset(void);
+  void reset(void);
 
   //! \brief Access to the counter
   //! \param T (template) : Type requested, available types are hardware-dependent
   /*!
 1    Will throw a compile-time error if type is unapropriate
    */
-  template<typename T> inline const T& counter(void);
+  template<typename T> const T& counter(void);
 
-  template<typename T> inline void setCounter(const T&);
+  template<typename T> void setCounter(const T&);
   
   //! \brief Set the prescaler, with a value determined on compile-time
   //! \param PRESCALE (template) : the prescaler, availables values are hardware-dependent
   /*!
     Will throw a compile-time error if value is not available
    */
-  template<int PRESCALE> inline void setPrescaler(void);
+  template<int PRESCALE> void setPrescaler(void);
 
   //! \brief Timer Comparison Event
   //! \param EID (template) : index of the Event
@@ -44,23 +44,26 @@ public:
 
   private:
     //! \brief Default Constructor (Private)
-    inline ComparEvent(void);
+    ComparEvent(void);
+
+    //! \brief Copy Constructor (Private, must never be called)
+    ComparEvent(const ComparEvent&);
     
   public:
-    //! \brief Enable interruption for coprarison event
-    inline void start(void);
-    //! \brief Disable interruption for coprarison event
-    inline void stop (void);
+    //! \brief Enable interruption for comprarison event
+    void start(void);
+    //! \brief Disable interruption for comprarison event
+    void stop (void);
 
     //! \brief Access to the comparator's value
     //! \param T (template) : Type requested, available types are hardware-dependent
     /*!
       Will throw a compile-time error if type is unappropriate
      */
-    template<typename T> inline void setComparator(const T&);
+    template<typename T> void setComparator(const T&);
 
     //! \brief Returns true if the event is activ
-    inline bool activated(void);
+    bool activated(void);
   };
 
   //! \brief Timer Overflow Event
@@ -68,26 +71,35 @@ public:
     This event occurs when the timer's compter is at it's maximum value.
   */
   class OverflowEvent : public HardwareEvent {
+    friend class Timer;
+    
+  private:
+    //! \brief Default Constructor (Private)
+    OverflowEvent(void);
+
+    //! \brief Copy Constructor (Private, must never be called)
+    OverflowEvent(const OverflowEvent&);
+
   public:
-    //! \brief Enable interruption for coprarison event
-    inline void start(void);
-    //! \brief Disable interruption for coprarison event
-    inline void stop (void);
+    //! \brief Enable interruption for overflow event
+    void start(void);
+    //! \brief Disable interruption for overflow event
+    void stop (void);
   };
 
   //! \brief Get Timer's comparison event
   //! \param EID (template) : Index of the event
-  template<int EID = 0> inline ComparEvent<EID>& comparEvent(void);
+  template<int EID = 0> ComparEvent<EID>& comparEvent(void);
 
   //! \brief Get Timer's overflow event
-  inline OverflowEvent& overflowEvent(void);
+  OverflowEvent& overflowEvent(void);
  
 private:
   //! \brief Private Constructor, to init singleton
-  Timer();
+  Timer(void);
 
-  struct PrivateData;
-  PrivateData data;
+  //! \brief Copy Constructor (Private, must never be called)
+  Timer(const Timer&);
 };
 
 #endif//TIMER_HPP

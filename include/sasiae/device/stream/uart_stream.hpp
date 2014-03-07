@@ -14,7 +14,7 @@ UartStream<CHANNEL>::UartStream(const char* name) : Stream(name) {
   ClientThread::instance().
     registerDevice(*this,
 		   std::function<void(char*)>([&] (char* msg) mutable -> void {
-		       
+		       (void) msg; //! \todo Write parser
 		     }));
 
   ClientThread::instance().
@@ -29,7 +29,7 @@ char UartStream<CHANNEL>::getValue(void) {
 template<int CHANNEL>
 void UartStream<CHANNEL>::setValue(char val) {
   std::ostringstream oss;
-  oss << "value " << (int)val;
+  oss << "value " << (unsigned int)val;
 
   ClientThread::instance().
     sendDeviceMessage(*this, 

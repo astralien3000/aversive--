@@ -5,36 +5,20 @@ template<int ID> Timer<ID>::Timer() {}
 template Timer<0>::Timer();
 template Timer<1>::Timer();
 
-#include <avr/interrupt.h>
+#include "interrupt_bind.hpp"
 
-#define MACRO_INTERRUPT_BIND(timer, comp, ev)				\
-  ISR(TIMER##timer##_COMP##comp##_vect, ISR_NAKED) {			\
-    uint8_t flags = SREG;						\
-    Timer<timer>::instance().comparEvent<ev>().execFunction();		\
-    SREG = flags;							\
-    reti();								\
-  }
+MACRO_INTERRUPT_BIND(Timer<0>, overflowEvent, TIMER0_OVF_vect)
+MACRO_INTERRUPT_BIND(Timer<1>, overflowEvent, TIMER1_OVF_vect)
 
+MACRO_INTERRUPT_BIND(Timer<1>, comparEvent<0>, TIMER1_COMPA_vect)
+MACRO_INTERRUPT_BIND(Timer<1>, comparEvent<1>, TIMER1_COMPB_vect)
 
-#define MACRO_OVERFLOW_INTERRUPT_BIND(timer)				\
-  ISR(TIMER##timer##_OVF_vect, ISR_NAKED) {				\
-    uint8_t flags = SREG;						\
-    Timer<timer>::instance().overflowEvent().execFunction();		\
-    SREG = flags;							\
-    reti();								\
-  }
-
-MACRO_OVERFLOW_INTERRUPT_BIND(0)
-MACRO_OVERFLOW_INTERRUPT_BIND(1)
-
-MACRO_INTERRUPT_BIND(1,A,0)
-MACRO_INTERRUPT_BIND(1,B,1)
 #if defined (__AVR_ATmega128__)
-MACRO_INTERRUPT_BIND(1,C,2)
+MACRO_INTERRUPT_BIND(Timer<1>, comparEvent<2>, TIMER1_COMPC_vect)
 #endif
 
 #if defined (__AVR_ATmega2560__)
-MACRO_INTERRUPT_BIND(0,A,0)
+MACRO_INTERRUPT_BIND(Timer<0>, comparEvent<0>, TIMER0_COMPA_vect)
 #else
-MACRO_INTERRUPT_BIND(0,,0)
+MACRO_INTERRUPT_BIND(Timer<0>, comparEvent<0>, TIMER0_COMP_vect)
 #endif

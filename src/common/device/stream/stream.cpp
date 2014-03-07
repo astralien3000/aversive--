@@ -10,9 +10,9 @@ Stream::Stream(const char* name) : Device(name) {}
 ////////////////////////////////////////
 // Binary Write
 
-void Stream::binaryWrite(const char* str, u16 size) {  
+void Stream::binaryWrite(const char* str) {
   const char* ptr = str;
-  for( ; *ptr != '\0' && (ptr - str) < size  ; ptr++) {
+  for( ; *ptr != '\0' ; ptr++) {
     setValue(*ptr);
   }
 }
@@ -20,7 +20,7 @@ void Stream::binaryWrite(const char* str, u16 size) {
 template<typename T>
 inline void basic_binary_write(Stream& s, const T& val) {
   for(u16 i = 0 ; i < sizeof(val) ; i++) {
-    s.setValue((val >> (i * 8)) % 256);
+    s.setValue((char)(val >> (i * 8) & 0xFF));
   }
 }
 
@@ -60,32 +60,35 @@ void Stream::binaryWrite(const u64& val) {
 // Formatted Write
 
 template<bool SIGNED = true, typename T>
-inline void basic_formatted_integer_write(Stream& s, T val) {  
+inline void basic_formatted_integer_write(Stream& s, T val) {
   char str[MAX_BUFF] = {0};
+  bool _neg = false;
 
+  // Initialize string
   char* ptr = str + MAX_BUFF;
-  bool neg = false;
-
   *(--ptr) = '\0';
 
+  // Parsing sign and digits
   if(SIGNED && val < 0) {
     val = -val;
-    neg = true;
+    _neg = true;
   }
-
+  
   while(0 < val && str < ptr) {
     *(--ptr) = '0' + (val % 10);
     val /= 10;
   }
 
-  if(SIGNED && neg) {
+  if(SIGNED && _neg) {
     *(--ptr) = '-';
   }
   
+  // If no digits found
   if(*ptr == '\0') {
     *(--ptr) = '0';
   }
   
+  // Send
   s << (const char*)ptr;
 }
 
@@ -127,19 +130,17 @@ void Stream::formattedWrite(const u64& val) {
 void Stream::binaryRead(char* str, u16 size) {
   bool keep = true;
   char* beg = str;
-  while(keep && (str-beg) < size) {
+  while(keep && (u16)(str-beg) < size) {
     char c = getValue();
     *str = c;
     if(_mode == FORMATTED) {
-      if(_sep == WORD && c == ' ') {
+      if(_sep == WORD && (c == ' ' || c == '\t')) {
 	keep = false;
       }
       else if(c == '\r' || c == '\n' || c == '\0') {
 	*str = '\n';
 	keep = false;
       }
-      setValue(*str);
-      //*this << *str;
     }
     str++;	
   }
@@ -149,7 +150,7 @@ void Stream::binaryRead(char* str, u16 size) {
 template<typename T>
 inline void basic_binary_read(Stream& s, T& val) {
   for(u16 i = 0 ; i < sizeof(val) ; i++) {
-    val += s.getValue() << (i * 8) % 256;
+    val += (((T)s.getValue()) << (i * 8)) & ((T)0xFF << (i * 8));
   }
 }
 
