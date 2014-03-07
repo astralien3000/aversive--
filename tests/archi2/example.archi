@@ -42,6 +42,8 @@ uc avrtest {
 	};
       };
     };
-    register[16] reg2 = { REG3, REG4 };
+    register[16] reg2 = { REG3, REG4 } {
+      config c[10] = { 18, 19 };
+    };
   };
 };
