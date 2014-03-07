@@ -11,7 +11,7 @@ typedef array_t buffer_t;
 //! \warning SIZE must be a power of 2, it is verified with an assert.
 //! \param SIZE : the number of elements the buffer can handle at any given time.
 //! \param _ElementType : type of the buffered elements.
-template <buffer_t _SIZE = 64, typename _ElementType = uint8_t>
+template <buffer_t _SIZE = 64, typename _ElementType = u8>
 class Buffer {
 public:
   //! \brief Maximum number of elements a buffer can handle.
