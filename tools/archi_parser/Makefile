@@ -20,7 +20,7 @@ $(BUILD_DIR)/%.o : $(BUILD_DIR)/%.c
 	$(CC) $(CFLAGS) -c $^ -o $@
 
 $(BUILD_DIR)/y.tab.c:
-	yacc archi.y -d -o $@
+	yacc -d -o $@ archi.y
 
 $(BUILD_DIR)/lex.yy.c:
 	flex -o $@ archi.l

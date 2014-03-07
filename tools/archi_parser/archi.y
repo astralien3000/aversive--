@@ -31,7 +31,8 @@
 %}
 
 %union { char id[1024]; int n; }
-%token <id>ID <n>N
+%token <id>ID 
+%token <n>N
 %token TAB 
 %token UC_TOKEN
 %token TEMPLATE_TOKEN

@@ -4,6 +4,10 @@ static bool initialized = false;
 static bool running = false;
 static int ret = 0;
 
+extern "C" void __cxa_pure_virtual(void) {
+  while(1);
+}
+
 void Aversive::init(void) {
   if(!initialized) {
     running = initialized = true;

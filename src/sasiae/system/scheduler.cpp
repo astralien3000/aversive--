@@ -1,6 +1,9 @@
 #include <system/scheduler.hpp>
 
+#include <aversive.hpp>
+
 Scheduler::Scheduler(void) {
+  Aversive::init();
   _data.current = 0;
 
   ClientThread::instance().setSyncFunction([&](long long t){

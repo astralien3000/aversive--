@@ -2,16 +2,24 @@
 #include <hardware/interrupts.hpp>
 #include <hardware/timer.hpp>
 
-static const int TIMER_ID = 0;
+static const int SCHEDULER_TIMER_ID = 0;
+
+static const u32 SCHEDULER_TIMER_PRESCALER =  8;
+static const u32 SCHEDULER_FREQ = (16000000/(256 * ((SCHEDULER_TIMER_PRESCALER) ? SCHEDULER_TIMER_PRESCALER : 1)));
+static const u32 SCHEDULER_GRANULARITY = (1000000 / SCHEDULER_FREQ);
 
 // Work around because of GCC's bug asking for "this" to be captured in lambda while you are just accessing a static method
 inline Scheduler& sched_instance(void) {
   return Scheduler::instance();
 }
 
+#include <device/stream/uart_stream.hpp>
+
+UartStream<0> test(0);
+
 Scheduler::Scheduler(void) {
   _data.current = 0;
-  Timer<TIMER_ID>& t = Timer<TIMER_ID>::instance();
+  Timer<SCHEDULER_TIMER_ID>& t = Timer<SCHEDULER_TIMER_ID>::instance();
   t.init();
   t.setPrescaler<SCHEDULER_TIMER_PRESCALER>();
   t.overflowEvent().setFunction([](void){
@@ -23,6 +31,7 @@ Scheduler::Scheduler(void) {
 
 	while(!s._data.ordered_tasks.empty() && s._data.current > tsk.nextCall()) {
 	  s._data.ordered_tasks.pop();
+	  //test << s._data.current << " ; next : " << tsk.nextCall() << "\n\r";
 	  tsk.exec();
 	  
 	  if(!tsk.unique()) {
@@ -39,10 +48,6 @@ Scheduler::Scheduler(void) {
     });
   t.overflowEvent().start();
 }
-
-#include <device/stream/uart_stream.hpp>
-
-UartStream<0> test(0);
 
 bool Scheduler::addTask(Task& t) {
   if(!freeSlot()) {

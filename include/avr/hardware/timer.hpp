@@ -5,11 +5,6 @@
 #include "architecture.hpp"
 
 ////////////////////////////////////////////////////////
-// DATA ////////////////////////////////////////////////
-template<int ID>
-struct Timer<ID>::PrivateData {};
-
-////////////////////////////////////////////////////////
 // Timer ///////////////////////////////////////////////
 
 template<int ID>
@@ -64,7 +59,7 @@ inline typename Timer<ID>::OverflowEvent& Timer<ID>::overflowEvent(void) {
 template<int ID> template<int EID>
 inline Timer<ID>::ComparEvent<EID>::ComparEvent(void) : HardwareEvent() {}
 
-// Warning ! interrupts need to be sat with Interrupts::set()
+// Warning ! interrupts need to be enabled with Interrupts::set()
 template<int ID> template<int EID>
 inline void Timer<ID>::ComparEvent<EID>::start(void) {
   // Enable event interrupt bit
@@ -89,7 +84,10 @@ inline void Timer<ID>::ComparEvent<EID>::setComparator(const T& val) {
 ////////////////////////////////////////////////////////
 // Timer::Overflow /////////////////////////////////////
 
-// Warning ! interrupts need to be sat with Interrupts::set()
+template<int ID>
+inline Timer<ID>::OverflowEvent::OverflowEvent(void) : HardwareEvent() {}
+
+// Warning ! interrupts need to be enabled with Interrupts::set()
 template<int ID>
 inline void Timer<ID>::OverflowEvent::start(void) {
   // Enable event interrupt bit

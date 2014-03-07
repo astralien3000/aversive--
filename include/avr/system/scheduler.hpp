@@ -6,20 +6,16 @@
 #include <system/task.hpp>
 #include <base/integer.hpp>
 
-const u32 SCHEDULER_MAX_TASKS = 8;
-const u32 SCHEDULER_TIMER_PRESCALER =  8;
-const u32 SCHEDULER_FREQ = (16000000/(256 * ((SCHEDULER_TIMER_PRESCALER) ? SCHEDULER_TIMER_PRESCALER : 1)));
-const u32 SCHEDULER_GRANULARITY = (1000000 / SCHEDULER_FREQ);
+#define SCHEDULER_MAX_TASKS 8
 
-
-#include "../../common/system/task.hpp"
+#include <system/task.hpp>
 
 class Scheduler;
 
 class TaskRef {
 private:
   Task* _task;
-  long long _origin;
+  u32 _origin;
 public:
   TaskRef(void) : _task((Task*)0), _origin(0) {}
   TaskRef(Task& t, long long origin) : _task(&t), _origin(origin) {}
@@ -40,7 +36,7 @@ public:
     return _task == other._task;
   }
 
-  inline long long nextCall(void) const {
+  inline u32 nextCall(void) const {
     return _origin + _task->period();
   }
   
@@ -72,7 +68,7 @@ public:
 struct SchedulerPrivateData {
   Array<SCHEDULER_MAX_TASKS, Task> tasks;
   Heap<SCHEDULER_MAX_TASKS, TaskRef> ordered_tasks;
-  u16 current;
+  u32 current;
 };
 
 #include "../../common/system/scheduler.hpp"

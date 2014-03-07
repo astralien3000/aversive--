@@ -10,9 +10,9 @@ Stream::Stream(const char* name) : Device(name) {}
 ////////////////////////////////////////
 // Binary Write
 
-void Stream::binaryWrite(const char* str, u16 size) {  
+void Stream::binaryWrite(const char* str) {
   const char* ptr = str;
-  for( ; *ptr != '\0' && (u16)(ptr - str) < size  ; ptr++) {
+  for( ; *ptr != '\0' ; ptr++) {
     setValue(*ptr);
   }
 }
@@ -59,55 +59,28 @@ void Stream::binaryWrite(const u64& val) {
 ////////////////////////////////////////
 // Formatted Write
 
-// This is a helper class to manage sign in integer parsing
-template<bool SIGNED, typename T>
-class SignChecker {
-private:
-  bool _neg = false;
-  char* _ptr;
-public:
-  inline SignChecker(T& val, char* ptr) : _ptr(ptr) {
-    if(SIGNED && val < 0) {
-      val = -val;
-      _neg = true;
-    }
-  }
-
-  inline ~SignChecker(void) {
-    if(SIGNED && _neg) {
-      *(--_ptr) = '-';
-    }
-  }
-};
-
-// This is a helper class to manage sign in integer parsing (usigned version)
-template<typename T>
-class SignChecker<false, T> {
-public:
-  inline SignChecker(T& val, char* ptr) {
-    (void)val;
-    (void)ptr;
-  }
-  inline ~SignChecker(void) {}
-};
-
-
 template<bool SIGNED = true, typename T>
 inline void basic_formatted_integer_write(Stream& s, T val) {
   char str[MAX_BUFF] = {0};
+  bool _neg = false;
 
   // Initialize string
   char* ptr = str + MAX_BUFF;
   *(--ptr) = '\0';
 
   // Parsing sign and digits
-  {
-    SignChecker<SIGNED, T> chk(val, ptr);
+  if(SIGNED && val < 0) {
+    val = -val;
+    _neg = true;
+  }
+  
+  while(0 < val && str < ptr) {
+    *(--ptr) = '0' + (val % 10);
+    val /= 10;
+  }
 
-    while(0 < val && str < ptr) {
-      *(--ptr) = '0' + (val % 10);
-      val /= 10;
-    }
+  if(SIGNED && _neg) {
+    *(--ptr) = '-';
   }
   
   // If no digits found
@@ -161,15 +134,13 @@ void Stream::binaryRead(char* str, u16 size) {
     char c = getValue();
     *str = c;
     if(_mode == FORMATTED) {
-      if(_sep == WORD && c == ' ') {
+      if(_sep == WORD && (c == ' ' || c == '\t')) {
 	keep = false;
       }
       else if(c == '\r' || c == '\n' || c == '\0') {
 	*str = '\n';
 	keep = false;
       }
-      setValue(*str);
-      //*this << *str;
     }
     str++;	
   }

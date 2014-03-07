@@ -25,7 +25,7 @@ SimpleOutputDevice<T>::SimpleOutputDevice(const char* name) : Device(name) {
 template<typename T>
 void SimpleOutputDevice<T>::setValue(T val) {
   std::ostringstream oss;
-  oss << "value " << val;
+  oss << "value " << (int)val;
 
   ClientThread::instance().
     sendDeviceMessage(*this, 

@@ -57,17 +57,17 @@ int main(int argc, char** argv) {
     return EXIT_FAILURE;
   }
 
-  if(!checkMsg(client, "D intest CALLME")) {
+  if(!checkMsg(client, "D intest init")) {
     res(false, 2);
     return EXIT_FAILURE;
   }
 
 
-  client.write("D intest VALUE 20\n");
-  client.write("D intest VALUE 10\n");
+  client.write("D intest value 20\n");
+  client.write("D intest value 10\n");
   client.write("T 1 1\n");
   
-  if(!checkMsg(client, "D outtest VALUE 10")) {
+  if(!checkMsg(client, "D outtest value 10")) {
     res(false, 3);
     return EXIT_FAILURE;
   }

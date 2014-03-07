@@ -47,7 +47,7 @@ public:
   inline operator T(void) {
     T ret = 0;
     for(int i = 0 ; i < reg_size ; i++) {
-      ret = (*reg[i]) << (SIZE * i);
+      ret += (*reg[i]) << (SIZE * i);
     }
     return ret;
   }
