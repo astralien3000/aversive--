@@ -8,8 +8,8 @@ typedef array_t buffer_t;
 
 //! \class Buffer buffer.hpp <container/buffer.hpp>
 //! \brief Buffer implementation which is thread-safe if there are only one provider and one consumer.
-//! \warning SIZE must be a power of 2, it is verified with an assert.
-//! \param SIZE : the number of elements the buffer can handle at any given time.
+//! \warning _SIZE must be a power of 2, it is verified with an assert.
+//! \param _SIZE : the number of elements the buffer can handle at any given time.
 //! \param _ElementType : type of the buffered elements.
 template <buffer_t _SIZE = 64, typename _ElementType = u8>
 class Buffer {
