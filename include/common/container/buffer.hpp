@@ -15,7 +15,7 @@ template <buffer_t _SIZE = 64, typename _ElementType = u8>
 class Buffer {
 public:
   //! \brief Maximum number of elements a buffer can handle.
-  static const buffer_t MAX_SIZE = IntegerInfo<Array<>::ARRAY_INDEX_LENGTH>::UNSIGNED_MAX;
+  static const buffer_t MAX_SIZE = Array<>::MAX_SIZE;
   
   //! \brief Number of elements the buffer can handle.
   static const buffer_t SIZE = _SIZE;
