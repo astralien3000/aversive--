@@ -18,7 +18,7 @@ void InternalBufferedStream::setValue(char val) {
 }
 
 u16 InternalBufferedStream::bufferSize(void) {
-  return _output.size;
+  return _output.SIZE;
 }
 
 u16 InternalBufferedStream::outputFreeSpace(void) {

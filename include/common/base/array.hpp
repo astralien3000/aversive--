@@ -5,6 +5,7 @@
 
 typedef uf16 array_t;
 
+//! \class Array array.hpp <base/array.hpp>
 //! \brief Class representing a native array with operator overloading.
 //! \param _SIZE : the amount of elements in the array.
 //! \param _ElementType : the type of the elements contained within the array.
@@ -22,7 +23,7 @@ public:
   static const array_t ARRAY_INDEX_LENGTH = 16;
   
   //! \brief The maximum size of an array.
-  static const array_t MAX_ARRAY_SIZE = IntegerInfo<ARRAY_INDEX_LENGTH>::UNSIGNED_MAX;
+  static const array_t MAX_SIZE = IntegerInfo<ARRAY_INDEX_LENGTH>::UNSIGNED_MAX;
     
   //! \brief Default constructor.
   //! \attention The elements within the array are not set to any value.
