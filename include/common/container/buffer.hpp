@@ -20,9 +20,12 @@ public:
   //! \brief Number of elements the buffer can handle.
   static const buffer_t SIZE = _SIZE;
   
+  //! \brief Element's type.
+  typedef _ElementType ElementType;
+  
 private:
   //! \brief The array containing the datas.
-  Array<SIZE, _ElementType> _list;
+  Array<SIZE, ElementType> _datas;
   
   //! \brief Read counter.
   volatile buffer_t _reads;
@@ -33,25 +36,25 @@ private:
 public:
   //! \brief Default Constructor.
   inline Buffer()
-    : _list(), _reads(0), _writes(0) {
+    : _datas(), _reads(0), _writes(0) {
     static_assert((SIZE != 0 && (SIZE & (SIZE - 1)) == 0), "Buffer size must be a power of 2.");
   }
   
   //! \brief Copy Constructor.
   //! \param buff : the buffer to copy.
-  inline Buffer(const Buffer<SIZE, _ElementType>& buff)
-    : _list(buff._list), _reads(buff._reads), _writes(buff._writes) {
+  inline Buffer(const Buffer& buff)
+    : _datas(buff._datas), _reads(buff._reads), _writes(buff._writes) {
   }
   
   //! \brief Copy Operator.
   //! \param buff : the buffer to copy.
   //! \return A reference to the buffer that has been written.
-  inline Buffer<SIZE, _ElementType>& operator=(const Buffer<SIZE, _ElementType>& buff){
-    _list = buff._list;
+  inline Buffer& operator=(const Buffer& buff){
+    _datas = buff._datas;
     _reads = buff._reads;
     _writes = buff._writes;
   }
-
+  
   //! \brief Delete the oldest element.
   //! \return A boolean telling whether an element has been successfully dequeued or not.
   inline bool dequeue(void) {
@@ -65,11 +68,11 @@ public:
   //! \brief Enqueue an element to the buffer.
   //! \param element : the element to enqueue in the buffer.
   //! \return A boolean telling whether the element has been successfully enqueued or not.
-  inline bool enqueue(const _ElementType& element) {
+  inline bool enqueue(const ElementType& element) {
     if(isFull()) {
       return false;
     }
-    _list[_writes % SIZE] = element;
+    _datas[_writes % SIZE] = element;
     _writes++;
     return true;
   }
@@ -77,8 +80,8 @@ public:
   //! \brief Access to the oldest element.
   //! \return A reference to the element at the head of the buffer.
   //! \warning If the buffer is actually empty, this causes an undefined behavior.
-  inline const _ElementType& head(void) const {
-    return _list[_reads % SIZE];
+  inline const ElementType& head(void) const {
+    return _datas[_reads % SIZE];
   }
   
   //! \brief Test if the buffer is empty.
