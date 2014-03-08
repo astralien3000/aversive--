@@ -7,13 +7,6 @@
 //! \param _RightType : right member type.
 template<typename _LeftType, typename _RightType>
 class Pair {
-private:
-  //! \brief The left member.
-  _LeftType _left;
-  
-  //! \brief The right member.
-  _RightType _right;
-  
 public:
   //! \brief Left member's type.
   typedef _LeftType LeftType;
@@ -21,6 +14,14 @@ public:
   //! \brief Right member's type.
   typedef _RightType RightType;
   
+private:
+  //! \brief The left member.
+  LeftType _left;
+  
+  //! \brief The right member.
+  RightType _right;
+  
+public:  
   //! \brief Default Constructor.
   //! \attention The objects within the pair are not set to any value.
   inline Pair(void) {
@@ -30,8 +31,8 @@ public:
   //! \param left : a reference to the object to copy in the left member.
   //! \param right : a reference to the object to copy in the right member.
   //! \attention Left and right types must have a copy constructor.
-  inline Pair(const LeftType& l, const RightType& r) : 
-    _left(l), _right(r) {
+  inline Pair(const LeftType& l, const RightType& r)
+    : _left(l), _right(r) {
   }
   
   //! \brief Copy Constructor.
@@ -44,33 +45,33 @@ public:
   //! \param other : the pair to copy.
   //! \return A reference to the pair that has been written.
   inline Pair& operator=(const Pair& other) {
-    this->_left = other._left;
-    this->_right = other._right;
+    _left = other._left;
+    _right = other._right;
     return (*this);
   }
   
   //! \brief Access the left member.
   //! \return The reference to the left member.
   inline LeftType& left(void) {
-    return this->_left;
+    return _left;
   }
   
   //! \brief Access the right member.
   //! \return The reference to the right member.
   inline RightType& right(void) {
-    return this->_right;
+    return _right;
   }
   
   //! \brief Access the left member (constant version).
   //! \return The constant reference to the left member.
   inline const LeftType& left(void) const {
-    return this->_left;
+    return _left;
   }
   
   //! \brief Access the right member (constant version).
   //! \return The constant reference to the right member.
   inline const RightType& right(void) const {
-    return this->_right;
+    return _right;
   }
 };
 
