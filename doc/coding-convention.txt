@@ -18,7 +18,7 @@ constant attribute: MY_CONST_ATTRIBUTE	(upper underscore case)
 enumeration value: MY_ENUM_VALUE	(upper underscore case)
 macro/define: MY_AWESOME_MACRO		(upper underscore case)
 value template parameter: _MY_PARAM	(upper underscore case underscore first)
-type template parameter: MyAwesomeType	(upper camel case)
+type template parameter: _MyAwesomeType	(upper camel case underscore first)
 
 When declaring a property on a class, if the property is an adjective
 (i.e. a boolean property), the method name must be isAdjective. Otherwise, just
@@ -56,7 +56,7 @@ void my_function(void);
   Always type the template parameter declaration the line above what is actually
   being declared, example:
 
-template<typename MyTemplatedType, u8 _VALUE_TEMPLATE_PARAM>
+template<typename _MyTemplatedType, u8 _VALUE_TEMPLATE_PARAM>
 void my_function(void);
 
 - Block declaration:
