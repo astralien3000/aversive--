@@ -161,5 +161,7 @@ List of useful Doxygen commands with how to use them:
 //! \brief A brief explanation of what is declared next
 //! \param my_param : notice the spaces on the left and right of the colon
 //! \return A boolean telling wheter it is true or false
-//! More documention to what is standing next.
-//! Even more documention.
+/*!
+  More documention to what is standing next.
+  Even more documention.
+*/
