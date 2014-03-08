@@ -50,6 +50,11 @@ FOR FLOATING-POINT VARIABLES, USE float ONLY.
 
 void my_function(void);
 
+- this keyword:
+  Use this keyword within a method only to get the address of the current
+  instance or a reference to it. Do not use it to access attributes or other
+  methods.
+
 - Template parameter declaration:
   Do not use class keyword but typename keyword instead when declaring a type
   template parameter.
