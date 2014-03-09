@@ -21,14 +21,20 @@ value template parameter: _MY_PARAM	(upper underscore case underscore first)
 type template parameter: _MyAwesomeType	(upper camel case underscore first)
 
 When declaring a property on a class, if the property is an adjective
-(i.e. a boolean property), the method name must be isAdjective. Otherwise, just
-name the method with the name of the property, examples:
+(i.e. a boolean property), the method's name must be isAdjective. If the
+property is the ownership of something (i.e. a boolean property again), the
+method's name must be hasThing. Otherwise, just name the method with the name of
+the property, examples:
 
-bool MyContainer::isFull(void) const {
+bool MyContainer::isFull(void) const { // "Adjective" property
   ...
 }
 
-u8 MyContainer::usedSpace(void) const {
+bool MyContainer::hasChild(void) const { // "Ownership" property
+  ...
+}
+
+u8 MyContainer::usedSpace(void) const { // Otherwise
   ...
 }
 
