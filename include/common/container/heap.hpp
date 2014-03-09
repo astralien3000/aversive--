@@ -1,126 +1,156 @@
 #ifndef HEAP_HPP
 #define HEAP_HPP
 
+#include <base/integer.hpp>
 #include <base/array.hpp>
 #include <math/saturate.hpp>
 
-//! \brief Heap interface
+typedef array_t heap_t;
+
+//! \class Heap heap.hpp <container/heap.hpp>
+//! \brief Class representing a heap that allows to easily extract the maximum element of a given set.
+//! \param _SIZE : the number of elements the heap can handle at any given time.
+//! \param _ElementType : type of the elements within the heap.
 /*!
-
-  The heap enable to extract easily the maximum of a set of values.
+  The heap allows to easily extract the maximum value of a given set.
   Once the element is inserted, it is compared to others to order it.
-  The only element accessible and deletable is the maximum.  The
-  maximum is the element for which the comparison function returns
+  The only element accessible and deletable is the maximum. The
+  maximum is the element for which the comparison operator returns
   true foreach comparision with others element in the heap.
-
- */
-template<int S, typename T>
+*/
+template<heap_t _SIZE = 0, typename _ElementType = u8>
 class Heap {
+public:
+  //! \brief Maximum number of elements a heap can handle.
+  static const heap_t MAX_SIZE = Array<>::MAX_SIZE;
+  
+  //! \brief Number of elements the heap can handle.
+  static const heap_t SIZE = _SIZE;
+  
+  //! \brief Element's type.
+  typedef _ElementType ElementType;
+  
 private:
-  friend class Node;
-
-  Array<S, T> _data;
-  int _size;
-
-  //! \brief Private class representing a node in a binary tree
+  //! \brief The array containing the datas.
+  Array<SIZE, ElementType> _datas;
+  
+  //! \brief The current size of the heap.
+  heap_t _size;
+  
+  //! \brief Private class representing a node in a binary tree.
   /*
     Useful for percolation functions.
-   */
+  */
   class Node {
   private:
-    Heap& _heap;
-    int _index;
-
-  public:
-    //! \brief Constructor
-    inline Node(Heap& h, int index) : _heap(h), _index(index) {}
+    Heap* _heap;
+    heap_t _index;
     
-    //! \brief Copy operator
+    //! \brief Default constructor.
+    inline Node(void) {
+    }
+    
+  public:
+    //! \brief Constructor.
+    //! \param h : a pointer to the heap this node is in.
+    //! \param index : the index of this node in the heap data array.
+    inline Node(Heap* h, heap_t index)
+      : _heap(h), _index(index) {
+    }
+    
+    //! \brief Copy operator.
+    //! \param other : the node to copy.
+    //! \return A reference to the node that has been written.
     inline Node& operator=(const Node& other) {
       _heap = other._heap;
       _index = other._index;
       return *this;
     }
     
-    //! \brief Check if the node really represents an element is the heap
-    inline bool exist(void) {
-      return 0 < _index && _index < _heap._size;
+    //! \brief Check if the node really represents an element in the heap.
+    inline bool isValid(void) const {
+      return 0 < _index && _index < _heap->_size;
     }
     
-    //! \brief Exchange elements of two nodes
-    //! \warning Does not change the node's position.
-    inline void switchElements(Node other) {
-      T aux = element();
+    //! \brief Exchange the elements of two nodes.
+    //! \param other : the node that the current node has to switch element with.
+    //! \warning Does not change the nodes' position.
+    inline void switchElements(Node&& other) {
+      ElementType& tmp = element();
       element() = other.element();
-      other.element() = aux;
+      other.element() = tmp;
     }
     
-    //! \brief Returns a reference to the node's parent
-    inline Node parent(void) {
+    //! \brief Returns the current node's parent.
+    inline Node parent(void) const {
       return Node(_heap, (_index-1)/2);
     }
-
-    //! \brief Returns a reference to the node's first child
-    inline Node firstChild(void) {
+    
+    //! \brief Returns the current node's first child.
+    inline Node firstChild(void) const {
       return Node(_heap, (_index*2)+1);
     }
-
-    //! \brief Returns a reference to the node's second child
-    inline Node secondChild(void) {
+    
+    //! \brief Returns the current node's second child.
+    inline Node secondChild(void) const {
       return Node(_heap, (_index*2)+2);
     }
-
-    //! \brief Check if the node is not the root
-    //! (faster than parent.exist)
-    inline bool parentExist(void) {
+    
+    //! \brief Check if the node has a parent.
+    inline bool hasParent(void) const {
       return 0 < parent()._index;
     }
-
-    //! \brief Check if the node has a first child 
-    //! (faster than firstChild.exist)
-    inline bool firstChildExist(void) {
-      return firstChild()._index < _heap._size;
+    
+    //! \brief Check if the node has a first child.
+    inline bool hasFirstChild(void) const {
+      return firstChild()._index < _heap->_size;
     }
-
-    //! \brief Check if the node has a second child 
-    //! (faster than secondChild.exist)
-    inline bool secondChildExist(void) {
-      return secondChild()._index < _heap._size;
+    
+    //! \brief Check if the node has a second child.
+    inline bool hasSecondChild(void) const {
+      return secondChild()._index < _heap->_size;
     }
-
-    //! \brief Returns a reference to the element of the node
-    inline T& element(void) {
-      return _heap._data[_index];
+    
+    //! \brief Returns a reference to the element of the node.
+    inline ElementType& element(void) {
+      return _heap->_datas[_index];
+    }
+    
+    //! \brief Returns a constant reference to the element of the node.
+    inline const ElementType& element(void) const {
+      return _heap->_datas[_index];
     }
   };
-
-  //! \brief Place correctly an element which have to move upward
-  void percolateUp(int index) {
-    Node cur(*this, index);
-    if(cur.exist()) {
-      while(cur.parentExist() && cur.parent().element() < cur.element()) {
+  
+  //! \brief Place correctly an element which has to be moved upward.
+  //! \param index : the index in the data array of the element to move upward.
+  void percolateUp(heap_t index) {
+    Node cur(this, index);
+    if(cur.isValid()) {
+      while(cur.hasParent() && cur.parent().element() < cur.element()) {
 	cur.switchElements(cur.parent());
 	cur = cur.parent();
       }
     }
   }
-
-  //! \brief Place correctly an element which have to move downward
-  void percolateDown(int index) {
-    Node cur(*this, index);
-    if(cur.exist()) {
+  
+  //! \brief Place correctly an element which has to be moved downward.
+  //! \param index : the index in the data array of the element to move downward.
+  void percolateDown(heap_t index) {
+    Node cur(this, index);
+    if(cur.isValid()) {
       // While there is one child greater than current
-      while((cur.firstChildExist() && 
+      while((cur.hasFirstChild() &&
 	     cur.element() < cur.firstChild().element()) ||
-	    (cur.secondChildExist() && 
+	    (cur.hasSecondChild() &&
 	     cur.element() < cur.secondChild().element())) {
 	// If there is only one child
 	// The first child must be filled first !
-	if(!cur.firstChildExist()) {
+	if(!cur.hasFirstChild()) {
 	  cur.switchElements(cur.secondChild());
 	  cur = cur.secondChild();
 	}
-	else if(!cur.secondChildExist()) {
+	else if(!cur.hasSecondChild()) {
 	  cur.switchElements(cur.firstChild());
 	  cur = cur.firstChild();
 	}
@@ -139,80 +169,73 @@ private:
       }
     }
   }
-
+  
 public:
   //! \brief Default Constructor
-  Heap(void) : _size(0) {
+  inline Heap(void)
+    : _size(0) {
   }
-
+  
   //! \brief Copy Constructor
+  //! \param other : the heap to copy.
   inline Heap(const Heap& other) {
     (*this) = other;
   }
-
-  //! \brief Copy Operator
+  
+  //! \brief Copy Operator.
+  //! \param other : the heap to copy.
+  //! \return A reference to the heap that has been written.
   inline Heap& operator=(const Heap& other) {
     _size = other._size;
-    for(int i = 0 ; i < S ; i++) {
-      _data[i] = other._data[i];
-    }
+    _datas = other._datas;
     return *this;
   }
-
+  
   //! \brief Insert an element in the Heap
-  void insert(const T& e) {
-    _data[_size] = e;
+  //! \param e : the element to add within the heap.
+  inline void insert(const ElementType& e) {
+    _datas[_size] = e;
     percolateUp(_size++);
   }
-
+  
   //! \brief Delete the maximal element
-  void pop(void) {
-    _data[0] = _data[_size - 1];
-    _size--;
-    percolateDown(0);
-  }
-
-  //! \brief Access to the maximal element
-  T& max(void) {
-    if(!empty()) {
-      return _data[0];
+  inline void pop(void) {
+    if(_size > 0) {
+      _datas[0] = _datas[_size - 1];
+      _size--;
+      percolateDown(0);
     }
-    return *(T*)0;
   }
-
-  //! \brief Access to the maximal element (const version)
-  const T& max(void) const {
-    if(!empty()) {
-      return _data[0];
-    }
-    return *(T*)0;
+  
+  //! \brief Access to the maximal element.
+  //! \return A reference to the maximal element.
+  //! \warning If the heap is actually empty, this causes an undefined behavior.
+  inline const ElementType& max(void) const {
+    return _datas[0];
   }
-
-  //! \brief Test if the Heap is empty
-  bool empty(void) const {
+  
+  //! \brief Test if the heap is empty.
+  //! \return A boolean telling whether the heap is empty or not.
+  inline bool isEmpty(void) const {
     return _size == 0;
   }
   
-  //! \brief Test if the Heap is full
-  bool full(void) const {
-    return _size == S;
+  //! \brief Test if the heap is full.
+  //! \return A boolean telling whether the heap is full or not.
+  inline bool isFull(void) const {
+    return _size == SIZE;
   }
   
-  //! \brief Return the amount of free space
-  int freeSpace(void) const {
-    return S - _size;
+  //! \brief Give the space currently free to use in the heap.
+  //! \return The amount of elements that can currently be added to the heap.
+  inline heap_t freeSpace(void) const {
+    return SIZE - _size;
   }
   
-  // //! \brief Return the amount of used space
-  // int usedSpace(void) const {
-  //   return _size;
-  // }
-  
-  //! \brief To execute an operation on all elements contained
-  void doForeach(void (*func)(T&)) {
-    for(int i = 0 ; i < S ; i++) {
-      func(_data[i]);
-    }
+  //! \brief Give the space currently in use in the heap.
+  //! \return The amount of elements currently in the heap.
+  inline heap_t usedSpace(void) const {
+    return _size;
   }
 };
 

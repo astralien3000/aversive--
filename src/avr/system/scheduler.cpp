@@ -26,10 +26,10 @@ Scheduler::Scheduler(void) {
       Interrupts::lock();
       Scheduler& s = sched_instance();
       s._data.current++;
-      if(!s._data.ordered_tasks.empty()) {
+      if(!s._data.ordered_tasks.isEmpty()) {
 	TaskRef tsk = s._data.ordered_tasks.max();
 
-	while(!s._data.ordered_tasks.empty() && s._data.current > tsk.nextCall()) {
+	while(!s._data.ordered_tasks.isEmpty() && s._data.current > tsk.nextCall()) {
 	  s._data.ordered_tasks.pop();
 	  //test << s._data.current << " ; next : " << tsk.nextCall() << "\n\r";
 	  tsk.exec();
@@ -38,7 +38,7 @@ Scheduler::Scheduler(void) {
 	    s._data.ordered_tasks.insert(TaskRef(tsk, tsk.nextCall()));
 	  }
 
-	  if(!s._data.ordered_tasks.empty()) {
+	  if(!s._data.ordered_tasks.isEmpty()) {
 	    tsk = s._data.ordered_tasks.max();
 	  }
 	  

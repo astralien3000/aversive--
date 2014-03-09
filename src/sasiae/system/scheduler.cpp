@@ -9,10 +9,10 @@ Scheduler::Scheduler(void) {
   ClientThread::instance().setSyncFunction([&](long long t){
       _data.current = t;
 
-      if(!_data.tasks.empty()) {
+      if(!_data.tasks.isEmpty()) {
 	TaskRef tsk = _data.tasks.max();
 
-	while(!_data.tasks.empty() && _data.current > tsk.nextCall()) {
+	while(!_data.tasks.isEmpty() && _data.current > tsk.nextCall()) {
 
 	
 	  _data.tasks.pop();
@@ -23,7 +23,7 @@ Scheduler::Scheduler(void) {
 	    _data.tasks.insert(TaskRef(tsk, tsk.nextCall()));
 	  }
 
-	  if(!_data.tasks.empty()) {
+	  if(!_data.tasks.isEmpty()) {
 	    tsk = _data.tasks.max();
 	  }
 	}
