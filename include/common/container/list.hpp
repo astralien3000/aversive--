@@ -87,14 +87,14 @@ public:
   //! \param e : the element to prepend to the list.
   //! \return A boolean telling whether the insertion has been done successfully or not.
   inline bool prepend(const ElementType& e) {
-    return insert(0, e);
+    return insertAt(0, e);
   }
   
   //! \brief Insert an element at a given index.
   //! \param index : the index to add the element at.
   //! \param e : the element to add to the list.
   //! \return A boolean telling whether the insertion has been done successfully or not.
-  bool insert(list_t index, const ElementType& e) {
+  bool insertAt(list_t index, const ElementType& e) {
     if(_size == SIZE) { // The list is full.
       return false;
     }
@@ -115,7 +115,7 @@ public:
   //! \brief Remove the element at a given index.
   //! \param index : the index of the element to remove.
   //! \return A boolean telling whether the removal has been done successfully or not.
-  bool remove(list_t index) {
+  bool removeAt(list_t index) {
     if(index > _size) { // Index out of range.
       return false;
     }
@@ -125,6 +125,25 @@ public:
     }
     _size--;
     return true;
+  }
+  
+  //! \brief Remove all the elements equal to a given one.
+  //! \param e : the element to remove from the list.
+  //! \return True if at least one element has been removed, false otherwise.
+  bool remove(const ElementType& e) {
+    bool res = false;
+    for(list_t i = 0; i < _size; i++) {
+      if(_datas[i] == e) {
+	removeAt(i--);
+	res = true;
+      }
+    }
+    return res;
+  }
+  
+  //! \brief Completely empty the list.
+  void flush(void) {
+    _size = 0;
   }
   
   //! \brief Test if the list is empty.

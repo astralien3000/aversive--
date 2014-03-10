@@ -28,6 +28,31 @@ int main(int argc, char** argv) {
   assert(l.contains(20));
   assert(!l.contains(100));
   
+  l.flush();
+  
+  assert(l.usedSpace() == 0);
+  for(list_t i = 0; i < 5; i++) {
+    assert(l.append(10));
+  }
+  
+  assert(l.usedSpace() == 5);
+  for(list_t i = 0; i < 5; i++) {
+    assert(l.get(i) == 10);
+  }
+  
+  assert(l.contains(10));
+  assert(l.prepend(13));
+  assert(l.indexOf(13) == 0);
+  assert(l.append(16));
+  assert(l.indexOf(16) == 6);
+  assert(l.remove(10));
+  assert(l.usedSpace() == 2);
+  assert(l.indexOf(13) == 0);
+  assert(l.indexOf(16) == 1);
+  assert(l.removeAt(0));
+  assert(l.usedSpace() == 1);
+  assert(l.indexOf(16) == 0);
+  
   std::cout << "OK" << std::endl;
   return 0;
 }
