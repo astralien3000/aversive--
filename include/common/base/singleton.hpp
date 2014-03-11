@@ -4,7 +4,7 @@
 //! \class Singleton singleton.hpp <base/singleton.hpp>
 //! \brief Interface for classes that should have only one instance.
 //! \param _BASE : The class that should have only one instance.
-template<class _BASE>
+template<typename _BASE>
 class Singleton {
 protected:
   //! \brief Protected default constructor, to avoid instanciation.
@@ -14,6 +14,7 @@ protected:
   //! \brief Protected copy constructor, to avoid copy construction.
   inline Singleton(const Singleton&) {
   }
+  
 public:
   //! \brief Access to the single instance of the class.
   //! \return A reference to the instance.

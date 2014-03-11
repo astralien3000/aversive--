@@ -6,6 +6,7 @@
 //! \warning Not implemented!
 //! \todo To implement.
 //! \todo To document.
+//! \todo To make it comply with the coding convention.
 template<int SIZE, typename _ElementType, typename _IndexType = int>
 class BinarySearchTree {
 public:

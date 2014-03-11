@@ -5,9 +5,12 @@
 
 //! \class IntegerInfo integer.hpp <base/integer.hpp>
 //! \brief Boundary infos of integer type with a specified size.
-//! \param SIZE : size of integers in bits.
-template<int SIZE>
+//! \param _SIZE : size of integers in bits.
+template<uint8_t _SIZE>
 struct IntegerInfo {
+  //! \brief The size in bits of the integers the infos in this class refer to.
+  static const uint8_t SIZE = _SIZE;
+  
   //! \brief Maximum value for an unsigned integer of SIZE bits.
   static const uint64_t UNSIGNED_MAX = (static_cast<uint64_t>(1) << SIZE) - 1;
   
@@ -20,11 +23,24 @@ struct IntegerInfo {
 
 //! \class Integer integer.hpp <base/integer.hpp>
 //! \brief Integer type definitions with a specified size.
-//! \param SIZE : size of integer type in bits.
-//! \param FAST : whether it is "fast" type or not.
-template<int SIZE, bool FAST = false>
-struct Integer : public Integer<((SIZE/8)+1) * 8, FAST> {
+//! \param _SIZE : size of integer type in bits.
+//! \param _FAST : whether it is "fast" type or not.
+/*!
+  This templated-class is specialised for 8, 16, 32 and 64 bits integer, wheter fast type or not.
+  This class will cause an assertion at compile-time if you use it with a size different than 8, 16, 32 or 64 bits.
+  You can easily use this class to do metaprogramming.
+  Short type names are also provided for classic usages: u8 (unsigned 8 bits), s8 (signed 8 bits), uf8 (fast unsigned 8 bits), sf8 (fast signed 8 bits) and so on for 16, 32 and 64 bits integers.
+*/
+template<uint8_t _SIZE, bool _FAST = false>
+struct Integer {
   static_assert(true, "Integers of 8, 16, 32 or 64 bits only are supported.");
+  
+  //! \brief The size in bits of the integers represented by this class.
+  static const uint8_t SIZE = _SIZE;
+  
+  //! \brief Whether the integers represented by this class are "fast" or not.
+  static const bool FAST = _FAST;
+  
   //! \brief Signed type for integer of SIZE bits.
   typedef void Signed;
   
@@ -36,8 +52,8 @@ struct Integer : public Integer<((SIZE/8)+1) * 8, FAST> {
 };
 
 #define MACRO_INTEGER(s) \
-  template<> struct Integer<s, false> { typedef int##s##_t Signed; typedef uint##s##_t Unsigned; typedef IntegerInfo<s> Info; }; \
-  template<> struct Integer<s, true> { typedef int_fast##s##_t Signed; typedef uint_fast##s##_t Unsigned; typedef IntegerInfo<s> Info; };
+  template<> struct Integer<s, false> { static const uint8_t SIZE = s; static const bool FAST = false; typedef int##s##_t Signed; typedef uint##s##_t Unsigned; typedef IntegerInfo<s> Info; }; \
+  template<> struct Integer<s, true> { static const uint8_t SIZE = s; static const bool FAST = true; typedef int_fast##s##_t Signed; typedef uint_fast##s##_t Unsigned; typedef IntegerInfo<s> Info; };
 
 MACRO_INTEGER(8)
 MACRO_INTEGER(16)

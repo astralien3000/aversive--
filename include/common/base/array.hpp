@@ -11,10 +11,6 @@ typedef uf16 array_t;
 //! \param _ElementType : the type of the elements contained within the array.
 template<array_t _SIZE = 0, typename _ElementType = u8>
 class Array {
-private:
-  //! \brief The native C-like array containing the datas.
-  _ElementType _elements[_SIZE];
-  
 public:
   //! \brief The size of the array.
   static const array_t SIZE = _SIZE;
@@ -24,15 +20,24 @@ public:
   
   //! \brief The maximum size of an array.
   static const array_t MAX_SIZE = IntegerInfo<ARRAY_INDEX_LENGTH>::UNSIGNED_MAX;
-    
+  
+  //! \brief Element's type.
+  typedef _ElementType ElementType;
+  
+private:
+  //! \brief The native C-like array containing the datas.
+  ElementType _elements[SIZE];
+  
+public:
   //! \brief Default constructor.
   //! \attention The elements within the array are not set to any value.
-  inline Array(void) {}
+  inline Array(void) {
+  }
   
   //! \brief Constructor with initialisation.
   //! \param e : the element to copy in every field of the new array.
-  inline Array(const _ElementType& e) {
-    for(array_t i = 0 ; i < SIZE ; i++) {
+  inline Array(const ElementType& e) {
+    for(array_t i = 0; i < SIZE; i++) {
       _elements[i] = e;
     }
   }
@@ -47,7 +52,7 @@ public:
   //! \param other : the array to copy.
   //! \return A reference to the array that has been written.
   inline Array& operator=(const Array& other) {
-    for(array_t i = 0 ; i < SIZE ; i++) {
+    for(array_t i = 0; i < SIZE; i++) {
       _elements[i] = other._elements[i];
     }
     return (*this);
@@ -56,14 +61,14 @@ public:
   //! \brief Access to an element's reference via its field's index.
   //! \param i : the index of the element to access.
   //! \return The reference to the element contained at the specified index.
-  inline _ElementType& operator[](array_t i) {
+  inline ElementType& operator[](array_t i) {
     return _elements[i];
   }
   
   //! \brief Access to an element's constant reference via its field's index.
   //! \param i : the index of the element to access.
   //! \return The constant reference to the element contained at the specified index.
-  inline const _ElementType& operator[](array_t i) const {
+  inline const ElementType& operator[](array_t i) const {
     return _elements[i];
   }
   
@@ -71,7 +76,7 @@ public:
   //! \param other : the array to get the values to add from.
   //! \return A reference to the array the assignment has been done to.
   inline Array& operator+=(const Array& other) {
-    for(array_t i = 0 ; i < SIZE ; i++) {
+    for(array_t i = 0; i < SIZE; i++) {
       _elements[i] += other._elements[i];
     }
     return (*this);
@@ -81,7 +86,7 @@ public:
   //! \param other : the array to get the values to substract from.
   //! \return A reference to the array the assignment has been done to.
   inline Array& operator-=(const Array& other) {
-    for(array_t i = 0 ; i < SIZE ; i++) {
+    for(array_t i = 0; i < SIZE; i++) {
       _elements[i] -= other._elements[i];
     }
     return (*this);
@@ -91,7 +96,7 @@ public:
   //! \param other : the array to get the values to multiply with.
   //! \return A reference to the array the assignment has been done to.
   inline Array& operator*=(const Array& other) {
-    for(array_t i = 0 ; i < SIZE ; i++) {
+    for(array_t i = 0; i < SIZE; i++) {
       _elements[i] *= other._elements[i];
     }
     return (*this);
@@ -101,7 +106,7 @@ public:
   //! \param other : the array to get the divisors from.
   //! \return A reference to the array the assignment has been done to.
   inline Array& operator/=(const Array& other) {
-    for(array_t i = 0 ; i < SIZE ; i++) {
+    for(array_t i = 0; i < SIZE; i++) {
       _elements[i] /= other._elements[i];
     }
     return (*this);
@@ -111,7 +116,7 @@ public:
   //! \param other : the array to get the divisors from.
   //! \return A reference to the array the assignment has been done to.
   inline Array& operator%=(const Array& other) {
-    for(array_t i = 0 ; i < SIZE ; i++) {
+    for(array_t i = 0; i < SIZE; i++) {
       _elements[i] %= other._elements[i];
     }
     return (*this);
@@ -122,7 +127,7 @@ public:
   //! \return The result array after the additions.
   inline Array operator+(const Array& other) {
     Array ret;
-    for(array_t i = 0 ; i < SIZE ; i++) {
+    for(array_t i = 0; i < SIZE; i++) {
       ret._elements[i] = _elements[i] + other._elements[i];
     }
     return ret;
@@ -133,7 +138,7 @@ public:
   //! \return The result array after the substractions.
   inline Array operator-(const Array& other) {
     Array ret;
-    for(array_t i = 0 ; i < SIZE ; i++) {
+    for(array_t i = 0; i < SIZE; i++) {
       ret._elements[i] = _elements[i] - other._elements[i];
     }
     return ret;
@@ -144,7 +149,7 @@ public:
   //! \return The result array after the multiplications.
   inline Array operator*(const Array& other) {
     Array ret;
-    for(array_t i = 0 ; i < SIZE ; i++) {
+    for(array_t i = 0; i < SIZE; i++) {
       ret._elements[i] = _elements[i] * other._elements[i];
     }
     return ret;
@@ -155,7 +160,7 @@ public:
   //! \return The result array after the divisions.
   inline Array operator/(const Array& other) {
     Array ret;
-    for(array_t i = 0 ; i < SIZE ; i++) {
+    for(array_t i = 0; i < SIZE; i++) {
       ret._elements[i] = _elements[i] / other._elements[i];
     }
     return ret;
@@ -166,7 +171,7 @@ public:
   //! \return The result array after the modulo operations.
   inline Array operator%(const Array& other) {
     Array ret;
-    for(array_t i = 0 ; i < SIZE ; i++) {
+    for(array_t i = 0; i < SIZE; i++) {
       ret._elements[i] = _elements[i] % other._elements[i];
     }
     return ret;
@@ -175,8 +180,8 @@ public:
   //! \brief Add to each element of the array another object.
   //! \param o : the object to add.
   //! \return A reference to the array the assignment has been done to.
-  inline Array& operator+=(const _ElementType& o) {
-    for(array_t i = 0 ; i < SIZE ; i++) {
+  inline Array& operator+=(const ElementType& o) {
+    for(array_t i = 0; i < SIZE; i++) {
       _elements[i] += o;
     }
     return (*this);
@@ -185,8 +190,8 @@ public:
   //! \brief Substract to each element of the array another object.
   //! \param o : the object to substract.
   //! \return A reference to the array the assignment has been done to.
-  inline Array& operator-=(const _ElementType& o) {
-    for(array_t i = 0 ; i < SIZE ; i++) {
+  inline Array& operator-=(const ElementType& o) {
+    for(array_t i = 0; i < SIZE; i++) {
       _elements[i] -= o;
     }
     return (*this);
@@ -195,8 +200,8 @@ public:
   //! \brief Multiply each element of the array with another object.
   //! \param o : the multiplier.
   //! \return A reference to the array the assignment has been done to.
-  inline Array& operator*=(const _ElementType& o) {
-    for(array_t i = 0 ; i < SIZE ; i++) {
+  inline Array& operator*=(const ElementType& o) {
+    for(array_t i = 0; i < SIZE; i++) {
       _elements[i] *= o;
     }
     return (*this);
@@ -205,8 +210,8 @@ public:
   //! \brief Divide each element of the array by another object.
   //! \param o : the divisor.
   //! \return A reference to the array the assignment has been done to.
-  inline Array& operator/=(const _ElementType& o) {
-    for(array_t i = 0 ; i < SIZE ; i++) {
+  inline Array& operator/=(const ElementType& o) {
+    for(array_t i = 0; i < SIZE; i++) {
       _elements[i] /= o;
     }
     return (*this);
@@ -215,8 +220,8 @@ public:
   //! \brief Get the modulo of each element of the array by another object.
   //! \param o : the divisor.
   //! \return A reference to the array the assignment has been done to.
-  inline Array& operator%=(const _ElementType& o) {
-    for(array_t i = 0 ; i < SIZE ; i++) {
+  inline Array& operator%=(const ElementType& o) {
+    for(array_t i = 0; i < SIZE; i++) {
       _elements[i] %= o;
     }
     return (*this);
@@ -225,9 +230,9 @@ public:
   //! \brief Add an oject to each element of the array.
   //! \param o : the object to add.
   //! \return The result array after the additions.
-  inline Array operator+(const _ElementType& o) {
+  inline Array operator+(const ElementType& o) {
     Array ret;
-    for(array_t i = 0 ; i < SIZE ; i++) {
+    for(array_t i = 0; i < SIZE; i++) {
       ret._elements[i] = _elements[i] + o;
     }
     return ret;
@@ -236,9 +241,9 @@ public:
   //! \brief Substract an object to each element of the array.
   //! \param other : the object to substract.
   //! \return The result array after the substractions.
-  inline Array operator-(const _ElementType& o) {
+  inline Array operator-(const ElementType& o) {
     Array ret;
-    for(array_t i = 0 ; i < SIZE ; i++) {
+    for(array_t i = 0; i < SIZE; i++) {
       ret._elements[i] = _elements[i] - o;
     }
     return ret;
@@ -247,9 +252,9 @@ public:
   //! \brief Multiply each element of the array by another object.
   //! \param o : the multiplier.
   //! \return The result array after the multiplications.
-  inline Array operator*(const _ElementType& o) {
+  inline Array operator*(const ElementType& o) {
     Array ret;
-    for(array_t i = 0 ; i < SIZE ; i++) {
+    for(array_t i = 0; i < SIZE; i++) {
       ret._elements[i] = _elements[i] * o;
     }
     return ret;
@@ -258,9 +263,9 @@ public:
   //! \brief Divide each element of the array by another object.
   //! \param other : the divisor.
   //! \return The result array after the divisions.
-  inline Array operator/(const _ElementType& o) {
+  inline Array operator/(const ElementType& o) {
     Array ret;
-    for(array_t i = 0 ; i < SIZE ; i++) {
+    for(array_t i = 0; i < SIZE; i++) {
       ret._elements[i] = _elements[i] / o;
     }
     return ret;
@@ -269,9 +274,9 @@ public:
   //! \brief Apply a modulo on each element of the array by another object.
   //! \param other : the divisor.
   //! \return The result array after the modulo operations.
-  inline Array operator%(const _ElementType& o) {
+  inline Array operator%(const ElementType& o) {
     Array ret;
-    for(array_t i = 0 ; i < SIZE ; i++) {
+    for(array_t i = 0; i < SIZE; i++) {
       ret._elements[i] = _elements[i] % o;
     }
     return ret;

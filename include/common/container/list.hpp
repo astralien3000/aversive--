@@ -1,107 +1,232 @@
 #ifndef LIST_HPP
 #define LIST_HPP
 
+#include <base/integer.hpp>
 #include <base/array.hpp>
 
-template<int SIZE, typename ElementType>
+typedef array_t list_t;
+
+//! \class List list.hpp <container/list.hpp>
+//! \brief Class reprensenting a list of elements.
+//! \param _SIZE : the number of elements the list can handle at any given time.
+//! \param _ElementType : type of the elements within the list.
+template<list_t _SIZE = 0, typename _ElementType = u8>
 class List {
-private:
-  Array<SIZE, ElementType> _data;
-  volatile int _size;
-  volatile int _iterator;
-
-  template<typename T1>
-  inline void set(T1 a1) {
-    _data[_size++] = a1;
-  }
-
-  template<typename T1, typename... Targs>
-  inline void set(T1 a1, Targs... args) {
-    _data[_size++] = a1;
-    set<Targs...>(args...);
-  }
-
 public:
-  //! \brief Default Constructor
-  List(void) : _data {0}, _size(0) {}
-
-  //! \brief Initialize Constructor
+  //! \brief Maximum number of elements a list can handle.
+  static const list_t MAX_SIZE = Array<>::MAX_SIZE;
+  
+  //! \brief Number of elements the list can handle.
+  static const list_t SIZE = _SIZE;
+  
+  //! \brief Element's type.
+  typedef _ElementType ElementType;
+  
+private:
+  //! \brief The array containing the datas.
+  Array<SIZE, ElementType> _data;
+  
+  //! \brief The current size of the list.
+  list_t _size;
+  
+  //! \brief Variadic templated method to insert multiple elements at the construction of the list.
+  //! \param e : the next element to add to the list.
+  //! \param args : the remaining arguments.
   template<typename... Targs>
-  List(Targs... args) : List() {
+  inline void set(const ElementType& e, const Targs&... args) {
+    append(e);
     set(args...);
   }
-
-  //! \brief Copy Constructor
-  List(const List& other) {
-    *this = other;
-  }
-
-  //! \brief Copy Operator
-  List& operator=(const List& other) {
-    _size = other._size;
-    for(int i = 0 ; i < _size ; i++) {
-      _data[i] = other._data[i];
-    }
-    return *this;
-  }
-
-  //! \brief Insert an element at index
-  void insert(int index, const ElementType& elem) {
-    if(_size < SIZE && 0 <= index && index < _size) {
-      _size++;
-      for(int i = _size-1 ; index < i ; i--) {
-	_data[i] = _data[i-1];
-      }
-      _data[index] = elem;
-      if(index < _iterator) {
-	_iterator++;
-      }
-    }
-  }
-
-  //! \brief Remove the element at index
-  void remove(int index) {
-    if(0 < _size && 0 <= index && index < _size) {
-      for(int i = index+1 ; i < _size ; i++) {
-	_data[i-1] = _data[i];
-      }
-      _size--;
-      if(index < _iterator) {
-	_iterator--;
-      }
-    }
-  }
-
-  //! \brief Get the size of the list
-  int size(void) const {
-    return _size;
-  }
-
-  //! \brief Get the element at index
-  ElementType& get(int index) {
-    if(0 <= index && index < _size) {
-      return _data[index];
-    }
-    return *(int*)0;
-  }
-
-  //! \brief Get the element at index (const version)
-  const ElementType& get(int index) const {
-    if(0 <= index && index < _size) {
-      return _data[index];
-    }
-    return *(int*)0;
+  
+  //! \brief Termination method to insert multiple elements at the construction of the list.
+  inline void set(void) {
   }
   
-
-  //! \brief Call a function on each element of the list
-  template<typename Callable>
-  void doForeach(Callable func) {
-    for(_iterator = 0 ; _iterator < _size ; _iterator++) {
-      func(_data[_iterator]);
+public:
+  //! \brief Default Constructor.
+  inline List(void)
+    : _data(), _size(0) {
+  }
+  
+  //! \brief Variadic constructor to insert multiple elements.
+  //! \param args : the value list to insert in the list.
+  template<typename... Targs>
+  inline List(const Targs&... args)
+    : List() {
+    set(args...);
+  }
+  
+  //! \brief Copy constructor.
+  //! \param other : the list to copy.
+  inline List(const List& other) {
+    *this = other;
+  }
+  
+  //! \brief Copy operator.
+  //! \param other : the list to copy.
+  //! \return A reference to the list that has been written.
+  inline List& operator=(const List& other) {
+    _size = other._size;
+    _data = other._data;
+    return *this;
+  }
+  
+  //! \brief Append an element at the end of the list.
+  //! \param e : the element to append to the list.
+  //! \return A boolean telling whether the insertion has been done successfully or not.
+  inline bool append(const ElementType& e) {
+    if(_size == SIZE) { // The list is full.
+      return false;
     }
-  }  
-
+    
+    _data[_size++] = e;
+    return true;
+  }
+  
+  //! \brief Prepend an element at the beginning of the list.
+  //! \param e : the element to prepend to the list.
+  //! \return A boolean telling whether the insertion has been done successfully or not.
+  inline bool prepend(const ElementType& e) {
+    return insertAt(0, e);
+  }
+  
+  //! \brief Insert an element at a given index.
+  //! \param index : the index to add the element at.
+  //! \param e : the element to add to the list.
+  //! \return A boolean telling whether the insertion has been done successfully or not.
+  bool insertAt(list_t index, const ElementType& e) {
+    if(_size == SIZE) { // The list is full.
+      return false;
+    }
+    
+    if(index >= _size) { // The given index is out of the current index range.
+      return append(e); // So we add the element at the end of the list.
+    }
+    
+    // We first shift right the elements to make a free spot at the given index.
+    for(list_t i = _size; index < i; i--) {
+      _data[i] = _data[i - 1];
+    }
+    _data[index] = e;
+    _size++;
+    return true;
+  }
+  
+  //! \brief Remove the element at a given index.
+  //! \param index : the index of the element to remove.
+  //! \return A boolean telling whether the removal has been done successfully or not.
+  bool removeAt(list_t index) {
+    if(index >= _size) { // Index out of range.
+      return false;
+    }
+    
+    for(list_t i = index + 1; i < _size; i++) {
+      _data[i - 1] = _data[i];
+    }
+    _size--;
+    return true;
+  }
+  
+  //! \brief Remove all the elements equal to a given one.
+  //! \param e : the element to remove from the list.
+  //! \return True if at least one element has been removed, false otherwise.
+  bool remove(const ElementType& e) {
+    bool res = false;
+    for(list_t i = 0; i < _size; i++) {
+      if(_data[i] == e) {
+	removeAt(i--);
+	res = true;
+      }
+    }
+    return res;
+  }
+  
+  //! \brief Completely empty the list.
+  inline void flush(void) {
+    _size = 0;
+  }
+  
+  //! \brief Test if the list is empty.
+  //! \return A boolean telling whether the list is empty or not.
+  inline bool isEmpty(void) const {
+    return _size == 0;
+  }
+  
+  //! \brief Test if the list is full.
+  //! \return A boolean telling whether the list is full or not.
+  inline bool isFull(void) const {
+    return _size == SIZE;
+  }
+  
+  //! \brief Give the space currently in use in the list.
+  //! \return The amount of elements currently listed.
+  inline list_t usedSpace(void) const {
+    return _size;
+  }
+  
+  //! \brief Give the space currently free to use in the list.
+  //! \return The amount of elements that can currently be listed.
+  inline list_t freeSpace(void) const {
+    return SIZE - usedSpace();
+  }
+  
+  //! \brief Test if the list contains a specified element.
+  //! \param e : the element to search in the list.
+  //! \return A boolean telling whether the element is contained in the list or not.
+  inline bool contains(const ElementType& e) const {
+    for(list_t i = 0; i < _size; i++) {
+      if(_data[i] == e) {
+	return true;
+      }
+    }
+    return false;
+  }
+  
+  //! \brief Give the index in the list of a specified element.
+  //! \param e : the element to search its index in the list.
+  //! \return : The index of the element if it is in the list, the current size of the list otherwise.
+  inline list_t indexOf(const ElementType& e) const {
+    for(list_t i = 0; i < _size; i++) {
+      if(_data[i] == e) {
+	return i;
+      }
+    }
+    return _size;
+  }
+  
+  //! \brief Get a reference to the element at a given index.
+  //! \param index : the index of the element to return.
+  //! \return The reference to the asked element.
+  //! \warning If the index is out of range, this causes an undefined behavior.
+  inline ElementType& get(list_t index) {
+    return _data[index];
+  }
+  
+  //! \brief Get a constant reference to the element at a given index.
+  //! \param index : the index of the element to return.
+  //! \return The constant reference to the asked element.
+  //! \warning If the index is out of range, this causes an undefined behavior.
+  inline const ElementType& get(list_t index) const {
+    return _data[index];
+  }
+  
+  //! \brief Call a function on each element of the list.
+  //! \param func : the function to apply on each element of the list.
+  template<typename Callable>
+  inline void doForeach(Callable func) {
+    for(list_t i = 0 ; i < _size ; i++) {
+      func(_data[i]);
+    }
+  }
+  
+  //! \brief Call a function on each element of the list (const version)
+  //! \param func : the function to apply on each element of the list.
+  template<typename Callable>
+  inline void doForeach(Callable func) const {
+    for(list_t i = 0 ; i < _size ; i++) {
+      func(_data[i]);
+    }
+  }
 };
 
 #endif//LIST_HPP

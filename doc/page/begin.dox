@@ -13,7 +13,7 @@ compiled the simulator, you may not have anything to install.
 
 The command on Debian/Ubuntu : 
 \code{.sh}
-apt-get install qt5-dev
+apt-get install qt5-default
 \endcode
 
 \section AVR

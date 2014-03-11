@@ -1,0 +1,178 @@
+			/*****************************/
+			/*         Aversive++        */
+			/*      Coding covention     */
+			/*****************************/
+
+
+1. Naming convention:
+
+file/directory name: my_awesome_file	(lower underscore case)
+
+class: MyAwesomeClass			(upper camel case)
+method: myAwesomeMethod			(lower camel case)
+attribute: _my_class_attribute		(lower underscore case underscore first)
+C-style function: my_awesome_function	(lower underscore case)
+function/method parameter: my_param	(lower underscore case)
+constant: MY_AWESOME_CONSTANT		(upper underscore case)
+constant attribute: MY_CONST_ATTRIBUTE	(upper underscore case)
+enumeration value: MY_ENUM_VALUE	(upper underscore case)
+macro/define: MY_AWESOME_MACRO		(upper underscore case)
+value template parameter: _MY_PARAM	(upper underscore case underscore first)
+type template parameter: _MyAwesomeType	(upper camel case underscore first)
+
+When declaring a property on a class, if the property is an adjective
+(i.e. a boolean property), the method's name must be isAdjective. If the
+property is the ownership of something (i.e. a boolean property again), the
+method's name must be hasThing. Otherwise, just name the method with the name of
+the property, examples:
+
+bool MyContainer::isFull(void) const { // "Adjective" property
+  ...
+}
+
+bool MyContainer::hasChild(void) const { // "Ownership" property
+  ...
+}
+
+u8 MyContainer::usedSpace(void) const { // Otherwise
+  ...
+}
+
+2. Coding convention:
+
+- Types:
+/* IMPORTANT */
+DO NOT USE C INTERGER TYPES (char, short, int, long, long long) BUT USE OUR OWN
+INTEGER INTERFACE INSTEAD FOR PLATFORM-INDEPENDENT INTERGERS. REFER TO OUR
+INTEGER INTERFACE DOCUMENTATION FOR FURTHER INFORMATIONS.
+FOR FLOATING-POINT VARIABLES, USE float ONLY.
+
+- Indentation:
+  Use 2 spaces by level of indentation (emacs default value).
+
+- Parameter-less function/method:
+  If a function or a method does not have any parameter, write a single void in
+  the parameter list, example:
+
+void my_function(void);
+
+- this keyword:
+  Use this keyword within a method only to get the address of the current
+  instance or a reference to it. Do not use it to access attributes or other
+  methods.
+
+- Template parameter declaration:
+  Do not use class keyword but typename keyword instead when declaring a type
+  template parameter.
+  Always type the template parameter declaration the line above what is actually
+  being declared, example:
+
+template<typename _MyTemplatedType, u8 _VALUE_TEMPLATE_PARAM>
+void my_function(void);
+
+- Block declaration:
+  When declaring a block of code, put the { on the same line as the thing being
+  declared (function/method or control structure) with a space on its left,
+  example:
+
+void my_func(void) {
+  ... // Remember to indent
+}
+
+  If the block is empty (for both function/method and control structure), apply
+  this rule anyway and put the closing brace on the next line and write the two
+  braces for control structure even if the block is empty, example:
+
+while(keep_waiting) {
+} // Correct
+
+while(keep_waiting); // Incorrect
+
+- Semicolon (;):
+  Do not write a space on the left of ; but one on its right if the line
+  continues, example:
+
+a = 3; b = 5;
+for(u8 a = 3; a < 5; a++) {
+}
+
+- C-style array declaration with values:
+  Put a space on the right of {, a space on the left of } and a space after
+  each comma (,) but none on the left of the commas, example:
+
+u8 my_tab[] = { 1, 2, 3 };
+
+- Operator usage:
+  When using any binary operator (+, -, ..., ==, <, ..., =, +=, ...), always
+  have a space on its left and right, examples:
+
+a += b; // Correct
+a+=b; // Incorrect
+
+(a & b) == 0xFF; // Correct
+(a&b) == 0xFF; // Incorrect
+
+  When using any unary operator (-, *, &, ++, --, (), []), do not put any space,
+  examples:
+
+-my_integer; // Correct
+- my_integer; // Incorrect
+&my_var; // Correct
+*my_ptr; // Correct
+my_functor(its_param); // Correct
+
+- Ternary if:
+  When using a ternary if, encapsulate it completly whitin parenthesis and
+  encapsulate the condition too. Put a space on the left and on the right of
+  both the question mark (?) and the colon (:), example:
+
+res = ((a > b) ? a : b);
+
+- Constructor initialisation list:
+  When using an initialisation list for a constructor, put the colon (:) on a
+  new indented line. Put a space on the right but not on the left of the
+  commas. Initialisation list can be done on several lines, if so, indent the
+  next lines at the same level of the initialisation of the first attribute on
+  the first line, example:
+
+MyClass::MyClass(void)
+  : first_attr(3), second_attr(4),
+    third_attr(5) { // Notice the indentation of this line
+  ... // Remember to indent correctly
+}
+
+3. Conception covention:
+
+Everthing that can be determined at compile-time has to be determine at
+compile-time.
+
+If a function/method is short, it is allowed to declare it as inline to avoid
+function call (jump) in the asm code (which could be a loss of time depending
+on the architecture the code is compiled for). Do not hesitate to take a look at
+the asm code generated by the compilator to decide wheter or not you can declare
+the function as inline.
+
+Favour templated function over conditional branches if possible. Same reason as
+before, it is to avoid jumps which can be a loss of time depending on the
+targeted architecture.
+
+Make a right use at the right times of the keyword const !!!
+
+When the implementation of a class differs from one architecture to another,
+especially when it needs different attributes, declare a private structure named
+PrivateData within the class and declare an attribute of this type. Then define
+this structure in the architecture-specialised header files.
+
+4. Code documentation:
+
+Documentation must be written in English and use Doxygen commands.
+List of useful Doxygen commands with how to use them:
+
+//! \class MyClass my_class.hpp <path/to/my_class.hpp>
+//! \brief A brief explanation of what is declared next
+//! \param my_param : notice the spaces on the left and right of the colon
+//! \return A boolean telling wheter it is true or false
+/*!
+  More documention to what is standing next.
+  Even more documention.
+*/

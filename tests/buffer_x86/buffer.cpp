@@ -78,8 +78,8 @@ int main(int argc, char** argv) {
   delete[] str;
   
   if(debug) {
-    std::cout << "Max buffer size is " << MAX_BUFFER_SIZE << "." << std::endl;
-    std::cout << "Buffer size is " << buffer.size << "." << std::endl;
+    std::cout << "Max buffer size is " << Buffer<>::MAX_SIZE << "." << std::endl;
+    std::cout << "Buffer size is " << buffer.usedSpace() << "." << std::endl;
     std::cout << "Buffer has been full " << full_cpt << " times." << std::endl;
     std::cout << "Buffer has been empty " << empty_cpt << " times." << std::endl;
   }

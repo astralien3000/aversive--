@@ -46,6 +46,10 @@ public:
     return *this;
   }
 
+  inline bool operator==(const Vect& other) const {
+    return _coord == other._coord;
+  }
+
   //! \brief Access to the N-th element
   inline ElementType& coord(int index) {
     return _coord[index];
