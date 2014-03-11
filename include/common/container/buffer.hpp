@@ -25,7 +25,7 @@ public:
   
 private:
   //! \brief The array containing the datas.
-  Array<SIZE, ElementType> _datas;
+  Array<SIZE, ElementType> _data;
   
   //! \brief Read counter.
   volatile buffer_t _reads;
@@ -36,23 +36,28 @@ private:
 public:
   //! \brief Default Constructor.
   inline Buffer()
-    : _datas(), _reads(0), _writes(0) {
+    : _data(), _reads(0), _writes(0) {
     static_assert((SIZE != 0 && (SIZE & (SIZE - 1)) == 0), "Buffer size must be a power of 2.");
   }
   
   //! \brief Copy Constructor.
   //! \param buff : the buffer to copy.
   inline Buffer(const Buffer& buff)
-    : _datas(buff._datas), _reads(buff._reads), _writes(buff._writes) {
+    : _data(buff._data), _reads(buff._reads), _writes(buff._writes) {
   }
   
   //! \brief Copy Operator.
   //! \param buff : the buffer to copy.
   //! \return A reference to the buffer that has been written.
   inline Buffer& operator=(const Buffer& buff){
-    _datas = buff._datas;
+    _data = buff._data;
     _reads = buff._reads;
     _writes = buff._writes;
+  }
+  
+  //! \brief Completely empty the buffer.
+  inline void flush(void) {
+    _reads = _writes;
   }
   
   //! \brief Delete the oldest element.
@@ -72,7 +77,7 @@ public:
     if(isFull()) {
       return false;
     }
-    _datas[_writes % SIZE] = element;
+    _data[_writes % SIZE] = element;
     _writes++;
     return true;
   }
@@ -81,7 +86,7 @@ public:
   //! \return A reference to the element at the head of the buffer.
   //! \warning If the buffer is actually empty, this causes an undefined behavior.
   inline const ElementType& head(void) const {
-    return _datas[_reads % SIZE];
+    return _data[_reads % SIZE];
   }
   
   //! \brief Test if the buffer is empty.

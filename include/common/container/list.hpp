@@ -24,7 +24,7 @@ public:
   
 private:
   //! \brief The array containing the datas.
-  Array<SIZE, ElementType> _datas;
+  Array<SIZE, ElementType> _data;
   
   //! \brief The current size of the list.
   list_t _size;
@@ -45,7 +45,7 @@ private:
 public:
   //! \brief Default Constructor.
   inline List(void)
-    : _datas(), _size(0) {
+    : _data(), _size(0) {
   }
   
   //! \brief Variadic constructor to insert multiple elements.
@@ -67,7 +67,7 @@ public:
   //! \return A reference to the list that has been written.
   inline List& operator=(const List& other) {
     _size = other._size;
-    _datas = other._datas;
+    _data = other._data;
     return *this;
   }
   
@@ -79,7 +79,7 @@ public:
       return false;
     }
     
-    _datas[_size++] = e;
+    _data[_size++] = e;
     return true;
   }
   
@@ -105,9 +105,9 @@ public:
     
     // We first shift right the elements to make a free spot at the given index.
     for(list_t i = _size; index < i; i--) {
-      _datas[i] = _datas[i - 1];
+      _data[i] = _data[i - 1];
     }
-    _datas[index] = e;
+    _data[index] = e;
     _size++;
     return true;
   }
@@ -121,7 +121,7 @@ public:
     }
     
     for(list_t i = index + 1; i < _size; i++) {
-      _datas[i - 1] = _datas[i];
+      _data[i - 1] = _data[i];
     }
     _size--;
     return true;
@@ -133,7 +133,7 @@ public:
   bool remove(const ElementType& e) {
     bool res = false;
     for(list_t i = 0; i < _size; i++) {
-      if(_datas[i] == e) {
+      if(_data[i] == e) {
 	removeAt(i--);
 	res = true;
       }
@@ -142,7 +142,7 @@ public:
   }
   
   //! \brief Completely empty the list.
-  void flush(void) {
+  inline void flush(void) {
     _size = 0;
   }
   
@@ -175,7 +175,7 @@ public:
   //! \return A boolean telling whether the element is contained in the list or not.
   inline bool contains(const ElementType& e) const {
     for(list_t i = 0; i < _size; i++) {
-      if(_datas[i] == e) {
+      if(_data[i] == e) {
 	return true;
       }
     }
@@ -187,7 +187,7 @@ public:
   //! \return : The index of the element if it is in the list, the current size of the list otherwise.
   inline list_t indexOf(const ElementType& e) const {
     for(list_t i = 0; i < _size; i++) {
-      if(_datas[i] == e) {
+      if(_data[i] == e) {
 	return i;
       }
     }
@@ -199,7 +199,7 @@ public:
   //! \return The reference to the asked element.
   //! \warning If the index is out of range, this causes an undefined behavior.
   inline ElementType& get(list_t index) {
-    return _datas[index];
+    return _data[index];
   }
   
   //! \brief Get a constant reference to the element at a given index.
@@ -207,7 +207,7 @@ public:
   //! \return The constant reference to the asked element.
   //! \warning If the index is out of range, this causes an undefined behavior.
   inline const ElementType& get(list_t index) const {
-    return _datas[index];
+    return _data[index];
   }
   
   //! \brief Call a function on each element of the list.
@@ -215,7 +215,7 @@ public:
   template<typename Callable>
   inline void doForeach(Callable func) {
     for(list_t i = 0 ; i < _size ; i++) {
-      func(_datas[i]);
+      func(_data[i]);
     }
   }
   
@@ -224,7 +224,7 @@ public:
   template<typename Callable>
   inline void doForeach(Callable func) const {
     for(list_t i = 0 ; i < _size ; i++) {
-      func(_datas[i]);
+      func(_data[i]);
     }
   }
 };

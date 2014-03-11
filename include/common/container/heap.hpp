@@ -31,7 +31,7 @@ public:
   
 private:
   //! \brief The array containing the datas.
-  Array<SIZE, ElementType> _datas;
+  Array<SIZE, ElementType> _data;
   
   //! \brief The current size of the heap.
   heap_t _size;
@@ -112,12 +112,12 @@ private:
     
     //! \brief Returns a reference to the element of the node.
     inline ElementType& element(void) {
-      return _heap->_datas[_index];
+      return _heap->_data[_index];
     }
     
     //! \brief Returns a constant reference to the element of the node.
     inline const ElementType& element(void) const {
-      return _heap->_datas[_index];
+      return _heap->_data[_index];
     }
   };
   
@@ -186,31 +186,36 @@ public:
   //! \return A reference to the heap that has been written.
   inline Heap& operator=(const Heap& other) {
     _size = other._size;
-    _datas = other._datas;
+    _data = other._data;
     return *this;
   }
   
   //! \brief Insert an element in the Heap
   //! \param e : the element to add within the heap.
   inline void insert(const ElementType& e) {
-    _datas[_size] = e;
+    _data[_size] = e;
     percolateUp(_size++);
   }
   
   //! \brief Delete the maximal element
   inline void pop(void) {
     if(_size > 0) {
-      _datas[0] = _datas[_size - 1];
+      _data[0] = _data[_size - 1];
       _size--;
       percolateDown(0);
     }
+  }
+  
+  //! \brief Completely empty the heap.
+  inline void flush(void) {
+    _size = 0;
   }
   
   //! \brief Access to the maximal element.
   //! \return A reference to the maximal element.
   //! \warning If the heap is actually empty, this causes an undefined behavior.
   inline const ElementType& max(void) const {
-    return _datas[0];
+    return _data[0];
   }
   
   //! \brief Test if the heap is empty.
