@@ -116,7 +116,7 @@ public:
   //! \param index : the index of the element to remove.
   //! \return A boolean telling whether the removal has been done successfully or not.
   bool removeAt(list_t index) {
-    if(index > _size) { // Index out of range.
+    if(index >= _size) { // Index out of range.
       return false;
     }
     
