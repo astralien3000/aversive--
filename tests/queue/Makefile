@@ -1,16 +1,17 @@
-AVERSIVE_BASE=../../
+CC=g++
+CFLAGS=-Wall -Wextra --std=c++11 -g
+LDFLAGS=
 
-CXX=g++
-CXX_FLAGS=-Wall -L$(AVERSIVE_BASE)/build/sasiae -I$(AVERSIVE_BASE)/include/sasiae -std=c++11 -fno-threadsafe-statics -O1 -D__STDC_LIMIT_MACROS
-CXX_LIBS=-laversive
+all: queue
 
-ELF=test.elf
-
-all: $(ELF)
+queue: main.cpp ../../include/common/container/queue.hpp
+	@$(CC) $(CFLAGS) -I../../include/common -o $@ $< $(LDFLAGS)
 
 clean:
-	rm -f $(ELF) $(HEX) *~
+	@rm -rf *~ \#*\#
 
-$(ELF): main.cpp
-	$(CXX) $(CXX_FLAGS) $^ -o $@ $(CXX_LIBS)
+test: all
+	@./queue
 
+mrproper: clean
+	@rm -rf queue
