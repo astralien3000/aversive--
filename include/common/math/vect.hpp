@@ -110,7 +110,7 @@ public:
 
   //! \brief Norm of the vector
   ElementType norm(void) {
-    return sqrt(scal(*this, *this));
+    return Math::sqrt(scal(*this, *this));
   }
 };
 
@@ -122,8 +122,8 @@ inline Vect<DIM, ET> operator*(const T val, const Vect<DIM, ET>& vect) {
 
 //! \brief Scalar Product
 template<int DIM, typename ET>
-inline ET scal(const Vect<DIM, ET>& v1, const Vect<DIM, ET>& v2) {
-  int ret = 0;
+ET scal(const Vect<DIM, ET>& v1, const Vect<DIM, ET>& v2) {
+  ET ret = 0;
   for(int i = 0 ; i < DIM ; i++) {
     ret += v1.coord(i) * v2.coord(i);
   }
@@ -133,7 +133,7 @@ inline ET scal(const Vect<DIM, ET>& v1, const Vect<DIM, ET>& v2) {
 //! \brief Cross Product
 //! \warning Only for DIM = 3
 template<typename ET>
-inline Vect<3, ET> cross(const Vect<3, ET>& v1, const Vect<3, ET>& v2) {
+Vect<3, ET> cross(const Vect<3, ET>& v1, const Vect<3, ET>& v2) {
   return Vect<3, ET>(
 		     v1.coord(1) * v2.coord(2) - v1.coord(2) * v2.coord(1),
 		     v1.coord(0) * v2.coord(2) - v1.coord(2) * v2.coord(0),
@@ -143,7 +143,7 @@ inline Vect<3, ET> cross(const Vect<3, ET>& v1, const Vect<3, ET>& v2) {
 
 //! \brief Return the direct normal of a 2 DIM vector
 template<typename ET>
-inline Vect<2, ET> normal(const Vect<2, ET>& v) {
+Vect<2, ET> normal(const Vect<2, ET>& v) {
   Vect<3, ET> v3(v.coord(0), v.coord(1), 0);
   Vect<3, ET> z(0,0,1);
   Vect<3, ET> ret = cross(z, v3);
