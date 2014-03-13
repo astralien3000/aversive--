@@ -65,6 +65,14 @@ public:
     return _coord[index];
   }
 
+  inline ElementType& operator[](int index) {
+    return _coord[index];
+  }
+
+  inline const ElementType& operator[](int index) const {
+    return _coord[index];
+  }
+
   //! \brief Operate the addition with an other vector
   inline Vect& operator+=(const Vect& other) {
     for(int i = 0 ; i < DIM ; i++) {
