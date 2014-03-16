@@ -140,7 +140,7 @@ template<typename ET>
 Vect<3, ET> cross(const Vect<3, ET>& v1, const Vect<3, ET>& v2) {
   return Vect<3, ET>(
 		     v1.coord(1) * v2.coord(2) - v1.coord(2) * v2.coord(1),
-		     v1.coord(0) * v2.coord(2) - v1.coord(2) * v2.coord(0),
+		     -(v1.coord(0) * v2.coord(2) - v1.coord(2) * v2.coord(0)),
 		     v1.coord(0) * v2.coord(1) - v1.coord(1) * v2.coord(0)
 		     );
 }
