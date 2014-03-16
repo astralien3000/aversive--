@@ -47,7 +47,12 @@ public:
   }
 
   inline bool operator==(const Vect& other) const {
-    return _coord == other._coord;
+    for(int i = 0; i < DIM ; i++) {
+      if(_coord[i] != other._coord[i]) {
+	return false;
+      }
+    }
+    return true;
   }
 
   //! \brief Access to the N-th element
@@ -57,6 +62,14 @@ public:
 
   //! \brief Access to the N-th element (const version)
   inline const ElementType& coord(int index) const {
+    return _coord[index];
+  }
+
+  inline ElementType& operator[](int index) {
+    return _coord[index];
+  }
+
+  inline const ElementType& operator[](int index) const {
     return _coord[index];
   }
 
