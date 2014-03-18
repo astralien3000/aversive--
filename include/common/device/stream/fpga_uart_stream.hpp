@@ -35,7 +35,7 @@ public:
   }
 
   inline void setValue(char val) {
-    while(255 - _tx_occup);
+    while(!(255 - _tx_occup));
     _tx = val;
   }
 
