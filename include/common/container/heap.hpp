@@ -169,10 +169,31 @@ private:
     }
   }
   
+  //! \brief Variadic templated method to insert multiple elements at the construction of the heap.
+  //! \param e : the next element to add to the heap.
+  //! \param args : the remaining arguments.
+  template<typename... Targs>
+  inline void set(const ElementType& e, const Targs&... args) {
+    insert(e);
+    set(args...);
+  }
+  
+  //! \brief Termination method to insert multiple elements at the construction of the list.
+  inline void set(void) {
+  }
+  
 public:
   //! \brief Default Constructor
   inline Heap(void)
     : _size(0) {
+  }
+  
+  //! \brief Variadic constructor to insert multiple elements.
+  //! \param args : the value list to insert in the heap.
+  template<typename... Targs>
+  inline Heap(const Targs&... args)
+    : Heap() {
+    set(args...);
   }
   
   //! \brief Copy Constructor

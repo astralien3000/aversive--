@@ -11,7 +11,21 @@ int main(int argc, char** argv) {
   (void) argc;
   (void) argv;
   
-  Heap<HEAP_SIZE, s8> h;
+  Heap<HEAP_SIZE, s8> h(0, 1, 2, 3, 4, 5, 6, 7);
+  
+  assert(h.isFull());
+  assert(!h.isEmpty());
+  assert(h.usedSpace() == HEAP_SIZE);
+  assert(h.freeSpace() == 0);
+  
+  for(s16 i = 7; i >= 0; i--) {
+    assert(h.max() == i);
+    assert(h.pop());
+    assert(h.freeSpace() == (HEAP_SIZE - (heap_t) i));
+    assert(h.usedSpace() == (heap_t) i);
+  }
+  
+  h.flush();
   
   assert(h.usedSpace() == 0);
   assert(h.freeSpace() == HEAP_SIZE);
