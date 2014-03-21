@@ -4,18 +4,18 @@
 #include <base/array.hpp>
 #include <base/integer.hpp>
 
-typedef array_t buffer_t;
+typedef u8 buffer_t;
 
 //! \class Buffer buffer.hpp <container/buffer.hpp>
 //! \brief Buffer implementation which is thread-safe if there are only one provider and one consumer.
 //! \warning _SIZE must be a power of 2, it is verified with an assert.
 //! \param _SIZE : the number of elements the buffer can handle at any given time.
 //! \param _ElementType : type of the buffered elements.
-template <buffer_t _SIZE = 64, typename _ElementType = u8>
+template <buffer_t _SIZE = 0, typename _ElementType = u8>
 class Buffer {
 public:
   //! \brief Maximum number of elements a buffer can handle.
-  static const buffer_t MAX_SIZE = Array<>::MAX_SIZE;
+  static const buffer_t MAX_SIZE = 1 << 7;
   
   //! \brief Number of elements the buffer can handle.
   static const buffer_t SIZE = _SIZE;
@@ -33,11 +33,32 @@ private:
   //! \brief Write counter.
   volatile buffer_t _writes;
   
+  //! \brief Variadic templated method to insert multiple elements at the construction of the buffer.
+  //! \param e : the next element to add to the buffer.
+  //! \param args : the remaining arguments.
+  template<typename... Targs>
+  inline void set(const ElementType& e, const Targs&... args) {
+    enqueue(e);
+    set(args...);
+  }
+  
+  //! \brief Termination method to insert multiple elements at the construction of the list.
+  inline void set(void) {
+  }
+  
 public:
   //! \brief Default Constructor.
   inline Buffer()
     : _data(), _reads(0), _writes(0) {
     static_assert((SIZE != 0 && (SIZE & (SIZE - 1)) == 0), "Buffer size must be a power of 2.");
+  }
+  
+  //! \brief Variadic constructor to insert multiple elements.
+  //! \param args : the value list to insert in the buffer.
+  template<typename... Targs>
+  inline Buffer(const Targs&... args)
+    : Buffer() {
+    set(args...);
   }
   
   //! \brief Copy Constructor.
