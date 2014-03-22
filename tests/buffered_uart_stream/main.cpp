@@ -1,6 +1,5 @@
 #include <aversive.hpp>
 #include <device/stream/buffered_uart_stream.hpp>
-#include <device/stream/uart_stream.hpp> // For debugging purpose
 #include <hardware/interrupts.hpp>
 #include <hardware/timer.hpp>
 #include <avr/io.h>
@@ -50,12 +49,10 @@ int main(int argc, char** argv) {
   
   DDRB = (1<<PB7) | (1<<PB4);
   
-  //BufferedUartStream<0>& str = BufferedUartStream<0>::instance();
-  UartStream<0> str("");
-  Interrupts::set();
+  BufferedUartStream<0>& str = BufferedUartStream<0>::instance();
+  Interrupts::init();
   
   u16 j;
-  // Writing here with BufferedUartStream does not work but it does in writer function above.
   str << "Hello, write an (unsigned) integer:\n\r";
   str << "- 0 for reading test\n\r";
   str << "- anything else for writing test\n\r";
@@ -65,7 +62,6 @@ int main(int argc, char** argv) {
   str << "I read " << j << ".\n\r";
   
   if(j == 0) { // Reading test
-    // Works with UartStream, but we would like to make it work with BufferUartStream as well once its writting has been fixed.
     str << "Reading test\n\r";
     while(Aversive::sync()) {
       str << "Write an (unsigned) integer:\n\r";

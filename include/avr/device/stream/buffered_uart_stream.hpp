@@ -1,11 +1,6 @@
 #ifndef AVR_BUFFERED_UART_STREAM_HPP
 #define AVR_BUFFERED_UART_STREAM_HPP
 
-struct BufferedUartStreamPrivateData {
-  volatile bool sending;
-  volatile bool receiving;
-};
-
 #include "../../../common/device/stream/buffered_uart_stream.hpp"
 
 #include <hardware/uart.hpp>
@@ -20,16 +15,13 @@ BufferedUartStream<0>::BufferedUartStream(void) : InternalBufferedStream("Buffer
   init();
 }
 
-//! \todo DEBUG. Writing stops when the buffer gets empty just once. Reading still need to be tested.
 template<int CHANNEL>
 void BufferedUartStream<CHANNEL>::init(void) {
   Uart<CHANNEL>& channel = Uart<CHANNEL>::instance();
   channel.init();
   channel.sendEvent().setFunction(send);
-  //channel.sendEvent().start();
   channel.recvEvent().setFunction(receive);
-  //channel.recvEvent().start();
-  _data.sending = _data.receiving = false;
+  channel.recvEvent().start();
 }
 
 template<int CHANNEL>
@@ -39,11 +31,9 @@ void BufferedUartStream<CHANNEL>::send(void) {
   if(!str._output.isEmpty()) {
     Uart<CHANNEL>::instance().send(str._output.head());
     str._output.dequeue();
-    str._data.sending = true;
     Uart<CHANNEL>::instance().sendEvent().start();
   }
   else {
-    str._data.sending = false;
     Uart<CHANNEL>::instance().sendEvent().stop();
   }
   Interrupts::unlock();
@@ -64,7 +54,7 @@ void BufferedUartStream<CHANNEL>::receive(void) {
 template<int CHANNEL>
 void BufferedUartStream<CHANNEL>::setValue(char val) {
   InternalBufferedStream::setValue(val);
-  if(!Uart<CHANNEL>::instance().sendEvent().activated()) { //(!_data.sending) {
+  if(!Uart<CHANNEL>::instance().sendEvent().activated()) {
     send();
   }
 }

@@ -8,8 +8,6 @@ template<int CHANNEL>
 class BufferedUartStream : public InternalBufferedStream, public Singleton<BufferedUartStream<CHANNEL> > {
   friend Singleton<BufferedUartStream<CHANNEL> >;
   
-  BufferedUartStreamPrivateData _data;
-  
   BufferedUartStream(const char* name) : InternalBufferedStream(name) {
   }
   
