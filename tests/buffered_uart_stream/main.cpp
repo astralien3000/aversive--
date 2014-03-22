@@ -1,5 +1,6 @@
 #include <aversive.hpp>
 #include <device/stream/buffered_uart_stream.hpp>
+#include <device/stream/uart_stream.hpp> // For debugging purpose
 #include <hardware/interrupts.hpp>
 #include <hardware/timer.hpp>
 #include <avr/io.h>
@@ -49,22 +50,47 @@ int main(int argc, char** argv) {
   
   DDRB = (1<<PB7) | (1<<PB4);
   
-  BufferedUartStream<0>& str = BufferedUartStream<0>::instance();
-  (void) str;
-  
-  Timer<0>& t = Timer<0>::instance();
-  t.init();
-  t.setPrescaler<1024>();
-  t.overflowEvent().setFunction(writer);
-  t.overflowEvent().start();
-  
+  //BufferedUartStream<0>& str = BufferedUartStream<0>::instance();
+  UartStream<0> str("");
   Interrupts::set();
   
-  while(Aversive::sync()) {
-    for(u32 i = 0; i < 1600000; i++) {
-      __asm__ __volatile__ ("NOP\n");
+  u16 j;
+  // Writing here with BufferedUartStream does not work but it does in writer function above.
+  str << "Hello, write an (unsigned) integer:\n\r";
+  str << "- 0 for reading test\n\r";
+  str << "- anything else for writing test\n\r";
+  turnOn(PB7);
+  str >> j;
+  turnOff(PB7);
+  str << "I read " << j << ".\n\r";
+  
+  if(j == 0) { // Reading test
+    // Works with UartStream, but we would like to make it work with BufferUartStream as well once its writting has been fixed.
+    str << "Reading test\n\r";
+    while(Aversive::sync()) {
+      str << "Write an (unsigned) integer:\n\r";
+      str >> j;
+      str << "I read " << j << ".\n\r";
+      for(u32 i = 0; i < 1600000; i++) {
+	__asm__ __volatile__ ("NOP\n");
+      }
+      toggle(PB7);
     }
-    toggle(PB7);
+  }
+  else { // Pure writing test
+    str << "Writing test\n\r";
+    Timer<0>& t = Timer<0>::instance();
+    t.init();
+    t.setPrescaler<1024>();
+    t.overflowEvent().setFunction(writer);
+    t.overflowEvent().start();
+    
+    while(Aversive::sync()) {
+      for(u32 i = 0; i < 1600000; i++) {
+	__asm__ __volatile__ ("NOP\n");
+      }
+      toggle(PB7);
+    }
   }
   
   Aversive::setReturnCode(0);
