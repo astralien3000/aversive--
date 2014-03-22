@@ -85,4 +85,10 @@ clean:
 	rm -rf $(shell find . -name "*~" -o -name "#*#" -o -name "*.o") $(GEN_BUILD_DIR)
 
 mrproper: clean
-	rm -rf $(GEN_EXEC)_*.elf
+	rm -rf $(GEN_EXEC)_*.elf $(GEN_EXEC)_*.hex tester
+
+test:
+	@$(MAKE) -s atmega2560
+	@./deploy.sh 2> /dev/null 1> /dev/null
+	@g++ --std=c++11 -Wall -Wextra tester.cpp -o tester
+	@sudo ./tester
