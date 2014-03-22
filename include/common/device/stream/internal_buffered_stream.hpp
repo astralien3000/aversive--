@@ -12,6 +12,16 @@ protected:
 public:
   InternalBufferedStream(const char*);
   
+  inline void flushOutput(void) {
+    while(!_output.isEmpty()) {
+    }
+  }
+  
+  inline void flushInput(void) {
+    _mini_buffer_used = false;
+    _input.flush();
+  }
+  
   virtual char getValue(void);
   virtual void setValue(char);
   

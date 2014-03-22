@@ -56,6 +56,7 @@ int main(int argc, char** argv) {
   str << "Hello, write an (unsigned) integer:\n\r";
   str << "- 0 for reading test\n\r";
   str << "- anything else for writing test\n\r";
+  str.flushOutput();
   turnOn(PB7);
   str >> j;
   turnOff(PB7);
@@ -64,6 +65,7 @@ int main(int argc, char** argv) {
   if(j == 0) { // Reading test
     str << "Reading test\n\r";
     while(Aversive::sync()) {
+      str.flushInput();
       str << "Write an (unsigned) integer:\n\r";
       str >> j;
       str << "I read " << j << ".\n\r";
