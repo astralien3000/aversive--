@@ -15,8 +15,8 @@ void Stream::binaryWrite(const char* str) {
 template<typename T>
 inline void basic_binary_write(Stream& s, const T& val) {
   const char* ptr = reinterpret_cast<const char*>(&val);
-  for(s16 i = (sizeof(T) - 1) ; i >= 0 ; i--) {
-    s.setValue(*(ptr + i));
+  for(u8 i = 0 ; i < sizeof(T) ; i++, ptr++) {
+    s.setValue(*ptr);
   }
 }
 
@@ -155,8 +155,8 @@ void Stream::binaryRead(char* str, u16 size) {
 template<typename T>
 inline void basic_binary_read(Stream& s, T& val) {
   char* ptr = reinterpret_cast<char*>(&val);
-  for(s16 i = (sizeof(T) - 1) ; i >= 0 ; i--) {
-    *(ptr + i) = s.getValue();
+  for(u8 i = 0 ; i < sizeof(T) ; i++, ptr++) {
+    *ptr = s.getValue();
   }
 }
 
