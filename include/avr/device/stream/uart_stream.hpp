@@ -18,9 +18,15 @@ void UartStream<CHANNEL>::setValue(char c) {
 
 template<int CHANNEL>
 char UartStream<CHANNEL>::getValue(void) {
-  char ret;
-  Uart<CHANNEL>::instance().recv(ret);
-  return ret;
+  if(_mini_buffer_used) {
+    _mini_buffer_used = false;
+    return _mini_buffer;
+  }
+  else {
+    char ret;
+    Uart<CHANNEL>::instance().recv(ret);
+    return ret;
+  }
 }
 
 #endif//AVR_UART_STREAM_HPP

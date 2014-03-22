@@ -4,11 +4,17 @@ InternalBufferedStream::InternalBufferedStream(const char* name) : BufferedStrea
 }
 
 char InternalBufferedStream::getValue(void) {
-  while(_input.isEmpty()) {
+  if(_mini_buffer_used) {
+    _mini_buffer_used = false;
+    return _mini_buffer;
   }
-  char val = _input.head();
-  _input.dequeue();
-  return val;
+  else {
+    while(_input.isEmpty()) {
+    }
+    char val = _input.head();
+    _input.dequeue();
+    return val;
+  }
 }
 
 void InternalBufferedStream::setValue(char val) {

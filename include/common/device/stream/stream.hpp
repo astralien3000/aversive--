@@ -72,9 +72,16 @@ private:
   void formattedRead(u32&);
   void formattedRead(u64&);
 
+protected:
+  bool _mini_buffer_used;
+  
+  char _mini_buffer;
+  
 public:
   //! \brief Default Constructor
-  Stream(const char*);
+  inline Stream(const char* name)
+    : Device(name), _mini_buffer_used(false) {
+  }
 
   //! \brief Change the mode the stream is currently in
   inline void setMode(Mode m) {
@@ -285,6 +292,15 @@ public:
   //! \brief Write a char in stream
   //! \warning virtual operation
   virtual char getValue(void) = 0;
+
+  //! \brief Return the next value to read from the stream without removing it from the head of the stream.
+  inline char nextValue(void) {
+    if(!_mini_buffer_used) {
+      _mini_buffer = getValue();
+      _mini_buffer_used = true;
+    }
+    return _mini_buffer;
+  }
 
   //! \brief Read a char from stream
   //! \warning virtual operation

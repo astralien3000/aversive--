@@ -3,11 +3,6 @@
 const u16 MAX_BUFF = 32;
 
 ////////////////////////////////////////
-// Constructor
-
-Stream::Stream(const char* name) : Device(name) {}
-
-////////////////////////////////////////
 // Binary Write
 
 void Stream::binaryWrite(const char* str) {
@@ -127,7 +122,16 @@ void Stream::formattedWrite(const u64& val) {
 ////////////////////////////////////////
 // Binary Read
 
+void clearBlank(Stream& s) {
+  char c = s.nextValue();
+  while(c == ' ' || c == '\0' || c == '\n' || c == '\r' || c == '\t') {
+    s.getValue();
+    c = s.nextValue();
+  }
+}
+
 void Stream::binaryRead(char* str, u16 size) {
+  clearBlank(*this);
   bool keep = true;
   char* beg = str;
   while(keep && (u16)(str-beg) < size) {
@@ -191,27 +195,26 @@ void Stream::binaryRead(u64& val) {
 
 template<bool SIGNED = true, typename T>
 void basic_formatted_integer_read(Stream& s, T& val) {
+  clearBlank(s);
   val = 0;
 
-  char str[32] = {0};
-  s >> str;
+  char c = 0;
+  bool neg = false;
+  c = s.nextValue();
 
-  u16 beg = 0;
-  if(SIGNED && str[0] == '-') {
-    beg = 1;
-  }
-    
-  for(u16 i = beg ; str[i] ; i++) {
-    if('0' <= str[i] && str[i] <= '9') {
-      val *= 10;
-      val += (T)(str[i] - '0');
-    }
-    else {
-      str[i+1] = '\0';
-    }
+  if(SIGNED && c == '-') {
+    neg = true;
+    s.getValue();
+    c = s.nextValue();
   }
 
-  if(SIGNED && beg == 1) {
+  while(c >= '0' && c <= '9') {
+    s.getValue();
+    val = val * 10 + ((T) (c - '0'));
+    c = s.nextValue();
+  }
+
+  if(neg) {
     val = -val;
   }
 }

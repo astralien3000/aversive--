@@ -30,8 +30,14 @@ public:
 
 
   inline char getValue(void) {
-    while(!_rx_ava);
-    return _rx; 
+    if(_mini_buffer_used) {
+      _mini_buffer_used = false;
+      return _mini_buffer;
+    }
+    else {
+      while(!_rx_ava);
+      return _rx; 
+    }
   }
 
   inline void setValue(char val) {
