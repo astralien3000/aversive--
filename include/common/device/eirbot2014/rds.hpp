@@ -23,7 +23,7 @@ private:
 public:
   Rds(const char* name);
 
-  //! \bried Default mode is CARTESIAN. 
+  //! \brief Default mode is CARTESIAN. 
   void setModeCartesian(void);
   void setModePolar(void);
 

@@ -28,8 +28,8 @@ public:
   }
   
   //! \brief Constructor with parameters.
-  //! \param left : a reference to the object to copy in the left member.
-  //! \param right : a reference to the object to copy in the right member.
+  //! \param l : a reference to the object to copy in the left member.
+  //! \param r : a reference to the object to copy in the right member.
   //! \attention Left and right types must have a copy constructor.
   inline Pair(const LeftType& l, const RightType& r)
     : _left(l), _right(r) {
