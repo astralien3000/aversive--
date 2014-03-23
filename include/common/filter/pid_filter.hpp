@@ -61,6 +61,12 @@ public:
 
   //! \brief Create a PID in which the output is the input
   static PidFilter identity(void);
+
+  inline void reset(void) {
+    _last_in = 0;
+    _sum_in = 0;
+    _last_out = 0;
+  }
 };
 
 #endif//PID_FILTER_HPP

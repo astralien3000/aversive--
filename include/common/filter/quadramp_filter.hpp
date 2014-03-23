@@ -28,6 +28,11 @@ public:
   void setSecondOrderLimit(CoeffType pos, CoeffType neg);
 
   OutputType doFilter(InputType in);
+
+  void reset(s32 last_out = 0) {
+    _prev_out = last_out;
+    _prev_var = 0;
+  }
 };
 
 
