@@ -2,10 +2,11 @@
 #define RDS_HPP
 
 
-#include <device/input_device.hpp>
+#include <device/device.hpp>
+#include <device/input.hpp>
 #include <math/vect.hpp>
 #include <container/list.hpp>
-#include <stdint.h>
+#include <base/integer.hpp>
 
 //! \brief A complex sensor which gives the relative position of others robots
 /*!
@@ -15,10 +16,10 @@
   The values returned depend on the choosen mode (cartesian or polar).
 */
 
-class Rds : public Device, public Input <List<6, Vect<2, int16_t> > > {
+class Rds : public Device, public Input<List<6, Vect<2, s16> > > {
 private:
-  uint8_t _nb;
-  List<6, Vect<2, int16_t> > _values;
+  u8 _nb;
+  List<6, Vect<2, s16> > _values;
 
 public:
   Rds(const char* name);
@@ -28,11 +29,11 @@ public:
   void setModePolar(void);
 
   //! \brief Return the position (x, y) (or (d, a) depending the mode) of the spceficied robot.
-  const Vect<2, int16_t>& getPosition(uint8_t index) const;
-  const List<6, Vect<2, int16_t> >& getValues(void) const;
+  const Vect<2, s16>& getPosition(u8 index) const;
+  const List<6, Vect<2, s16> >& getValues(void) const;
 
   //! \brief Return the number of robots seen by the RDS.
-  uint8_t robotsNumber(void) const;
+  u8 robotsNumber(void) const;
 };
 
 

@@ -1,8 +1,5 @@
 #include <device/stream/internal_buffered_stream.hpp>
 
-InternalBufferedStream::InternalBufferedStream(const char* name) : BufferedStream(name) {
-}
-
 char InternalBufferedStream::getValue(void) {
   if(_mini_buffer_used) {
     _mini_buffer_used = false;

@@ -1,7 +1,8 @@
 #ifndef MOTOR_HPP
 #define MOTOR_HPP
 
-#include <device/output_device.hpp>
+#include <device/device.hpp>
+#include <device/output.hpp>
 #include <base/integer.hpp>
 
 //! \brief A propulsion motor, used by Eirbot in 2014
@@ -14,7 +15,7 @@
 
 */
 template<typename T>
-class Motor : public SimpleOutputDevice<T> {
+class Motor : public Device, public Output<T> {
 public:
   Motor(const char*, T*);
 

@@ -15,7 +15,8 @@ protected:
 
 public:
   //! \brief Default Constructor
-  inline RandomAccessStream(const char* name) : Stream(name) {}
+  inline RandomAccessStream(void) {
+  }
 
   //! \brief Place the cursor at the position
   inline void seek(u16 cursor) {

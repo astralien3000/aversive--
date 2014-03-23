@@ -2,9 +2,10 @@
 #define EEPROM_STREAM_HPP
 
 #include <device/stream/random_access_stream.hpp>
+#include <device/device.hpp>
 
 //! \brief Eeprom stream
-class EepromStream : public RandomAccessStream {
+class EepromStream : public Device, public RandomAccessStream {
 public:
   EepromStream(const char*);
 

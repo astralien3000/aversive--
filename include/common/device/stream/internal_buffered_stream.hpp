@@ -10,7 +10,8 @@ protected:
   Buffer<64, char> _output;
   Buffer<64, char> _input;
 public:
-  InternalBufferedStream(const char*);
+  inline InternalBufferedStream(void) {
+  }
   
   inline void flushOutput(void) {
     while(!_output.isEmpty()) {

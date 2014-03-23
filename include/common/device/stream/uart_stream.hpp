@@ -3,13 +3,14 @@
 
 #include <base/integer.hpp>
 #include <device/stream/stream.hpp>
+#include <device/device.hpp>
 
 //! \brief Uart stream which uses "thread-safe" Buffer implementation
 //! \attention SIZE must be a power of 2
 //! \param CHANNEL which Uart connection the stream must be bound to
 //! \param SIZE the number of characters input and output buffers can both handle at any given time
 template<int CHANNEL>
-class UartStream : public Stream {
+class UartStream : public Device, public Stream {
 public:  
   UartStream(const char*);
   

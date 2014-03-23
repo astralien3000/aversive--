@@ -1,13 +1,14 @@
 #ifndef SERVOMOTOR_HPP
 #define SERVOMOTOR_HPP
 
-#include <device/output_device.hpp>
-#include "../../base/integer.hpp"
+#include <device/device.hpp>
+#include <device/output.hpp>
+#include <base/integer.hpp>
 
 //! \brief A servomotor INTERFACE, used by Eirbot in 2014. Can not be used (see ServomotorFpga or ServomotorPin).
 
 
-class Servomotor : public OutputDevice<u32> {
+class Servomotor : public Device, public Output<u32> {
 public:
   Servomotor(const char*);
 

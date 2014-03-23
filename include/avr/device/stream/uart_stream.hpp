@@ -6,7 +6,7 @@
 #include <hardware/uart.hpp>
 
 template<int CHANNEL>
-UartStream<CHANNEL>::UartStream(const char* name) : Stream(name) {
+UartStream<CHANNEL>::UartStream(const char* name) : Device(name) {
   Uart<CHANNEL>& uart = Uart<CHANNEL>::instance();
   uart.init();
 }

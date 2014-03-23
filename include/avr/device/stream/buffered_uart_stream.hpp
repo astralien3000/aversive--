@@ -7,11 +7,11 @@
 #include <hardware/interrupts.hpp>
 
 template<int CHANNEL>
-BufferedUartStream<CHANNEL>::BufferedUartStream(void) : InternalBufferedStream("NULL") {
+inline BufferedUartStream<CHANNEL>::BufferedUartStream(void) : Device("NULL") {
 }
 
 template<>
-BufferedUartStream<0>::BufferedUartStream(void) : InternalBufferedStream("BufferedUartStream_0") {
+inline BufferedUartStream<0>::BufferedUartStream(void) : Device("BufferedUartStream_0") {
   init();
 }
 

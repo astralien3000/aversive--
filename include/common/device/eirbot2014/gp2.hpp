@@ -2,8 +2,9 @@
 #define GP2_HPP
 
 
-#include <device/input_device.hpp>
-#include "../../base/integer.hpp"
+#include <device/device.hpp>
+#include <device/input.hpp>
+#include <base/integer.hpp>
 
 
 //! \brief An infrared sensor, used by Eirbot in 2014
@@ -15,7 +16,7 @@
 
 */
 template<u32* ADDR>
-class GP2 : public InputDevice<u32> {
+class GP2 : public Device, public Input<u32> {
 public:
   GP2(const char*);
 

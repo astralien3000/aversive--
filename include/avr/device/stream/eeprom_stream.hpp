@@ -5,7 +5,7 @@
 
 #include <hardware/eeprom.hpp>
 
-inline EepromStream::EepromStream(const char* name) : RandomAccessStream(name) {
+inline EepromStream::EepromStream(const char* name) : Device(name) {
   Eeprom::instance().init();
 }
 

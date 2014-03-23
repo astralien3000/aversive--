@@ -1,13 +1,12 @@
 #ifndef STREAM_HPP
 #define STREAM_HPP
 
-#include <device/device.hpp>
 #include <device/input.hpp>
 #include <device/output.hpp>
 #include <base/integer.hpp>
 
 //! \todo This class should not inherit Device. Only concret stream like UartStream.
-class Stream : public Device, public Input<char>, public Output<char> {
+class Stream : public Input<char>, public Output<char> {
 public:
   //! \brief Mode represents the different modes the stream can be in (default is FORMATTED)
   enum Mode { BINARY, FORMATTED };
@@ -79,8 +78,8 @@ protected:
   
 public:
   //! \brief Default Constructor
-  inline Stream(const char* name)
-    : Device(name), _mini_buffer_used(false) {
+  inline Stream(void)
+    : _mini_buffer_used(false) {
   }
 
   //! \brief Change the mode the stream is currently in
