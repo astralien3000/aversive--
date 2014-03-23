@@ -68,14 +68,14 @@ private:
     
     //! \brief Check if the node really represents an element in the heap.
     inline bool isValid(void) const {
-      return 0 < _index && _index < _heap->_size;
+      return _index < _heap->_size;
     }
     
     //! \brief Exchange the elements of two nodes.
     //! \param other : the node that the current node has to switch element with.
     //! \warning Does not change the nodes' position.
     inline void switchElements(Node&& other) {
-      ElementType& tmp = element();
+      ElementType tmp = element();
       element() = other.element();
       other.element() = tmp;
     }
@@ -97,17 +97,17 @@ private:
     
     //! \brief Check if the node has a parent.
     inline bool hasParent(void) const {
-      return 0 < parent()._index;
+      return _index > 0;
     }
     
     //! \brief Check if the node has a first child.
     inline bool hasFirstChild(void) const {
-      return firstChild()._index < _heap->_size;
+      return firstChild().isValid();
     }
     
     //! \brief Check if the node has a second child.
     inline bool hasSecondChild(void) const {
-      return secondChild()._index < _heap->_size;
+      return secondChild().isValid();
     }
     
     //! \brief Returns a reference to the element of the node.
@@ -169,10 +169,31 @@ private:
     }
   }
   
+  //! \brief Variadic templated method to insert multiple elements at the construction of the heap.
+  //! \param e : the next element to add to the heap.
+  //! \param args : the remaining arguments.
+  template<typename... Targs>
+  inline void set(const ElementType& e, const Targs&... args) {
+    insert(e);
+    set(args...);
+  }
+  
+  //! \brief Termination method to insert multiple elements at the construction of the list.
+  inline void set(void) {
+  }
+  
 public:
   //! \brief Default Constructor
   inline Heap(void)
     : _size(0) {
+  }
+  
+  //! \brief Variadic constructor to insert multiple elements.
+  //! \param args : the value list to insert in the heap.
+  template<typename... Targs>
+  inline Heap(const Targs&... args)
+    : Heap() {
+    set(args...);
   }
   
   //! \brief Copy Constructor
@@ -192,18 +213,26 @@ public:
   
   //! \brief Insert an element in the Heap
   //! \param e : the element to add within the heap.
-  inline void insert(const ElementType& e) {
+  //! \return A boolean telling whether the element has been successfully inserted or not.
+  inline bool insert(const ElementType& e) {
+    if(SIZE == _size) {
+      return false;
+    }
     _data[_size] = e;
     percolateUp(_size++);
+    return true;
   }
   
   //! \brief Delete the maximal element
-  inline void pop(void) {
-    if(_size > 0) {
-      _data[0] = _data[_size - 1];
-      _size--;
-      percolateDown(0);
+  //! \return A boolean telling whether an element has been removed from the heap or not.
+  inline bool pop(void) {
+    if(_size == 0) {
+      return false;
     }
+    _data[0] = _data[_size - 1];
+    _size--;
+    percolateDown(0);
+    return true;
   }
   
   //! \brief Completely empty the heap.

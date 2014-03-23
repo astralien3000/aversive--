@@ -8,7 +8,7 @@
 #include <sstream>
 
 template<int CHANNEL>
-UartStream<CHANNEL>::UartStream(const char* name) : Stream(name) {
+UartStream<CHANNEL>::UartStream(const char* name) : Device(name) {
   Aversive::init();
 
   ClientThread::instance().

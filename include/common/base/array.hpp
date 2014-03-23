@@ -239,7 +239,7 @@ public:
   }
   
   //! \brief Substract an object to each element of the array.
-  //! \param other : the object to substract.
+  //! \param o : the object to substract.
   //! \return The result array after the substractions.
   inline Array operator-(const ElementType& o) {
     Array ret;
@@ -261,7 +261,7 @@ public:
   }
   
   //! \brief Divide each element of the array by another object.
-  //! \param other : the divisor.
+  //! \param o : the divisor.
   //! \return The result array after the divisions.
   inline Array operator/(const ElementType& o) {
     Array ret;
@@ -272,7 +272,7 @@ public:
   }
   
   //! \brief Apply a modulo on each element of the array by another object.
-  //! \param other : the divisor.
+  //! \param o : the divisor.
   //! \return The result array after the modulo operations.
   inline Array operator%(const ElementType& o) {
     Array ret;

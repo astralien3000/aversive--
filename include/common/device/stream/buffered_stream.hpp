@@ -7,7 +7,8 @@
 //! \brief Buffered stream interface
 class BufferedStream : public Stream {
 public:
-  BufferedStream(const char*);
+  inline BufferedStream(void) {
+  }
   
   //! \brief Read a char from the stream's input buffer
   //! \warning Blocking operation if the stream's input buffer is empty
@@ -23,7 +24,7 @@ public:
   //! \brief Return the space currently free to use in the ouput buffer
   virtual u16 outputFreeSpace(void) = 0;
   
-  //! \brief Rtuen the space currently used in the input buffer
+  //! \brief Return the space currently used in the input buffer
   virtual u16 inputUsedSpace(void) = 0;
 };
 

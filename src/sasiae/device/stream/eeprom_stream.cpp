@@ -4,7 +4,7 @@
 #include <client_thread.hpp>
 #include <sstream>
 
-EepromStream::EepromStream(const char* name) : RandomAccessStream(name) {
+EepromStream::EepromStream(const char* name) : Device(name) {
 
 }
 

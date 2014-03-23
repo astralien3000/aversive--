@@ -15,7 +15,7 @@ sasiae:
 
 doc:
 	mkdir -p build/doc
-	@doxygen
+	@doxygen 1> /dev/null
 
 archiparser:
 	@$(MAKE) -sC tools/archi_parser

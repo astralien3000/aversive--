@@ -2,15 +2,14 @@
 #define BUFFERED_UART_STREAM_HPP
 
 #include <device/stream/internal_buffered_stream.hpp>
+#include <device/device.hpp>
 #include <base/singleton.hpp>
 
 template<int CHANNEL>
-class BufferedUartStream : public InternalBufferedStream, public Singleton<BufferedUartStream<CHANNEL> > {
+class BufferedUartStream : public Device, public InternalBufferedStream, public Singleton<BufferedUartStream<CHANNEL> > {
   friend Singleton<BufferedUartStream<CHANNEL> >;
   
-  BufferedUartStreamPrivateData _data;
-  
-  BufferedUartStream(const char* name) : InternalBufferedStream(name) {
+  inline BufferedUartStream(const char* name) : Device(name) {
   }
   
   BufferedUartStream(void);

@@ -1,13 +1,12 @@
 #ifndef STREAM_HPP
 #define STREAM_HPP
 
-#include <device/device.hpp>
 #include <device/input.hpp>
 #include <device/output.hpp>
 #include <base/integer.hpp>
 
 //! \todo This class should not inherit Device. Only concret stream like UartStream.
-class Stream : public Device, public Input<char>, public Output<char> {
+class Stream : public Input<char>, public Output<char> {
 public:
   //! \brief Mode represents the different modes the stream can be in (default is FORMATTED)
   enum Mode { BINARY, FORMATTED };
@@ -72,9 +71,16 @@ private:
   void formattedRead(u32&);
   void formattedRead(u64&);
 
+protected:
+  bool _mini_buffer_used;
+  
+  char _mini_buffer;
+  
 public:
   //! \brief Default Constructor
-  Stream(const char*);
+  inline Stream(void)
+    : _mini_buffer_used(false) {
+  }
 
   //! \brief Change the mode the stream is currently in
   inline void setMode(Mode m) {
@@ -285,6 +291,15 @@ public:
   //! \brief Write a char in stream
   //! \warning virtual operation
   virtual char getValue(void) = 0;
+
+  //! \brief Return the next value to read from the stream without removing it from the head of the stream.
+  inline char nextValue(void) {
+    if(!_mini_buffer_used) {
+      _mini_buffer = getValue();
+      _mini_buffer_used = true;
+    }
+    return _mini_buffer;
+  }
 
   //! \brief Read a char from stream
   //! \warning virtual operation

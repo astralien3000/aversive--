@@ -7,6 +7,7 @@
 //! \brief Transform an output with some type in an output with another type
 //! \param ET : Externale type (what the user see)
 //! \param IT : Internal type (the true type)
+//! \deprecated To be removed soon. Do not use it anymore and fix your current code using it.
 template<typename ET, typename IT>
 class OutputConverter : public Output<ET> {
 private:
