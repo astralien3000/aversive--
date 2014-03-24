@@ -15,14 +15,23 @@
 
 */
 template<typename T>
-class Motor : public Device, public Output<T> {
+class Motor : public Device, public Output<s32> {
 public:
-  Motor(const char*, T*);
+  //! \brief Create a named motor
+  //! \param name : the name of the device (used with sasiae)
+  //! \param addr : the fpga register address
+  Motor(const char* name, T* addr);
 
-  void setValue(T);
+  //! \brief Send an command to the motor
+  //! \warning The value is saturated if not in a valid interval
+  void setValue(s32);
+
+  //! \brief Switch positive and negative command
+  void inverse(void);
 
 private:
-  T* _addr;
+  volatile T* const _addr;
+  bool _inverse;
 };
 
 #endif//MOTOR_HPP

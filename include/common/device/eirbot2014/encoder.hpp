@@ -15,12 +15,12 @@
 
 */
 template<typename T>
-class Encoder : public Device, public Input<T> {
+class Encoder : public Device, public Input<s32> {
 public:
   //! \brief Create a named encoder
   //! \param name : the name of the device (used with sasiae)
   //! \param addr : the FPGA register address
-  inline Encoder(const char* name, T* addr);
+  Encoder(const char* name, T* addr);
 
   //! \brief Get the number of impulsion of the incremental encoder
   /*!
@@ -30,13 +30,13 @@ public:
     decresases.
     
    */
-  inline T getValue(void);
+  s32 getValue(void);
 
   //! \brief Switch the way of increase/decrease
-  inline void inverse(void);
+  void inverse(void);
   
 private:
-  T* _addr;
+  volatile T* const _addr;
   bool _inverse;
 };
 

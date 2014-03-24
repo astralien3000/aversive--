@@ -6,7 +6,7 @@
 #include <math/vect.hpp>
 #include <base/integer.hpp>
 
-class Odometer : public Device, public Input<Vect<2, s32> > {
+class Odometer : public Input<Vect<2, s32> > {
  private:
   Input<s32>& _enc_l;
   Input<s32>& _enc_r;

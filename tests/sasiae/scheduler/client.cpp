@@ -1,9 +1,11 @@
 #include <aversive.hpp>
 #include <system/scheduler.hpp>
 
-#include <device/output_device.hpp>
+#include <device/eirbot2014/motor.hpp>
 
-SimpleOutputDevice<int> out("out");
+Device d("TESTER");
+int i = 0;
+char buffer[80];
 
 int main(int argc, char** argv) {
   (void) argc;
@@ -12,12 +14,15 @@ int main(int argc, char** argv) {
   Aversive::init();
   // Declare your devices here
   // Initialize your stuff here
+
   Task t1([]() {
-      out.setValue(1);
+      sprintf(buffer, "value 1");
+      ClientThread::instance().sendDeviceMessage(d, buffer);
     });
 
   Task t2([]() {
-      out.setValue(20);
+      sprintf(buffer, "value 2");
+      ClientThread::instance().sendDeviceMessage(d, buffer);
     });
   
   t1.setPeriod(10);

@@ -60,12 +60,12 @@ int main(int argc, char** argv) {
   client.write("T 11 0\n");
 
   client.waitForReadyRead();
-  if(!checkMsg(client, "D out value 1")) {
+  if(!checkMsg(client, "D TESTER value 1")) {
     res(false, 1);
     return EXIT_FAILURE;
   }
 
-  if(!checkMsg(client, "D out value 20")) {
+  if(!checkMsg(client, "D TESTER value 2")) {
     res(false, 2);
     return EXIT_FAILURE;
   }
@@ -79,12 +79,12 @@ int main(int argc, char** argv) {
 
   client.waitForReadyRead();
   for(int i = 0 ; i < 2 ; i++) {
-    if(!checkMsg(client, "D out value 1")) {
+    if(!checkMsg(client, "D TESTER value 1")) {
       res(false, 4 + 2 * i);
       return EXIT_FAILURE;
     }
   
-    if(!checkMsg(client, "D out value 20")) {
+    if(!checkMsg(client, "D TESTER value 2")) {
       res(false, 5 + 2 * i);
       return EXIT_FAILURE;
     }

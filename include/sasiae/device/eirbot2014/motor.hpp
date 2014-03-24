@@ -3,12 +3,29 @@
 
 #include "../../../common/device/eirbot2014/motor.hpp"
 
-template<typename T>
-Motor<T>::Motor(const char* name, T* addr) : SimpleOutputDevice<T>(name), _addr(addr) {}
+#include <aversive.hpp>
+#include <client_thread.hpp>
+
+#include <sstream>
 
 template<typename T>
-void Motor<T>::setValue(T val) {
-  SimpleOutputDevice<T>::setValue(*_addr = val);
+Motor<T>::Motor(const char* name, T* addr)
+  : Device(name), _addr(addr) {
+  Aversive::init();
+
+  ClientThread::instance().
+    registerDevice(*this,
+		   std::function<void(char*)>([&] (char*) mutable -> void {}));
+}
+
+template<typename T>
+void Motor<T>::setValue(s32 val) {
+  std::ostringstream oss;
+  oss << "value " << (int)val;
+
+  ClientThread::instance().
+    sendDeviceMessage(*this, 
+		      oss.str().c_str());
 }
 
 
