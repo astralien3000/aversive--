@@ -39,7 +39,7 @@ clean_archiparser:
 	@$(MAKE) clean -sC tools/archi_parser
 
 clean_test:
-	@$(MAKE) clean -sC tests/sasiae
+	@$(MAKE) mrproper -sC tests/sasiae
 
 test:
 	$(MAKE) test -C tests/sasiae
