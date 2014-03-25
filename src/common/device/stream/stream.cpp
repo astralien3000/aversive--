@@ -131,6 +131,7 @@ void clearBlank(Stream& s) {
   }
 }
 
+//! \fixme Last character is overwritten by \0 when the user's buffer is fulfilled.
 void Stream::binaryRead(char* str, u16 size) {
   clearBlank(*this);
   bool keep = true;
