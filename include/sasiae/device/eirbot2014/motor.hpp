@@ -21,7 +21,7 @@ Motor<T>::Motor(const char* name, T* addr)
 template<typename T>
 void Motor<T>::setValue(s32 val) {
   std::ostringstream oss;
-  oss << "value " << (int)val;
+  oss << "value " << ((double)val)/128.;
 
   ClientThread::instance().
     sendDeviceMessage(*this, 
