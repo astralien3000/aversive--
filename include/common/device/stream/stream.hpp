@@ -456,12 +456,12 @@ public:
     return *this;
   }
   
-  //! \brief Read a char from the stream.
-  //! \return The read char.
+  //! \brief Read a character from the stream.
+  //! \return The read character.
   virtual char getValue(void) = 0;
   
   //! \brief Return the next value to read from the stream without removing it from the head of the stream.
-  //! \return The char at the head of the stream.
+  //! \return The character at the head of the stream.
   inline char nextValue(void) {
     if(!_mini_buffer_used) {
       _mini_buffer = getValue();
@@ -470,7 +470,7 @@ public:
     return _mini_buffer;
   }
   
-  //! \brief Write a char into the stream.
+  //! \brief Write a character into the stream.
   //! \param c : the character to write.
   virtual void setValue(char c) = 0;
 };
