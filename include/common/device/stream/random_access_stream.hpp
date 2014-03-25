@@ -3,24 +3,41 @@
 
 #include <device/stream/stream.hpp>
 
+//! \class RandomAccessStream random_access_stream.hpp <device/stream/random_access_device.hpp>
+//! \brief Abstract random access stream.
 class RandomAccessStream : public Stream {
 private:
+  //! \brief The current position of the stream's reader head.
   volatile u16 _cursor = 0;
   
-protected:
-  //! \brief gives the cursor's position
-  inline u16 cursor(void) {
-    return _cursor;
-  }
-
 public:
-  //! \brief Default Constructor
-  inline RandomAccessStream(void) {
+  //! \brief Default constructor.
+  inline RandomAccessStream(void)
+    : Stream() {
   }
-
-  //! \brief Place the cursor at the position
-  inline void seek(u16 cursor) {
-    _cursor = cursor;
+  
+  //! \brief Copy constructor.
+  //! \param s : the stream to copy.
+  inline RandomAccessStream(const RandomAccessStream& s)
+    : Stream(s), _cursor(s._cursor) {
+  }
+  
+  //! \brief Place the cursor at a given position.
+  //! \param pos : the new cursor's position.
+  inline void seek(u16 pos) {
+    _cursor = pos;
+  }
+  
+  //! \brief Move the cursor by a given offset.
+  //! \param offset : the offset to move the cursor with.
+  inline void move(s16 offset) {
+    _cursor += offset;
+  }
+  
+  //! \brief Return the current cursor's position.
+  //! \return The cursor's position.
+  inline u16 cursor(void) const {
+    return _cursor;
   }
 };
 
