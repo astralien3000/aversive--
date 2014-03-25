@@ -20,14 +20,14 @@ void InternalBufferedStream::setValue(char val) {
   _output.enqueue(val);
 }
 
-u16 InternalBufferedStream::bufferSize(void) {
+u16 InternalBufferedStream::bufferSize(void) const {
   return _output.SIZE;
 }
 
-u16 InternalBufferedStream::outputFreeSpace(void) {
+u16 InternalBufferedStream::outputFreeSpace(void) const {
   return _output.freeSpace();
 }
 
-u16 InternalBufferedStream::inputUsedSpace(void) {
+u16 InternalBufferedStream::inputUsedSpace(void) const {
   return _input.usedSpace();
 }

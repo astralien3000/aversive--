@@ -46,15 +46,15 @@ public:
     _tx = val;
   }
 
-  inline u16 bufferSize(void) {
+  inline u16 bufferSize(void) const {
     return 256;
   }
 
-  inline u16 outputFreeSpace(void) {
+  inline u16 outputFreeSpace(void) const {
     return bufferSize() - _tx_occup;
   }
 
-  inline u16 inputUsedSpace(void) {
+  inline u16 inputUsedSpace(void) const {
     return bufferSize() - _rx_ava;
   }
 };
