@@ -18,7 +18,7 @@ public:
   };
   
   //! \brief Represents the different ways a stream can read string.
-  //! \details Word separators are space and \\t.
+  //! \details Word separators are space, \\t and line separators.
   //! \details Line separators are \\n, \\r and \\0.
   //! \details Default is word.
   //! \note If the stream is in binary mode, whatever the string separator might be, a string reading will completely fulfil the user's buffer.
