@@ -21,7 +21,7 @@ archiparser:
 	@$(MAKE) -sC tools/archi_parser
 
 clean:
-	@rm -f $(shell find . -name "*~" -o -name "#*#" -o -name "*.o")
+	@rm -f $(shell find . -name "*~" -o -name "#*#" -o -name "*.o" -o -name "*.gch")
 
 newhpp:
 	@./script/newhpp.sh
