@@ -5,20 +5,26 @@
 #include <device/stream/stream.hpp>
 #include <device/device.hpp>
 
-//! \brief Uart stream which uses "thread-safe" Buffer implementation
-//! \attention SIZE must be a power of 2
-//! \param CHANNEL which Uart connection the stream must be bound to
-//! \param SIZE the number of characters input and output buffers can both handle at any given time
-template<int CHANNEL>
+//! \class UartStream uart_stream.hpp <device/stream/uart_stream.hpp>
+//! \brief Uart stream device.
+//! \param _CHANNEL : the Uart connection the stream must be bound to.
+template<u8 _CHANNEL>
 class UartStream : public Device, public Stream {
-public:  
-  UartStream(const char*);
+public:
+  //! \brief The UartStream's channel.
+  static const u8 CHANNEL = _CHANNEL;
   
-  //! \brief Write a char in stream
+  //! \brief UartStream constructor.
+  //! \param name : the device's name.
+  UartStream(const char* name);
+  
+  //! \brief Read a character from the stream.
+  //! \return The read character.
   char getValue(void);
-
-  //! \brief Read a char from stream
-  void setValue(char);
+  
+  //! \brief Write a character into the stream.
+  //! \param c : the character to write.
+  void setValue(char c);
 };
 
 #endif//UART_STREAM_HPP

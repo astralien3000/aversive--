@@ -5,26 +5,26 @@
 
 #include <hardware/uart.hpp>
 
-template<int CHANNEL>
-UartStream<CHANNEL>::UartStream(const char* name) : Device(name) {
-  Uart<CHANNEL>& uart = Uart<CHANNEL>::instance();
+template<u8 _CHANNEL>
+UartStream<_CHANNEL>::UartStream(const char* name) : Device(name) {
+  Uart<_CHANNEL>& uart = Uart<CHANNEL>::instance();
   uart.init();
 }
 
-template<int CHANNEL>
-void UartStream<CHANNEL>::setValue(char c) {
-  Uart<CHANNEL>::instance().send(c);
+template<u8 _CHANNEL>
+void UartStream<_CHANNEL>::setValue(char c) {
+  Uart<_CHANNEL>::instance().send(c);
 }
 
-template<int CHANNEL>
-char UartStream<CHANNEL>::getValue(void) {
+template<u8 _CHANNEL>
+char UartStream<_CHANNEL>::getValue(void) {
   if(_mini_buffer_used) {
     _mini_buffer_used = false;
     return _mini_buffer;
   }
   else {
     char ret;
-    Uart<CHANNEL>::instance().recv(ret);
+    Uart<_CHANNEL>::instance().recv(ret);
     return ret;
   }
 }

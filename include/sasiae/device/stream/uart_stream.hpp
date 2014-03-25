@@ -7,8 +7,8 @@
 #include <client_thread.hpp>
 #include <sstream>
 
-template<int CHANNEL>
-UartStream<CHANNEL>::UartStream(const char* name) : Device(name) {
+template<u8 _CHANNEL>
+UartStream<_CHANNEL>::UartStream(const char* name) : Device(name) {
   Aversive::init();
 
   ClientThread::instance().
@@ -21,13 +21,13 @@ UartStream<CHANNEL>::UartStream(const char* name) : Device(name) {
     sendDeviceMessage(*this, "init");
 }
 
-template<int CHANNEL>
-char UartStream<CHANNEL>::getValue(void) {
+template<u8 _CHANNEL>
+char UartStream<_CHANNEL>::getValue(void) {
   return 0;
 }
 
-template<int CHANNEL>
-void UartStream<CHANNEL>::setValue(char val) {
+template<u8 _CHANNEL>
+void UartStream<_CHANNEL>::setValue(char val) {
   std::ostringstream oss;
   oss << "value " << (unsigned int)val;
 
