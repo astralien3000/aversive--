@@ -1,4 +1,4 @@
-SUBDIRS=client_thread device scheduler sync
+SUBDIRS=client_thread device scheduler sync servo
 
 ALL_RULES=$(addsuffix _all,$(SUBDIRS))
 TEST_RULES=$(addsuffix _test,$(SUBDIRS))
