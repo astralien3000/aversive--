@@ -1,4 +1,4 @@
-SUBDIRS=client_thread device scheduler sync servo rds
+SUBDIRS=client_thread device scheduler sync servo rds gp2
 
 ALL_RULES=$(addsuffix _all,$(SUBDIRS))
 TEST_RULES=$(addsuffix _test,$(SUBDIRS))

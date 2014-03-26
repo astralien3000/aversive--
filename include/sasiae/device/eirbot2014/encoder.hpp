@@ -25,11 +25,19 @@ Encoder<T>::Encoder(const char* name, T* addr)
   ClientThread::instance().
     registerDevice(*this,
 		   std::function<void(char*)>([&] (char* msg) mutable -> void {
-		       char cmd[32], msg2[1000];
-		       sscanf(msg, "%s %s", cmd, msg2);
-
-		       if(strcmp(cmd, "value") == 0) {
-			 get_value_from_msg(_addr, msg2);
+		       using namespace std;
+		       string cmd;
+		       long long val;
+		       istringstream iss(msg);
+		       
+		       iss >> cmd;
+		       
+		       if(cmd == "value") {
+			 iss >> val;
+			 *_addr = val;
+		       }
+		       else {
+			 ClientThread::instance().sendMessage(ClientThread::ERROR, "unable to parse message correctly");
 		       }
 		     }));
 
