@@ -7,7 +7,6 @@
 #include <aversive.hpp>
 #include <client_thread.hpp>
 #include <sstream>
-#include <iostream>
 
 Rds::Rds(const char* name) : Device(name) {
   ClientThread::instance().registerDevice(*this, std::function<void(char*)>([this] (char* msg) mutable -> void {
