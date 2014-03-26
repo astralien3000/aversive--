@@ -1,19 +1,23 @@
+AVERSIVE_ROOT=../../..
+
 CC=g++
-CFLAGS=-Wall -Wextra --std=c++11 -DQT_CORE_LIB -I/usr/include/qt5 -I/usr/include/qt5/QtCore -fpic -g
-LDFLAGS=-L../../../build/sasiae -laversive -lQt5Core -lpthread
+CFLAGS=-Wall -Wextra --std=c++11 -DQT_CORE_LIB -fpic -g
+LDFLAGS=-L$(AVERSIVE_ROOT)/build -laversive_sasiae -lQt5Core -lpthread
+INCLUDE=-I$(AVERSIVE_ROOT)/include/sasiae -I/usr/include/qt5 -I/usr/include/qt5/QtCore
 
-all: test_rds
+all: client server
 
-test_rds: test_rds.o
-	@$(CC) $(CFLAGS) -I../../../include/sasiae -o $@ $< -L../../../build/sasiae -laversive $(LDFLAGS)
+client: client.cpp
+	@$(CC) $(CFLAGS) $(INCLUDE) -o $@ $< $(LDFLAGS)
 
-test_rds.o: 
-	g++ -c -o test_rds.o test_rds.cpp -I../../../include/sasiae/ $(CFLAGS)
-
+server: server.cpp
+	@$(CC) $(CFLAGS) $(INCLUDE) -o $@ $< $(LDFLAGS)
 
 clean:
-	@rm -rf *~ *.o \#*\#
+	@rm -rf *~ \#*\#
 
 test: all
-	@./test_rds
+	@./server
 
+mrproper: clean
+	@rm -rf client server

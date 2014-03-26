@@ -3,54 +3,40 @@
 
 
 #include "../../../common/device/eirbot2014/rds.hpp"
-#include <client_thread.hpp>
 
+#include <aversive.hpp>
+#include <client_thread.hpp>
+#include <sstream>
+#include <iostream>
 
 Rds::Rds(const char* name) : Device(name) {
   ClientThread::instance().registerDevice(*this, std::function<void(char*)>([this] (char* msg) mutable -> void {
-	if (strncmp(msg, "values ", 7)) {
-	  ClientThread::instance().sendMessage(ClientThread::ERROR, "RDS device : invalid message (\"values\" expected)");
-	  return;
-	}
-	msg += 7;
-	char* nmsg;
-	int16_t n = strtol(msg, &nmsg, 10);
-	this->_nb = n;
-	Vect<2, int16_t> tmp;
-	for (int i=0; i<n; i++) {
-	  for (int j=0; j<2; j++) {
-	    if (nmsg[0] == '\0') {
-	      ClientThread::instance().sendMessage(ClientThread::ERROR, "RDS device : invalid size of argument array");
-	      break;
-	    }
-	    tmp.coord(j) = (int16_t) strtol(nmsg + 1, &nmsg, 10);
-	  }
-	  this->_values.insert(i, tmp);
-	}
-	for (int i=n; i<6; i++) {
-	  this->_values.remove(i);
+	using namespace std;
+	istringstream iss(msg);
+	string cmd;
+	int n;
+	iss >> cmd >> n;
+	
+	_values.flush();
+	for(int i = 0 ; i < n ; i++) {
+	  Vect<2, s32> v;
+	  iss >> v.coord(0) >> v.coord(1);
+	  _values.append(v);
 	}
       }));
 }
 
-void Rds::setModeCartesian(void) {
-  ClientThread::instance().sendDeviceMessage(*this, "mode cartesian");
+void Rds::setMode(Mode m) {
+  if(m == CARTESIAN) {
+    ClientThread::instance().sendDeviceMessage(*this, "mode cartesian");
+  }
+  else if(m == POLAR) {
+    ClientThread::instance().sendDeviceMessage(*this, "mode polar");
+  }
 }
 
-void Rds::setModePolar(void) {
-  ClientThread::instance().sendDeviceMessage(*this, "mode polar");
-}
-
-const Vect<2, int16_t>& Rds::getPosition(uint8_t index) const {
-  return this->_values.get(index);
-}
-
-const List<6, Vect<2, int16_t> >& Rds::getValues(void) const {
+List<2, Vect<2, s32> > Rds::getValue(void) {
   return this->_values;
-}
-
-uint8_t Rds::robotsNumber(void) const {
-  return this->_nb;
 }
 
 #endif//SASIAE_RDS_HPP

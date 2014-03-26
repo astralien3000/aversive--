@@ -16,24 +16,25 @@
   The values returned depend on the choosen mode (cartesian or polar).
 */
 
-class Rds : public Device, public Input<List<6, Vect<2, s16> > > {
+class Rds : public Device, public Input<List<2, Vect<2, s32> > > {
 private:
-  u8 _nb;
-  List<6, Vect<2, s16> > _values;
+  List<2, Vect<2, s32> > _values;
 
 public:
+  enum Mode {
+    CARTESIAN,
+    POLAR
+  };
+
+public:
+  //! \brief Constructor
   Rds(const char* name);
 
   //! \brief Default mode is CARTESIAN. 
-  void setModeCartesian(void);
-  void setModePolar(void);
+  void setMode(Mode);
 
   //! \brief Return the position (x, y) (or (d, a) depending the mode) of the spceficied robot.
-  const Vect<2, s16>& getPosition(u8 index) const;
-  const List<6, Vect<2, s16> >& getValues(void) const;
-
-  //! \brief Return the number of robots seen by the RDS.
-  u8 robotsNumber(void) const;
+  List< 2, Vect<2, s32> > getValue(void);
 };
 
 
