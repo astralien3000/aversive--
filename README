@@ -1,23 +1,37 @@
-POUR COMMENCER
+///////////////////////////////////////////////////////////////////////////////////
+// Pour commencer
 
 À la racine du projet, faire make doc pour générer la documentation.
 
 Ouvrir le fichier build/doc/html/index.html avec n'importe quel navigateur.
 
-//////////////////////////////////////////////////////////////////////////////////
-POUR EXECUTER TOUT LES TESTS UNITAIRES
-
-make test
-
 ///////////////////////////////////////////////////////////////////////////////////
-commandes utiles (pour mémoire)
+// Compilation
 
-avr-g++ -std=c++11 -mmcu=*** -I./include/
+//// Compiler pour SASIAE
+////// dépendences
+Qt5
 
-simulavr -f a.out -d  atmega** -R 0xFA -W 0xFF
+////// commande
+make sasiae
 
-avr-objcopy -O ihex *.elf *.hex
-sudo avarice -j /dev/ttyUSB0 --erase --program -f *.hex
+//// Compiler pour AVR
+////// dépendences
+avr-gcc
+libc-avr
+avr-binutils
 
-TODO :
-Parseur : le dernier registre n'est pas parsé
+////// commande
+make $MMCU
+avec MMCU le nom du microcontrôleur
+
+////// microcontrôleurs supportés
+atmega128
+atmega2560
+
+//// Compiler toutes les implémentations
+make
+
+//////////////////////////////////////////////////////////////////////////////////
+// Pour executer les tests unitaires de l'implémentation SASIAE
+make test

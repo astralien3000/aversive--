@@ -10,9 +10,9 @@
 //! \brief A digital servomotor, used by Eirbot in 2014
 /*!
 
-This actuator is very specific because he works as an extern card
-so you can communicate with him. It is based on UART communication
-that's why you should read UartStream instructions.
+  This actuator is very specific because he works as an extern card so
+  you can communicate with him. It is based on UART communication
+  that's why you should read UartStream instructions.
 
 */
 class AX12: public Device, Input<u16>, Output<u16> {
