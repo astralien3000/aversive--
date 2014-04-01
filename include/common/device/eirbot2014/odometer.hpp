@@ -15,14 +15,14 @@ class Odometer : public Input<Vect<2, s32> > {
   s32 _dist;
   s32 _angle;
 
-  s32 _angle_off;
+  s32 _angle_mul;
   
  public:
   inline Odometer(Input<s32>& el, Input<s32>& er) : 
     _enc_l(el), _enc_r(er), 
     _imp_per_u(10), _imp_per_deg(10), 
     _dist(0), _angle(0),
-    _angle_off(0) {
+    _angle_mul(1) {
 
   }
   
@@ -36,7 +36,7 @@ class Odometer : public Input<Vect<2, s32> > {
   }
 
   inline s32 angle(void) const {
-    return _angle_off + _angle / _imp_per_deg;
+    return (_angle_mul * _angle) / _imp_per_deg;
   }
 
   inline void setImpPerUnit(s32 val) {
@@ -47,8 +47,8 @@ class Odometer : public Input<Vect<2, s32> > {
     _imp_per_deg = val;
   }
 
-  inline void setAngle(s32 val) {
-    _angle_off = val - _angle / _imp_per_deg;
+  inline void setAngleMultiplicator(s32 val) {
+    _angle_mul = val;
   }
 
   void update(void) {
