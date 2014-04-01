@@ -17,7 +17,7 @@ inline void Motor<T>::setValue(s32 val) {
     val = -val;
   }
 
-  (*_addr) = Math::saturate<-127, 128>(val);
+  (*_addr) = Math::saturate<-127, 127>(val);
 }
 
 template<typename T>
