@@ -1,7 +1,7 @@
 BUILD=$(BUILD_EXPORT)
 INCLUDE=$(INCLUDE_EXPORT)
 
-SUB_DIRS= filter device # add the sub directory's names here
+SUB_DIRS= filter device geometry # add the sub directory's names here
 
 OBJS = # add object to compile
 
