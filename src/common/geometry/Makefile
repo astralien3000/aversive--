@@ -3,7 +3,7 @@ INCLUDE=../$(INCLUDE_EXPORT)
 
 SUB_DIRS= # add the sub directory's names here
 
-OBJS = collision # add object to compile
+OBJS = point_collision segment_collision circle_collision aabb_collision triangle_collision quadrilateral_collision # add object to compile
 
 all: $(BUILD) $(BUILD) build
 

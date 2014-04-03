@@ -199,5 +199,28 @@ int main(int argc, char** argv) {
   assert(!CollisionDetector::collide(a3, a4)); print(".");
   println("OK");
   
+  // World collisions
+  print("World");
+  World<10, AABB> myw;
+  assert(myw.usedSpace() == 0); print(".");
+  assert(myw.addShape(&p1)); print(".");
+  assert(myw.usedSpace() == 1); print(".");
+  assert(myw.addShape(&s1)); print(".");
+  assert(myw.addShape(&s2)); print(".");
+  assert(myw.usedSpace() == 3); print(".");
+  assert(myw.addShape(&p3)); print(".");
+  assert(myw.usedSpace() == 4); print(".");
+  assert(myw.removeShape(&p3)); print(".");
+  assert(myw.usedSpace() == 3); print(".");
+  assert(myw.collide(c1)); print(".");
+  assert(!myw.collide(p3)); print(".");
+  assert(myw.addShape(&a1)); print(".");
+  assert(myw.addShape(&c1)); print(".");
+  assert(myw.collide(a2)); print(".");
+  assert(myw.collide(a3)); print(".");
+  assert(!myw.collide(t1)); print(".");
+  assert(!myw.removeShape(&t1)); print(".");
+  println("OK");
+  
   return EXIT_SUCCESS;
 }

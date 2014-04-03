@@ -10,7 +10,8 @@
 //! \class World world.hpp "world.hpp"
 //! \brief Represents a 2D environnment.
 //! \param _SIZE : the amount of objects the world can handle.
-template<list_t _SIZE>
+//! \param _GREATEST : the greatest type the world works with (Point, Segment, Circle, AABB, Triangle, Quadrilateral)
+template<list_t _SIZE, typename _GREATEST>
 class World {
 public:
   static const list_t SIZE = _SIZE;
@@ -39,7 +40,7 @@ public:
   
   inline bool collide(const Shape& s) const {
     for(list_t  i = 0; i < _shapes.usedSpace(); i++) {
-      if(_shapes.get(i) != &s && CollisionDetector::collide(*(_shapes.get(i)), s)) {
+      if(_shapes.get(i) != &s && CollisionDetector::collide<_GREATEST>(*(_shapes.get(i)), s)) {
 	return true;
       }
     }
