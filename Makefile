@@ -2,6 +2,10 @@
 
 all: sasiae atmega128 atmega2560
 
+atmega32: export MMCU=atmega32
+atmega32:
+	$(MAKE) -C src/avr
+
 atmega128: export MMCU=atmega128
 atmega128:
 	$(MAKE) -C src/avr

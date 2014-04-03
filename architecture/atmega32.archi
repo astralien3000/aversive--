@@ -20,6 +20,7 @@ hardware timer[0]
     register8 compare OCR0
     register8 imask TIMSK
         config match (1 << OCIE0)
+	config overflow (1 << TOIE0)
     register8 iflag TIFR
 
 hardware timer[1]
@@ -45,15 +46,38 @@ hardware timer[1]
     register8 iflag TIFR
 
 hardware uart[0]
+    register8 flag UCSRA
+	config recvend (1 << RXC)
+	config sendend (1 << TXC)
+	config empty (1 << UDRE)
     register8 control UCSRA, UCSRB, UCSRC
+	config synchronous 0, 0, (1 << UMSEL)
         config-list enable
 	    config send 0, (1 << TXEN), 0
 	    config recv 0, (1 << RXEN), 0
-	    config comm 0, (1 << TXEN) | (1 << RXEN), 0
+	config-list ienable
+	    config recv 0, (1 << RXCIE), 0
+	    config send 0, (1 << TXCIE), 0
+	    config empty 0, (1 << UDRIE), 0
+	config-list flag
+	    config recvend (1 << RXC), 0, 0
+	    config sendend (1 << TXC), 0, 0
+	    config empty (1 << UDRE), 0, 0
 	config-list charsize
 	    config 5 0, (0 << UCSZ2), (0 << UCSZ1) | (0 << UCSZ0)
 	    config 6 0, (0 << UCSZ2), (0 << UCSZ1) | (1 << UCSZ0)
 	    config 7 0, (0 << UCSZ2), (1 << UCSZ1) | (0 << UCSZ0)
 	    config 8 0, (0 << UCSZ2), (1 << UCSZ1) | (1 << UCSZ0)
 	    config 9 0, (1 << UCSZ2), (1 << UCSZ1) | (1 << UCSZ0)
-    register8 baudrate UBRRH, UBRRL
+	config-list parity
+	    config disabled 0, 0, 0
+	    config even 0, 0, (1 << UPM1)
+	    config odd 0, 0, (1 << UPM1) | (1 << UPM0)
+	config-list stopbit
+	    config 1 0, 0, 0
+	    config 2 0, 0, (1 << USBS)
+    register8 baudrate UBRRL, UBRRH
+    register8 data UDR
+
+hardware dummy
+    register8 dummy 0
