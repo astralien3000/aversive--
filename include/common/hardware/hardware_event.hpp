@@ -1,9 +1,11 @@
 #ifndef HARDWARE_EVENT_HPP
 #define HARDWARE_EVENT_HPP
 
+#include <base/function.hpp>
+
 class HardwareEvent {
 private:
-  void (*_func)(void);
+  Function<void(void)> _func;
 
 protected:
   //! \brief Default Constructor
@@ -12,8 +14,8 @@ protected:
 public:
   //! \brief Set the function to call when interruption occurs
   //! \param func : A callable object which must be convertible into a "void (function*)(void)"
-  template<typename Callable> inline void setFunction(Callable func) {
-    _func = static_cast< void (*)(void) >(func);
+  inline void setFunction(Function<void(void)> func) {
+    _func = func;
   }
 
   //! \brief Unset the function to call when interruption occurs
