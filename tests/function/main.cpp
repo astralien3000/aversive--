@@ -1,124 +1,73 @@
 #include <iostream>
-#include <functional>
-#include <cstdlib>
-#include <cstring>
-using namespace std;
-
+#include <cassert>
+#include <base/function.hpp>
 #include <base/integer.hpp>
-#include <base/alloc.hpp>
 
-template<typename T>
-class Function;
+static const u8 LOOP = 10;
 
-//! \brief Binding for lambdas and normal functions
-template<typename LambdaType, typename Ret, typename... Args>
-struct StaticBinder {
-  static Ret exec(void* lambda, Args... args) {
-    return (*(LambdaType*)lambda)(args...);
-  }
-};
+static void h(u8& z) {
+  z++;
+  return;
+}
 
-template<typename LambdaType, typename... Args>
-struct StaticBinder<LambdaType, void, Args...> {
-  static void exec(void* lambda, Args... args) {
-    (*(LambdaType*)lambda)(args...);
-  }
-};
-
-template<typename Ret, typename... Args>
-class Function<Ret(Args...)> {
-private:
-  typedef Ret(*FuncType)(void*, Args...);
-
-  //! \todo : Move
-  static inline void internal_memcpy(u8* p1, u8* p2, u16 size) {
-    for(int i = 0 ;i < size ; i++) {
-      *(p1++) = *(p2++);
-    }
-  }
-
-private:
-  //! \todo : Make it clean
-  u16 _size;
-  u8* _data;
-  FuncType _func;
-
-public:
-  //! \brief Function assignment
-  template<typename Callable>
-  Function& operator=(Callable func) {
-    if(_data) {
-      delete _data;
-    }
-
-    _size = sizeof(Callable);
-    _data = (u8*)malloc(_size);
-    internal_memcpy((u8*)_data, (u8*)&func, _size);
-    _func = StaticBinder<Callable, Ret, Args...>::exec;
-  }
-
-  //! \brief Copy operator
-  Function& operator=(Function& other) {
-    if(_data) {
-      delete _data;
-    }
-
-    _size = other._size;
-    _data = new u8[_size];
-    internal_memcpy((u8*)_data, (u8*)other._data, _size);
-    _func = other._func;
-  }
-
-  //! \brief Default Constructor
-  Function(void)
-    : _size(0), _data(0), _func(0) {
-    
-  }
-
-  //! \brief Function constructor
-  template<typename Callable>
-  Function(Callable func)
-    : Function() {
-    *this = func;
-  }
-
-  //! \brief Destructor
-  ~Function(void) {
-    delete _data;
+int main(int argc, char** argv) {
+  (void) argc;
+  (void) argv;
+  
+  u8 x = 0;
+  u8 y = 0;
+  
+  Function<u8(void)> f;
+  assert(!((bool) f));
+  
+  f = [x, &y](void) mutable -> u8 {
+    x++;
+    y++;
+    return y;
+  };
+  
+  assert((bool) f);
+  
+  for(u8 i = 0; i < LOOP; i++) {
+    assert(f() == (i + 1));
   }
   
-  //! \brief Function operator
-  inline Ret operator()(Args... args) {
-    return (*_func)(_data, args...);
+  assert(x == 0);
+  assert(y == 10);
+  
+  f = [](void) mutable -> u8 {
+    static u8 i = 0;
+    return i++;
+  };
+  
+  assert((bool) f);
+  
+  for(u8 i = 0; i < LOOP; i++) {
+    assert(f() == i);
   }
-
-  inline operator bool(void) {
-    return _func != 0;
-  }
-};
-
-void exec(Function<void(void)> f) {
-  f();
-  cout << "test ?" << endl;
-  Function<void(void)> f1;
-  cout << "test ?" << endl;
-  //f1 = f;
-  if(f1) {
-    f1();
-  }
-}
-
-void test(void) {
-  cout << 1 + 42 << endl;
-}
-
-int main(int argc, char* argv[]) {
-  int t = 5;
-  int u = 10;
-  double v = 100.2;
-  exec([&](void) mutable->void {
-      cout << 2 + t << endl;
-    });
-  exec(test);
+  
+  Function<bool(const Function<u8(void)>&)> g =
+    [](const Function<u8(void)>& f) mutable -> bool {
+    for(u8 i = LOOP; i < (2 * LOOP); i++) {
+      assert(f() == i);
+    }
+    return true;
+  };
+  
+  assert(g(f));
+  
+  Function<bool(const Function<void(u8&)>&)> k =
+    [](const Function<void(u8&)>& f) mutable -> bool {
+    u8 j = 0;
+    for(u8 i = 0; i < LOOP; i++) {
+      f(j);
+      assert(j == (i+1));
+    }
+    return true;
+  };
+  
+  assert(k(h));
+  
+  std::cout << "OK" << std::endl;
   return 0;
 }
