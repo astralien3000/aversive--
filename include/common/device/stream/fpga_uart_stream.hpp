@@ -5,58 +5,50 @@
 #include <device/device.hpp>
 #include <base/integer.hpp>
 
+//! \class FpgaUartStream fpga_uart_stream.hpp <device/stream/fpga_uart__stream.hpp>
+//! \brief Uart stream through EIRBOT's FPGA.
 class FpgaUartStream : public Device, public BufferedStream {
 private:
-  volatile u8& _tx;
-  volatile u8& _tx_occup;
-  volatile u8& _rx;
-  volatile u8& _rx_ava;  
-
+  FpgaUartStreamPrivateData _data;
+  
 public:
-  inline FpgaUartStream(const char* name, u8& tx, u8& tx_occup, u8& rx, u8& rx_ava)
-    : Device(name),
-      _tx((volatile u8&)tx),
-      _tx_occup((volatile u8&)tx_occup), 
-      _rx((volatile u8&)rx),
-      _rx_ava((volatile u8&)rx_ava) {
-  }
-
-  inline FpgaUartStream(const char* name, volatile u8& tx, volatile u8& tx_occup, volatile u8& rx, volatile u8& rx_ava)
-    : Device(name),
-      _tx(tx),
-      _tx_occup(tx_occup), 
-      _rx(rx),
-      _rx_ava(rx_ava) {
-  }
-
-
-  inline char getValue(void) {
-    if(_mini_buffer_used) {
-      _mini_buffer_used = false;
-      return _mini_buffer;
-    }
-    else {
-      while(!_rx_ava);
-      return _rx; 
-    }
-  }
-
-  inline void setValue(char val) {
-    while(!(255 - _tx_occup));
-    _tx = val;
-  }
-
-  inline u16 bufferSize(void) const {
-    return 256;
-  }
-
-  inline u16 outputFreeSpace(void) const {
-    return bufferSize() - _tx_occup;
-  }
-
-  inline u16 inputUsedSpace(void) const {
-    return bufferSize() - _rx_ava;
-  }
+  //! \brief FpgaUartStream constructor.
+  //! \param name : the device's name.
+  //! \param tx : a reference to the variable to write in to write in the stream.
+  //! \param tx_occup : a reference to the variable telling how many characters are waiting in the FPGA's output buffer.
+  //! \param rx : a reference to the variable to read to read from the stream.
+  //! \param rx_ava : a reference to the variable telling how many characters are waiting in the FPGA's input buffer.
+  inline FpgaUartStream(const char* name, u8& tx, u8& tx_occup, u8& rx, u8& rx_ava);
+  
+  //! \brief FpgaUartStream constructor.
+  //! \param name : the device's name.
+  //! \param tx : a reference to the variable to write in to write in the stream.
+  //! \param tx_occup : a reference to the variable telling how many characters are waiting in the FPGA's output buffer.
+  //! \param rx : a reference to the variable to read to read from the stream.
+  //! \param rx_ava : a reference to the variable telling how many characters are waiting in the FPGA's input buffer.
+  inline FpgaUartStream(const char* name, volatile u8& tx, volatile u8& tx_occup, volatile u8& rx, volatile u8& rx_ava);
+  
+  //! \brief Read a char from the stream's input buffer.
+  //! \return The read character.
+  //! \warning Blocking operation if the stream's input buffer is empty.
+  inline char getValue(void);
+  
+  //! \brief Write a char in the stream's input buffer.
+  //! \param c : the character to write.
+  //! \warning Blocking operation if the stream's output buffer is full
+  inline void setValue(char c);
+  
+  //! \brief Return the buffers' size.
+  //! \return The buffers' size.
+  inline u16 bufferSize(void) const;
+  
+  //! \brief Return the amout of characters waiting to be sent into the output buffer.
+  //! \return The amout of characters within the output buffer.
+  inline u16 outputFreeSpace(void) const;
+  
+  //! \brief Return the amount of characters currently pending into the input buffer.
+  //! \return The amout of characters within the input buffer.
+  inline u16 inputUsedSpace(void) const;
 };
 
 #endif//FPGA_UART_STREAM
