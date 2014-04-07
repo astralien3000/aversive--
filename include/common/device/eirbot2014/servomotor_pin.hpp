@@ -4,7 +4,7 @@
 #include <device/eirbot2014/servomotor.hpp>
 
 
-//! \brief A servomotor, used by Eirbot in 2014
+//! \brief A servomotor
 //! \param PORT : the port (1, 2, etc) where the servo is plugged
 //! \param PIN : the number of the pin (1, 2, etc)
 

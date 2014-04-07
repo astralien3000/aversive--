@@ -4,18 +4,16 @@
 
 static const int SCHEDULER_TIMER_ID = 0;
 
-static const u32 SCHEDULER_TIMER_PRESCALER =  8;
+static const u32 SCHEDULER_TIMER_PRESCALER = 8;
 static const u32 SCHEDULER_FREQ = (16000000/(256 * ((SCHEDULER_TIMER_PRESCALER) ? SCHEDULER_TIMER_PRESCALER : 1)));
 static const u32 SCHEDULER_GRANULARITY = (1000000 / SCHEDULER_FREQ);
+
+static const u32 SCHEDULER_COUNTER_INC = ((1024/SCHEDULER_GRANULARITY) ? 1024/SCHEDULER_GRANULARITY : 1);
 
 // Work around because of GCC's bug asking for "this" to be captured in lambda while you are just accessing a static method
 inline Scheduler& sched_instance(void) {
   return Scheduler::instance();
 }
-
-#include <device/stream/uart_stream.hpp>
-
-UartStream<0> test(0);
 
 Scheduler::Scheduler(void) {
   _data.current = 0;
@@ -25,13 +23,13 @@ Scheduler::Scheduler(void) {
   t.overflowEvent().setFunction([](void){
       Interrupts::lock();
       Scheduler& s = sched_instance();
-      s._data.current++;
+      s._data.current += SCHEDULER_COUNTER_INC;
       if(!s._data.ordered_tasks.isEmpty()) {
 	TaskRef tsk = s._data.ordered_tasks.max();
 
 	while(!s._data.ordered_tasks.isEmpty() && s._data.current > tsk.nextCall()) {
 	  s._data.ordered_tasks.pop();
-	  //test << s._data.current << " ; next : " << tsk.nextCall() << "\n\r";
+
 	  tsk.exec();
 	  
 	  if(!tsk.unique()) {
