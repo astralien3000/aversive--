@@ -1,6 +1,7 @@
 #ifndef SASIAE_RDS_HPP
 #define SASIAE_RDS_HPP
 
+struct RdsPrivateData {};
 
 #include "../../../common/device/eirbot2014/rds.hpp"
 
@@ -8,7 +9,8 @@
 #include <client_thread.hpp>
 #include <sstream>
 
-Rds::Rds(const char* name) : Device(name) {
+Rds::Rds(const char* name, Stream &stream) : Device(name) {
+  (void) stream;
   ClientThread::instance().registerDevice(*this, std::function<void(char*)>([this] (char* msg) mutable -> void {
 	using namespace std;
 	istringstream iss(msg);

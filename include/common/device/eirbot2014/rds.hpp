@@ -7,6 +7,7 @@
 #include <math/vect.hpp>
 #include <container/list.hpp>
 #include <base/integer.hpp>
+#include <device/stream/stream.hpp>
 
 //! \brief A complex sensor which gives the relative position of others robots
 /*!
@@ -19,7 +20,7 @@
 class Rds : public Device, public Input<List<2, Vect<2, s32> > > {
 private:
   List<2, Vect<2, s32> > _values;
-
+  
 public:
   enum Mode {
     CARTESIAN,
@@ -28,13 +29,19 @@ public:
 
 public:
   //! \brief Constructor
-  Rds(const char* name);
+  Rds(const char* name, Stream &stream);
 
   //! \brief Default mode is CARTESIAN. 
   void setMode(Mode);
 
   //! \brief Return the position (x, y) (or (d, a) depending the mode) of the spceficied robot.
   List< 2, Vect<2, s32> > getValue(void);
+
+  //! \brief Only used by the AVR (for the moment)
+  void update(void);
+
+private:
+  RdsPrivateData _data;
 };
 
 
