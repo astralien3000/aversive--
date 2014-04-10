@@ -126,7 +126,7 @@ public:
   }
 
   //! \brief Norm of the vector
-  ElementType norm(void) {
+  ElementType norm(void) const {
     return Math::sqrt(scal(*this, *this));
   }
 };

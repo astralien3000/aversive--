@@ -31,6 +31,11 @@ namespace Math {
     return !(val < (T)min || (T)max < val);
   }
 
+  template<typename T>
+  inline bool belong(T val, T min, T max) {
+    return !(val < (T)min || (T)max < val);
+  }
+
   //! \brief The absolute value
   template<typename T>
   inline const T abs(T val) {
