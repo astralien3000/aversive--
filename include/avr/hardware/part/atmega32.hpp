@@ -41,53 +41,55 @@ template<> struct timer<0> {
     enum { REG = 1, SIZE = 8 };
   };
 
-  struct compare {
-    enum { REG = 2, SIZE = 8 };
-  };
-
+  template<int ID> struct compare;
   struct imask {
-    struct match {
+    template<int ID> struct match;
+    struct overflow {
       enum { CONFIG = 5, SIZE = 8 };
     };
 
-    struct overflow {
-      enum { CONFIG = 6, SIZE = 8 };
-    };
-
-    enum { REG = 3, SIZE = 8 };
+    enum { REG = 2, SIZE = 8 };
   };
 
   struct iflag {
-    enum { REG = 4, SIZE = 8 };
+    enum { REG = 3, SIZE = 8 };
   };
 
 };
 
 template<> template<> struct timer<0>::control::prescaler::value<0> {
-  enum { CONFIG = 7, SIZE = 8 };
+  enum { CONFIG = 6, SIZE = 8 };
 };
 
 template<> template<> struct timer<0>::control::prescaler::value<8> {
-  enum { CONFIG = 8, SIZE = 8 };
+  enum { CONFIG = 7, SIZE = 8 };
 };
 
 template<> template<> struct timer<0>::control::prescaler::value<32> {
-  enum { CONFIG = 9, SIZE = 8 };
+  enum { CONFIG = 8, SIZE = 8 };
 };
 
 template<> template<> struct timer<0>::control::prescaler::value<64> {
-  enum { CONFIG = 10, SIZE = 8 };
+  enum { CONFIG = 9, SIZE = 8 };
 };
 
 template<> template<> struct timer<0>::control::prescaler::value<128> {
-  enum { CONFIG = 11, SIZE = 8 };
+  enum { CONFIG = 10, SIZE = 8 };
 };
 
 template<> template<> struct timer<0>::control::prescaler::value<256> {
-  enum { CONFIG = 12, SIZE = 8 };
+  enum { CONFIG = 11, SIZE = 8 };
 };
 
 template<> template<> struct timer<0>::control::prescaler::value<1024> {
+  enum { CONFIG = 12, SIZE = 8 };
+};
+
+template<> template<> struct timer<0>::compare<0> {
+  enum { REG = 4, SIZE = 8 };
+};
+
+template<> template<> struct timer<0>::imask::match<0> {
   enum { CONFIG = 13, SIZE = 8 };
 };
 
@@ -322,19 +324,19 @@ template<> inline Config<8, 1>::Config(void) : conf{( 1 << WGM00 )} {}
 template<> inline Config<8, 2>::Config(void) : conf{( 1 << WGM01 )} {}
 template<> inline Config<8, 3>::Config(void) : conf{( 1 << WGM01 ) | ( 1 << WGM01 )} {}
 template<> inline Config<8, 4>::Config(void) : conf{( 0 << CS02 ) | ( 0 << CS01 ) | ( 0 << CS00 )} {}
-template<> inline Config<8, 7>::Config(void) : conf{( 0 << CS02 ) | ( 0 << CS01 ) | ( 1 << CS00 )} {}
-template<> inline Config<8, 8>::Config(void) : conf{( 0 << CS02 ) | ( 1 << CS01 ) | ( 0 << CS00 )} {}
-template<> inline Config<8, 9>::Config(void) : conf{( 0 << CS02 ) | ( 1 << CS01 ) | ( 1 << CS00 )} {}
-template<> inline Config<8, 10>::Config(void) : conf{( 1 << CS02 ) | ( 0 << CS01 ) | ( 0 << CS00 )} {}
-template<> inline Config<8, 11>::Config(void) : conf{( 1 << CS02 ) | ( 0 << CS01 ) | ( 1 << CS00 )} {}
-template<> inline Config<8, 12>::Config(void) : conf{( 1 << CS02 ) | ( 1 << CS01 ) | ( 0 << CS00 )} {}
-template<> inline Config<8, 13>::Config(void) : conf{( 1 << CS02 ) | ( 1 << CS01 ) | ( 1 << CS00 )} {}
+template<> inline Config<8, 6>::Config(void) : conf{( 0 << CS02 ) | ( 0 << CS01 ) | ( 1 << CS00 )} {}
+template<> inline Config<8, 7>::Config(void) : conf{( 0 << CS02 ) | ( 1 << CS01 ) | ( 0 << CS00 )} {}
+template<> inline Config<8, 8>::Config(void) : conf{( 0 << CS02 ) | ( 1 << CS01 ) | ( 1 << CS00 )} {}
+template<> inline Config<8, 9>::Config(void) : conf{( 1 << CS02 ) | ( 0 << CS01 ) | ( 0 << CS00 )} {}
+template<> inline Config<8, 10>::Config(void) : conf{( 1 << CS02 ) | ( 0 << CS01 ) | ( 1 << CS00 )} {}
+template<> inline Config<8, 11>::Config(void) : conf{( 1 << CS02 ) | ( 1 << CS01 ) | ( 0 << CS00 )} {}
+template<> inline Config<8, 12>::Config(void) : conf{( 1 << CS02 ) | ( 1 << CS01 ) | ( 1 << CS00 )} {}
 template<> inline Register<8, 1>::Register(void) : reg_size(1), reg{(u8*)&TCNT0} {}
-template<> inline Register<8, 2>::Register(void) : reg_size(1), reg{(u8*)&OCR0} {}
-template<> inline Register<8, 3>::Register(void) : reg_size(1), reg{(u8*)&TIMSK} {}
-template<> inline Config<8, 5>::Config(void) : conf{( 1 << OCIE0 )} {}
-template<> inline Config<8, 6>::Config(void) : conf{( 1 << TOIE0 )} {}
-template<> inline Register<8, 4>::Register(void) : reg_size(1), reg{(u8*)&TIFR} {}
+template<> inline Register<8, 4>::Register(void) : reg_size(1), reg{(u8*)&OCR0} {}
+template<> inline Register<8, 2>::Register(void) : reg_size(1), reg{(u8*)&TIMSK} {}
+template<> inline Config<8, 13>::Config(void) : conf{( 1 << OCIE0 )} {}
+template<> inline Config<8, 5>::Config(void) : conf{( 1 << TOIE0 )} {}
+template<> inline Register<8, 3>::Register(void) : reg_size(1), reg{(u8*)&TIFR} {}
 template<> inline Register<8, 5>::Register(void) : reg_size(2), reg{(u8*)&TCCR1A, (u8*)&TCCR1B} {}
 template<> inline Config<8, 14>::Config(void) : conf{0, 0} {}
 template<> inline Config<8, 15>::Config(void) : conf{( 1 << WGM10 ) | ( 1 << WGM11 ), 0} {}

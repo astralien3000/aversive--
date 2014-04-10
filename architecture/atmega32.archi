@@ -17,9 +17,9 @@ hardware timer[0]
 	    config 256 (1 << CS02) | (1 << CS01) | (0 << CS00)
 	    config 1024 (1 << CS02) | (1 << CS01) | (1 << CS00)
     register8 counter TCNT0
-    register8 compare OCR0
+    register8 compare[0] OCR0
     register8 imask TIMSK
-        config match (1 << OCIE0)
+        config match[0] (1 << OCIE0)
 	config overflow (1 << TOIE0)
     register8 iflag TIFR
 

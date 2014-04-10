@@ -100,14 +100,14 @@ void test(volatile u8* p) {
 }
 
 Timer<0>& tim = Timer<0>::instance();
-Multiservo<1>::Servo s1("test", &PORTH, 4);
+Multiservo<1>::Servo s1("test", &PORTA, 4);
 
 int main(int argc, char* argv[]) {
   (void)argc;
   (void)argv;
 
   io << "Begin\n";
-  DDRH = 0xFF;
+  DDRA = 0xFF;
   
   Multiservo<1>::instance().addServo(s1);
 

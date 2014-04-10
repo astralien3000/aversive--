@@ -59,6 +59,9 @@ sasiae: compile
 atmega128: export AVERSIVE_MMCU=atmega128
 atmega128: avr
 
+atmega32: export AVERSIVE_MMCU=atmega32
+atmega32: avr
+
 atmega2560: export AVERSIVE_MMCU=atmega2560
 atmega2560: avr
 
