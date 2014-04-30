@@ -4,7 +4,6 @@
 #include "register.hpp"
 
 #include <avr/io.h>
-//#include "part/atmega32.hpp"
 
 #if defined (__AVR_ATmega32__)
 #include "part/atmega32.hpp"
