@@ -48,6 +48,12 @@
 %type <n>REGISTER_SIZE
 %type <data>ID_CASE
 
+%type <id>VAL
+%type <id>T
+%type <id>F
+%type <id>EXPR
+
+
 %%
 
  ////////////////////////////////////////
@@ -197,11 +203,11 @@ CONF_EXPR
 CONF_LIST
 : EXPR {
   ConfigNode& nod = *dynamic_cast<ConfigNode*>(context.front());
-  nod.confs().push_front("test");
+  nod.confs().push_front($1);
  }
 | EXPR SEP_LIST_TOKEN CONF_LIST {
   ConfigNode& nod = *dynamic_cast<ConfigNode*>(context.front());
-  nod.confs().push_front("test");
+  nod.confs().push_front($1);
  }
 ;
 
@@ -230,26 +236,48 @@ CL_BLOCK
  // EXPR
 
 EXPR
-: F
-| F '|' EXPR
+: F {
+  strcpy($$, $1);
+ }
+| F '|' EXPR {
+  sprintf($$, "%s | %s", $1, $3);
+ }
 ;
 
 F
-: T
-| T '&' F
+: T {
+  strcpy($$, $1);
+ }
+| T '&' F {
+  sprintf($$, "%s & %s", $1, $3);
+ }
 ;
 
 T
-: VAL
-| '(' VAL '<' VAL ')'
-| '(' VAL '>' VAL ')'
-| '~' VAL
-| '(' EXPR ')'
+: VAL {
+  strcpy($$, $1);
+ }
+| '(' VAL '<' VAL ')' {
+  sprintf($$, "(%s << %s)", $2, $4);
+ }
+| '(' VAL '>' VAL ')' {
+  sprintf($$, "(%s >> %s)", $2, $4);
+ }
+| '~' VAL {
+  sprintf($$, "~%s", $2);
+ }
+| '(' EXPR ')' {
+  sprintf($$, "(%s)", $2);
+ }
 ;
 
 VAL
-: IDENTIFIER_TOKEN
-| NUMERIC_TOKEN
+: IDENTIFIER_TOKEN {
+  strcpy($$, $1);
+ }
+| NUMERIC_TOKEN {
+  sprintf($$, "%d", $1);
+  }
 ;
 
  ////////////////////////////////////////

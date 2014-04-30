@@ -29,7 +29,7 @@ void ConfigNode::defineValue(indented_stream& out) {
     if(it != _confs.begin()) {
       out << ", ";
     }
-    out << "(u" << _values["SIZE"] << "*)&" << *it;
+    out << *it;
   }
   
   out << "} ";
