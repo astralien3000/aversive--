@@ -26,17 +26,17 @@ List<2, Vect<2, s32> > Rds::getValue(void) {
 
 void Rds::update(void) {
   u8 n;
-  s32 d, a;
+  u8 d, a;
   _data.rds_io << 'p';
   _data.rds_io >> n;
 
   _values.flush();
   for(u8 i = 0 ; i < n ; i++) {
     Vect<2, s32> v;
-    _data.rds_io >> d;
     _data.rds_io >> a;
+    _data.rds_io >> d;
     v.coord(0) = d;
-    v.coord(1) = a;
+    v.coord(1) = a * 2;
     _values.append(v);
   }
 }
