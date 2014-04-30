@@ -4,8 +4,6 @@
 #define F_CPU 16000000L
 #include <util/delay.h>
 
-#include <avr/io.h>
-
 int main(void) {
   UartStream<0> uart(0);
 

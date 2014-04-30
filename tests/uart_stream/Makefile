@@ -89,3 +89,20 @@ clean:
 
 mrproper: clean
 	rm -rf $(GEN_EXEC)_*.elf
+
+########################################
+# Load
+ELF=$(EXEC)
+HEX=robot.hex
+DEV=/dev/ttyUSB0
+
+OBJCOPY=avr-objcopy
+
+ELF=robot_atmega2560.elf
+
+$(HEX): $(ELF)
+	$(OBJCOPY) -O ihex $(ELF) $(HEX)
+
+load_arduino: atmega2560 $(HEX)
+	sudo avrdude -cwiring -patmega2560 -P /dev/ttyACM0 -U flash:w:$(HEX) -D
+
