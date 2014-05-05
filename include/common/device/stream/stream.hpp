@@ -7,7 +7,7 @@
 
 //! \class Stream stream.hpp <device/stream/stream.hpp>
 //! \brief Abstract two-way stream with formatted and binary read and write.
-//! \todo Change SepMode into Separator (or StringSeparator).
+//! \todo Change SeparatorMode into Separatorarator (or StringSeparatorarator).
 class Stream : public Input<char>, public Output<char> {
 public:
   //! \brief Represents the different ways a stream can read and write data.
@@ -22,7 +22,7 @@ public:
   //! \details Line separators are \\n, \\r and \\0.
   //! \details Default is word.
   //! \note If the stream is in binary mode, whatever the string separator might be, a string reading will completely fulfil the user's buffer.
-  enum SepMode {
+  enum SeparatorMode {
     WORD, //!< Read string word by word.
     LINE  //!< Read string line by line.
   };
@@ -35,7 +35,7 @@ private:
   Mode _mode = FORMATTED;
   
   //! \brief The current way the stream read string.
-  SepMode _sep = WORD;
+  SeparatorMode _sep = WORD;
   
   //! \brief User's buffer size.
   u8 _user_buffer_size = DEFAULT_USER_BUFFER_SIZE;
@@ -210,13 +210,13 @@ public:
   
   //! \brief Return the string separator the stream currently uses.
   //! \return The current stream's string separator.
-  inline SepMode sepMode(void) const {
+  inline SeparatorMode separatorMode(void) const {
     return _sep;
   }
   
   //! \brief Change the way the stream read strings.
   //! \param s : the new string separtor.
-  inline void setSepMode(SepMode s) {
+  inline void setSeparatorMode(SeparatorMode s) {
     _sep = s;
   }
   
