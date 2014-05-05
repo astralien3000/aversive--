@@ -7,7 +7,7 @@
 #include <math/vect.hpp>
 #include <container/list.hpp>
 #include <base/integer.hpp>
-#include <device/stream/stream.hpp>
+#include <device/stream/binary_stream.hpp>
 
 //! \brief A complex sensor which gives the relative position of others robots
 /*!
@@ -29,7 +29,7 @@ public:
 
 public:
   //! \brief Constructor
-  Rds(const char* name, Stream &stream);
+  Rds(const char* name, BinaryStream& stream);
 
   //! \brief Default mode is CARTESIAN. 
   void setMode(Mode);

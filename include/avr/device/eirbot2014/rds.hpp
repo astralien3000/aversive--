@@ -1,17 +1,17 @@
 #ifndef AVR_RDS_HPP
 #define AVR_RDS_HPP
 
-#include <device/stream/stream.hpp>
+#include <device/stream/binary_stream.hpp>
 
 struct RdsPrivateData {
-  Stream &rds_io;
+  BinaryStream &rds_io;
 };
 
 #include "../../../common/device/eirbot2014/rds.hpp"
 
-Rds::Rds(const char* name, Stream &stream) : Device(name), _data{ stream } {}
+inline Rds::Rds(const char* name, BinaryStream& stream) : Device(name), _data{ stream } {}
 
-void Rds::setMode(Mode m) {
+inline void Rds::setMode(Mode m) {
   (void) m;
   /*
     WARNING
@@ -20,11 +20,11 @@ void Rds::setMode(Mode m) {
    */
 }
 
-List<2, Vect<2, s32> > Rds::getValue(void) {
+inline List<2, Vect<2, s32> > Rds::getValue(void) {
   return _values;
 }
 
-void Rds::update(void) {
+inline void Rds::update(void) {
   u8 n;
   u8 d, a;
   _data.rds_io << 'p';
