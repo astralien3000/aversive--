@@ -10,13 +10,14 @@ uc atmega128 {
       };
       
       config-list prescaler {
-        config 0    = { (0 << CS02) | (0 << CS01) | (1 << CS00) };
-        config 8    = { (0 << CS02) | (1 << CS01) | (0 << CS00) };
-        config 32   = { (0 << CS02) | (1 << CS01) | (1 << CS00) };
-        config 64   = { (1 << CS02) | (0 << CS01) | (0 << CS00) };
-        config 128  = { (1 << CS02) | (0 << CS01) | (1 << CS00) };
-        config 256  = { (1 << CS02) | (1 << CS01) | (0 << CS00) };
-        config 1024 = { (1 << CS02) | (1 << CS01) | (1 << CS00) };
+        config disable = { (0 << CS02) | (0 << CS01) | (0 << CS00) };
+        config 0       = { (0 << CS02) | (0 << CS01) | (1 << CS00) };
+        config 8       = { (0 << CS02) | (1 << CS01) | (0 << CS00) };
+        config 32      = { (0 << CS02) | (1 << CS01) | (1 << CS00) };
+        config 64      = { (1 << CS02) | (0 << CS01) | (0 << CS00) };
+        config 128     = { (1 << CS02) | (0 << CS01) | (1 << CS00) };
+        config 256     = { (1 << CS02) | (1 << CS01) | (0 << CS00) };
+        config 1024    = { (1 << CS02) | (1 << CS01) | (1 << CS00) };
       };
     };
 
@@ -26,7 +27,7 @@ uc atmega128 {
 
     register[8] imask = { TIMSK } {
       config match[0] = { (1 << OCIE0) };
-      config overflow = { (1 << TIOE0) };
+      config overflow = { (1 << TOIE0) };
     };
 
     register[8] iflag = { TIFR };
@@ -42,11 +43,12 @@ uc atmega128 {
       };
       
       config-list prescaler {
-        config 0    = { 0, (0 << CS12) | (0 << CS11) | (1 << CS10), 0 };
-        config 8    = { 0, (0 << CS12) | (1 << CS11) | (0 << CS10), 0 };
-        config 64   = { 0, (0 << CS12) | (1 << CS11) | (1 << CS10), 0 };
-        config 256  = { 0, (1 << CS12) | (0 << CS11) | (0 << CS10), 0 };
-        config 1024 = { 0, (1 << CS12) | (0 << CS11) | (1 << CS10), 0 };
+        config disable = { 0, (0 << CS12) | (0 << CS11) | (0 << CS10), 0 };
+        config 0       = { 0, (0 << CS12) | (0 << CS11) | (1 << CS10), 0 };
+        config 8       = { 0, (0 << CS12) | (1 << CS11) | (0 << CS10), 0 };
+        config 64      = { 0, (0 << CS12) | (1 << CS11) | (1 << CS10), 0 };
+        config 256     = { 0, (1 << CS12) | (0 << CS11) | (0 << CS10), 0 };
+        config 1024    = { 0, (1 << CS12) | (0 << CS11) | (1 << CS10), 0 };
       };
     };
 
