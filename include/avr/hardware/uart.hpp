@@ -5,7 +5,6 @@
 #include "hardware_event.hpp"
 #include "architecture.hpp"
 
-
 //! \brief class providing routines for UART config, receiving and sending
 //! \param ID : index of the UART
 template<int ID = 0>

@@ -1,14 +1,25 @@
-#ifndef AVR_XMEM_HPP
-#define AVR_XMEM_HPP
+#ifndef XMEM_HPP
+#define XMEM_HPP
 
-#include "../../common/hardware/xmem.hpp"
+#include <base/singleton.hpp>
 #include "architecture.hpp"
 
-inline Xmem::Xmem(void) {}
+class Xmem : public Singleton<Xmem> {
+  friend class Singleton<Xmem>;
 
-inline void Xmem::init(void) {
-  REG(xmem<0>::control) |= CFG(xmem<0>::control::enable);
-  REG(xmem<0>::control) |= CFG(xmem<0>::control::defaultwait);  
-}
+private:
+  //! \brief Private Default Constructor
+Xmem(void) {}
 
-#endif//AVR_XMEM_HPP
+public:
+  //! \brief Enable external memory management
+  void init(void) {
+    REG(xmem<0>::control) |= CFG(xmem<0>::control::enable);
+    REG(xmem<0>::control) |= CFG(xmem<0>::control::defaultwait);  
+  }
+  
+  //! \brief Disable external memory management
+  void quit(void);
+};
+
+#endif//XMEM_HPP
