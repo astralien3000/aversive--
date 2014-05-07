@@ -1,7 +1,7 @@
 #ifndef AVR_PIN_HPP
 #define AVR_PIN_HPP
 
-#include "../../../common/device/eirbot2014/pin.hpp"
+#include "../../../common/device/other/pin.hpp"
 
 #include <hardware/pinmap.hpp>
 

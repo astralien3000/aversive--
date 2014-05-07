@@ -13,7 +13,7 @@ protected:
 
 public:
   //! \brief Send a command to the servomotor
-  void setValue(u32);
+  virtual void setValue(u32) = 0;
 
 private:
   u32 _min;

@@ -1,7 +1,7 @@
 #ifndef SASIAE_FPGA_TIMER_HPP
 #define SASIAE_FPGA_TIMER_HPP
 
-#include "../../../common/device/eirbot2014/fpga_timer.hpp"
+#include "../../../common/device/other/fpga_timer.hpp"
 
 
 

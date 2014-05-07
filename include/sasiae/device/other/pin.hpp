@@ -1,7 +1,7 @@
 #ifndef SASIAE_PIN_HPP
 #define SASIAE_PIN_HPP
 
-#include "../../../common/device/eirbot2014/pin.hpp"
+#include "../../../common/device/other/pin.hpp"
 
 
 

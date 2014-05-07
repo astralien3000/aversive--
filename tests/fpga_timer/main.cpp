@@ -2,7 +2,7 @@
 
 #include <aversive.hpp>
 
-#include <device/eirbot2014/fpga_timer.hpp>
+#include <device/other/fpga_timer.hpp>
 
 #include <iostream>
 using namespace std;
