@@ -1,7 +1,7 @@
 #ifndef AVR_SERVOMOTOR_FPGA_HPP
 #define AVR_SERVOMOTOR_FPGA_HPP
 
-#include "../../../common/device/eirbot2014/servomotor_fpga.hpp"
+#include "../../../common/device/eirbot2014/fpga_servomotor.hpp"
 
 //! \todo implement !!!!
 
