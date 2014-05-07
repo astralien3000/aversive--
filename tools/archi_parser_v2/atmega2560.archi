@@ -1,36 +1,36 @@
-uc atmega128 {
+uc atmega2560 {
   
   hardware timer[0] {
-    register[8] control = { TCCR0 } {
+    register[8] control = { TCCR0A, TCCR0B } {
       config-list wgm {
-        config normal  = { 0            };
-        config pwm     = { (1 << WGM00) };
-        config ctc     = { (1 << WGM01) };
-        config fastpwm = { 0            };
+        config normal  = { 0                          , 0            };
+        config pwm     = { (1 << WGM00) | (1 << WGM01), 0            };
+        config ctc     = { 0                          , (1 << WGM02) };
+        config fastpwm = { (1 << WGM00) | (1 << WGM01), (1 << WGM02) };
       };
       
       config-list prescaler {
         config disable = { (0 << CS02) | (0 << CS01) | (0 << CS00) };
         config 0       = { (0 << CS02) | (0 << CS01) | (1 << CS00) };
         config 8       = { (0 << CS02) | (1 << CS01) | (0 << CS00) };
-        config 32      = { (0 << CS02) | (1 << CS01) | (1 << CS00) };
-        config 64      = { (1 << CS02) | (0 << CS01) | (0 << CS00) };
-        config 128     = { (1 << CS02) | (0 << CS01) | (1 << CS00) };
-        config 256     = { (1 << CS02) | (1 << CS01) | (0 << CS00) };
-        config 1024    = { (1 << CS02) | (1 << CS01) | (1 << CS00) };
+        config 64      = { (0 << CS02) | (1 << CS01) | (1 << CS00) };
+        config 256     = { (1 << CS02) | (0 << CS01) | (0 << CS00) };
+        config 1024    = { (1 << CS02) | (0 << CS01) | (1 << CS00) };
       };
     };
 
     register[8] counter = { TCNT0 };
 
-    register[8] compare[0] = { OCR0 };
+    register[8] compare[0] = { OCR0A };
+    register[8] compare[1] = { OCR0B };
 
-    register[8] imask = { TIMSK } {
-      config match[0] = { (1 << OCIE0) };
+    register[8] imask = { TIMSK0 } {
+      config match[0] = { (1 << OCIE0A) };
+      config match[1] = { (1 << OCIE0B) };
       config overflow = { (1 << TOIE0) };
     };
 
-    register[8] iflag = { TIFR };
+    register[8] iflag = { TIFR0 };
   };
 
   hardware timer[1] {
@@ -57,13 +57,13 @@ uc atmega128 {
     register[16] compare[0] = { OCR1A };
     register[16] compare[1] = { OCR1B };
 
-    register[8] imask = { TIMSK } {
+    register[8] imask = { TIMSK0 } {
       config match[0] = { (1 << OCIE1A) };
       config match[1] = { (1 << OCIE1B) };
       config overflow = { (1 << TOIE1)  };
     };
 
-    register[8] iflag = { TIFR };
+    register[8] iflag = { TIFR0 };
   };
 
   hardware uart[0] {
@@ -74,8 +74,6 @@ uc atmega128 {
     };
 
     register[8] control = { UCSR0A, UCSR0B, UCSR0C } {
-      config synchronous = { 0, 0, (1 << UMSEL0) };
-      
       config-list enable {
         config recv = { 0, (1 << RXEN0), 0 };
         config send = { 0, (1 << TXEN0), 0 };
@@ -94,11 +92,11 @@ uc atmega128 {
       };
 
       config-list charsize {
-        config 5 = { 0, (0 << UCSZ2), (0 << UCSZ1) | (0 << UCSZ0) };
-	config 6 = { 0, (0 << UCSZ2), (0 << UCSZ1) | (1 << UCSZ0) };
-	config 7 = { 0, (0 << UCSZ2), (1 << UCSZ1) | (0 << UCSZ0) };
-	config 8 = { 0, (0 << UCSZ2), (1 << UCSZ1) | (1 << UCSZ0) };
-	config 9 = { 0, (1 << UCSZ2), (1 << UCSZ1) | (1 << UCSZ0) };
+        config 5 = { 0, (0 << UCSZ02), (0 << UCSZ01) | (0 << UCSZ00) };
+	config 6 = { 0, (0 << UCSZ02), (0 << UCSZ01) | (1 << UCSZ00) };
+	config 7 = { 0, (0 << UCSZ02), (1 << UCSZ01) | (0 << UCSZ00) };
+	config 8 = { 0, (0 << UCSZ02), (1 << UCSZ01) | (1 << UCSZ00) };
+	config 9 = { 0, (1 << UCSZ02), (1 << UCSZ01) | (1 << UCSZ00) };
       };
 
       config-list parity {
@@ -123,16 +121,9 @@ uc atmega128 {
     register[8] data = { EEDR };
 
     register[8] control = { EECR } {
-      config masterwrite = { (1 << EEMWE) };
-      config write       = { (1 << EEWE)  };
+      config masterwrite = { (1 << EEMPE) };
+      config write       = { (1 << EEPE)  };
       config read        = { (1 << EERE)  };
-    };
-  };
-
-  hardware xmem[0] {
-    register[8] control = { MCUCR, XMCRA } {
-      config enable      = { (1 << SRE), 0 };
-      config defaultwait = { 0, (1 << SRW11) | (1 << SRW00) };
     };
   };
 
@@ -145,7 +136,7 @@ uc atmega128 {
     register[8] control_out[5] = { DDRF };
     register[8] control_out[6] = { DDRG };
 
-    register[8] port[0] = { PORTA }
+    register[8] port[0] = { PORTA };
     register[8] port[1] = { PORTB };
     register[8] port[2] = { PORTC };
     register[8] port[3] = { PORTD };
