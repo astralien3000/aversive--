@@ -1,170 +1,181 @@
-#ifndef AVR_UART_HPP
-#define AVR_UART_HPP
+#ifndef UART_HPP
+#define UART_HPP
 
-struct UartPrivateData {
-};
-
-#include "../../common/hardware/uart.hpp"
-
+#include <base/singleton.hpp>
+#include "hardware_event.hpp"
 #include "architecture.hpp"
 
-////////////////////////////////////////////////////////
-// UART ////////////////////////////////////////////////
 
-// TODO : FIND AN OTHER WAY !!!!
-// TODO : MOVE
-#define FSOC 16000000l
-#define DIV 16l
+//! \brief class providing routines for UART config, receiving and sending
+//! \param ID : index of the UART
+template<int ID = 0>
+class Uart : public Singleton< Uart<ID> > {
+  friend class Singleton< Uart<ID> >;
 
-template<int ID>
-inline void Uart<ID>::init(void) {
-  setBaudrate(9600);
-  setNBits<8>();
+  static constexpr u32 FSOC = 16000000l;
+  static constexpr u32 DIV = 16l;
 
-  // 1 Stop bit
-  REG(uart<ID>::control) |=
-    CFG(uart<ID>::control::stopbit::template value<1>);
+public:
+  //! \brief Configure Uart
+  void init(void) {
+    setBaudrate(9600);
+    setNBits<8>();
 
-  // Enable RX and TX
-  REG(uart<ID>::control) |=
-    CFG(uart<ID>::control::enable::send)|
-    CFG(uart<ID>::control::enable::recv);
-}
+    // 1 Stop bit
+    REG(uart<ID>::control) |=
+      CFG(uart<ID>::control::stopbit::template value<1>);
 
-template<int ID> template<typename T>
-inline void Uart<ID>::setBaudrate(const T& val) {
-  unsigned long BAUD = (unsigned long)val;
-  unsigned long ubrr = (FSOC / (DIV * BAUD)) - 1l;
+    // Enable RX and TX
+    REG(uart<ID>::control) |=
+      CFG(uart<ID>::control::enable::send)|
+      CFG(uart<ID>::control::enable::recv);
+  }
 
-  // Set baud rate
-  REG(uart<ID>::baudrate) =
-    VAL(uart<ID>::baudrate, ubrr);
-}
+  //! \brief Make UART available for an other purpose
+  void reset(void);
 
-template<int ID> template<int NBITS>
-inline void Uart<ID>::setNBits(void) {
-  REG(uart<ID>::control) |=
-    CFG(uart<ID>::control::charsize::template value<NBITS>);
-}
+  //! \brief Receive 1 character from RX
+  template<typename T> T recv(void) {
+    // Wait for data to be received
+    while( ! (REG(uart<ID>::control) & CFG(uart<ID>::control::flag::recvend)));
 
-// WARNING : 9th bit not managed !!
-// ADVICE : wait after sending
-template<int ID> template<typename T>
-inline void Uart<ID>::send(T val) {
-  // Wait for empty transmit buffer
-  while( ! (REG(uart<ID>::control) & CFG(uart<ID>::control::flag::empty)));
-  //if( (REG(uart<ID>::control) & CFG(uart<ID>::control::flag::empty)))
+    // Get and return received data from buffer
+    return (T)REG(uart<ID>::data);
+  }
 
-  // Put data into buffer
-  REG(uart<ID>::data) =
-    VAL(uart<ID>::data, val);
-}
+  //! \brief Receive 1 character from RX
+  template<typename T> void recv(T& ret) {
+    // Wait for data to be received
+    while( ! (REG(uart<ID>::control) & CFG(uart<ID>::control::flag::recvend)));
 
-// WARNING : 9th bit not managed !!
-template<int ID> template<typename T>
-inline T Uart<ID>::recv(void) {
-  // Wait for data to be received
-  while( ! (REG(uart<ID>::control) & CFG(uart<ID>::control::flag::recvend)));
+    // Get and return received data from buffer
+    ret = (T)REG(uart<ID>::data);
+  }
 
-  // Get and return received data from buffer
-  return (T)REG(uart<ID>::data);
-}
+  //! \brief Transmit 1 character from TX
+  template<typename T> void send(T val) {
+    // Wait for empty transmit buffer
+    while( ! (REG(uart<ID>::control) & CFG(uart<ID>::control::flag::empty)));
 
-// WARNING : 9th bit not managed !!
-template<int ID> template<typename T>
-inline void Uart<ID>::recv(T& ret) {
-  // Wait for data to be received
-  while( ! (REG(uart<ID>::control) & CFG(uart<ID>::control::flag::recvend)));
+    // Put data into buffer
+    REG(uart<ID>::data) =
+      VAL(uart<ID>::data, val);
+  }
 
-  // Get and return received data from buffer
-  ret = (T)REG(uart<ID>::data);
-}
 
-template<int ID>
-inline typename Uart<ID>::RecvEvent& Uart<ID>::recvEvent(void) {
-  static typename Uart<ID>::RecvEvent evt;
-  return evt;
-}
+  //! \brief Set the size in bits of transmitted characters
+  template<int NBITS> void setNBits(void) {
+    REG(uart<ID>::control) |=
+      CFG(uart<ID>::control::charsize::template value<NBITS>);
+  }
 
-template<int ID>
-inline typename Uart<ID>::SendEvent& Uart<ID>::sendEvent(void) {
-  static typename Uart<ID>::SendEvent evt;
-  return evt;
-}
+  //! \brief Set the baudrate
+  template<typename T> void setBaudrate(const T& val) {
+    unsigned long BAUD = (unsigned long)val;
+    unsigned long ubrr = (FSOC / (DIV * BAUD)) - 1l;
 
-template<int ID>
-inline typename Uart<ID>::EmptyEvent& Uart<ID>::emptyEvent(void) {
-  static typename Uart<ID>::EmptyEvent evt;
-  return evt;
-}
+    // Set baud rate
+    REG(uart<ID>::baudrate) =
+      VAL(uart<ID>::baudrate, ubrr);
+  }
 
-////////////////////////////////////////////////////////
-// UART::RecvEvent ////////////////////////////////////
 
-template<int ID>
-inline Uart<ID>::RecvEvent::RecvEvent(void) {}
+  class RecvEvent : public HardwareEvent {
+    friend class Uart;
 
-template<int ID>
-inline void Uart<ID>::RecvEvent::start(void) {
-  REG(uart<ID>::control) |=
-    CFG(uart<ID>::control::ienable::recv);
-}
+  private:
+    //! \brief Default Constructor (Private)
+    RecvEvent(void) {}
 
-template<int ID>
-inline void Uart<ID>::RecvEvent::stop(void) {
-  REG(uart<ID>::control) &=
-    ~CFG(uart<ID>::control::ienable::recv);
-}
+  public:
+    //! \brief Enable interruption for receive complete event
+    void start(void) {
+      REG(uart<ID>::control) |=
+	CFG(uart<ID>::control::ienable::recv);
+    }
+    
+    //! \brief Disable interruption for receive complete event
+    void stop (void) {
+      REG(uart<ID>::control) &=
+	~CFG(uart<ID>::control::ienable::recv);
+    }
 
-template<int ID>
-inline bool Uart<ID>::RecvEvent::activated(void) {
-  return (REG(uart<ID>::control) & CFG(uart<ID>::control::ienable::recv)) != 0;
-}
+    //! \brief Returns true if the event is activ
+    bool activated(void) {
+      return (REG(uart<ID>::control) & CFG(uart<ID>::control::ienable::recv)) != 0;
+    }
+  };
 
-////////////////////////////////////////////////////////
-// UART::SendEvent ////////////////////////////////////
+  class SendEvent : public HardwareEvent {
+    friend class Uart;
 
-template<int ID>
-inline Uart<ID>::SendEvent::SendEvent(void) {}
+  private:
+    //! \brief Default Constructor (Private)
+    SendEvent(void) {}
 
-template<int ID>
-inline void Uart<ID>::SendEvent::start(void) {
-  REG(uart<ID>::control) |=
-    CFG(uart<ID>::control::ienable::send);
-}
+  public:
+    //! \brief Enable interruption for send complete event
+    void start(void) {
+      REG(uart<ID>::control) |=
+	CFG(uart<ID>::control::ienable::send);
+    }
 
-template<int ID>
-inline void Uart<ID>::SendEvent::stop(void) {
-  REG(uart<ID>::control) &=
-    ~CFG(uart<ID>::control::ienable::send);
-}
+    //! \brief Disable interruption for send complete event
+    void stop (void) {
+      REG(uart<ID>::control) &=
+	~CFG(uart<ID>::control::ienable::send);
+    }
 
-template<int ID>
-inline bool Uart<ID>::SendEvent::activated(void) {
-  return (REG(uart<ID>::control) & CFG(uart<ID>::control::ienable::send)) != 0;
-}
+    //! \brief Returns true if the event is activ
+    bool activated(void) {
+      return (REG(uart<ID>::control) & CFG(uart<ID>::control::ienable::send)) != 0;
+    }
+  };
 
-////////////////////////////////////////////////////////
-// UART::EmptyEvent ////////////////////////////////////
+  class EmptyEvent : public HardwareEvent {
+    friend class Uart;
 
-template<int ID>
-inline Uart<ID>::EmptyEvent::EmptyEvent(void) {}
+  private:
+    //! \brief Default Constructor (Private)
+    EmptyEvent(void) {}
 
-template<int ID>
-inline void Uart<ID>::EmptyEvent::start(void) {
-  REG(uart<ID>::control) |=
-    CFG(uart<ID>::control::ienable::empty);
-}
+  public:
+    //! \brief Enable interruption for empty event
+    void start(void) {
+      REG(uart<ID>::control) |=
+	CFG(uart<ID>::control::ienable::empty);
+    }
 
-template<int ID>
-inline void Uart<ID>::EmptyEvent::stop(void) {
-  REG(uart<ID>::control) &=
-    ~CFG(uart<ID>::control::ienable::empty);
-}
+    //! \brief Disable interruption for empty event
+    void stop (void) {
+      REG(uart<ID>::control) &=
+	~CFG(uart<ID>::control::ienable::empty);
+    }
 
-template<int ID>
-inline bool Uart<ID>::EmptyEvent::activated(void) {
-  return (REG(uart<ID>::control) & CFG(uart<ID>::control::ienable::empty)) != 0;
-}
+    //! \brief Returns true if the event is activ
+    bool activated(void) {
+      return (REG(uart<ID>::control) & CFG(uart<ID>::control::ienable::empty)) != 0;
+    }
+  };
 
-#endif//AVR_UART_HPP
+  RecvEvent& recvEvent(void) {
+    static typename Uart<ID>::RecvEvent evt;
+    return evt;
+  }
+
+  SendEvent& sendEvent(void) {
+    static typename Uart<ID>::SendEvent evt;
+    return evt;
+  }
+
+  EmptyEvent& emptyEvent(void) {
+    static typename Uart<ID>::EmptyEvent evt;
+    return evt;
+  }
+
+private:
+  //! \brief Private Constructor (Singleton)
+  Uart(void);
+};
+
+#endif//UART_HPP
