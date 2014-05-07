@@ -3,11 +3,11 @@
 
 #include "../../../common/device/eirbot2014/servomotor_fpga.hpp"
 
-template<s32* ADDR>
-ServomotorFpga<ADDR>::ServomotorFpga(const char* name) : Servomotor(name) {}
+template<typename T, T* ADDR>
+FpgaServomotor<T, ADDR>::FpgaServomotor(const char* name) : Servomotor(name) {}
 
-template<s32* ADDR>
-void ServomotorFpga<ADDR>::setValue(u32 val) {
+template<typename T, T* ADDR>
+void FpgaServomotor<T, ADDR>::setValue(u32 val) {
   Servomotor::setValue(*ADDR = val);
 }
 
