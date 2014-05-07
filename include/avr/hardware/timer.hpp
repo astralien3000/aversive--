@@ -1,105 +1,156 @@
-#ifndef AVR_TIMER_HPP
-#define AVR_TIMER_HPP
+#ifndef TIMER_HPP
+#define TIMER_HPP
 
-#include "../../common/hardware/timer.hpp"
+#include <base/singleton.hpp>
+#include "hardware_event.hpp"
 #include "architecture.hpp"
 
-////////////////////////////////////////////////////////
-// Timer ///////////////////////////////////////////////
-
+//! \brief Interface for microcontroller's Timer/Counter
+//! \param ID : The index of the Timer
 template<int ID>
-inline void Timer<ID>::init(void) {
-  // Set Waveform Generator Mode to Normal
-  // Set Prescaler to 0
-  REG(timer<ID>::control) = 
-    CFG(timer<ID>::control::wgm::normal) |
-    CFG(timer<ID>::control::prescaler::template value<0>);
+class Timer : public Singleton< Timer<ID> > {
+  friend class Singleton< Timer<ID> >;
+
+public:
+  //! \brief Configure the Timer, to enable Events
+  void init(void) {
+    // Set Waveform Generator Mode to Normal
+    // Set Prescaler to 0
+    REG(timer<ID>::control) = 
+      CFG(timer<ID>::control::wgm::normal) |
+      CFG(timer<ID>::control::prescaler::template value<0>);
   
-  // Set Counter to 0
-  REG(timer<ID>::counter) = VAL(timer<ID>::counter, 0);
-}
+    // Set Counter to 0
+    REG(timer<ID>::counter) = VAL(timer<ID>::counter, 0);
+  }
 
-template<int ID> template<typename T>
-inline const T& Timer<ID>::counter(void) {
-  return REG(timer<ID>::counter);
-}
+  //! \brief Makes the Timer available for an other purpose
+  void reset(void);
 
-template<int ID> template<typename T>
-inline void Timer<ID>::setCounter(const T& val) {
-  REG(timer<ID>::counter) = 
-    VAL(timer<ID>::counter, val);
-}
+  //! \brief Access to the counter
+  //! \param T (template) : Type requested, available types are hardware-dependent
+  /*!
+1    Will throw a compile-time error if type is unapropriate
+   */
+  template<typename T> const T& counter(void) {
+    return REG(timer<ID>::counter);
+  }
 
-template<int ID> template<int PRESCALE>
-inline void Timer<ID>::setPrescaler(void) {
-  // Set to ID all prescaler bits
-  REG(timer<ID>::control) &= 
-    ~CFG(timer<ID>::control::prescaler::disable);
+  template<typename T> void setCounter(const T& val) {
+    REG(timer<ID>::counter) = 
+      VAL(timer<ID>::counter, val);
+  }
+  
+  //! \brief Set the prescaler, with a value determined on compile-time
+  //! \param PRESCALE (template) : the prescaler, availables values are hardware-dependent
+  /*!
+    Will throw a compile-time error if value is not available
+   */
+  template<int PRESCALE> void setPrescaler(void) {
+    // Set to ID all prescaler bits
+    REG(timer<ID>::control) &= 
+      ~CFG(timer<ID>::control::prescaler::disable);
+    
+    // Set prescaler value
+    REG(timer<ID>::control) |= 
+      CFG(timer<ID>::control::prescaler::template value<PRESCALE>);
+  }
 
-  // Set prescaler value
-  REG(timer<ID>::control) |= 
-    CFG(timer<ID>::control::prescaler::template value<PRESCALE>);
-}
+  //! \brief Timer Comparison Event
+  //! \param EID (template) : index of the Event
+  /*!
+    The number of available Events depends on the timer and the microcontroller
+  */
+  template<int EID = 0>
+  class ComparEvent : public HardwareEvent {
+    friend class Timer;
 
-template<int ID> template<int EID>
-inline Timer<ID>::ComparEvent<EID>& Timer<ID>::comparEvent(void) {
-  static Timer<ID>::ComparEvent<EID> evt;
-  return evt;
-}
+  private:
+    //! \brief Default Constructor (Private)
+    ComparEvent(void) : HardwareEvent() {}
 
-template<int ID>
-inline typename Timer<ID>::OverflowEvent& Timer<ID>::overflowEvent(void) {
-  static Timer<ID>::OverflowEvent evt;
-  return evt;
-}
+    //! \brief Copy Constructor (Private, must never be called)
+    ComparEvent(const ComparEvent&);
+    
+  public:
+    //! \brief Enable interruption for comprarison event
+    void start(void) {
+      // Enable event interrupt bit
+      REG(timer<ID>::imask) |=
+	CFG(timer<ID>::imask::template match<EID>);
+    }
 
-////////////////////////////////////////////////////////
-// Timer::ComparEvent //////////////////////////////////
+    //! \brief Disable interruption for comprarison event
+    void stop (void) {
+      // Disable event interrupt bit
+      REG(timer<ID>::imask) &=
+	~CFG(timer<ID>::imask::template match<EID>);
+    }
 
-template<int ID> template<int EID>
-inline Timer<ID>::ComparEvent<EID>::ComparEvent(void) : HardwareEvent() {}
+    //! \brief Access to the comparator's value
+    //! \param T (template) : Type requested, available types are hardware-dependent
+    /*!
+      Will throw a compile-time error if type is unappropriate
+     */
+    template<typename T> void setComparator(const T& val) {
+      // Disable event interrupt bit
+      REG(timer<ID>::template compare<EID>) =
+	VAL(timer<ID>::template compare<EID>, val);
+    }
 
-// Warning ! interrupts need to be enabled with Interrupts::set()
-template<int ID> template<int EID>
-inline void Timer<ID>::ComparEvent<EID>::start(void) {
-  // Enable event interrupt bit
-  REG(timer<ID>::imask) |=
-    CFG(timer<ID>::imask::template match<EID>);
-}
+    //! \brief Returns true if the event is activ
+    bool activated(void);
+  };
 
-template<int ID> template<int EID>
-inline void Timer<ID>::ComparEvent<EID>::stop(void) {
-  // Disable event interrupt bit
-  REG(timer<ID>::imask) &=
-    ~CFG(timer<ID>::imask::template match<EID>);
-}
+  //! \brief Timer Overflow Event
+  /*!
+    This event occurs when the timer's compter is at it's maximum value.
+  */
+  class OverflowEvent : public HardwareEvent {
+    friend class Timer;
+    
+  private:
+    //! \brief Default Constructor (Private)
+    OverflowEvent(void) : HardwareEvent() {}
 
-template<int ID> template<int EID> template<typename T>
-inline void Timer<ID>::ComparEvent<EID>::setComparator(const T& val) {
-  // Disable event interrupt bit
-  REG(timer<ID>::template compare<EID>) =
-    VAL(timer<ID>::template compare<EID>, val);
-}
+    //! \brief Copy Constructor (Private, must never be called)
+    OverflowEvent(const OverflowEvent&);
 
-////////////////////////////////////////////////////////
-// Timer::Overflow /////////////////////////////////////
+  public:
+    //! \brief Enable interruption for overflow event
+    void start(void) {
+      // Enable event interrupt bit
+      REG(timer<ID>::imask) |=
+	CFG(timer<ID>::imask::overflow);
+    }
 
-template<int ID>
-inline Timer<ID>::OverflowEvent::OverflowEvent(void) : HardwareEvent() {}
+    //! \brief Disable interruption for overflow event
+    void stop (void) {
+      // Disable event interrupt bit
+      REG(timer<ID>::imask) &=
+	~CFG(timer<ID>::imask::overflow);
+    }
+  };
 
-// Warning ! interrupts need to be enabled with Interrupts::set()
-template<int ID>
-inline void Timer<ID>::OverflowEvent::start(void) {
-  // Enable event interrupt bit
-  REG(timer<ID>::imask) |=
-    CFG(timer<ID>::imask::overflow);
-}
+  //! \brief Get Timer's comparison event
+  //! \param EID (template) : Index of the event
+  template<int EID = 0> ComparEvent<EID>& comparEvent(void) {
+    static Timer<ID>::ComparEvent<EID> evt;
+    return evt;
+  }
 
-template<int ID>
-inline void Timer<ID>::OverflowEvent::stop(void) {
-  // Disable event interrupt bit
-  REG(timer<ID>::imask) &=
-    ~CFG(timer<ID>::imask::overflow);
-}
+  //! \brief Get Timer's overflow event
+  OverflowEvent& overflowEvent(void) {
+    static Timer<ID>::OverflowEvent evt;
+    return evt;
+  }
+ 
+private:
+  //! \brief Private Constructor, to init singleton
+  Timer(void);
 
-#endif//AVR_TIMER_HPP
+  //! \brief Copy Constructor (Private, must never be called)
+  Timer(const Timer&);
+};
+
+#endif//TIMER_HPP
