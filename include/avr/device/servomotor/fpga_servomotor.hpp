@@ -1,9 +1,7 @@
 #ifndef AVR_SERVOMOTOR_FPGA_HPP
 #define AVR_SERVOMOTOR_FPGA_HPP
 
-#include "../../../common/device/eirbot2014/fpga_servomotor.hpp"
-
-//! \todo implement !!!!
+#include "../../../common/device/servomotor/fpga_servomotor.hpp"
 
 template<typename T, T* ADDR>
 FpgaServomotor<T, ADDR>::FpgaServomotor(const char* name) : Servomotor(name) {}

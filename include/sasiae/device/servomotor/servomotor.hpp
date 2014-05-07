@@ -1,7 +1,7 @@
 #ifndef SASIAE_SERVOMOTOR_HPP
 #define SASIAE_SERVOMOTOR_HPP
 
-#include "../../../common/device/eirbot2014/servomotor.hpp"
+#include "../../../common/device/servomotor/servomotor.hpp"
 
 #include <aversive.hpp>
 #include <client_thread.hpp>
@@ -19,7 +19,7 @@ Servomotor::Servomotor(const char* name)
 void Servomotor::setValue(u32 val) {
   std::ostringstream oss;
   double sasiae_val = 0;
-  if(_max - _min) {
+  if(_min < val && val < _max) {
     sasiae_val = (((double)val) - _min)/(_max - _min);
   }
   oss << "value " << sasiae_val;
