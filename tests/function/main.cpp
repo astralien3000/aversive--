@@ -20,6 +20,9 @@ int main(int argc, char** argv) {
   Function<u8(void)> f;
   assert(!((bool) f));
   
+  f.unset();
+  assert(!((bool) f));
+  
   f = [x, &y](void) mutable -> u8 {
     x++;
     y++;
@@ -28,12 +31,31 @@ int main(int argc, char** argv) {
   
   assert((bool) f);
   
+  Function<u8(void)> l(f);
+  
   for(u8 i = 0; i < LOOP; i++) {
-    assert(f() == (i + 1));
+    assert(f() == (2*i + 1));
+    assert(l() == (2*i + 2));
   }
   
   assert(x == 0);
-  assert(y == 10);
+  assert(y == 20);
+  
+  assert(f.isSet());
+  f.unset();
+  assert(!f.isSet());
+  
+  f = [](void) mutable -> u8 {
+    static u8 i = 0;
+    return i++;
+  };
+  
+  l = f;
+  
+  for(u8 i = 0; i < LOOP; i++) {
+    assert(f() == (i * 2));
+    assert(l() == (i * 2 + 1));
+  }
   
   f = [](void) mutable -> u8 {
     static u8 i = 0;
@@ -41,6 +63,7 @@ int main(int argc, char** argv) {
   };
   
   assert((bool) f);
+  assert(f.isSet());
   
   for(u8 i = 0; i < LOOP; i++) {
     assert(f() == i);

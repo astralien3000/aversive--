@@ -33,6 +33,9 @@ newhpp:
 exporthpp:
 	@./script/exporthpp.sh
 
+todo:
+	@grep --color=auto -nr todo include/ src/
+
 mrproper: clean clean_archiparser clean_test
 	@rm -rf build/*
 
