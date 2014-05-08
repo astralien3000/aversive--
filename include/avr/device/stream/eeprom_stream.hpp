@@ -6,7 +6,6 @@
 #include <hardware/eeprom.hpp>
 
 inline EepromStream::EepromStream(const char* name) : Device(name) {
-  Eeprom::instance().init();
 }
 
 inline char EepromStream::getValue(void) {
@@ -15,14 +14,14 @@ inline char EepromStream::getValue(void) {
     return _mini_buffer;
   }
   else {
-    char ret = Eeprom::instance().read(cursor());
+    char ret = Eeprom::read(cursor());
     seek(cursor()+1);
     return ret;
   }
 }
 
 inline void EepromStream::setValue(char val) {
-  Eeprom::instance().write(cursor(), val);
+  Eeprom::write(cursor(), val);
   seek(cursor()+1);
 }
 
