@@ -1,14 +1,11 @@
 #ifndef PINMAP_HPP
 #define PINMAP_HPP
 
-#include <base/singleton.hpp>
 #include "architecture.hpp"
 
-class Pinmap : public Singleton<Pinmap> {
-  friend class Singleton<Pinmap>;
-
+class Pinmap {
 private:
-  Pinmap(void) {}
+  Pinmap(void);
   Pinmap(const Pinmap&);
 
 public:
@@ -19,23 +16,21 @@ public:
 
   template<int ID>
   class Pin {
-    friend class Pinmap;
-
   private:
-    Pin(void) {}
-
+    Pin(void);
     Pin(const Pin&);
     
+  private:
     static constexpr int port_num = ID / 8;
     static constexpr int bit_num  = ID % 8;
 
   public:
-    inline bool read(void) {
+    static inline bool read(void) {
       return (REG(pinmap::pin<port_num>) & 
 	      VAL(pinmap::pin<port_num>, (1 << bit_num))) != 0;
     }
 
-    inline void write(bool val) {
+    static inline void write(bool val) {
       if(val) {
 	REG(pinmap::port<port_num>) |=
 	  VAL(pinmap::port<port_num>, (1 << bit_num));
@@ -46,7 +41,7 @@ public:
       }
     }
 
-    inline Mode mode(void) {
+    static inline Mode mode(void) {
       bool d_out = REG(pinmap::control_out<port_num>) &
 	VAL(pinmap::control_out<port_num>, (1 << bit_num));
       if(d_out) {
@@ -57,7 +52,7 @@ public:
       }
     }
 
-    inline void setMode(Mode mod) {
+    static inline void setMode(Mode mod) {
       if(mod == OUT) {
 	REG(pinmap::control_out<port_num>) |=
 	  VAL(pinmap::control_out<port_num>, (1 << bit_num));
@@ -68,12 +63,6 @@ public:
       }
     }
   };
-
-  template<int ID>
-  inline Pin<ID>& pin(void) {
-    static Pin<ID> ret;
-    return ret;
-  }
 };
 
 #endif//PINMAP_HPP
