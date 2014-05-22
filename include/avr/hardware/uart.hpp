@@ -1,22 +1,19 @@
 #ifndef UART_HPP
 #define UART_HPP
 
-#include <base/singleton.hpp>
 #include "hardware_event.hpp"
 #include "architecture.hpp"
 
 //! \brief class providing routines for UART config, receiving and sending
 //! \param ID : index of the UART
 template<int ID = 0>
-class Uart : public Singleton< Uart<ID> > {
-  friend class Singleton< Uart<ID> >;
-
+class Uart {
   static constexpr u32 FSOC = 16000000l;
   static constexpr u32 DIV = 16l;
 
 public:
   //! \brief Configure Uart
-  void init(void) {
+  static void init(void) {
     setBaudrate(9600);
     setNBits<8>();
 
@@ -31,10 +28,11 @@ public:
   }
 
   //! \brief Make UART available for an other purpose
-  void reset(void);
+  static void reset(void);
 
   //! \brief Receive 1 character from RX
-  template<typename T> T recv(void) {
+  template<typename T>
+  static T recv(void) {
     // Wait for data to be received
     while( ! (REG(uart<ID>::control) & CFG(uart<ID>::control::flag::recvend)));
 
@@ -43,7 +41,8 @@ public:
   }
 
   //! \brief Receive 1 character from RX
-  template<typename T> void recv(T& ret) {
+  template<typename T> 
+  static void recv(T& ret) {
     // Wait for data to be received
     while( ! (REG(uart<ID>::control) & CFG(uart<ID>::control::flag::recvend)));
 
@@ -52,7 +51,8 @@ public:
   }
 
   //! \brief Transmit 1 character from TX
-  template<typename T> void send(T val) {
+  template<typename T> 
+  static void send(T val) {
     // Wait for empty transmit buffer
     while( ! (REG(uart<ID>::control) & CFG(uart<ID>::control::flag::empty)));
 
@@ -63,13 +63,15 @@ public:
 
 
   //! \brief Set the size in bits of transmitted characters
-  template<int NBITS> void setNBits(void) {
+  template<int NBITS> 
+  static void setNBits(void) {
     REG(uart<ID>::control) |=
       CFG(uart<ID>::control::charsize::template value<NBITS>);
   }
 
   //! \brief Set the baudrate
-  template<typename T> void setBaudrate(const T& val) {
+  template<typename T> 
+  static void setBaudrate(const T& val) {
     unsigned long BAUD = (unsigned long)val;
     unsigned long ubrr = (FSOC / (DIV * BAUD)) - 1l;
 
@@ -157,17 +159,17 @@ public:
     }
   };
 
-  RecvEvent& recvEvent(void) {
+  static RecvEvent& recvEvent(void) {
     static typename Uart<ID>::RecvEvent evt;
     return evt;
   }
 
-  SendEvent& sendEvent(void) {
+  static SendEvent& sendEvent(void) {
     static typename Uart<ID>::SendEvent evt;
     return evt;
   }
 
-  EmptyEvent& emptyEvent(void) {
+  static EmptyEvent& emptyEvent(void) {
     static typename Uart<ID>::EmptyEvent evt;
     return evt;
   }
