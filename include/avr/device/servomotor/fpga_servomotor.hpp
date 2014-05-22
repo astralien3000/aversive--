@@ -3,12 +3,12 @@
 
 #include "../../../common/device/servomotor/fpga_servomotor.hpp"
 
-template<typename T, T* ADDR>
+template<typename T, int ADDR>
 FpgaServomotor<T, ADDR>::FpgaServomotor(const char* name) : Servomotor(name) {}
 
-template<typename T, T* ADDR>
+template<typename T, int ADDR>
 void FpgaServomotor<T, ADDR>::setValue(u32 val) {
-  *ADDR = val;
+  *((T*)ADDR) = val;
 }
 
 

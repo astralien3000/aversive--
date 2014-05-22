@@ -6,7 +6,7 @@
 //! \brief A servomotor, used by Eirbot in 2014
 //! \param ADDR : the address where to set the motor pwm
 
-template<typename T, T* ADDR>
+template<typename T, int ADDR>
 class FpgaServomotor : public Servomotor {
 public:
   FpgaServomotor(const char*);
