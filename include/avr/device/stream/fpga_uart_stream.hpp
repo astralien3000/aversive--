@@ -45,7 +45,7 @@ inline void FpgaUartStream::setValue(char val) {
 }
 
 inline u16 FpgaUartStream::bufferSize(void) const {
-  return 256;
+  return 64;
 }
 
 inline u16 FpgaUartStream::outputFreeSpace(void) const {
@@ -53,7 +53,7 @@ inline u16 FpgaUartStream::outputFreeSpace(void) const {
 }
 
 inline u16 FpgaUartStream::inputUsedSpace(void) const {
-  return bufferSize() - _data.rx_ava;
+  return _data.rx_ava;
 }
 
 #endif//AVR_FPGA_UART_STREAM_HPP
