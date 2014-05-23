@@ -6,7 +6,7 @@
 #define MACRO_INTERRUPT_BIND(hardware, method, vect)		\
   ISR(vect) {							\
     uint8_t flags = SREG;					\
-    hardware::instance().method().execFunction();		\
+    hardware::method().execFunction();				\
     SREG = flags;						\
   }
 
