@@ -17,34 +17,31 @@ inline Scheduler& sched_instance(void) {
 
 Scheduler::Scheduler(void) {
   _data.current = 0;
-  Timer<SCHEDULER_TIMER_ID>& t = Timer<SCHEDULER_TIMER_ID>::instance();
-  t.init();
-  t.setPrescaler<SCHEDULER_TIMER_PRESCALER>();
-  t.overflowEvent().setFunction([](void){
+  Timer<SCHEDULER_TIMER_ID>::init();
+  Timer<SCHEDULER_TIMER_ID>::setPrescaler<SCHEDULER_TIMER_PRESCALER>();
+  Timer<SCHEDULER_TIMER_ID>::overflowEvent().setFunction([](void){
       Interrupts::lock();
       Scheduler& s = sched_instance();
       s._data.current += SCHEDULER_COUNTER_INC;
       if(!s._data.ordered_tasks.isEmpty()) {
 	TaskRef tsk = s._data.ordered_tasks.max();
-
 	while(!s._data.ordered_tasks.isEmpty() && s._data.current > tsk.nextCall()) {
 	  s._data.ordered_tasks.pop();
-
+	  
 	  tsk.exec();
 	  
 	  if(!tsk.unique()) {
 	    s._data.ordered_tasks.insert(TaskRef(tsk, tsk.nextCall()));
 	  }
-
+	  
 	  if(!s._data.ordered_tasks.isEmpty()) {
 	    tsk = s._data.ordered_tasks.max();
 	  }
-	  
 	}
       }
       Interrupts::unlock();
     });
-  t.overflowEvent().start();
+  Timer<SCHEDULER_TIMER_ID>::overflowEvent().start();
 }
 
 bool Scheduler::addTask(Task& t) {

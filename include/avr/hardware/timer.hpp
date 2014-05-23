@@ -8,12 +8,10 @@
 //! \brief Interface for microcontroller's Timer/Counter
 //! \param ID : The index of the Timer
 template<int ID>
-class Timer : public Singleton< Timer<ID> > {
-  friend class Singleton< Timer<ID> >;
-
+class Timer {
 public:
   //! \brief Configure the Timer, to enable Events
-  void init(void) {
+  static void init(void) {
     // Set Waveform Generator Mode to Normal
     // Set Prescaler to 0
     REG(timer<ID>::control) = 
@@ -25,18 +23,18 @@ public:
   }
 
   //! \brief Makes the Timer available for an other purpose
-  void reset(void);
+  static void reset(void);
 
   //! \brief Access to the counter
   //! \param T (template) : Type requested, available types are hardware-dependent
   /*!
 1    Will throw a compile-time error if type is unapropriate
    */
-  template<typename T> const T& counter(void) {
+  template<typename T> static const T& counter(void) {
     return REG(timer<ID>::counter);
   }
 
-  template<typename T> void setCounter(const T& val) {
+  template<typename T> static void setCounter(const T& val) {
     REG(timer<ID>::counter) = 
       VAL(timer<ID>::counter, val);
   }
@@ -46,7 +44,7 @@ public:
   /*!
     Will throw a compile-time error if value is not available
    */
-  template<int PRESCALE> void setPrescaler(void) {
+  template<int PRESCALE> static void setPrescaler(void) {
     // Set to ID all prescaler bits
     REG(timer<ID>::control) &= 
       ~CFG(timer<ID>::control::prescaler::disable);
@@ -134,13 +132,13 @@ public:
 
   //! \brief Get Timer's comparison event
   //! \param EID (template) : Index of the event
-  template<int EID = 0> ComparEvent<EID>& comparEvent(void) {
+  template<int EID = 0> static ComparEvent<EID>& comparEvent(void) {
     static Timer<ID>::ComparEvent<EID> evt;
     return evt;
   }
 
   //! \brief Get Timer's overflow event
-  OverflowEvent& overflowEvent(void) {
+  static OverflowEvent& overflowEvent(void) {
     static Timer<ID>::OverflowEvent evt;
     return evt;
   }

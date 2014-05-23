@@ -6,12 +6,6 @@
 
 #include <aversive.hpp>
 
-extern "C" {
-  void __cxa_pure_virtual(void) {
-    while(1);
-  }
-}
-
 UartStream<0>* st;
 long long count = 0;
 
