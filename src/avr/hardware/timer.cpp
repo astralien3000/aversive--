@@ -1,9 +1,19 @@
 #include <hardware/timer.hpp>
 
-template<int ID> Timer<ID>::Timer() {}
+template<int ID>
+void Timer<ID>::init(void) {
+  // Set Waveform Generator Mode to Normal
+  // Set Prescaler to 0
+  REG(timer<ID>::control) = 
+    CFG(timer<ID>::control::wgm::normal) |
+      CFG(timer<ID>::control::prescaler::template value<0>);
+  
+  // Set Counter to 0
+  REG(timer<ID>::counter) = VAL(timer<ID>::counter, 0);
+}
 
-template Timer<0>::Timer();
-template Timer<1>::Timer();
+
+template void Timer<0>::init(void);
 
 #include "interrupt_bind.hpp"
 

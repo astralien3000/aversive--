@@ -11,16 +11,7 @@ template<int ID>
 class Timer {
 public:
   //! \brief Configure the Timer, to enable Events
-  static void init(void) {
-    // Set Waveform Generator Mode to Normal
-    // Set Prescaler to 0
-    REG(timer<ID>::control) = 
-      CFG(timer<ID>::control::wgm::normal) |
-      CFG(timer<ID>::control::prescaler::template value<0>);
-  
-    // Set Counter to 0
-    REG(timer<ID>::counter) = VAL(timer<ID>::counter, 0);
-  }
+  static void init(void);
 
   //! \brief Makes the Timer available for an other purpose
   static void reset(void);
