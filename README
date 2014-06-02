@@ -1,37 +1,37 @@
 ///////////////////////////////////////////////////////////////////////////////////
-// Pour commencer
+// Begin
 
-À la racine du projet, faire make doc pour générer la documentation.
+Build the documentation by executing "make doc" at the root of the project.
 
-Ouvrir le fichier build/doc/html/index.html avec n'importe quel navigateur.
+Then, you can open build/doc/html/index.html with any web browser.
 
 ///////////////////////////////////////////////////////////////////////////////////
-// Compilation
+// Compile
 
-//// Compiler pour SASIAE
-////// dépendences
+//// Compile for SASIAE
+////// dependency
 Qt5
 
-////// commande
+////// command
 make sasiae
 
-//// Compiler pour AVR
-////// dépendences
+//// Compile for AVR
+////// dependency
 avr-gcc
 libc-avr
 avr-binutils
 
-////// commande
+////// commands
 make $MMCU
-avec MMCU le nom du microcontrôleur
+where MMCU is the name of the microcontroller
 
-////// microcontrôleurs supportés
+////// microcontroller support
 atmega128
 atmega2560
 
-//// Compiler toutes les implémentations
+//// Compile every implementations
 make
 
 //////////////////////////////////////////////////////////////////////////////////
-// Pour executer les tests unitaires de l'implémentation SASIAE
+// Unary tests for SASIAE
 make test
