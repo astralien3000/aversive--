@@ -77,11 +77,10 @@ int main(int argc, char** argv) {
   }
   else { // Pure writing test
     str << "Writing test\n\r";
-    Timer<0>& t = Timer<0>::instance();
-    t.init();
-    t.setPrescaler<1024>();
-    t.overflowEvent().setFunction(writer);
-    t.overflowEvent().start();
+    Timer<0>::init();
+    Timer<0>::setPrescaler<1024>();
+    Timer<0>::overflowEvent().setFunction(writer);
+    Timer<0>::overflowEvent().start();
     
     while(Aversive::sync()) {
       for(u32 i = 0; i < 1600000; i++) {
