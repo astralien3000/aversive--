@@ -5,3 +5,4 @@
 client
 server
 a.out
+*.user
