@@ -888,3 +888,9 @@ project/generated/sasiae.files.pro
 project/generated/common.files.pro
 project/generated/avr.files.pro
 project/generated/avr.mmcu.pro
+.gitignore
+tools/compilation/generate_files_pro.sh
+tools/compilation/generate_mk.sh
+tools/compilation/generate_all_mk.sh
+tools/compilation/generate_rule.sh
+mk/all.mk
