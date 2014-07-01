@@ -1,7 +1,7 @@
-.PHONY: all generate doc test clean sasiae atmega128 atmega2560
+.PHONY: all generate doc test clean
 
 all: mk/all.mk
-	$(MAKE) -f all.mk all_targets
+	$(MAKE) -f mk/all.mk all_targets
 
 mk/all.mk:
 	./tools/compilation/generate_all_mk.sh > mk/all.mk
@@ -25,8 +25,11 @@ exporthpp:
 todo:
 	@grep --color=auto -nr todo include/ src/
 
-mrproper: clean clean_archiparser clean_test
+mrproper: clean clean_archiparser clean_test clean_mk
 	@rm -rf build/*
+
+clean_mk:
+	@rm -rf mk/*
 
 clean_doc:
 	@rm -rf build/doc/*

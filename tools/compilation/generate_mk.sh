@@ -1,7 +1,7 @@
 #!/bin/bash
 
 TARGET=$1
-QMAKE=qmake-qt4
+QMAKE=qmake-qt5
 
 if [ "$TARGET" == "avr" ]
 then
