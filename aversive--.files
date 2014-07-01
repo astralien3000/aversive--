@@ -880,9 +880,6 @@ Makefile
 README
 aversive--.style.xml
 project/sasiae.pro
-tests/sasiae/client_thread/project/client.pro
-tests/sasiae/client_thread/project/server.pro
-tests/sasiae/client_thread/project/common.pro
 project/avr.pro
 project/generated/sasiae.files.pro
 project/generated/common.files.pro
@@ -893,4 +890,3 @@ tools/compilation/generate_files_pro.sh
 tools/compilation/generate_mk.sh
 tools/compilation/generate_all_mk.sh
 tools/compilation/generate_rule.sh
-mk/all.mk
