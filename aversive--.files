@@ -246,8 +246,8 @@ include/sasiae/system/scheduler.hpp
 include/sasiae/system/task.hpp
 include/sasiae/aversive.hpp
 include/sasiae/client_thread.hpp
-script/exporthpp.sh
-script/newhpp.sh
+tools/script/exporthpp.sh
+tools/script/newhpp.sh
 src/avr/hardware/interrupt_bind.hpp
 src/avr/hardware/interrupts.cpp
 src/avr/hardware/Makefile
@@ -884,7 +884,6 @@ project/avr.pro
 project/generated/sasiae.files.pro
 project/generated/common.files.pro
 project/generated/avr.files.pro
-project/generated/avr.mmcu.pro
 .gitignore
 tools/compilation/generate_files_pro.sh
 tools/compilation/generate_mk.sh

@@ -17,10 +17,10 @@ clean:
 	@rm -f $(shell find . -name "*~" -o -name "#*#" -o -name "*.o" -o -name "*.gch")
 
 newhpp:
-	@./script/newhpp.sh
+	@./tools/script/newhpp.sh
 
 exporthpp:
-	@./script/exporthpp.sh
+	@./tools/script/exporthpp.sh
 
 todo:
 	@grep --color=auto -nr todo include/ src/
