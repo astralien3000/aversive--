@@ -885,3 +885,6 @@ tests/sasiae/client_thread/project/client.pro
 tests/sasiae/client_thread/project/server.pro
 tests/sasiae/client_thread/project/common.pro
 project/avr.pro
+project/sasiae.files.pro
+project/common.files.pro
+project/avr.files.pro

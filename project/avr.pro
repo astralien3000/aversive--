@@ -7,7 +7,7 @@ QT =
 TARGET = aversive_$${MMCU}
 
 DESTDIR = build
-OBJECTS_DIR = build/avr
+OBJECTS_DIR = build/$${MMCU}
 
 QMAKE_CXX = avr-g++
 
@@ -17,7 +17,9 @@ QMAKE_CXXFLAGS_RELEASE = -O3
 
 INCLUDEPATH = include/avr
 
-HEADERS = $$system("find ../include/{avr,common} | grep \\.hpp")
-SOURCES= $$system("find ../src/{avr,common} | grep \\.cpp")
+HEADERS =
+SOURCES =
+include(avr.files)
+include(common.files)
 
 QMAKE_AR_CMD = avr-ar cqs ${TARGET} ${OBJECTS}
