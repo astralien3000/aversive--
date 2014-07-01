@@ -1,4 +1,4 @@
-MMCU = atmega2560
+include(generated/avr.mmcu.pro)
 
 TEMPLATE = lib
 CONFIG = staticlib
@@ -19,7 +19,7 @@ INCLUDEPATH = include/avr
 
 HEADERS =
 SOURCES =
-include(avr.files)
-include(common.files)
+include(generated/avr.files.pro)
+include(generated/common.files.pro)
 
 QMAKE_AR_CMD = avr-ar cqs ${TARGET} ${OBJECTS}

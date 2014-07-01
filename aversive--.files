@@ -676,7 +676,6 @@ include/sasiae/system/scheduler.hpp
 include/sasiae/system/task.hpp
 include/sasiae/aversive.hpp
 include/sasiae/client_thread.hpp
-project/aversive-style.xml
 project/sasiae.pro
 script/exporthpp.sh
 script/newhpp.sh
@@ -879,12 +878,13 @@ Doxyfile
 LICENSE
 Makefile
 README
-project/aversive-style.xml
+aversive--.style.xml
 project/sasiae.pro
 tests/sasiae/client_thread/project/client.pro
 tests/sasiae/client_thread/project/server.pro
 tests/sasiae/client_thread/project/common.pro
 project/avr.pro
-project/sasiae.files.pro
-project/common.files.pro
-project/avr.files.pro
+project/generated/sasiae.files.pro
+project/generated/common.files.pro
+project/generated/avr.files.pro
+project/generated/avr.mmcu.pro

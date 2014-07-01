@@ -13,5 +13,5 @@ INCLUDEPATH = include/sasiae
 
 HEADERS =
 SOURCES=
-include(sasiae.files)
-include(common.files)
+include(generated/sasiae.files.pro)
+include(generated/common.files.pro)
