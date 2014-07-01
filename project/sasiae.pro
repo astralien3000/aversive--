@@ -13,5 +13,7 @@ QMAKE_CXXFLAGS_RELEASE = -O3
 
 INCLUDEPATH = include/sasiae
 
-HEADERS = $$system("find ../include/{sasiae,common} | grep \.hpp")
-SOURCES= $$system("find ../src/{sasiae,common} | grep \.cpp")
+HEADERS =
+SOURCES=
+include(generated/sasiae.files.pro)
+include(generated/common.files.pro)

@@ -1,4 +1,4 @@
-MMCU = atmega2560
+include(generated/avr.mmcu.pro)
 
 TEMPLATE = lib
 CONFIG = staticlib
@@ -7,7 +7,7 @@ QT =
 TARGET = aversive_$${MMCU}
 
 DESTDIR = build
-OBJECTS_DIR = build/avr
+OBJECTS_DIR = build/$${MMCU}
 
 QMAKE_CXX = avr-g++
 
@@ -17,7 +17,9 @@ QMAKE_CXXFLAGS_RELEASE = -O3
 
 INCLUDEPATH = include/avr
 
-HEADERS = $$system("find ../include/{avr,common} | grep \\.hpp")
-SOURCES= $$system("find ../src/{avr,common} | grep \\.cpp")
+HEADERS =
+SOURCES =
+include(generated/avr.files.pro)
+include(generated/common.files.pro)
 
 QMAKE_AR_CMD = avr-ar cqs ${TARGET} ${OBJECTS}
