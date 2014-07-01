@@ -1,10 +1,9 @@
 .PHONY: all generate doc test clean sasiae atmega128 atmega2560
 
-all: all_targets
+all: mk/all.mk
+	$(MAKE) -f all.mk all_targets
 
-include mk/all.mk
-
-generate:
+mk/all.mk:
 	./tools/compilation/generate_all_mk.sh > mk/all.mk
 
 doc:
