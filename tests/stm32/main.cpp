@@ -68,7 +68,7 @@ int errno;
 volatile int test = 1;
 
 void wait(void) {
-  for(volatile int i = 0 ; i < 1000000 ; i++) {
+  for(volatile int i = 0 ; i < 1000000 && test ; i++) {
       if(!test) {
           return;
         }
@@ -87,9 +87,9 @@ int main(int argc, char* argv[]) {
   //GPIOD_ODR = 0xFFFFFFFF;
 
   while(test) {
-      GPIOD_BSRR = (1 << BS12) | (1 << BS13); // | (1 << BS14) | (1 << BS15);
+      GPIOD_BSRR = (1 << BS12) | (1 << BS13) | (1 << BS14) | (1 << BS15);
       wait();
-      GPIOD_BSRR = 0;
+      GPIOD_BSRR = (1 << BR12) | (1 << BR13) | (1 << BR14) | (1 << BR15);
       wait();
     }
 
