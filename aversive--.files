@@ -889,3 +889,17 @@ tools/compilation/generate_files_pro.sh
 tools/compilation/generate_mk.sh
 tools/compilation/generate_all_mk.sh
 tools/compilation/generate_rule.sh
+project/stm32.pro
+tests/stm32/main.cpp
+tests/stm32/stm32f4.pro
+tests/stm32/deploy.sh
+thirdparty/stm32f4xx/core_cm4.h
+thirdparty/stm32f4xx/core_cm4_simd.h
+thirdparty/stm32f4xx/core_cmFunc.h
+thirdparty/stm32f4xx/core_cmInstr.h
+thirdparty/stm32f4xx/startup_stm32f40_41xxx.s
+thirdparty/stm32f4xx/stm32f4xx.h
+thirdparty/stm32f4xx/syscalls.c
+thirdparty/stm32f4xx/system_stm32f4xx.c
+thirdparty/stm32f4xx/system_stm32f4xx.c.bak
+thirdparty/stm32f4xx/system_stm32f4xx.h
