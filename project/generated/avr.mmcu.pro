@@ -1,1 +1,0 @@
-MMCU =  atmega32
