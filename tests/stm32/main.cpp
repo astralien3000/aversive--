@@ -9,70 +9,121 @@
 /* #include <semphr.h> */
 /* #include <platform.h> */
 
+#include <base/integer.hpp>
 
-#define GPIOD_BASE_ADDR 0x40020C00
-#define GPIOD_MODER  (*(volatile long*)(GPIOD_BASE_ADDR + 0x00))
-#define GPIOD_OTYPER (*(volatile long*)(GPIOD_BASE_ADDR + 0x04))
+namespace stm32 {
 
-#define MODER0_0 0
-#define MODER0_1 1
+  // GPIO
+  template<int ID>
+  struct _gpio_mode_config {
+  private:
+    static const u32 OFFSET = ID * 2;
+  public:
+    static const u32 input = 0b00 << OFFSET;
+    static const u32 output = 0b01 << OFFSET;
+  };
 
-#define MODER1_0 2
-#define MODER1_1 3
+  template<int ID>
+  struct _gpio_bsr_config {
+    static const u32 set = 0b1 << ID;
+    static const u32 reset = 0b1 << (ID + 16);
+  };
 
-#define MODER2_0 4
-#define MODER2_1 5
+  template<u32 BASE_ADDR>
+  struct _gpio {
+    struct mode {
+      static constexpr volatile u32& reg  = (*(volatile u32*)(BASE_ADDR + 0x00));
 
-#define MODER12_0 24
-#define MODER12_1 25
+      template<int ID>
+      struct pin : public _gpio_mode_config<ID> {};
+    };
 
-#define MODER13_0 26
-#define MODER13_1 27
+    struct bsr {
+      static constexpr volatile u32& reg   = (*(volatile u32*)(BASE_ADDR + 0x18));
 
-#define MODER14_0 28
-#define MODER14_1 29
+      template<int ID>
+      struct pin : public _gpio_bsr_config<ID> {};
+    };
+  };
 
-#define MODER15_0 30
-#define MODER15_1 31
+  template<int ID>
+  struct gpio;
 
-#define GPIOD_ODR (*(volatile long*)(GPIOD_BASE_ADDR + 0x14))
+  template<>
+  struct gpio<3> : public _gpio<0x40020C00> {};
 
-#define GPIOD_BSRR (*(volatile long*)(GPIOD_BASE_ADDR + 0x18))
+  // RCC
+  template<u32 BASE_ADDR>
+  struct _rcc {
+    struct ahb1 {
+      struct enable {
+        static constexpr volatile u32& reg = (*(volatile u32*)(BASE_ADDR + 0x30));
 
-#define BS12 12
-#define BS13 13
-#define BS14 14
-#define BS15 15
+        static const u32 all = 0xFFFFFFFF;
+      };
+    };
 
-#define BR12 28
-#define BR13 29
-#define BR14 30
-#define BR15 31
+    static constexpr volatile u32& ahb1enr = (*(volatile u32*)(BASE_ADDR + 0x30));
+  };
 
-#define RCC_BASE_ADDR 0x40023800
+  struct rcc : public _rcc<0x40023800> {};
+}
 
-#define RCC_AHB1ENR (*(volatile long*)(RCC_BASE_ADDR + 0x30))
+static const u32 GPIOD_BASE_ADDR = 0x40020C00;
+static volatile u32& GPIOD_MODER  = (*(volatile u32*)(GPIOD_BASE_ADDR + 0x00));
+static volatile u32& GPIOD_OTYPER = (*(volatile u32*)(GPIOD_BASE_ADDR + 0x04));
 
-#define GPIODEN 3
+static const u32 MODER0_0 = 0;
+static const u32 MODER0_1 = 1;
 
-extern "C" void SystemCoreClockUpdate(void);
+static const u32 MODER1_0 = 2;
+static const u32 MODER1_1 = 3;
+
+static const u32 MODER2_0 = 4;
+static const u32 MODER2_1 = 5;
+
+static const u32 MODER12_0 = 24;
+static const u32 MODER12_1 = 25;
+
+static const u32 MODER13_0 = 26;
+static const u32 MODER13_1 = 27;
+
+static const u32 MODER14_0 = 28;
+static const u32 MODER14_1 = 29;
+
+static const u32 MODER15_0 = 30;
+static const u32 MODER15_1 = 31;
+
+static volatile u32& GPIOD_ODR = (*(volatile u32*)(GPIOD_BASE_ADDR + 0x14));
+
+static volatile u32& GPIOD_BSRR = (*(volatile u32*)(GPIOD_BASE_ADDR + 0x18));
+
+static const u32 BS12 = 12;
+static const u32 BS13 = 13;
+static const u32 BS14 = 14;
+static const u32 BS15 = 15;
+
+static const u32 BR12 = 28;
+static const u32 BR13 = 29;
+static const u32 BR14 = 30;
+static const u32 BR15 = 31;
+
+static const u32 RCC_BASE_ADDR = 0x40023800;
+
+static volatile u32& RCC_AHB1ENR = (*(volatile u32*)(RCC_BASE_ADDR + 0x30));
+
+static const u32 GPIODEN = 3;
+
 extern "C" volatile void* Default_Handler;
-extern "C" void _fork(void);
 
 extern "C" void __aeabi_unwind_cpp_pr0(void) {
   return;
 }
 
-int errno;
-
 volatile int test = 1;
 
-void wait(void) {
-  for(volatile int i = 0 ; i < 1000000 && test ; i++) {
-      if(!test) {
-          return;
-        }
-    }
+void wait(u32 val) {
+  for(volatile u32 i = 0 ; i < val && test ; i++) {}
 }
 
 int main(int argc, char* argv[]) {
@@ -80,24 +131,28 @@ int main(int argc, char* argv[]) {
   (void)argv;
 
   volatile void* test = Default_Handler;
-  //RCC_AHB1ENR = (1 << GPIODEN);
-  RCC_AHB1ENR = 0xFFFFFFFF;
 
-  GPIOD_MODER = (1 << MODER12_0) | (1 << MODER13_0) | (1 << MODER14_0) | (1 << MODER15_0);
-  //GPIOD_ODR = 0xFFFFFFFF;
+  stm32::rcc::ahb1::enable::reg = stm32::rcc::ahb1::enable::all;
 
+  stm32::gpio<3>::mode::reg = stm32::gpio<3>::mode::pin<12>::output |
+      stm32::gpio<3>::mode::pin<13>::output |
+      stm32::gpio<3>::mode::pin<14>::output |
+      stm32::gpio<3>::mode::pin<15>::output;
+
+  u32 i = 0;
+  const u32 PERIOD = 10000;
   while(test) {
-      GPIOD_BSRR = (1 << BS12) | (1 << BS13) | (1 << BS14) | (1 << BS15);
-      wait();
-      GPIOD_BSRR = (1 << BR12) | (1 << BR13) | (1 << BR14) | (1 << BR15);
-      wait();
+      i = (i-100) % PERIOD;
+      stm32::gpio<3>::bsr::reg = stm32::gpio<3>::bsr::pin<12>::set |
+          stm32::gpio<3>::bsr::pin<13>::set |
+          stm32::gpio<3>::bsr::pin<14>::set |
+          stm32::gpio<3>::bsr::pin<15>::set;
+      wait(i);
+      stm32::gpio<3>::bsr::reg = stm32::gpio<3>::bsr::pin<12>::reset |
+          stm32::gpio<3>::bsr::pin<13>::reset |
+          stm32::gpio<3>::bsr::pin<14>::reset |
+          stm32::gpio<3>::bsr::pin<15>::reset;
+      wait(PERIOD - i);
     }
-
-  //SystemCoreClockUpdate();
-  //_fork();
-  while(test);
   return 0;
 }
-
-/* xSemaphoreHandle xTestSemaphore = NULL; */
-/* xTaskHandle xHandleBlinkTask, xHandleMEMSTask; */
