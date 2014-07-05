@@ -12,25 +12,30 @@ Then, you can open build/doc/html/index.html with any web browser.
 ////// dependency
 Qt5
 
-////// command
-make sasiae
-
 //// Compile for AVR
 ////// dependency
 avr-gcc
 libc-avr
 avr-binutils
 
-////// commands
-make $MMCU
-where MMCU is the name of the microcontroller
-
 ////// microcontroller support
 atmega128
 atmega2560
 
 //// Compile every implementations
+make update
 make
+
+Only do a make update when a new source file has been added to an implementation.
+
+If you want to compile only for a specific microcontroller (or sasiae), you should do :
+make update
+make -f mk/<implementation>.mk
+
+Where <implementation> is the name of the microcontroller or "sasiae"
+exemple :
+make -f mk/atmega128.mk
+
 
 //////////////////////////////////////////////////////////////////////////////////
 // Unary tests for SASIAE
