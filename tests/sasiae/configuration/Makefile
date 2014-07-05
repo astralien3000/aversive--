@@ -4,7 +4,7 @@
 # User Configuration
 
 ## The root aversive directory
-AVERSIVE_ROOT=../../
+AVERSIVE_ROOT=../../../
 
 ## Your project's object .o files
 OBJ=main.o
@@ -101,4 +101,4 @@ mrproper: clean
 	rm -rf $(GEN_EXEC)_*.elf
 
 test: sasiae
-	./robot_sasiae.elf
+	@./robot_sasiae.elf
