@@ -27,6 +27,9 @@ newhpp:
 exporthpp:
 	@./tools/script/exporthpp.sh
 
+config_symbols:
+	@./tools/script/config_symbols.sh
+
 todo:
 	@grep --color=auto -nr todo include/ src/
 
