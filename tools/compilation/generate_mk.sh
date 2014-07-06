@@ -1,7 +1,14 @@
 #!/bin/bash
 
 TARGET=$1
-QMAKE=qmake-qt5
+
+if [ type qmake ]
+then
+    QMAKE=qmake
+else
+    QMAKE=qmake-qt5
+fi
+
 
 if [ "$TARGET" == "avr" ]
 then

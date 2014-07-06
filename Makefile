@@ -3,7 +3,7 @@
 all: mk/all.mk
 	$(MAKE) -f mk/all.mk all_targets
 
-update:
+update: clean_mk
 	./tools/compilation/generate_files_pro.sh common > project/generated/common.files.pro
 	./tools/compilation/generate_files_pro.sh avr > project/generated/avr.files.pro
 	./tools/compilation/generate_files_pro.sh sasiae > project/generated/sasiae.files.pro
