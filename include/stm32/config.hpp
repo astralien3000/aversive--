@@ -16,11 +16,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef STM32_FPGA_ENCODER_HPP
-#define STM32_FPGA_ENCODER_HPP
+#ifndef STM32_CONFIG_HPP
+#define STM32_CONFIG_HPP
 
-#include "../../../common/device/encoder/fpga_encoder.hpp"
+#include "../common/config.hpp"
 
 
 
-#endif//STM32_FPGA_ENCODER_HPP
+#endif//STM32_CONFIG_HPP
