@@ -1205,3 +1205,5 @@ include/stm32/system/scheduler.hpp
 include/stm32/system/task.hpp
 include/stm32/aversive.hpp
 src/stm32/aversive.cpp
+include/stm32/hardware/part/stm32f4.hpp
+include/stm32/hardware/architecture.hpp

@@ -33,11 +33,12 @@ volatile void* test;
 }
 
 extern "C" void __aeabi_unwind_cpp_pr0(void) {
+  //while(1);
   return;
 }
 
 void Aversive::init(void) {
-private_do_not_touch::test = Default_Handler;
+  private_do_not_touch::test = Default_Handler;
 
   if(!initialized) {
     running = initialized = true;
