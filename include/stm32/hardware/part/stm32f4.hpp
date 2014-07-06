@@ -1,6 +1,8 @@
 #ifndef STM32F4_HPP
 #define STM32F4_HPP
 
+#include <base/integer.hpp>
+
 namespace stm32 {
 
   // GPIO
@@ -43,6 +45,11 @@ namespace stm32 {
   struct gpio<3> : public _gpio<0x40020C00> {};
 
   // RCC
+  template<int ID>
+  struct _rcc_ahb1_enable_gpio {
+    static const u32 enable = (1 << ID);
+  };
+
   template<u32 BASE_ADDR>
   struct _rcc {
     struct ahb1 {
@@ -50,6 +57,9 @@ namespace stm32 {
         static constexpr volatile u32& reg = (*(volatile u32*)(BASE_ADDR + 0x30));
 
         static const u32 all = 0xFFFFFFFF;
+
+        template<int ID>
+        struct gpio : public _rcc_ahb1_enable_gpio<ID> {};
       };
     };
 

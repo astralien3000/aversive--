@@ -17,6 +17,7 @@
 */
 
 #include <aversive.hpp>
+#include <hardware/architecture.hpp>
 
 static bool initialized = false;
 static bool running = false;
@@ -33,6 +34,11 @@ volatile void* test;
 }
 
 extern "C" void __aeabi_unwind_cpp_pr0(void) {
+  //while(1);
+  return;
+}
+
+extern "C" void __aeabi_unwind_cpp_pr1(void) {
   //while(1);
   return;
 }
