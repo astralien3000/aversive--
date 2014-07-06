@@ -26,14 +26,13 @@ atmega2560
 make update
 make
 
-Only do a make update when a new source file has been added to an implementation.
+You have to do a make update when a new source file has been added to an implementation, or the first time you try to compile.
 
 If you want to compile only for a specific microcontroller (or sasiae), you should do :
-make update
 make -f mk/<implementation>.mk
 
 Where <implementation> is the name of the microcontroller or "sasiae"
-exemple :
+example :
 make -f mk/atmega128.mk
 
 
