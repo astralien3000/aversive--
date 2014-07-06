@@ -1,4 +1,4 @@
-.PHONY: all generate doc test clean update
+.PHONY: all generate doc test clean update mrproper
 
 all: mk/all.mk
 	$(MAKE) -f mk/all.mk all_targets
@@ -7,6 +7,7 @@ update: clean_mk
 	./tools/compilation/generate_files_pro.sh common > project/generated/common.files.pro
 	./tools/compilation/generate_files_pro.sh avr > project/generated/avr.files.pro
 	./tools/compilation/generate_files_pro.sh sasiae > project/generated/sasiae.files.pro
+	./tools/compilation/generate_files_pro.sh stm32 > project/generated/stm32.files.pro
 
 mk/all.mk:
 	./tools/compilation/generate_all_mk.sh > mk/all.mk
