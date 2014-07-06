@@ -19,10 +19,13 @@
 #ifndef PAIR_HPP
 #define PAIR_HPP
 
+#include <base/integer.hpp>
+
 //! \class Pair pair.hpp <base/pair.hpp>
 //! \brief Two-member tuple.
 //! \param _LeftType : left member type.
 //! \param _RightType : right member type.
+//! \note This class is specialized for two-boolean tuples. See Pair<bool, bool> for more information.
 template<typename _LeftType, typename _RightType>
 class Pair {
 public:
@@ -39,7 +42,7 @@ private:
   //! \brief The right member.
   RightType _right;
   
-public:  
+public:
   //! \brief Default Constructor.
   //! \attention The objects within the pair are not set to any value.
   inline Pair(void) {
@@ -90,6 +93,73 @@ public:
   //! \return The constant reference to the right member.
   inline const RightType& right(void) const {
     return _right;
+  }
+};
+
+//! \class Pair<bool, bool> pair.hpp <base/pair.hpp>
+//! \brief Two-boolean tuple specialization.
+template<>
+class Pair<bool, bool> {
+public:
+  //! \brief Left member's type.
+  typedef bool LeftType;
+  
+  //! \brief Right member's type.
+  typedef bool RightType;
+
+private:
+  //! \brief The attribute holding the two boolean values.
+  u8 _pair;
+
+public:
+  //! \brief Default Constructor.
+  //! \attention The booleans within the pair are not set to any value.
+  inline Pair(void) {
+  }
+  
+  //! \brief Constructor with parameters.
+  //! \param l : the left boolean.
+  //! \param r : the right boolean.
+  inline Pair(bool l, bool r)
+    : _pair(((u8) l << 1) | (u8) r) {
+  }
+  
+  //! \brief Copy Constructor.
+  //! \param other : the pair to copy.
+  inline Pair(const Pair& other) {
+    (*this) = other;
+  }
+  
+  //! \brief Copy Operator.
+  //! \param other : the pair to copy.
+  //! \return A reference to the pair that has been written.
+  inline Pair& operator=(const Pair& other) {
+    _pair = other._pair;
+    return (*this);
+  }
+  
+  //! \brief Access the left member.
+  //! \return A copy of the left member.
+  inline bool left(void) const {
+    return (bool) (_pair & 2);
+  }
+  
+  //! \brief Access the right member.
+  //! \return A copy of the right member.
+  inline bool right(void) const {
+    return (bool) (_pair & 1);
+  }
+  
+  //! \brief Set the value of the left boolean.
+  //! \param l : the new value.
+  inline void left(bool l) {
+    _pair = ((u8) l << 1) | (_pair & 1);
+  }
+  
+  //! \brief Set the value of the right boolean.
+  //! \param r : the new value.
+  inline void right(bool r) {
+    _pair = (_pair & 2) | (u8) r;
   }
 };
 
