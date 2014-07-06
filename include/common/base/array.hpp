@@ -46,18 +46,40 @@ private:
   //! \brief The native C-like array containing the datas.
   ElementType _elements[SIZE];
   
+  //! \brief Variadic templated method to insert multiple elements at the construction of the array.
+  //! \param i : the index where to insert the next element in the array.
+  //! \param e : the next element to add to the array.
+  //! \param args : the remaining arguments.
+  template<typename... Targs>
+  inline void set(array_t i, const ElementType& e, const Targs&... args) {
+    if(i < SIZE) {
+      _elements[i] = e;
+      set(i+1, args...);
+    }
+  }
+  
+  //! \brief Termination method to insert multiple elements at the construction of the array.
+  //! \param i : The index where the list of value given ends.
+  //! \note It copies the last element at all the remaining indexes.
+  inline void set(array_t i) {
+    for(array_t j = i; j < SIZE; j++) {
+      _elements[j] = _elements[j-1];
+    }
+  }
+  
 public:
   //! \brief Default constructor.
   //! \attention The elements within the array are not set to any value.
   inline Array(void) {
   }
   
-  //! \brief Constructor with initialisation.
-  //! \param e : the element to copy in every field of the new array.
-  inline Array(const ElementType& e) {
-    for(array_t i = 0; i < SIZE; i++) {
-      _elements[i] = e;
-    }
+  //! \brief Variadic constructor to insert multiple elements.
+  //! \param args : the value list to insert in the array.
+  //! \note If there are less elements given than the size of the array, the last element is written at all the remaining indexes.
+  template<typename... Targs>
+  inline Array(const Targs&... args)
+    : Array() {
+    set(0, args...);
   }
   
   //! \brief Copy constructor.
