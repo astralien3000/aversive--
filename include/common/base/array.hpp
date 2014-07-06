@@ -42,6 +42,12 @@ public:
   //! \brief Element's type.
   typedef _ElementType ElementType;
   
+  //! \brief Element's reference type.
+  typedef ElementType& ElementRef;
+  
+  //! \brief Element's constant reference type.
+  typedef const ElementType& ElementConstRef;
+  
 private:
   //! \brief The native C-like array containing the datas.
   ElementType _elements[SIZE];
@@ -51,9 +57,9 @@ private:
   //! \param e : the next element to add to the array.
   //! \param args : the remaining arguments.
   template<typename... Targs>
-  inline void set(array_t i, const ElementType& e, const Targs&... args) {
+  inline void set(array_t i, ElementConstRef e, const Targs&... args) {
     if(i < SIZE) {
-      _elements[i] = e;
+      (*this)[i] = e;
       set(i+1, args...);
     }
   }
@@ -63,7 +69,7 @@ private:
   //! \note It copies the last element at all the remaining indexes.
   inline void set(array_t i) {
     for(array_t j = i; j < SIZE; j++) {
-      _elements[j] = _elements[j-1];
+      (*this)[j] = (*this)[j-1];
     }
   }
   
@@ -93,7 +99,17 @@ public:
   //! \return A reference to the array that has been written.
   inline Array& operator=(const Array& other) {
     for(array_t i = 0; i < SIZE; i++) {
-      _elements[i] = other._elements[i];
+      (*this)[i] = other[i];
+    }
+    return (*this);
+  }
+  
+  //! \brief Assign a value to every element in the array.
+  //! \param e : the value to assign.
+  //! \return A reference to the array that has been written.
+  inline Array& operator=(ElementConstRef e) {
+    for(array_t i = 0; i < SIZE; i++) {
+      (*this)[i] = e;
     }
     return (*this);
   }
@@ -101,14 +117,14 @@ public:
   //! \brief Access to an element's reference via its field's index.
   //! \param i : the index of the element to access.
   //! \return The reference to the element contained at the specified index.
-  inline ElementType& operator[](array_t i) {
+  inline ElementRef operator[](array_t i) {
     return _elements[i];
   }
   
   //! \brief Access to an element's constant reference via its field's index.
   //! \param i : the index of the element to access.
   //! \return The constant reference to the element contained at the specified index.
-  inline const ElementType& operator[](array_t i) const {
+  inline ElementConstRef operator[](array_t i) const {
     return _elements[i];
   }
   
@@ -117,7 +133,7 @@ public:
   //! \return A reference to the array the assignment has been done to.
   inline Array& operator+=(const Array& other) {
     for(array_t i = 0; i < SIZE; i++) {
-      _elements[i] += other._elements[i];
+      (*this)[i] += other[i];
     }
     return (*this);
   }
@@ -127,7 +143,7 @@ public:
   //! \return A reference to the array the assignment has been done to.
   inline Array& operator-=(const Array& other) {
     for(array_t i = 0; i < SIZE; i++) {
-      _elements[i] -= other._elements[i];
+      (*this)[i] -= other[i];
     }
     return (*this);
   }
@@ -137,7 +153,7 @@ public:
   //! \return A reference to the array the assignment has been done to.
   inline Array& operator*=(const Array& other) {
     for(array_t i = 0; i < SIZE; i++) {
-      _elements[i] *= other._elements[i];
+      (*this)[i] *= other[i];
     }
     return (*this);
   }
@@ -147,7 +163,7 @@ public:
   //! \return A reference to the array the assignment has been done to.
   inline Array& operator/=(const Array& other) {
     for(array_t i = 0; i < SIZE; i++) {
-      _elements[i] /= other._elements[i];
+      (*this)[i] /= other[i];
     }
     return (*this);
   }
@@ -157,7 +173,7 @@ public:
   //! \return A reference to the array the assignment has been done to.
   inline Array& operator%=(const Array& other) {
     for(array_t i = 0; i < SIZE; i++) {
-      _elements[i] %= other._elements[i];
+      (*this)[i] %= other[i];
     }
     return (*this);
   }
@@ -168,7 +184,7 @@ public:
   inline Array operator+(const Array& other) {
     Array ret;
     for(array_t i = 0; i < SIZE; i++) {
-      ret._elements[i] = _elements[i] + other._elements[i];
+      ret[i] = (*this)[i] + other[i];
     }
     return ret;
   }
@@ -179,7 +195,7 @@ public:
   inline Array operator-(const Array& other) {
     Array ret;
     for(array_t i = 0; i < SIZE; i++) {
-      ret._elements[i] = _elements[i] - other._elements[i];
+      ret[i] = (*this)[i] - other[i];
     }
     return ret;
   }
@@ -190,7 +206,7 @@ public:
   inline Array operator*(const Array& other) {
     Array ret;
     for(array_t i = 0; i < SIZE; i++) {
-      ret._elements[i] = _elements[i] * other._elements[i];
+      ret[i] = (*this)[i] * other[i];
     }
     return ret;
   }
@@ -201,7 +217,7 @@ public:
   inline Array operator/(const Array& other) {
     Array ret;
     for(array_t i = 0; i < SIZE; i++) {
-      ret._elements[i] = _elements[i] / other._elements[i];
+      ret[i] = (*this)[i] / other[i];
     }
     return ret;
   }
@@ -212,7 +228,7 @@ public:
   inline Array operator%(const Array& other) {
     Array ret;
     for(array_t i = 0; i < SIZE; i++) {
-      ret._elements[i] = _elements[i] % other._elements[i];
+      ret[i] = (*this)[i] % other[i];
     }
     return ret;
   }
@@ -220,9 +236,9 @@ public:
   //! \brief Add to each element of the array another object.
   //! \param o : the object to add.
   //! \return A reference to the array the assignment has been done to.
-  inline Array& operator+=(const ElementType& o) {
+  inline Array& operator+=(ElementConstRef o) {
     for(array_t i = 0; i < SIZE; i++) {
-      _elements[i] += o;
+      (*this)[i] += o;
     }
     return (*this);
   }
@@ -230,9 +246,9 @@ public:
   //! \brief Substract to each element of the array another object.
   //! \param o : the object to substract.
   //! \return A reference to the array the assignment has been done to.
-  inline Array& operator-=(const ElementType& o) {
+  inline Array& operator-=(ElementConstRef o) {
     for(array_t i = 0; i < SIZE; i++) {
-      _elements[i] -= o;
+      (*this)[i] -= o;
     }
     return (*this);
   }
@@ -240,9 +256,9 @@ public:
   //! \brief Multiply each element of the array with another object.
   //! \param o : the multiplier.
   //! \return A reference to the array the assignment has been done to.
-  inline Array& operator*=(const ElementType& o) {
+  inline Array& operator*=(ElementConstRef o) {
     for(array_t i = 0; i < SIZE; i++) {
-      _elements[i] *= o;
+      (*this)[i] *= o;
     }
     return (*this);
   }
@@ -250,9 +266,9 @@ public:
   //! \brief Divide each element of the array by another object.
   //! \param o : the divisor.
   //! \return A reference to the array the assignment has been done to.
-  inline Array& operator/=(const ElementType& o) {
+  inline Array& operator/=(ElementConstRef o) {
     for(array_t i = 0; i < SIZE; i++) {
-      _elements[i] /= o;
+      (*this)[i] /= o;
     }
     return (*this);
   }
@@ -260,9 +276,9 @@ public:
   //! \brief Get the modulo of each element of the array by another object.
   //! \param o : the divisor.
   //! \return A reference to the array the assignment has been done to.
-  inline Array& operator%=(const ElementType& o) {
+  inline Array& operator%=(ElementConstRef o) {
     for(array_t i = 0; i < SIZE; i++) {
-      _elements[i] %= o;
+      (*this)[i] %= o;
     }
     return (*this);
   }
@@ -270,10 +286,10 @@ public:
   //! \brief Add an oject to each element of the array.
   //! \param o : the object to add.
   //! \return The result array after the additions.
-  inline Array operator+(const ElementType& o) {
+  inline Array operator+(ElementConstRef o) {
     Array ret;
     for(array_t i = 0; i < SIZE; i++) {
-      ret._elements[i] = _elements[i] + o;
+      ret[i] = (*this)[i] + o;
     }
     return ret;
   }
@@ -281,10 +297,10 @@ public:
   //! \brief Substract an object to each element of the array.
   //! \param o : the object to substract.
   //! \return The result array after the substractions.
-  inline Array operator-(const ElementType& o) {
+  inline Array operator-(ElementConstRef o) {
     Array ret;
     for(array_t i = 0; i < SIZE; i++) {
-      ret._elements[i] = _elements[i] - o;
+      ret[i] = (*this)[i] - o;
     }
     return ret;
   }
@@ -292,10 +308,10 @@ public:
   //! \brief Multiply each element of the array by another object.
   //! \param o : the multiplier.
   //! \return The result array after the multiplications.
-  inline Array operator*(const ElementType& o) {
+  inline Array operator*(ElementConstRef o) {
     Array ret;
     for(array_t i = 0; i < SIZE; i++) {
-      ret._elements[i] = _elements[i] * o;
+      ret[i] = (*this)[i] * o;
     }
     return ret;
   }
@@ -303,10 +319,10 @@ public:
   //! \brief Divide each element of the array by another object.
   //! \param o : the divisor.
   //! \return The result array after the divisions.
-  inline Array operator/(const ElementType& o) {
+  inline Array operator/(ElementConstRef o) {
     Array ret;
     for(array_t i = 0; i < SIZE; i++) {
-      ret._elements[i] = _elements[i] / o;
+      ret[i] = (*this)[i] / o;
     }
     return ret;
   }
@@ -314,10 +330,10 @@ public:
   //! \brief Apply a modulo on each element of the array by another object.
   //! \param o : the divisor.
   //! \return The result array after the modulo operations.
-  inline Array operator%(const ElementType& o) {
+  inline Array operator%(ElementConstRef o) {
     Array ret;
     for(array_t i = 0; i < SIZE; i++) {
-      ret._elements[i] = _elements[i] % o;
+      ret[i] = (*this)[i] % o;
     }
     return ret;
   }
