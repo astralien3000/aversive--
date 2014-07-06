@@ -36,28 +36,28 @@ int main(int argc, char** argv) {
     return 1;
   }
   
-  p1.left(true);
+  p1.left() = true;
   
   if(p1.left() != true || p1.right() != false) {
     std::cout << "NOK" << std::endl;
     return 1;
   }
   
-  p1.right(true);
+  p1.right() = true;
   
   if(p1.left() != true || p1.right() != true) {
     std::cout << "NOK" << std::endl;
     return 1;
   }
   
-  p1.left(false);
+  p1.left() = false;
   
   if(p1.left() != false || p1.right() != true) {
     std::cout << "NOK" << std::endl;
     return 1;
   }
   
-  p1.right(false);
+  p1.right() = false;
   
   if(p1.left() != false || p1.right() != false) {
     std::cout << "NOK" << std::endl;
