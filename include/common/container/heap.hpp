@@ -196,7 +196,7 @@ private:
     set(args...);
   }
   
-  //! \brief Termination method to insert multiple elements at the construction of the list.
+  //! \brief Termination method to insert multiple elements at the construction of the heap.
   inline void set(void) {
   }
   
