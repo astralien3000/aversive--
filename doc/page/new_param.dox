@@ -25,6 +25,9 @@ static inline s8 dummy(void) {
 \note
 The interim cast to intptr_t is there to avoid a compile-time warning. Indeed, it is an integral type with the same size as an address on the targeted platform. Its unsigned counterpart also exists and is just prefixed with an "u".
 
+\note
+Remember to document both the attribute and the method.
+
 We can now close this file and execute the following command at the root of Aversive++:
 \code{.sh}
 make config_symbols | grep DUMMY
@@ -39,6 +42,12 @@ So in our case, we would add the line:
 \code{makefile}
 PARAM_DUMMY=42
 \endcode
+
+\note
+Document what is the purpose of the parameter we are adding with a comment on the line above.
+
+\warning
+As you may remember, we casted the address of the symbol into intptr_t in our method. Because that is all we can set through this method, we actually let the user set the address of our symbol. Therefore, the range of value is limited to the length of the addresses on the targeted platform for our parameter. Thus, we have to consider choosing a right scale for the parameter value. For example, if we want a parameter to hold the frequency of an AVR chip, we should not ask the user to put it in Hz because 16 Mhz will not fit in 16 bits. We should ask the user to put it in KHz or MHz instead.
 
 Now that we gave a way to the user to set our new parameter up, we still need to pass it to the linker. Still in the same file, look for the subsection Config symboles under Automatic Configuration. Here we need to add a variable that will hold the name of our symbol and its value given by the user. Thys variable must be called after the name of our parameter and be suffixed by "_SYM".
 \n
