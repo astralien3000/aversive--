@@ -46,7 +46,37 @@ namespace stm32 {
   struct gpio;
 
   template<>
+  struct gpio<0> : public _gpio<0x40020000> {};
+
+  template<>
+  struct gpio<1> : public _gpio<0x40020400> {};
+
+  template<>
+  struct gpio<2> : public _gpio<0x40020800> {};
+
+  template<>
   struct gpio<3> : public _gpio<0x40020C00> {};
+
+  template<>
+  struct gpio<4> : public _gpio<0x40021000> {};
+
+  template<>
+  struct gpio<5> : public _gpio<0x40021400> {};
+
+  template<>
+  struct gpio<6> : public _gpio<0x40021800> {};
+
+  template<>
+  struct gpio<7> : public _gpio<0x40021C00> {};
+
+  template<>
+  struct gpio<8> : public _gpio<0x40022000> {};
+
+  template<>
+  struct gpio<9> : public _gpio<0x40022400> {};
+
+  template<>
+  struct gpio<10> : public _gpio<0x40022800> {};
 
   // RCC
   template<int ID>
