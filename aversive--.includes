@@ -1,0 +1,4 @@
+include/common
+include/sasiae
+include/avr
+include/stm32
