@@ -13,12 +13,16 @@ namespace stm32 {
   public:
     static const u32 input = 0b00 << OFFSET;
     static const u32 output = 0b01 << OFFSET;
+
+    static const u32 mask = 0b11 << OFFSET;
   };
 
   template<int ID>
   struct _gpio_bsr_config {
     static const u32 set = 0b1 << ID;
     static const u32 reset = 0b1 << (ID + 16);
+
+    static const u32 mask = set | reset;
   };
 
   template<u32 BASE_ADDR>

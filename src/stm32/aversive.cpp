@@ -29,10 +29,6 @@ static int ret = 0;
 
 extern "C" volatile void* Default_Handler;
 
-namespace private_do_not_touch {
-volatile void* test;
-}
-
 extern "C" void __aeabi_unwind_cpp_pr0(void) {
   //while(1);
   return;
@@ -43,8 +39,14 @@ extern "C" void __aeabi_unwind_cpp_pr1(void) {
   return;
 }
 
+static void load_startup(void) __attribute__((optimize("O0")));
+static void load_startup(void) {
+  volatile void* test = Default_Handler;
+  (void)test;
+}
+
 void Aversive::init(void) {
-  private_do_not_touch::test = Default_Handler;
+  load_startup();
 
   if(!initialized) {
     running = initialized = true;

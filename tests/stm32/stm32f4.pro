@@ -14,7 +14,7 @@ QMAKE_CXX = arm-none-eabi-g++
 QMAKE_CC = arm-none-eabi-gcc
 QMAKE_LINK = arm-none-eabi-gcc
 
-QMAKE_CXXFLAGS = -std=c++11 -Wall -Wextra -mcpu=$${MCPU} -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -fsingle-precision-constant -Wdouble-promotion -ffunction-sections -fdata-sections -DSTM32F40_41xxx
+QMAKE_CXXFLAGS = -std=c++11 -Wall -Wextra -mcpu=$${MCPU} -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -fsingle-precision-constant -Wdouble-promotion -ffunction-sections -fdata-sections -DSTM32F40_41xxx -fno-rtti -fno-exceptions
 QMAKE_CXXFLAGS_DEBUG = -g
 QMAKE_CXXFLAGS_RELEASE = -O3
 
