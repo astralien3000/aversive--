@@ -60,6 +60,9 @@ public:
   //! \brief Change the return code of the application.
   //! \param returnCode : the new return code.
   static void setReturnCode(int returnCode = 0);
+
+  //! \brief Class holding the configuration of Aversive++.
+  class Config;
 };
 
 #endif//AVERSIVE_HPP
