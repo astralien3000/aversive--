@@ -24,7 +24,7 @@ QMAKE_CFLAGS_RELEASE = -O3
 
 INCLUDEPATH = ../../include/stm32 ../../thirdparty/stm32f4xx
 
-LIBS = -L"/home/astralien3000/aversive--/build" -laversive_stm32f4
+LIBS = -L"../../build" -laversive_stm32f4
 
 HEADERS =
 SOURCES = main.cpp
