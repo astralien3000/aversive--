@@ -2,7 +2,7 @@
 
 TARGET=$1
 
-if [ type qmake ]
+if type qmake 2> /dev/null
 then
     QMAKE=qmake
 else
