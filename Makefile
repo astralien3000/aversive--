@@ -3,7 +3,7 @@
 all: mk/all.mk
 	$(MAKE) -f mk/all.mk all_targets
 
-update: mrproper
+update: clean_mk
 	./tools/compilation/generate_files_pro.sh common > project/generated/common.files.pro
 	./tools/compilation/generate_files_pro.sh avr > project/generated/avr.files.pro
 	./tools/compilation/generate_files_pro.sh sasiae > project/generated/sasiae.files.pro
@@ -27,6 +27,9 @@ newhpp:
 
 exporthpp:
 	@./tools/script/exporthpp.sh
+
+config_symbols:
+	@./tools/script/config_symbols.sh
 
 todo:
 	@grep --color=auto -nr todo include/ src/
