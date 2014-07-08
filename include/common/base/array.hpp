@@ -370,7 +370,7 @@ private:
   static const array_t REAL_SIZE = (SIZE / 8) + ((SIZE % 8) ? 1 : 0);
   
   //! \brief The native C-like array containing the datas.
-  ElementType _elements[REAL_SIZE];
+  u8 _elements[REAL_SIZE];
   
   //! \brief Variadic templated method to insert multiple elements at the construction of the array.
   //! \param i : the index where to insert the next element in the array.
