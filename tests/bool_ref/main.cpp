@@ -58,7 +58,42 @@ int main(int argc, char** argv) {
     std::cout << "NOK" << std::endl;
     return 1;
   }
-  
+
+  r1 = true;
+  r1 += true;
+  if(r1 != (bool) (true + true)) {
+    std::cout << "NOK +=" << std::endl;
+    return 1;
+  }
+
+  r1 = true;
+  r1 -= true;
+  if(r1 != (bool) (true - true)) {
+    std::cout << "NOK -=" << std::endl;
+    return 1;
+  }
+
+  r1 = true;
+  r1 *= false;
+  if(r1 != (bool) (true * false )) {
+    std::cout << "NOK *=" << std::endl;
+    return 1;
+  }
+
+  r1 = true;
+  r1 /= true;
+  if(r1 != (bool) (true / true)) {
+    std::cout << "NOK /=" << std::endl;
+    return 1;
+  }
+
+  r1 = true;
+  r1 %= true;
+  if(r1 != (bool) (true % true)) {
+    std::cout << "NOK %=" << std::endl;
+    return 1;
+  }
+
   std::cout << "OK" << std::endl;  
   return 0;
 }
