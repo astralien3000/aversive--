@@ -4,10 +4,18 @@ all: mk/all.mk
 	$(MAKE) -f mk/all.mk all_targets
 
 update: clean_mk
-	./tools/compilation/generate_files_pro.sh common > project/generated/common.files.pro
-	./tools/compilation/generate_files_pro.sh avr > project/generated/avr.files.pro
-	./tools/compilation/generate_files_pro.sh sasiae > project/generated/sasiae.files.pro
-	./tools/compilation/generate_files_pro.sh stm32 > project/generated/stm32.files.pro
+	tools/compilation/generate_files_pro.sh common > project/generated/common.files.pro
+	tools/compilation/generate_files_pro.sh avr > project/generated/avr.files.pro
+	tools/compilation/generate_files_pro.sh sasiae > project/generated/sasiae.files.pro
+	tools/compilation/generate_files_pro.sh stm32 > project/generated/stm32.files.pro
+
+architecture: archiparser
+	cat architecture/atmega128.archi | tools/archi_parser/build/archiparser > include/avr/hardware/part/atmega128.hpp
+	cat architecture/atmega2560.archi | tools/archi_parser/build/archiparser > include/avr/hardware/part/atmega2560.hpp
+	cat architecture/atmega32.archi | tools/archi_parser/build/archiparser > include/avr/hardware/part/atmega32.hpp
+	tools/license_header/license_header.sh tools/license_header/license.txt include/avr/hardware/part/atmega128.hpp
+	tools/license_header/license_header.sh tools/license_header/license.txt include/avr/hardware/part/atmega2560.hpp
+	tools/license_header/license_header.sh tools/license_header/license.txt include/avr/hardware/part/atmega32.hpp
 
 mk/all.mk:
 	./tools/compilation/generate_all_mk.sh > mk/all.mk

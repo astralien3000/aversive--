@@ -1,59 +1,89 @@
 %{
-#include <stdio.h>
-#include <string.h>
+
 #include "y.tab.h"
+#include <iostream>
 
-#define STRUCT_MAX 1024
+#include <identifier.hpp>
 
-  void new_struct();
-  void set_parent();
-  void unset_parent();
-  void clear_struct();
+#include <uc_node.hpp>
+#include <hardware_node.hpp>
+#include <register_node.hpp>
+#include <struct_node.hpp>
+#include <config_node.hpp>
+#include <cstring>
 
-  void apply_num(char*, int, int);
+  int yylex(void);
 
-  char struct_type[STRUCT_MAX][1024];
-  char struct_def[STRUCT_MAX][1024];
-  char struct_name[STRUCT_MAX][1024];
-  char struct_code[STRUCT_MAX][1024];
-  int struct_template[STRUCT_MAX];
-  int struct_register[STRUCT_MAX];
+  ParentNode* root = 0;
+  std::list<ParentNode*> context;
 
-  int s_config[STRUCT_MAX];
-  int s_register[STRUCT_MAX];
-  int s_rsize[STRUCT_MAX];
+  RegisterNode* cur_register = 0;
 
-  char struct_parent[STRUCT_MAX];
-  int parent = -1;
+  indented_stream out(std::cout);
 
-  int struct_id = -1;
- 
+  int yyerror(const char* s);
 %}
 
-%union { char id[1024]; int n; }
-%token <id>ID 
-%token <n>N
-%token TAB 
+%union {
+  char id[1024];
+  int n;
+  void* data; // WARNING
+}
+
+%token <id>IDENTIFIER_TOKEN
+%token <n>NUMERIC_TOKEN
+
 %token UC_TOKEN
-%token TEMPLATE_TOKEN
 %token HARDWARE_TOKEN
-%token <n> REGISTER_TOKEN
+%token REGISTER_TOKEN
 %token CONFIG_TOKEN
 %token CONFIG_LIST_TOKEN
 
-%type <id> ID_CASE
-%type <n> REG_EXPR
+%token SEP_BLOCK_TOKEN
 
+%token BEG_LIST_TOKEN
+%token END_LIST_TOKEN
+%token SEP_LIST_TOKEN
+
+%token ASSIGN_TOKEN
+
+%type <n>REGISTER_SIZE
+%type <data>ID_CASE
+
+%type <id>VAL
 %type <id>T
-%type <id>VAL 
-%type <id>EXPR
 %type <id>F
+%type <id>EXPR
+
 
 %%
 
-SOURCE
-: UC_TOKEN ID HARDWARE_LIST 
+ ////////////////////////////////////////
+ // UC
+
+UC
+: UC_DECL SEP_BLOCK
+| UC_DECL UC_BLOCK SEP_BLOCK
 ;
+
+UC_DECL
+: UC_TOKEN IDENTIFIER_TOKEN {
+  if(!root) {
+    root = new UcNode(std::string($2));
+    context.push_front(root);
+  }
+  else {
+    std::cerr << "ERROR : There is already a uc !?" << std::endl;
+  }
+ }
+;
+
+UC_BLOCK
+: BEG_LIST_TOKEN HARDWARE_LIST END_LIST_TOKEN
+;
+
+ ////////////////////////////////////////
+ // HARDWARE
 
 HARDWARE_LIST
 : HARDWARE
@@ -61,15 +91,29 @@ HARDWARE_LIST
 ;
 
 HARDWARE
-: HARDWARE_DECL  { unset_parent(); }
-| HARDWARE_DECL REGISTER_LIST  { unset_parent(); }
+: HARDWARE_DECL SEP_BLOCK
+| HARDWARE_DECL HARDWARE_BLOCK SEP_BLOCK
 ;
 
 HARDWARE_DECL
-: HARDWARE_TOKEN ID_CASE  { 
-  set_parent(); 
+: HARDWARE_TOKEN ID_CASE {
+  if(context.front()) {
+    HardwareNode* nod = new HardwareNode(*(Identifier*)$2);
+    nod->setParent(context.front());
+    context.push_front(nod);
+  }
+  else {
+    std::cerr << "ERROR" << std::endl;
+  }
  }
 ;
+
+HARDWARE_BLOCK
+: BEG_LIST_TOKEN REGISTER_LIST END_LIST_TOKEN
+;
+
+ ////////////////////////////////////////
+ // REGISTER
 
 REGISTER_LIST
 : REGISTER
@@ -77,38 +121,51 @@ REGISTER_LIST
 ;
 
 REGISTER
-: REGISTER_DECL { 
-  unset_parent(); 
- }
-| REGISTER_DECL CONFIG_LIST { 
-  unset_parent(); 
- }
+: REGISTER_DEF SEP_BLOCK
+| REGISTER_DEF REGISTER_BLOCK SEP_BLOCK
+;
+
+REGISTER_DEF
+: REGISTER_DECL ASSIGN_TOKEN REG_EXPR
 ;
 
 REGISTER_DECL
-: REGISTER_TOKEN ID_CASE REG_EXPR {
-  struct_register[struct_id] = 1;
-  s_rsize[struct_id] = $1;
-  char buff[1024];
-  sprintf(buff, "reg_size(%d), reg{%s}", $3, struct_code[struct_id]);
-  sprintf(struct_code[struct_id], "%s", buff);
-  apply_num(struct_code[struct_id], s_rsize[struct_id], $3);
-  set_parent();
+: REGISTER_SIZE ID_CASE {
+  if(context.front()) {
+    RegisterNode* nod = new RegisterNode(*(Identifier*)$2, $1);
+    nod->setParent(context.front());
+    context.push_front(nod);
+  }
+ }
+;
+
+REGISTER_BLOCK
+: BEG_LIST_TOKEN CONFIG_LIST END_LIST_TOKEN
+;
+
+REGISTER_SIZE
+: REGISTER_TOKEN '[' NUMERIC_TOKEN ']' {
+  $$ = $3;
  }
 ;
 
 REG_EXPR
-: ID { 
-  sprintf(struct_code[struct_id], "(u%%d*)&%s", $1);
-  $$ = 1;
- }
-| ID ',' REG_EXPR {
-  char buff[1024];
-  sprintf(buff, "%s, %s", $1, struct_code[struct_id]);
-  sprintf(struct_code[struct_id], "(u%%d*)&%s", buff);
-  $$ = 1 + $3;
-  }
+: BEG_LIST_TOKEN REG_LIST END_LIST_TOKEN
 ;
+
+REG_LIST
+: IDENTIFIER_TOKEN {
+  RegisterNode& reg = *dynamic_cast<RegisterNode*>(context.front());
+  reg.regs().push_front($1);
+ }
+| IDENTIFIER_TOKEN SEP_LIST_TOKEN REG_LIST {
+  RegisterNode& reg = *dynamic_cast<RegisterNode*>(context.front());
+  reg.regs().push_front($1);
+ }
+;
+
+ ////////////////////////////////////////
+ // CONFIG_TREE
 
 CONFIG_LIST
 : CONFIG
@@ -116,59 +173,73 @@ CONFIG_LIST
 ;
 
 CONFIG
-: CONFIG_DECL
-| CONFIG_CONFIG_LIST
+: C
+| CL
 ;
 
-CONFIG_DECL
-: CONFIG_TOKEN ID_CASE CONF_EXPR {
-  s_rsize[struct_id] = s_rsize[parent];
-  char buff[1024];
-  sprintf(buff, "conf{%s}", struct_code[struct_id]);
-  strcpy(struct_code[struct_id], buff);
- }
+ ////////////////////////////////////////
+ // CONFIG
+
+C
+: C_DEF SEP_BLOCK
 ;
 
-CONFIG_CONFIG_LIST
-: CONFIG_CONFIG_LIST_DECL SUB_CONFIG_LIST { unset_parent(); }
+C_DEF
+: C_DECL ASSIGN_TOKEN CONF_EXPR
 ;
 
-SUB_CONFIG_LIST
-: SUB_CONFIG
-| SUB_CONFIG SUB_CONFIG_LIST
-;
-
-SUB_CONFIG
-: SUB_CONFIG_DECL
-;
-
-SUB_CONFIG_DECL
-: CONFIG_DECL
-;
-
-CONFIG_CONFIG_LIST_DECL
-: CONFIG_LIST_TOKEN ID_CASE { 
-  s_rsize[struct_id] = s_rsize[parent];
-  set_parent(); 
+C_DECL
+: CONFIG_TOKEN ID_CASE {
+  if(context.front()) {
+    ConfigNode* nod = new ConfigNode(*(Identifier*)$2);
+    nod->setParent(context.front());
+    context.push_front(nod);
+  }
  }
 ;
 
 CONF_EXPR
-: EXPR {
-  char buff[1024];
-  sprintf(buff, "%s", $1);
-  strcpy(struct_code[struct_id], buff);
- }
-| EXPR ',' CONF_EXPR {
-  char buff[1024];
-  sprintf(buff, "%s, %s", $1, struct_code[struct_id]);
-  strcpy(struct_code[struct_id], buff);
-  }
+: BEG_LIST_TOKEN CONF_LIST END_LIST_TOKEN
 ;
+
+CONF_LIST
+: EXPR {
+  ConfigNode& nod = *dynamic_cast<ConfigNode*>(context.front());
+  nod.confs().push_front($1);
+ }
+| EXPR SEP_LIST_TOKEN CONF_LIST {
+  ConfigNode& nod = *dynamic_cast<ConfigNode*>(context.front());
+  nod.confs().push_front($1);
+ }
+;
+
+ ////////////////////////////////////////
+ // CONFIG_LIST
+
+CL
+: CL_DECL CL_BLOCK SEP_BLOCK
+;
+
+CL_DECL
+: CONFIG_LIST_TOKEN ID_CASE {
+  if(context.front()) {
+    StructNode* nod = new SubRegisterNode(*(Identifier*)$2);
+    nod->setParent(context.front());
+    context.push_front(nod);
+  }
+ }
+;
+
+CL_BLOCK
+: BEG_LIST_TOKEN CONFIG_LIST END_LIST_TOKEN
+;
+
+ ////////////////////////////////////////
+ // EXPR
 
 EXPR
 : F {
-  sprintf($$, "%s", $1);
+  strcpy($$, $1);
  }
 | F '|' EXPR {
   sprintf($$, "%s | %s", $1, $3);
@@ -177,7 +248,7 @@ EXPR
 
 F
 : T {
-  sprintf($$, "%s", $1);
+  strcpy($$, $1);
  }
 | T '&' F {
   sprintf($$, "%s & %s", $1, $3);
@@ -189,10 +260,10 @@ T
   strcpy($$, $1);
  }
 | '(' VAL '<' VAL ')' {
-  sprintf($$, "( %s << %s )", $2, $4);
+  sprintf($$, "(%s << %s)", $2, $4);
  }
 | '(' VAL '>' VAL ')' {
-  sprintf($$, "( %s >> %s )", $2, $4);
+  sprintf($$, "(%s >> %s)", $2, $4);
  }
 | '~' VAL {
   sprintf($$, "~%s", $2);
@@ -203,202 +274,55 @@ T
 ;
 
 VAL
-: ID {
+: IDENTIFIER_TOKEN {
   strcpy($$, $1);
  }
-| N {
+| NUMERIC_TOKEN {
   sprintf($$, "%d", $1);
   }
 ;
 
+ ////////////////////////////////////////
+ // ID_CASE
+
 ID_CASE
-: ID {
-  new_struct();
-  sprintf(struct_type[struct_id], "");
-  sprintf(struct_def[struct_id], "struct %s;", $1);
-  sprintf(struct_name[struct_id], "%s", $1);
-  struct_template[struct_id] = 0;
-  struct_register[struct_id] = 0;
+: IDENTIFIER_TOKEN {
+  $$ = new Identifier(std::string($1));
  }
-| ID '[' N ']' {
-  new_struct();
-  sprintf(struct_type[struct_id], "template<> ");
-  sprintf(struct_def[struct_id], "template<int ID> struct %s;", $1);
-  sprintf(struct_name[struct_id], "%s<%d>", $1, $3);
-  struct_template[struct_id] = 1;
-  struct_register[struct_id] = 0;
+| IDENTIFIER_TOKEN '[' NUMERIC_TOKEN ']' {
+  $$ = new Identifier(std::string($1), $3);
  }
-| N {
-  new_struct();
-  sprintf(struct_type[struct_id], "template<> ");
-  sprintf(struct_def[struct_id], "template<int ID> struct value;");
-  sprintf(struct_name[struct_id], "value<%d>", $1);
-  struct_template[struct_id] = 1;
-  struct_register[struct_id] = 0;
-  }
+| NUMERIC_TOKEN {
+  $$ = new Identifier($1);
+ }
+;
+
+SEP_BLOCK
+: SEP_BLOCK_TOKEN {
+  context.pop_front();
+ }
 ;
 
 %%
-int yyerror(char* s) { perror("ERROR!"); }
 
-
-void new_struct() {
-  struct_id++;
-  struct_parent[struct_id] = parent;
+int yyerror(const char* s) {
+  std::cerr << "ERROR!" << std::endl;
+  return -1;
 }
-
-void clear_struct() {
-  struct_id--;
-}
-
-void set_parent() {
-  parent = struct_id;
-}
-
-void unset_parent() {
-  parent = struct_parent[parent];
-}
-
-
-void full_name(char* buff2, int id) {
-  char buff[1024];
-  sprintf(buff2, "%s", struct_name[id]);
-  for(int j = struct_parent[id] ; j > -1 ; j = struct_parent[j]) {
-    sprintf(buff, "%s::%s", struct_name[j], buff2);
-    sprintf(buff2, "%s", buff);
-  }
-}
-
-void full_type(char* buff2, int id) {
-  char buff[1024];
-  sprintf(buff2, "%s", struct_type[id]);
-  for(int j = struct_parent[id] ; j > -1 ; j = struct_parent[j]) {
-    sprintf(buff, "%s%s", struct_type[j], buff2);
-    sprintf(buff2, "%s", buff);
-  }
-}
-
-int nindent = 0;
-
-void indent() {
-  for(int i = 0 ; i < nindent ; i++) {
-    printf("  ");
-  }
-}
-
-int config = 0;
-
-void new_config(int id) {
-  indent();
-  printf("enum { CONFIG = %d, SIZE = %d };\n", s_config[id] = config++, s_rsize[id]);
-}
-
-int reg = 0;
-
-void new_register(int id) {
-  indent();
-  printf("enum { REG = %d, SIZE = %d };\n", s_register[id] = reg++, s_rsize[id]);
-}
-
-void declare(int id) {
-  indent();
-  printf("%s\n", struct_def[id]);
-}
-
-void sub_define(int id) {
-  indent();
-  printf("%sstruct %s {\n", struct_type[id], struct_name[id]);
-  nindent++;
-  int empty = 1;
-  for(int i = 0 ; i < struct_id ; i++) {
-    if(struct_parent[i] == id) {
-      if(struct_template[i]) {
-	declare(i);
-      }
-      else {
-	sub_define(i);
-      }
-      empty = 0;
-    }
-  }
-    
-  if(struct_register[id] == 1) {
-    new_register(id);
-  }
-  else {
-    if(empty)
-      new_config(id);
-  }
-
-  nindent--;
-  indent();
-  printf("};\n\n");
-}
-
-void define(int id) {
-  char buff_name[1024], buff_type[1024];
-  full_name(buff_name, id);
-  full_type(buff_type, id);
-  indent();
-  printf("%sstruct %s {\n", buff_type, buff_name);
-  nindent++;
-  int empty = 1;
-  for(int i = 0 ; i < struct_id ; i++) {
-    if(struct_parent[i] == id) {
-      if(struct_template[i]) {
-	declare(i);
-      }
-      else {
-	sub_define(i);
-      }
-      empty = 0;
-    }
-  }
-  
-  if(struct_register[id] == 1) {
-    new_register(id);
-  }
-  else {
-    if(empty)
-      new_config(id);
-  }
-
-  nindent--;
-  indent();
-  printf("};\n\n");
-}
-
-void apply_num(char* str, int num, int n) {
-  for(int i = 0 ; i < n ; i++) {
-    char buff[1024];
-    sprintf(buff, str, num, num, num, num);
-    strcpy(str, buff);
-  }
-}
-
 
 int main (int argc, char *argv[]) {
 
+  context.push_front(0);
+
   yyparse ();
 
-  for(int i = 0 ; i < struct_id ; i++) {
-    if(struct_parent[i] == -1)
-      declare(i);
-    if(struct_template[i]) {
-      define(i);
-    }
+  if(!root) {
+    std::cerr << "ERROR : Could'nt parse document, no uc found" << std::endl;
   }
 
-  for(int i = 0 ; i < struct_id ; i++) {
-    if(struct_code[i][0] != 0) {
-      if(struct_register[i] == 1) {
-	printf("template<> inline Register<%d, %d>::Register(void) : %s {}\n", s_rsize[i], s_register[i], struct_code[i]);
-      }
-      else {
-	printf("template<> inline Config<%d, %d>::Config(void) : %s {}\n", s_rsize[i], s_config[i], struct_code[i]);
-      }
-    }
-  }
+  root->declare(out);
+  root->define(out);
+  root->defineValue(out);
 
   return 0;
 }

@@ -1,1 +1,0 @@
-flex archi.l && yacc archi.y -d && gcc -std=c99 y.tab.c lex.yy.c -ll && cat ../../config/atmega128.archi | ./a.out > ../../include/avr/hardware/part/atmega128.hpp
