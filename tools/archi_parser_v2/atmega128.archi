@@ -145,7 +145,7 @@ uc atmega128 {
     register[8] control_out[5] = { DDRF };
     register[8] control_out[6] = { DDRG };
 
-    register[8] port[0] = { PORTA }
+    register[8] port[0] = { PORTA };
     register[8] port[1] = { PORTB };
     register[8] port[2] = { PORTC };
     register[8] port[3] = { PORTD };

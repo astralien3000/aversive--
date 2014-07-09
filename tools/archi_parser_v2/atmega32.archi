@@ -129,37 +129,21 @@ uc atmega32 {
     };
   };
 
-  hardware xmem[0] {
-    register[8] control = { MCUCR, XMCRA } {
-      config enable      = { (1 << SRE), 0 };
-      config defaultwait = { 0, (1 << SRW11) | (1 << SRW00) };
-    };
-  };
-
   hardware pinmap {
     register[8] control_out[0] = { DDRA };
     register[8] control_out[1] = { DDRB };
     register[8] control_out[2] = { DDRC };
     register[8] control_out[3] = { DDRD };
-    register[8] control_out[4] = { DDRE };
-    register[8] control_out[5] = { DDRF };
-    register[8] control_out[6] = { DDRG };
 
-    register[8] port[0] = { PORTA }
+    register[8] port[0] = { PORTA };
     register[8] port[1] = { PORTB };
     register[8] port[2] = { PORTC };
     register[8] port[3] = { PORTD };
-    register[8] port[4] = { PORTE };
-    register[8] port[5] = { PORTF };
-    register[8] port[6] = { PORTG };
 
     register[8] pin[0] = { PINA };
     register[8] pin[1] = { PINB };
     register[8] pin[2] = { PINC };
     register[8] pin[3] = { PIND };
-    register[8] pin[4] = { PINE };
-    register[8] pin[5] = { PINF };
-    register[8] pin[6] = { PING };
 
   };
 };
