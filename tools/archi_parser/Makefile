@@ -26,8 +26,8 @@ $(BUILD_DIR)/lex.yy.o : $(BUILD_DIR)/lex.yy.c
 $(BUILD_DIR)/%.o : %.cpp
 	$(CC) $(CFLAGS) -c $^ -o $@
 
-$(BUILD_DIR)/y.tab.c:
-	yacc -d -o $@ archi.y
+$(BUILD_DIR)/y.tab.c: archi.y
+	yacc -d -o $@ $<
 
-$(BUILD_DIR)/lex.yy.c:
-	flex -o $@ archi.lex
+$(BUILD_DIR)/lex.yy.c: archi.lex
+	flex -o $@ $<

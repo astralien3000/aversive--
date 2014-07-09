@@ -10,6 +10,7 @@
 #include <register_node.hpp>
 #include <struct_node.hpp>
 #include <config_node.hpp>
+#include <cstring>
 
   int yylex(void);
 
@@ -20,6 +21,7 @@
 
   indented_stream out(std::cout);
 
+  int yyerror(const char* s);
 %}
 
 %union {
@@ -303,7 +305,7 @@ SEP_BLOCK
 
 %%
 
-int yyerror(char* s) {
+int yyerror(const char* s) {
   std::cerr << "ERROR!" << std::endl;
   return -1;
 }
