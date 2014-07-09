@@ -1210,3 +1210,7 @@ include/stm32/hardware/architecture.hpp
 include/stm32/hardware/gpio.hpp
 include/stm32/hardware/pinmap.hpp
 tools/archi_parser_v2/atmega32.archi
+tools/archi_parser_v2/atmega32.archi
+tools/archi_parser_v2/atmega2560.archi
+tools/archi_parser_v2/atmega128.archi
+tools/archi_parser_v2/example.archi
