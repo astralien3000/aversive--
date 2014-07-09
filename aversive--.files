@@ -1209,3 +1209,4 @@ include/stm32/hardware/part/stm32f4.hpp
 include/stm32/hardware/architecture.hpp
 include/stm32/hardware/gpio.hpp
 include/stm32/hardware/pinmap.hpp
+tools/archi_parser_v2/atmega32.archi
