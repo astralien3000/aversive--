@@ -40,6 +40,12 @@ public:
   //! \brief Element's type.
   typedef _ElementType ElementType;
   
+  //! \brief Element's reference type.
+  typedef typename Array<SIZE, ElementType>::ElementRef ElementRef;
+  
+  //! \brief Element's constant reference type.
+  typedef typename Array<SIZE, ElementType>::ElementConstRef ElementConstRef;
+  
 private:
   //! \brief The array containing the stacked elements.
   Array<SIZE, ElementType> _data;
@@ -51,7 +57,7 @@ private:
   //! \param e : the next element to add to the stack.
   //! \param args : the remaining arguments.
   template<typename... Targs>
-  inline void set(const ElementType& e, const Targs&... args) {
+  inline void set(ElementConstRef e, const Targs&... args) {
     push(e);
     set(args...);
   }
@@ -102,7 +108,7 @@ public:
   //! \brief Pile up an element on top of the stack.
   //! \param element : the element to add to the stack.
   //! \return A boolean telling whether the addition was successful or not.
-  inline bool push(const ElementType& element) {
+  inline bool push(ElementConstRef element) {
     if(_size == SIZE) {
       return false;
     }
@@ -118,7 +124,7 @@ public:
   //! \brief Access to the most recently added element of the stack.
   //! \return A constant reference to the element at the top of the stack.
   //! \warning If the stack is actually empty, this causes an undefined behavior.
-  inline const ElementType& head(void) const {
+  inline ElementConstRef head(void) const {
     return _data[_size - 1];
   }
   
