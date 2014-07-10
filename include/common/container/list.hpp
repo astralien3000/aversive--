@@ -40,6 +40,12 @@ public:
   //! \brief Element's type.
   typedef _ElementType ElementType;
   
+  //! \brief Element's reference type.
+  typedef typename Array<SIZE, ElementType>::ElementRef ElementRef;
+  
+  //! \brief Element's constant reference type.
+  typedef typename Array<SIZE, ElementType>::ElementConstRef ElementConstRef;
+  
 private:
   //! \brief The array containing the datas.
   Array<SIZE, ElementType> _data;
@@ -51,7 +57,7 @@ private:
   //! \param e : the next element to add to the list.
   //! \param args : the remaining arguments.
   template<typename... Targs>
-  inline void set(const ElementType& e, const Targs&... args) {
+  inline void set(ElementConstRef e, const Targs&... args) {
     append(e);
     set(args...);
   }
@@ -92,7 +98,7 @@ public:
   //! \brief Append an element at the end of the list.
   //! \param e : the element to append to the list.
   //! \return A boolean telling whether the insertion has been done successfully or not.
-  inline bool append(const ElementType& e) {
+  inline bool append(ElementConstRef e) {
     if(_size == SIZE) { // The list is full.
       return false;
     }
@@ -104,7 +110,7 @@ public:
   //! \brief Prepend an element at the beginning of the list.
   //! \param e : the element to prepend to the list.
   //! \return A boolean telling whether the insertion has been done successfully or not.
-  inline bool prepend(const ElementType& e) {
+  inline bool prepend(ElementConstRef e) {
     return insertAt(0, e);
   }
   
@@ -112,7 +118,7 @@ public:
   //! \param index : the index to add the element at.
   //! \param e : the element to add to the list.
   //! \return A boolean telling whether the insertion has been done successfully or not.
-  bool insertAt(list_t index, const ElementType& e) {
+  bool insertAt(list_t index, ElementConstRef e) {
     if(_size == SIZE) { // The list is full.
       return false;
     }
@@ -148,7 +154,7 @@ public:
   //! \brief Remove all the elements equal to a given one.
   //! \param e : the element to remove from the list.
   //! \return True if at least one element has been removed, false otherwise.
-  bool remove(const ElementType& e) {
+  bool remove(ElementConstRef e) {
     bool res = false;
     for(list_t i = 0; i < _size; i++) {
       if(_data[i] == e) {
@@ -191,7 +197,7 @@ public:
   //! \brief Test if the list contains a specified element.
   //! \param e : the element to search in the list.
   //! \return A boolean telling whether the element is contained in the list or not.
-  inline bool contains(const ElementType& e) const {
+  inline bool contains(ElementConstRef e) const {
     for(list_t i = 0; i < _size; i++) {
       if(_data[i] == e) {
 	return true;
@@ -203,7 +209,7 @@ public:
   //! \brief Give the index in the list of a specified element.
   //! \param e : the element to search its index in the list.
   //! \return : The index of the element if it is in the list, the current size of the list otherwise.
-  inline list_t indexOf(const ElementType& e) const {
+  inline list_t indexOf(ElementConstRef e) const {
     for(list_t i = 0; i < _size; i++) {
       if(_data[i] == e) {
 	return i;
@@ -216,7 +222,7 @@ public:
   //! \param index : the index of the element to return.
   //! \return The reference to the asked element.
   //! \warning If the index is out of range, this causes an undefined behavior.
-  inline ElementType& get(list_t index) {
+  inline ElementRef get(list_t index) {
     return _data[index];
   }
   
@@ -224,7 +230,7 @@ public:
   //! \param index : the index of the element to return.
   //! \return The constant reference to the asked element.
   //! \warning If the index is out of range, this causes an undefined behavior.
-  inline const ElementType& get(list_t index) const {
+  inline ElementConstRef get(list_t index) const {
     return _data[index];
   }
   

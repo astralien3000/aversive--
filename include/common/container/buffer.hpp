@@ -41,6 +41,12 @@ public:
   //! \brief Element's type.
   typedef _ElementType ElementType;
   
+  //! \brief Element's reference type.
+  typedef typename Array<SIZE, ElementType>::ElementRef ElementRef;
+  
+  //! \brief Element's constant reference type.
+  typedef typename Array<SIZE, ElementType>::ElementConstRef ElementConstRef;
+  
 private:
   //! \brief The array containing the datas.
   Array<SIZE, ElementType> _data;
@@ -55,12 +61,12 @@ private:
   //! \param e : the next element to add to the buffer.
   //! \param args : the remaining arguments.
   template<typename... Targs>
-  inline void set(const ElementType& e, const Targs&... args) {
+  inline void set(ElementConstRef e, const Targs&... args) {
     enqueue(e);
     set(args...);
   }
   
-  //! \brief Termination method to insert multiple elements at the construction of the list.
+  //! \brief Termination method to insert multiple elements at the construction of the buffer.
   inline void set(void) {
   }
   
@@ -112,7 +118,7 @@ public:
   //! \brief Enqueue an element to the buffer.
   //! \param element : the element to enqueue in the buffer.
   //! \return A boolean telling whether the element has been successfully enqueued or not.
-  inline bool enqueue(const ElementType& element) {
+  inline bool enqueue(ElementConstRef element) {
     if(isFull()) {
       return false;
     }
@@ -124,7 +130,7 @@ public:
   //! \brief Access to the oldest element.
   //! \return A reference to the element at the head of the buffer.
   //! \warning If the buffer is actually empty, this causes an undefined behavior.
-  inline const ElementType& head(void) const {
+  inline ElementConstRef head(void) const {
     return _data[_reads % SIZE];
   }
   

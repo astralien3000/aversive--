@@ -47,6 +47,12 @@ public:
   //! \brief Element's type.
   typedef _ElementType ElementType;
   
+  //! \brief Element's reference type.
+  typedef typename Array<SIZE, ElementType>::ElementRef ElementRef;
+  
+  //! \brief Element's constant reference type.
+  typedef typename Array<SIZE, ElementType>::ElementConstRef ElementConstRef;
+  
 private:
   //! \brief The array containing the datas.
   Array<SIZE, ElementType> _data;
@@ -129,12 +135,12 @@ private:
     }
     
     //! \brief Returns a reference to the element of the node.
-    inline ElementType& element(void) {
+    inline ElementRef element(void) {
       return _heap->_data[_index];
     }
     
     //! \brief Returns a constant reference to the element of the node.
-    inline const ElementType& element(void) const {
+    inline const ElementRef element(void) const {
       return _heap->_data[_index];
     }
   };
@@ -191,12 +197,12 @@ private:
   //! \param e : the next element to add to the heap.
   //! \param args : the remaining arguments.
   template<typename... Targs>
-  inline void set(const ElementType& e, const Targs&... args) {
+  inline void set(ElementConstRef e, const Targs&... args) {
     insert(e);
     set(args...);
   }
   
-  //! \brief Termination method to insert multiple elements at the construction of the list.
+  //! \brief Termination method to insert multiple elements at the construction of the heap.
   inline void set(void) {
   }
   
@@ -232,7 +238,7 @@ public:
   //! \brief Insert an element in the Heap
   //! \param e : the element to add within the heap.
   //! \return A boolean telling whether the element has been successfully inserted or not.
-  inline bool insert(const ElementType& e) {
+  inline bool insert(ElementConstRef e) {
     if(SIZE == _size) {
       return false;
     }
@@ -261,7 +267,7 @@ public:
   //! \brief Access to the maximal element.
   //! \return A reference to the maximal element.
   //! \warning If the heap is actually empty, this causes an undefined behavior.
-  inline const ElementType& max(void) const {
+  inline ElementConstRef max(void) const {
     return _data[0];
   }
   
