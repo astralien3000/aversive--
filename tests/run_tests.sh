@@ -51,7 +51,7 @@ function recur {
 }
 
 if [ "$1" = "test" ]; then
-    echo "./"
+    echo "."
     recur . test 0
     exit 0
 elif [ "$1" = "clean" ]; then
