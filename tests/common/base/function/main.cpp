@@ -1,7 +1,7 @@
 #include <iostream>
-#include <cassert>
 #include <base/function.hpp>
 #include <base/integer.hpp>
+#include "../../../my_assert.hpp"
 
 static const u8 LOOP = 10;
 
@@ -18,10 +18,10 @@ int main(int argc, char** argv) {
   u8 y = 0;
   
   Function<u8(void)> f;
-  assert(!((bool) f));
+  myAssert(!((bool) f), "Line " S__LINE__ ": f should not be set");
   
   f.unset();
-  assert(!((bool) f));
+  myAssert(!((bool) f), "Line " S__LINE__ ": f should not be set");
   
   f = [x, &y](void) mutable -> u8 {
     x++;
@@ -29,21 +29,21 @@ int main(int argc, char** argv) {
     return y;
   };
   
-  assert((bool) f);
+  myAssert((bool) f, "Line " S__LINE__ ": f should be set");
   
   Function<u8(void)> l(f);
   
   for(u8 i = 0; i < LOOP; i++) {
-    assert(f() == (2*i + 1));
-    assert(l() == (2*i + 2));
+    myAssert(f() == (2*i + 1), "Line " S__LINE__": Bad result");
+    myAssert(l() == (2*i + 2), "Line " S__LINE__": Bad result");
   }
   
-  assert(x == 0);
-  assert(y == 20);
+  myAssert(x == 0, "Line " S__LINE__": Bad result");
+  myAssert(y == 20, "Line " S__LINE__": Bad result");
   
-  assert(f.isSet());
+  myAssert(f.isSet(), "Line " S__LINE__": f should be set");
   f.unset();
-  assert(!f.isSet());
+  myAssert(!f.isSet(), "Line " S__LINE__": f should not be set");
   
   f = [](void) mutable -> u8 {
     static u8 i = 0;
@@ -53,8 +53,8 @@ int main(int argc, char** argv) {
   l = f;
   
   for(u8 i = 0; i < LOOP; i++) {
-    assert(f() == (i * 2));
-    assert(l() == (i * 2 + 1));
+    myAssert(f() == (i * 2), "Line " S__LINE__": Bad result");
+    myAssert(l() == (i * 2 + 1), "Line " S__LINE__": Bad result");
   }
   
   f = [](void) mutable -> u8 {
@@ -62,34 +62,34 @@ int main(int argc, char** argv) {
     return i++;
   };
   
-  assert((bool) f);
-  assert(f.isSet());
+  myAssert((bool) f, "Line " S__LINE__": f should be set");
+  myAssert(f.isSet(), "Line " S__LINE__": f should be set");
   
   for(u8 i = 0; i < LOOP; i++) {
-    assert(f() == i);
+    myAssert(f() == i, "Line " S__LINE__": Bad result");
   }
   
   Function<bool(const Function<u8(void)>&)> g =
     [](const Function<u8(void)>& f) mutable -> bool {
     for(u8 i = LOOP; i < (2 * LOOP); i++) {
-      assert(f() == i);
+      myAssert(f() == i, "Line " S__LINE__": Bad result");
     }
     return true;
   };
   
-  assert(g(f));
+  myAssert(g(f), "Line " S__LINE__": Bad result");
   
   Function<bool(const Function<void(u8&)>&)> k =
     [](const Function<void(u8&)>& f) mutable -> bool {
     u8 j = 0;
     for(u8 i = 0; i < LOOP; i++) {
       f(j);
-      assert(j == (i+1));
+      myAssert(j == (i+1), "Line " S__LINE__": Bad result");
     }
     return true;
   };
   
-  assert(k(h));
+  myAssert(k(h), "Line " S__LINE__": Bad result");
   
   std::cout << "OK" << std::endl;
   return 0;
