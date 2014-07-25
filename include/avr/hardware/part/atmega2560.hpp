@@ -171,6 +171,18 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 // Architecture : atmega2560
 template<int param> struct timer;
 template<int param> struct timer;
@@ -825,6 +837,10 @@ struct pinmap {
   template<int param> struct control_out;
   template<int param> struct control_out;
   template<int param> struct control_out;
+  template<int param> struct control_out;
+  template<int param> struct control_out;
+  template<int param> struct control_out;
+  template<int param> struct control_out;
   template<int param> struct port;
   template<int param> struct port;
   template<int param> struct port;
@@ -832,6 +848,14 @@ struct pinmap {
   template<int param> struct port;
   template<int param> struct port;
   template<int param> struct port;
+  template<int param> struct port;
+  template<int param> struct port;
+  template<int param> struct port;
+  template<int param> struct port;
+  template<int param> struct pin;
+  template<int param> struct pin;
+  template<int param> struct pin;
+  template<int param> struct pin;
   template<int param> struct pin;
   template<int param> struct pin;
   template<int param> struct pin;
@@ -898,7 +922,7 @@ struct pinmap::control_out<6> {
 };
 
 template<>
-struct pinmap::port<0> {
+struct pinmap::control_out<7> {
   enum {
     REG = 23,
     SIZE = 8
@@ -906,7 +930,7 @@ struct pinmap::port<0> {
 };
 
 template<>
-struct pinmap::port<1> {
+struct pinmap::control_out<8> {
   enum {
     REG = 24,
     SIZE = 8
@@ -914,7 +938,7 @@ struct pinmap::port<1> {
 };
 
 template<>
-struct pinmap::port<2> {
+struct pinmap::control_out<9> {
   enum {
     REG = 25,
     SIZE = 8
@@ -922,7 +946,7 @@ struct pinmap::port<2> {
 };
 
 template<>
-struct pinmap::port<3> {
+struct pinmap::control_out<10> {
   enum {
     REG = 26,
     SIZE = 8
@@ -930,7 +954,7 @@ struct pinmap::port<3> {
 };
 
 template<>
-struct pinmap::port<4> {
+struct pinmap::port<0> {
   enum {
     REG = 27,
     SIZE = 8
@@ -938,7 +962,7 @@ struct pinmap::port<4> {
 };
 
 template<>
-struct pinmap::port<5> {
+struct pinmap::port<1> {
   enum {
     REG = 28,
     SIZE = 8
@@ -946,7 +970,7 @@ struct pinmap::port<5> {
 };
 
 template<>
-struct pinmap::port<6> {
+struct pinmap::port<2> {
   enum {
     REG = 29,
     SIZE = 8
@@ -954,7 +978,7 @@ struct pinmap::port<6> {
 };
 
 template<>
-struct pinmap::pin<0> {
+struct pinmap::port<3> {
   enum {
     REG = 30,
     SIZE = 8
@@ -962,7 +986,7 @@ struct pinmap::pin<0> {
 };
 
 template<>
-struct pinmap::pin<1> {
+struct pinmap::port<4> {
   enum {
     REG = 31,
     SIZE = 8
@@ -970,7 +994,7 @@ struct pinmap::pin<1> {
 };
 
 template<>
-struct pinmap::pin<2> {
+struct pinmap::port<5> {
   enum {
     REG = 32,
     SIZE = 8
@@ -978,7 +1002,7 @@ struct pinmap::pin<2> {
 };
 
 template<>
-struct pinmap::pin<3> {
+struct pinmap::port<6> {
   enum {
     REG = 33,
     SIZE = 8
@@ -986,7 +1010,7 @@ struct pinmap::pin<3> {
 };
 
 template<>
-struct pinmap::pin<4> {
+struct pinmap::port<7> {
   enum {
     REG = 34,
     SIZE = 8
@@ -994,7 +1018,7 @@ struct pinmap::pin<4> {
 };
 
 template<>
-struct pinmap::pin<5> {
+struct pinmap::port<8> {
   enum {
     REG = 35,
     SIZE = 8
@@ -1002,9 +1026,105 @@ struct pinmap::pin<5> {
 };
 
 template<>
-struct pinmap::pin<6> {
+struct pinmap::port<9> {
   enum {
     REG = 36,
+    SIZE = 8
+  };
+};
+
+template<>
+struct pinmap::port<10> {
+  enum {
+    REG = 37,
+    SIZE = 8
+  };
+};
+
+template<>
+struct pinmap::pin<0> {
+  enum {
+    REG = 38,
+    SIZE = 8
+  };
+};
+
+template<>
+struct pinmap::pin<1> {
+  enum {
+    REG = 39,
+    SIZE = 8
+  };
+};
+
+template<>
+struct pinmap::pin<2> {
+  enum {
+    REG = 40,
+    SIZE = 8
+  };
+};
+
+template<>
+struct pinmap::pin<3> {
+  enum {
+    REG = 41,
+    SIZE = 8
+  };
+};
+
+template<>
+struct pinmap::pin<4> {
+  enum {
+    REG = 42,
+    SIZE = 8
+  };
+};
+
+template<>
+struct pinmap::pin<5> {
+  enum {
+    REG = 43,
+    SIZE = 8
+  };
+};
+
+template<>
+struct pinmap::pin<6> {
+  enum {
+    REG = 44,
+    SIZE = 8
+  };
+};
+
+template<>
+struct pinmap::pin<7> {
+  enum {
+    REG = 45,
+    SIZE = 8
+  };
+};
+
+template<>
+struct pinmap::pin<8> {
+  enum {
+    REG = 46,
+    SIZE = 8
+  };
+};
+
+template<>
+struct pinmap::pin<9> {
+  enum {
+    REG = 47,
+    SIZE = 8
+  };
+};
+
+template<>
+struct pinmap::pin<10> {
+  enum {
+    REG = 48,
     SIZE = 8
   };
 };
@@ -1085,17 +1205,29 @@ template<> inline Register<8, 19>::Register(void) : reg_size(1), reg{(u8*)&DDRD}
 template<> inline Register<8, 20>::Register(void) : reg_size(1), reg{(u8*)&DDRE} {}
 template<> inline Register<8, 21>::Register(void) : reg_size(1), reg{(u8*)&DDRF} {}
 template<> inline Register<8, 22>::Register(void) : reg_size(1), reg{(u8*)&DDRG} {}
-template<> inline Register<8, 23>::Register(void) : reg_size(1), reg{(u8*)&PORTA} {}
-template<> inline Register<8, 24>::Register(void) : reg_size(1), reg{(u8*)&PORTB} {}
-template<> inline Register<8, 25>::Register(void) : reg_size(1), reg{(u8*)&PORTC} {}
-template<> inline Register<8, 26>::Register(void) : reg_size(1), reg{(u8*)&PORTD} {}
-template<> inline Register<8, 27>::Register(void) : reg_size(1), reg{(u8*)&PORTE} {}
-template<> inline Register<8, 28>::Register(void) : reg_size(1), reg{(u8*)&PORTF} {}
-template<> inline Register<8, 29>::Register(void) : reg_size(1), reg{(u8*)&PORTG} {}
-template<> inline Register<8, 30>::Register(void) : reg_size(1), reg{(u8*)&PINA} {}
-template<> inline Register<8, 31>::Register(void) : reg_size(1), reg{(u8*)&PINB} {}
-template<> inline Register<8, 32>::Register(void) : reg_size(1), reg{(u8*)&PINC} {}
-template<> inline Register<8, 33>::Register(void) : reg_size(1), reg{(u8*)&PIND} {}
-template<> inline Register<8, 34>::Register(void) : reg_size(1), reg{(u8*)&PINE} {}
-template<> inline Register<8, 35>::Register(void) : reg_size(1), reg{(u8*)&PINF} {}
-template<> inline Register<8, 36>::Register(void) : reg_size(1), reg{(u8*)&PING} {}
+template<> inline Register<8, 23>::Register(void) : reg_size(1), reg{(u8*)&DDRH} {}
+template<> inline Register<8, 24>::Register(void) : reg_size(1), reg{(u8*)&DDRJ} {}
+template<> inline Register<8, 25>::Register(void) : reg_size(1), reg{(u8*)&DDRK} {}
+template<> inline Register<8, 26>::Register(void) : reg_size(1), reg{(u8*)&DDRL} {}
+template<> inline Register<8, 27>::Register(void) : reg_size(1), reg{(u8*)&PORTA} {}
+template<> inline Register<8, 28>::Register(void) : reg_size(1), reg{(u8*)&PORTB} {}
+template<> inline Register<8, 29>::Register(void) : reg_size(1), reg{(u8*)&PORTC} {}
+template<> inline Register<8, 30>::Register(void) : reg_size(1), reg{(u8*)&PORTD} {}
+template<> inline Register<8, 31>::Register(void) : reg_size(1), reg{(u8*)&PORTE} {}
+template<> inline Register<8, 32>::Register(void) : reg_size(1), reg{(u8*)&PORTF} {}
+template<> inline Register<8, 33>::Register(void) : reg_size(1), reg{(u8*)&PORTG} {}
+template<> inline Register<8, 34>::Register(void) : reg_size(1), reg{(u8*)&PORTH} {}
+template<> inline Register<8, 35>::Register(void) : reg_size(1), reg{(u8*)&PORTJ} {}
+template<> inline Register<8, 36>::Register(void) : reg_size(1), reg{(u8*)&PORTK} {}
+template<> inline Register<8, 37>::Register(void) : reg_size(1), reg{(u8*)&PORTL} {}
+template<> inline Register<8, 38>::Register(void) : reg_size(1), reg{(u8*)&PINA} {}
+template<> inline Register<8, 39>::Register(void) : reg_size(1), reg{(u8*)&PINB} {}
+template<> inline Register<8, 40>::Register(void) : reg_size(1), reg{(u8*)&PINC} {}
+template<> inline Register<8, 41>::Register(void) : reg_size(1), reg{(u8*)&PIND} {}
+template<> inline Register<8, 42>::Register(void) : reg_size(1), reg{(u8*)&PINE} {}
+template<> inline Register<8, 43>::Register(void) : reg_size(1), reg{(u8*)&PINF} {}
+template<> inline Register<8, 44>::Register(void) : reg_size(1), reg{(u8*)&PING} {}
+template<> inline Register<8, 45>::Register(void) : reg_size(1), reg{(u8*)&PINH} {}
+template<> inline Register<8, 46>::Register(void) : reg_size(1), reg{(u8*)&PINJ} {}
+template<> inline Register<8, 47>::Register(void) : reg_size(1), reg{(u8*)&PINK} {}
+template<> inline Register<8, 48>::Register(void) : reg_size(1), reg{(u8*)&PINL} {}
