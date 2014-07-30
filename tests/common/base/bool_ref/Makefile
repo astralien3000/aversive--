@@ -1,13 +1,15 @@
 CC=g++
 CFLAGS=-Wall -Wextra --std=c++11 -g
 
-all: bool_ref
+CLASS=bool_ref
 
-bool_ref: main.cpp ../../../../include/common/base/bool_ref.hpp
+all: $(CLASS)
+
+$(CLASS): main.cpp ../../../../include/common/base/$(CLASS).hpp
 	@$(CC) $(CFLAGS) -I../../../../include/common -o $@ $<
 
 clean:
 	@rm -rf *~ \#*\#
 
 mrproper: clean
-	@rm -rf bool_ref
+	@rm -rf $(CLASS)

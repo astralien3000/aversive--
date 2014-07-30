@@ -1,13 +1,15 @@
 CC=g++
 CFLAGS=-Wall -Wextra --std=c++11 -g
 
-all: function
+CLASS=function
 
-function: main.cpp ../../../../include/common/base/function.hpp
+all: $(CLASS)
+
+$(CLASS): main.cpp ../../../../include/common/base/$(CLASS).hpp
 	@$(CC) $(CFLAGS) -I../../../../include/common -o $@ $<
 
 clean:
 	@rm -rf *~ \#*\#
 
 mrproper: clean
-	@rm -rf function
+	@rm -rf $(CLASS)
