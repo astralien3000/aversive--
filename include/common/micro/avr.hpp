@@ -19,12 +19,19 @@
 #ifndef AVR_HPP
 #define AVR_HPP
 
+//! \class AVR avr.hpp <micro/avr.hpp>
+//! \brief Class providing meta-data for AVR microcontrollers.
 class AVR {
-  //! \breif Private default constructor to prevent instanciation.
+  //! \brief Private default constructor to prevent instanciation.
   AVR();
+
 public:
-  static inline constexpr int pin(char p, char bit) {
-    return ((int) ((p >= 'j' ? p - 1 : p) - 'a')) * 8 + bit;
+  //! \brief Give the API's ID of the pin on the given port at the given bit.
+  //! \param port : the pin's port.
+  //! \param bit : the pin's bit.
+  //! \return The API's ID of the requested pin.
+  static inline constexpr int pin(char port, char bit) {
+    return ((int) ((port >= 'j' ? port - 1 : port) - 'a')) * 8 + bit;
   }
 };
 
