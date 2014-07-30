@@ -19,9 +19,7 @@
 #ifndef ADM2560PINMAP_HPP
 #define ADM2560PINMAP_HPP
 
-static inline constexpr int __ADM2560Pin(char p, char bit) {
-  return ((int) ((p >= 'j' ? p - 1 : p) - 'a')) * 8 + bit;
-}
+#include <micro/avr.hpp>
 
 //! \class ADM2560Pinmap adm2560.hpp <board/adm2560.hpp>
 //! \brief Pinmap for Arduino Mega 2560 board. D stands for digital pins and A for analog pins.
@@ -30,77 +28,77 @@ class ADM2560Pinmap {
   ADM2560Pinmap();
   
 public:
-  static constexpr int D0  = __ADM2560Pin('e', 0);
-  static constexpr int D1  = __ADM2560Pin('e', 1);
-  static constexpr int D2  = __ADM2560Pin('e', 4);
-  static constexpr int D3  = __ADM2560Pin('e', 5);
-  static constexpr int D4  = __ADM2560Pin('g', 5);
-  static constexpr int D5  = __ADM2560Pin('e', 3);
-  static constexpr int D6  = __ADM2560Pin('h', 3);
-  static constexpr int D7  = __ADM2560Pin('h', 4);
-  static constexpr int D8  = __ADM2560Pin('h', 5);
-  static constexpr int D9  = __ADM2560Pin('h', 6);
-  static constexpr int D10 = __ADM2560Pin('b', 4);
-  static constexpr int D11 = __ADM2560Pin('b', 5);
-  static constexpr int D12 = __ADM2560Pin('b', 6);
-  static constexpr int D13 = __ADM2560Pin('b', 7);
-  static constexpr int D14 = __ADM2560Pin('j', 1);
-  static constexpr int D15 = __ADM2560Pin('j', 0);
-  static constexpr int D16 = __ADM2560Pin('h', 1);
-  static constexpr int D17 = __ADM2560Pin('h', 0);
-  static constexpr int D18 = __ADM2560Pin('d', 3);
-  static constexpr int D19 = __ADM2560Pin('d', 2);
-  static constexpr int D20 = __ADM2560Pin('d', 1);
-  static constexpr int D21 = __ADM2560Pin('d', 0);
-  static constexpr int D22 = __ADM2560Pin('a', 0);
-  static constexpr int D23 = __ADM2560Pin('a', 1);
-  static constexpr int D24 = __ADM2560Pin('a', 2);
-  static constexpr int D25 = __ADM2560Pin('a', 3);
-  static constexpr int D26 = __ADM2560Pin('a', 4);
-  static constexpr int D27 = __ADM2560Pin('a', 5);
-  static constexpr int D28 = __ADM2560Pin('a', 6);
-  static constexpr int D29 = __ADM2560Pin('a', 7);
-  static constexpr int D30 = __ADM2560Pin('c', 7);
-  static constexpr int D31 = __ADM2560Pin('c', 6);
-  static constexpr int D32 = __ADM2560Pin('c', 5);
-  static constexpr int D33 = __ADM2560Pin('c', 4);
-  static constexpr int D34 = __ADM2560Pin('c', 3);
-  static constexpr int D35 = __ADM2560Pin('c', 2);
-  static constexpr int D36 = __ADM2560Pin('c', 1);
-  static constexpr int D37 = __ADM2560Pin('c', 0);
-  static constexpr int D38 = __ADM2560Pin('d', 7);
-  static constexpr int D39 = __ADM2560Pin('g', 2);
-  static constexpr int D40 = __ADM2560Pin('g', 1);
-  static constexpr int D41 = __ADM2560Pin('g', 0);
-  static constexpr int D42 = __ADM2560Pin('l', 7);
-  static constexpr int D43 = __ADM2560Pin('l', 6);
-  static constexpr int D44 = __ADM2560Pin('l', 5);
-  static constexpr int D45 = __ADM2560Pin('l', 4);
-  static constexpr int D46 = __ADM2560Pin('l', 3);
-  static constexpr int D47 = __ADM2560Pin('l', 2);
-  static constexpr int D48 = __ADM2560Pin('l', 1);
-  static constexpr int D49 = __ADM2560Pin('l', 0);
-  static constexpr int D50 = __ADM2560Pin('b', 3);
-  static constexpr int D51 = __ADM2560Pin('b', 2);
-  static constexpr int D52 = __ADM2560Pin('b', 1);
-  static constexpr int D53 = __ADM2560Pin('b', 0);
+  static constexpr int D0  = AVR::pin('e', 0);
+  static constexpr int D1  = AVR::pin('e', 1);
+  static constexpr int D2  = AVR::pin('e', 4);
+  static constexpr int D3  = AVR::pin('e', 5);
+  static constexpr int D4  = AVR::pin('g', 5);
+  static constexpr int D5  = AVR::pin('e', 3);
+  static constexpr int D6  = AVR::pin('h', 3);
+  static constexpr int D7  = AVR::pin('h', 4);
+  static constexpr int D8  = AVR::pin('h', 5);
+  static constexpr int D9  = AVR::pin('h', 6);
+  static constexpr int D10 = AVR::pin('b', 4);
+  static constexpr int D11 = AVR::pin('b', 5);
+  static constexpr int D12 = AVR::pin('b', 6);
+  static constexpr int D13 = AVR::pin('b', 7);
+  static constexpr int D14 = AVR::pin('j', 1);
+  static constexpr int D15 = AVR::pin('j', 0);
+  static constexpr int D16 = AVR::pin('h', 1);
+  static constexpr int D17 = AVR::pin('h', 0);
+  static constexpr int D18 = AVR::pin('d', 3);
+  static constexpr int D19 = AVR::pin('d', 2);
+  static constexpr int D20 = AVR::pin('d', 1);
+  static constexpr int D21 = AVR::pin('d', 0);
+  static constexpr int D22 = AVR::pin('a', 0);
+  static constexpr int D23 = AVR::pin('a', 1);
+  static constexpr int D24 = AVR::pin('a', 2);
+  static constexpr int D25 = AVR::pin('a', 3);
+  static constexpr int D26 = AVR::pin('a', 4);
+  static constexpr int D27 = AVR::pin('a', 5);
+  static constexpr int D28 = AVR::pin('a', 6);
+  static constexpr int D29 = AVR::pin('a', 7);
+  static constexpr int D30 = AVR::pin('c', 7);
+  static constexpr int D31 = AVR::pin('c', 6);
+  static constexpr int D32 = AVR::pin('c', 5);
+  static constexpr int D33 = AVR::pin('c', 4);
+  static constexpr int D34 = AVR::pin('c', 3);
+  static constexpr int D35 = AVR::pin('c', 2);
+  static constexpr int D36 = AVR::pin('c', 1);
+  static constexpr int D37 = AVR::pin('c', 0);
+  static constexpr int D38 = AVR::pin('d', 7);
+  static constexpr int D39 = AVR::pin('g', 2);
+  static constexpr int D40 = AVR::pin('g', 1);
+  static constexpr int D41 = AVR::pin('g', 0);
+  static constexpr int D42 = AVR::pin('l', 7);
+  static constexpr int D43 = AVR::pin('l', 6);
+  static constexpr int D44 = AVR::pin('l', 5);
+  static constexpr int D45 = AVR::pin('l', 4);
+  static constexpr int D46 = AVR::pin('l', 3);
+  static constexpr int D47 = AVR::pin('l', 2);
+  static constexpr int D48 = AVR::pin('l', 1);
+  static constexpr int D49 = AVR::pin('l', 0);
+  static constexpr int D50 = AVR::pin('b', 3);
+  static constexpr int D51 = AVR::pin('b', 2);
+  static constexpr int D52 = AVR::pin('b', 1);
+  static constexpr int D53 = AVR::pin('b', 0);
 
-  static constexpr int A0  = __ADM2560Pin('f', 0);
-  static constexpr int A1  = __ADM2560Pin('f', 1);
-  static constexpr int A2  = __ADM2560Pin('f', 2);
-  static constexpr int A3  = __ADM2560Pin('f', 3);
-  static constexpr int A4  = __ADM2560Pin('f', 4);
-  static constexpr int A5  = __ADM2560Pin('f', 5);
-  static constexpr int A6  = __ADM2560Pin('f', 6);
-  static constexpr int A7  = __ADM2560Pin('f', 7);
-  static constexpr int A8  = __ADM2560Pin('k', 0);
-  static constexpr int A9  = __ADM2560Pin('k', 1);
-  static constexpr int A10 = __ADM2560Pin('k', 2);
-  static constexpr int A11 = __ADM2560Pin('k', 3);
-  static constexpr int A12 = __ADM2560Pin('k', 4);
-  static constexpr int A13 = __ADM2560Pin('k', 5);
-  static constexpr int A14 = __ADM2560Pin('k', 6);
-  static constexpr int A15 = __ADM2560Pin('k', 7);
+  static constexpr int A0  = AVR::pin('f', 0);
+  static constexpr int A1  = AVR::pin('f', 1);
+  static constexpr int A2  = AVR::pin('f', 2);
+  static constexpr int A3  = AVR::pin('f', 3);
+  static constexpr int A4  = AVR::pin('f', 4);
+  static constexpr int A5  = AVR::pin('f', 5);
+  static constexpr int A6  = AVR::pin('f', 6);
+  static constexpr int A7  = AVR::pin('f', 7);
+  static constexpr int A8  = AVR::pin('k', 0);
+  static constexpr int A9  = AVR::pin('k', 1);
+  static constexpr int A10 = AVR::pin('k', 2);
+  static constexpr int A11 = AVR::pin('k', 3);
+  static constexpr int A12 = AVR::pin('k', 4);
+  static constexpr int A13 = AVR::pin('k', 5);
+  static constexpr int A14 = AVR::pin('k', 6);
+  static constexpr int A15 = AVR::pin('k', 7);
 };
 
 #endif//ADM2560PINMAP_HPP
