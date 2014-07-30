@@ -16,14 +16,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef ADM2560_HPP
-#define ADM2560_HPP
+#ifndef ADM2560PINMAP_HPP
+#define ADM2560PINMAP_HPP
 
 static inline constexpr int __ADM2560Pin(char p, char bit) {
   return ((int) ((p >= 'j' ? p - 1 : p) - 'a')) * 8 + bit;
 }
 
-//! \class ADM2560Pinmap adm2560.hpp <device/pin/board/adm2560.hpp>
+//! \class ADM2560Pinmap adm2560.hpp <board/adm2560.hpp>
 //! \brief Pinmap for Arduino Mega 2560 board. D stands for digital pins and A for analog pins.
 class ADM2560Pinmap {
   //! \breif Private default constructor to prevent instanciation.
@@ -103,4 +103,4 @@ public:
   static constexpr int A15 = __ADM2560Pin('k', 7);
 };
 
-#endif//ADM2560_HPP
+#endif//ADM2560PINMAP_HPP

@@ -16,11 +16,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef SASIAE_ADM2560_HPP
-#define SASIAE_ADM2560_HPP
+#ifndef STM32_ADM2560_HPP
+#define STM32_ADM2560_HPP
 
-#include "../../../../common/device/pin/board/adm2560.hpp"
+#include "../../common/board/adm2560.hpp"
 
 
 
-#endif//SASIAE_ADM2560_HPP
+#endif//STM32_ADM2560_HPP
