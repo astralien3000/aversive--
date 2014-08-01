@@ -10,12 +10,12 @@ uc atmega2560 {
       };
       
       config-list prescaler {
-        config disable = { (0 << CS02) | (0 << CS01) | (0 << CS00) };
-        config 0       = { (0 << CS02) | (0 << CS01) | (1 << CS00) };
-        config 8       = { (0 << CS02) | (1 << CS01) | (0 << CS00) };
-        config 64      = { (0 << CS02) | (1 << CS01) | (1 << CS00) };
-        config 256     = { (1 << CS02) | (0 << CS01) | (0 << CS00) };
-        config 1024    = { (1 << CS02) | (0 << CS01) | (1 << CS00) };
+        config disable = { 0, (0 << CS02) | (0 << CS01) | (0 << CS00) };
+        config 0       = { 0, (0 << CS02) | (0 << CS01) | (1 << CS00) };
+        config 8       = { 0, (0 << CS02) | (1 << CS01) | (0 << CS00) };
+        config 64      = { 0, (0 << CS02) | (1 << CS01) | (1 << CS00) };
+        config 256     = { 0, (1 << CS02) | (0 << CS01) | (0 << CS00) };
+        config 1024    = { 0, (1 << CS02) | (0 << CS01) | (1 << CS00) };
       };
     };
 
@@ -57,7 +57,7 @@ uc atmega2560 {
     register[16] compare[0] = { OCR1A };
     register[16] compare[1] = { OCR1B };
 
-    register[8] imask = { TIMSK0 } {
+    register[8] imask = { TIMSK1 } {
       config match[0] = { (1 << OCIE1A) };
       config match[1] = { (1 << OCIE1B) };
       config overflow = { (1 << TOIE1)  };
