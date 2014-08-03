@@ -1,17 +1,15 @@
 CC=g++
 CFLAGS=-Wall -Wextra --std=c++11 -g
-LDFLAGS=
 
-all: list
+CLASS=list
 
-list: main.cpp ../../include/common/container/list.hpp
-	@$(CC) $(CFLAGS) -I../../include/common -o $@ $< $(LDFLAGS)
+all: $(CLASS)
+
+$(CLASS): main.cpp ../../../../include/common/container/$(CLASS).hpp
+	@$(CC) $(CFLAGS) -I../../../../include/common -o $@ $<
 
 clean:
 	@rm -rf *~ \#*\#
 
-test: all
-	@./list
-
 mrproper: clean
-	@rm -rf list
+	@rm -rf $(CLASS)
