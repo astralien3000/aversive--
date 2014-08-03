@@ -2,7 +2,7 @@ CC=g++
 CFLAGS=-Wall -Wextra --std=c++11 -g
 LDFLAGS=-L../../../../build -laversive_sasiae
 
-CLASS=world
+CLASS=collision
 DEP=$(CLASS).hpp shape.hpp point.hpp segment.hpp circle.hpp aabb.hpp triangle.hpp quadrilateral.hpp collision.hpp
 
 all: $(CLASS)
