@@ -20,6 +20,67 @@ int main(int argc, char** argv) {
     myAssert(a2[i] == 42, "Line " S__LINE__ ": Variadic Array construction.");
   }
   
+  a1 = 0;
+  for(u8 i = 0; i < SIZE; i++) {
+    myAssert(a1[i] == 0, "Line " S__LINE__ ": Array value assignment.");
+  }
+  
+  a1 += 2;
+  for(u8 i = 0; i < SIZE; i++) {
+    myAssert(a1[i] == 2, "Line " S__LINE__ ": Array<SIZE, u8>::operator+=(u8).");
+  }
+  
+  a1 -= 1;
+  for(u8 i = 0; i < SIZE; i++) {
+    myAssert(a1[i] == 1, "Line " S__LINE__ ": Array<SIZE, u8>::operator-=(u8).");
+  }
+  
+  a1 *= 5;
+  for(u8 i = 0; i < SIZE; i++) {
+    myAssert(a1[i] == 5, "Line " S__LINE__ ": Array<SIZE, u8>::operator*=(u8).");
+  }
+  
+  a1 /= 2;
+  for(u8 i = 0; i < SIZE; i++) {
+    myAssert(a1[i] == 2, "Line " S__LINE__ ": Array<SIZE, u8>::operator/=(u8).");
+  }
+  
+  a1 %= 2;
+  for(u8 i = 0; i < SIZE; i++) {
+    myAssert(a1[i] == 0, "Line " S__LINE__ ": Array<SIZE, u8>::operator%=(u8).");
+  }
+  
+  a1 = 1;
+  a2 = 1;
+  a1 = a1 + a2;
+  for(u8 i = 0; i < SIZE; i++) {
+    myAssert(a1[i] == 2, "Line " S__LINE__ ": Array<SIZE, u8>::operator+(Array).");
+  }
+  
+  a2 = 2;
+  a1 = a1 - a2;
+  for(u8 i = 0; i < SIZE; i++) {
+    myAssert(a1[i] == 0, "Line " S__LINE__ ": Array<SIZE, u8>::operator-(Array).");
+  }
+  
+  a1 = 1;
+  a2 = 5;
+  a1 = a1 * a2;
+  for(u8 i = 0; i < SIZE; i++) {
+    myAssert(a1[i] == 5, "Line " S__LINE__ ": Array<SIZE, u8>::operator*(Array).");
+  }
+  
+  a2 = 2;
+  a1 = a1 / a2;
+  for(u8 i = 0; i < SIZE; i++) {
+    myAssert(a1[i] == 2, "Line " S__LINE__ ": Array<SIZE, u8>::operator/(Array).");
+  }
+  
+  a1 = a1 % a2;
+  for(u8 i = 0; i < SIZE; i++) {
+    myAssert(a1[i] == 0, "Line " S__LINE__ ": Array<SIZE, u8>::operator%(Array).");
+  }
+  
   myAssert(!(sizeof(Array<SIZE, bool>) >= sizeof(Array<SIZE, u8>)),
            "Line " S__LINE__ ": A boolean Array is not lighter than a byte Array even though it should have a bool specialisation.");
   
@@ -49,7 +110,7 @@ int main(int argc, char** argv) {
   for(u8 i = 0; i < SIZE; i++) {
     myAssert(a3[i] == (bool) (false / true), "Line " S__LINE__ ": Array<SIZE, bool>::operator/=(bool).");
   }
-
+  
   a3 = true;
   a3 *= false;
   for(u8 i = 0; i < SIZE; i++) {
