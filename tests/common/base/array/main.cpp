@@ -151,6 +151,6 @@ int main(int argc, char** argv) {
     myAssert(a4[i] == (bool) (true % true), "Line " S__LINE__ ": Array<SIZE, bool>::operator%(Array).");
   }
   
-  std::cout << "OK" << std::endl;  
+  std::cout << "OK" << std::endl;
   return 0;
 }

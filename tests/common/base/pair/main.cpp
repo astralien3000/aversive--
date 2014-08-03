@@ -41,6 +41,6 @@ int main(int argc, char** argv) {
   p1.right() = false;
   myAssert(p1.left() == false && p1.right() == false, "Line " S__LINE__ ": Pair<bool, bool> right reference.");
   
-  std::cout << "OK" << std::endl;  
+  std::cout << "OK" << std::endl;
   return 0;
 }

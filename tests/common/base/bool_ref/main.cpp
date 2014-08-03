@@ -59,6 +59,6 @@ int main(int argc, char** argv) {
   r1 %= true;
   myAssert(r1 == (bool) (true % true), "Line " S__LINE__ ": %= operator problem.");
   
-  std::cout << "OK" << std::endl;  
+  std::cout << "OK" << std::endl;
   return 0;
 }
