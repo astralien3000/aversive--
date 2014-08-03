@@ -1,17 +1,15 @@
 CC=g++
 CFLAGS=-Wall -Wextra --std=c++11 -g
-LDFLAGS=
 
-all: stack
+CLASS=stack
 
-stack: main.cpp ../../include/common/container/stack.hpp
-	@$(CC) $(CFLAGS) -I../../include/common -o $@ $< $(LDFLAGS)
+all: $(CLASS)
+
+$(CLASS): main.cpp ../../../../include/common/container/$(CLASS).hpp
+	@$(CC) $(CFLAGS) -I../../../../include/common -o $@ $<
 
 clean:
 	@rm -rf *~ \#*\#
 
-test: all
-	@./stack
-
 mrproper: clean
-	@rm -rf stack
+	@rm -rf $(CLASS)
