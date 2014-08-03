@@ -1,10 +1,10 @@
 #include <container/buffer.hpp>
 #include <iostream>
-#include <cassert>
 #include <pthread.h>
 #include <sched.h>
 #include <ctime>
 #include <cstdlib>
+#include "../../../my_assert.hpp"
 
 static const buffer_t SIZE = 8;
 Buffer<SIZE, u8>* buffer;
@@ -16,8 +16,8 @@ void* provider(void* arg) {
   for(int i = 0; i < n; i++) {
     while(buffer->isFull()) {
       sched_yield();
-    }    
-    assert(buffer->enqueue(str[i]));
+    }
+    myAssert(buffer->enqueue(str[i]), "Line " S__LINE__ ": The given element should have been enqueued successfully since the buffer is not full.");
   }
   return NULL;
 }
@@ -28,8 +28,8 @@ void* consumer(void* arg) {
     while(buffer->isEmpty()) {
       sched_yield();
     }
-    assert(buffer->head() == str[i]);
-    assert(buffer->dequeue());
+    myAssert(buffer->head() == str[i], "Line " S__LINE__ ": The head of the buffer has not the expected value.");
+    myAssert(buffer->dequeue(), "Line " S__LINE__ ": An element should have been dequeued successfully since the buffer is not empty.");
   }
   return NULL;
 }
@@ -40,30 +40,30 @@ int main(int argc, char** argv) {
   
   Buffer<SIZE, u8> b(10,5,8,20);
   
-  assert(b.head() == 10);
-  assert(b.usedSpace() == 4);
-  assert(b.freeSpace() == (SIZE) - b.usedSpace());
-  assert(b.enqueue(12));
-  assert(b.usedSpace() == 5);
-  assert(b.enqueue(2));
-  assert(b.head() == 10);
-  assert(b.dequeue());
-  assert(b.head() == 5);
-  assert(!b.isFull());
-  assert(!b.isEmpty());
+  myAssert(b.head() == 10, "Line " S__LINE__ ": The head of the buffer has not the expected value.");
+  myAssert(b.usedSpace() == 4, "Line " S__LINE__ ": Buffer<SIZE, u8>::usedSpace(void).");
+  myAssert(b.freeSpace() == (SIZE) - b.usedSpace(), "Line " S__LINE__ ": Buffer<SIZE, u8>::freeSpace(void).");
+  myAssert(b.enqueue(12), "Line " S__LINE__ ": The given element should have been enqueued successfully since the buffer is not full.");
+  myAssert(b.usedSpace() == 5, "Line " S__LINE__ ": Buffer<SIZE, u8>::usedSpace(void).");
+  myAssert(b.enqueue(2), "Line " S__LINE__ ": The given element should have been enqueued successfully since the buffer is not full.");
+  myAssert(b.head() == 10, "Line " S__LINE__ ": The head of the buffer has not the expected value.");
+  myAssert(b.dequeue(), "Line " S__LINE__ ": An element should have been dequeued successfully since the buffer is not empty.");
+  myAssert(b.head() == 5, "Line " S__LINE__ ": The head of the buffer has not the expected value.");
+  myAssert(!b.isFull(), "Line " S__LINE__ ": Buffer<SIZE, u8>::isFull(void).");
+  myAssert(!b.isEmpty(), "Line " S__LINE__ ": Buffer<SIZE, u8>::isEmpty(void).");
   
   b.flush();
   
-  assert(b.usedSpace() == 0);
+  myAssert(b.usedSpace() == 0, "Line " S__LINE__ ": Buffer<SIZE, u8>::flush(void).");
   for(buffer_t i = 0; i < 5; i++) {
-    assert(b.enqueue(10+i));
+    myAssert(b.enqueue(10+i), "Line " S__LINE__ ": The given element should have been enqueued successfully since the buffer is not full.");
   }
   
-  assert(b.usedSpace() == 5);
+  myAssert(b.usedSpace() == 5, "Line " S__LINE__ ": Buffer<SIZE, u8>::usedSpace(void).");
   for(buffer_t i = 0; i < 5; i++) {
-    assert(b.head() == (10+i));
-    assert(b.dequeue());
-    assert(b.usedSpace() == (4-i));
+    myAssert(b.head() == (10+i), "Line " S__LINE__ ": The head of the buffer has not the expected value.");
+    myAssert(b.dequeue(), "Line " S__LINE__ ": An element should have been dequeued successfully since the buffer is not empty.");
+    myAssert(b.usedSpace() == (4-i), "Line " S__LINE__ ": Buffer<SIZE, u8>::usedSpace(void).");
   }
   
   pthread_t threads[2];
@@ -81,9 +81,9 @@ int main(int argc, char** argv) {
   pthread_join(threads[0], NULL);
   pthread_join(threads[1], NULL);
   
-  assert(b.isEmpty());
-  assert(b.usedSpace() == 0);
-  assert(b.freeSpace() == SIZE);
+  myAssert(b.isEmpty(), "Line " S__LINE__ ": Buffer<SIZE, u8>::isEmpty(void).");
+  myAssert(b.usedSpace() == 0, "Line " S__LINE__ ": Buffer<SIZE, u8>::usedSpace(void).");
+  myAssert(b.freeSpace() == SIZE, "Line " S__LINE__ ": Buffer<SIZE, u8>::freeSpace(void).");
   std::cout << "OK" << std::endl;
   return 0;
 }
