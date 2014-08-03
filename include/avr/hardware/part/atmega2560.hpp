@@ -1014,12 +1014,12 @@ template<> inline Config<8, 0>::Config(void) : conf{0, 0} {}
 template<> inline Config<8, 1>::Config(void) : conf{(1 << WGM00) | (1 << WGM01), 0} {}
 template<> inline Config<8, 2>::Config(void) : conf{0, (1 << WGM02)} {}
 template<> inline Config<8, 3>::Config(void) : conf{(1 << WGM00) | (1 << WGM01), (1 << WGM02)} {}
-template<> inline Config<8, 4>::Config(void) : conf{(0 << CS02) | (0 << CS01) | (0 << CS00)} {}
-template<> inline Config<8, 5>::Config(void) : conf{(0 << CS02) | (0 << CS01) | (1 << CS00)} {}
-template<> inline Config<8, 6>::Config(void) : conf{(0 << CS02) | (1 << CS01) | (0 << CS00)} {}
-template<> inline Config<8, 7>::Config(void) : conf{(0 << CS02) | (1 << CS01) | (1 << CS00)} {}
-template<> inline Config<8, 8>::Config(void) : conf{(1 << CS02) | (0 << CS01) | (0 << CS00)} {}
-template<> inline Config<8, 9>::Config(void) : conf{(1 << CS02) | (0 << CS01) | (1 << CS00)} {}
+template<> inline Config<8, 4>::Config(void) : conf{0, (0 << CS02) | (0 << CS01) | (0 << CS00)} {}
+template<> inline Config<8, 5>::Config(void) : conf{0, (0 << CS02) | (0 << CS01) | (1 << CS00)} {}
+template<> inline Config<8, 6>::Config(void) : conf{0, (0 << CS02) | (1 << CS01) | (0 << CS00)} {}
+template<> inline Config<8, 7>::Config(void) : conf{0, (0 << CS02) | (1 << CS01) | (1 << CS00)} {}
+template<> inline Config<8, 8>::Config(void) : conf{0, (1 << CS02) | (0 << CS01) | (0 << CS00)} {}
+template<> inline Config<8, 9>::Config(void) : conf{0, (1 << CS02) | (0 << CS01) | (1 << CS00)} {}
 template<> inline Register<8, 1>::Register(void) : reg_size(1), reg{(u8*)&TCNT0} {}
 template<> inline Register<8, 2>::Register(void) : reg_size(1), reg{(u8*)&OCR0A} {}
 template<> inline Register<8, 3>::Register(void) : reg_size(1), reg{(u8*)&OCR0B} {}
@@ -1042,7 +1042,7 @@ template<> inline Config<8, 22>::Config(void) : conf{0, (1 << CS12) | (0 << CS11
 template<> inline Register<16, 0>::Register(void) : reg_size(1), reg{(u16*)&TCNT1} {}
 template<> inline Register<16, 1>::Register(void) : reg_size(1), reg{(u16*)&OCR1A} {}
 template<> inline Register<16, 2>::Register(void) : reg_size(1), reg{(u16*)&OCR1B} {}
-template<> inline Register<8, 7>::Register(void) : reg_size(1), reg{(u8*)&TIMSK0} {}
+template<> inline Register<8, 7>::Register(void) : reg_size(1), reg{(u8*)&TIMSK1} {}
 template<> inline Config<8, 23>::Config(void) : conf{(1 << OCIE1A)} {}
 template<> inline Config<8, 24>::Config(void) : conf{(1 << OCIE1B)} {}
 template<> inline Config<8, 25>::Config(void) : conf{(1 << TOIE1)} {}

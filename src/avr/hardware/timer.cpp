@@ -32,6 +32,7 @@ void Timer<ID>::init(void) {
 
 
 template void Timer<0>::init(void);
+template void Timer<1>::init(void);
 
 #include "interrupt_bind.hpp"
 
