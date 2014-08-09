@@ -1,19 +1,26 @@
 #include <math/random.hpp>
-#include <time.h>
+#include <ctime>
+#include <cstdlib>
 #include <iostream>
+#include "../../../my_assert.hpp"
 
 int main(int argc, char** argv) {
   (void) argc;
   (void) argv;
   
   Vect<2, u64> s;
-  s[0] = time(0);
-  s[1] = 0;
+  
+  srand(time(NULL));
+  for(int i = 0; i < 4; i++) {
+    s[i/2] = (s[i/2] << 32) + rand();
+  }
+  
   Random::seed(s);
   
   for(int i = 0; i < 25; i++) {
-    std::cout << (s32) Random::next() << std::endl;
+    Random::next();
   }
   
+  std::cout << "OK" << std::endl;
   return EXIT_SUCCESS;
 }
