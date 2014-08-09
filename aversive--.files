@@ -1294,3 +1294,8 @@ tools/archi_parser/sub_register_nod.hpp
 tools/archi_parser/test.cpp
 tools/archi_parser/uc_node.cpp
 tools/archi_parser/uc_node.hpp
+tests/cxa/Makefile
+tests/cxa/main.cpp
+tests/cxa/withoutcxa.mk
+tests/cxa/withcxa.make
+tests/cxa/withoutcxa.make
