@@ -4,35 +4,41 @@
 #include <device/eirbot2014/motor.hpp>
 
 Device d("TESTER");
-int i = 0;
-char buffer[80];
+
+template<int i>
+void send_value(void) {
+    char buffer[80];
+    sprintf(buffer, "value %d", i);
+    ClientThread::instance().sendDeviceMessage(d, buffer);
+}
+
+struct MyConfig : public DefaultSchedulerConfig {};
+
+
+Scheduler<MyConfig> sched;
 
 int main(int argc, char** argv) {
   (void) argc;
   (void) argv;
   
   Aversive::init();
-  // Declare your devices here
-  // Initialize your stuff here
 
-  Task t1([]() {
-      sprintf(buffer, "value 1");
-      ClientThread::instance().sendDeviceMessage(d, buffer);
-    });
+  Task tasks[16];
 
-  Task t2([]() {
-      sprintf(buffer, "value 2");
-      ClientThread::instance().sendDeviceMessage(d, buffer);
-    });
-  
-  t1.setPeriod(10);
-  t2.setPeriod(10);
+  tasks[0] = Task(send_value<0>);
+  tasks[1] = Task(send_value<1>);
+  tasks[2] = Task(send_value<2>);
+  tasks[3] = Task(send_value<3>);
+  tasks[4] = Task(send_value<4>);
+  tasks[5] = Task(send_value<5>);
+  tasks[6] = Task(send_value<6>);
+  tasks[7] = Task(send_value<7>);
 
-  t1.setRepeat();
-  t2.setRepeat();
-
-  Scheduler::instance().addTask(t1);
-  Scheduler::instance().addTask(t2);
+  for(int i = 0 ; i < 16 ; i++) {
+      tasks[i].setPeriod(10);
+      tasks[i].setRepeat();
+      sched.addTask(tasks[i]);
+  }
 
   //Scheduler::instance().rmTask(t1);
   //Scheduler::instance().rmTask(t2);

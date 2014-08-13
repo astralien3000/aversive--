@@ -20,24 +20,16 @@
 #define SCHEDULER_HPP
 
 #include <base/integer.hpp>
-#include <base/singleton.hpp>
-
-#include <base/array.hpp>
 
 #include <system/task.hpp>
 
-#ifndef SCHEDULER_MAX_TASKS
-#define SCHEDULER_MAX_TASKS 8
-#endif
-
 //! \brief System to enable the robot to execute some tasks periodically, using interruptions
-class Scheduler : public Singleton<Scheduler> {
-  friend class Singleton<Scheduler>;
-  
+template<class Config>
+class Scheduler {
+public:
   //! \brief Default Constructor
   Scheduler(void);
-  
-public:
+
   //! \brief Add a task to execute
   bool addTask(Task& tsk);
   
@@ -48,7 +40,11 @@ public:
   u16 freeSlot(void) const;
   
 private:
-  SchedulerPrivateData _data;
+  struct PrivateData;
+  PrivateData _data;
 };
+
+//! \brief The default Scheduler Configuration structure
+struct DefaultSchedulerConfig;
 
 #endif//SCHEDULER_HPP
