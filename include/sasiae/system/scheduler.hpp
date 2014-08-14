@@ -95,66 +95,47 @@ struct DefaultSchedulerConfig {
   static constexpr u32 MAX_TASKS = 8;
 };
 
-template<class Config>
-struct Scheduler<Config>::PrivateData {
-  Heap<Config::MAX_TASKS, Task*> heap;
-  Array<Config::MAX_TASKS, Task> tasks;
-  u32 current;
-};
+//template<class Config>
+//struct Scheduler<Config>::PrivateData {
+//  Heap<Config::MAX_TASKS, Task*> heap;
+//  Array<Config::MAX_TASKS, Task> tasks;
+//  u32 current;
+//};
 
 template<class Config>
 Scheduler<Config>::Scheduler(void) {
-//  Aversive::init();
-//  _data.current = 0;
+  Aversive::init();
+  _current = 0;
 
-//  ClientThread::instance().setSyncFunction([&](long long t){
-//      _data.current = t;
-
-//      if(!_data.tasks.isEmpty()) {
-//	TaskRef tsk = _data.tasks.max();
-
-//	while(!_data.tasks.isEmpty() && _data.current > tsk.nextCall()) {
-
-
-//	  _data.tasks.pop();
-//	  tsk.exec();
-
-//	  if(!tsk.unique()) {
-//	    //tsk.setPeriod(0);
-//	    _data.tasks.insert(TaskRef(tsk, tsk.nextCall()));
-//	  }
-
-//	  if(!_data.tasks.isEmpty()) {
-//	    tsk = _data.tasks.max();
-//	  }
-//	}
-//      }
-//    });
+  ClientThread::instance().setSyncFunction([&](long long t){
+    _current = t;
+    ProcessTasks();
+  });
 }
 
-template<class Config>
-bool Scheduler<Config>::addTask(Task& task) {
-  (void)task;
-//  for(int i = 0 ; i < SCHEDULER_MAX_TASKS ; i++) {
-//    if(_data.save[i].period() == 0) {
-//      _data.save[i] = task;
-//      _data.tasks.insert(TaskRef(_data.save[i], _data.current));
-//      return true;
-//    }
-//  }
-  return false;
-}
+//template<class Config>
+//bool Scheduler<Config>::addTask(Task& task) {
+//  (void)task;
+////  for(int i = 0 ; i < SCHEDULER_MAX_TASKS ; i++) {
+////    if(_data.save[i].period() == 0) {
+////      _data.save[i] = task;
+////      _data.tasks.insert(TaskRef(_data.save[i], _data.current));
+////      return true;
+////    }
+////  }
+//  return false;
+//}
 
-template<class Config>
-bool Scheduler<Config>::rmTask(Task& task) {
-//  for(int i = 0 ; i < SCHEDULER_MAX_TASKS ; i++) {
-//    if(_data.save[i] == task) {
-//      _data.save[i] = Task();
-//      return true;
-//    }
-//  }
-  return false;
-}
+//template<class Config>
+//bool Scheduler<Config>::rmTask(Task& task) {
+////  for(int i = 0 ; i < SCHEDULER_MAX_TASKS ; i++) {
+////    if(_data.save[i] == task) {
+////      _data.save[i] = Task();
+////      return true;
+////    }
+////  }
+//  return false;
+//}
 
 
 #endif//SASIAE_SCHEDULER_HPP

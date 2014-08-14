@@ -25,7 +25,7 @@ typedef void(*TaskFunc)(void);
 
 //! \brief Define the period and priority of a function called by the scheduler
 class Task {
-private:
+protected:
   TaskFunc _func;
     
   u32 _period;
@@ -33,7 +33,6 @@ private:
   bool _unique;
 
 public:
-
   //! \brief Default constructor
   inline Task(void) : _func(0), _period(0), _priority(0), _unique(true) {}
 
@@ -41,8 +40,9 @@ public:
   inline Task(TaskFunc f) : _func(f), _period(0), _priority(0), _unique(true) {}
 
   //! \brief Copy Constructor
-  inline Task(const Task& other) {
-    (*this) = other;
+  inline Task(const Task& other)
+    : _func(other._func), _period(other._period),
+      _priority(other._priority), _unique(other._unique) {
   }
 
   //! \brief Copy operation

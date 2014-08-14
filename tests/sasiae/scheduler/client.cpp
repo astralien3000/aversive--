@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include <aversive.hpp>
 #include <system/scheduler.hpp>
 
@@ -15,7 +17,7 @@ void send_value(void) {
 struct MyConfig : public DefaultSchedulerConfig {};
 
 
-Scheduler<MyConfig> sched;
+Scheduler<MyConfig>& sched = Scheduler<MyConfig>::instance();
 
 int main(int argc, char** argv) {
   (void) argc;
