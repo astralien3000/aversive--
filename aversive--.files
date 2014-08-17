@@ -1299,3 +1299,6 @@ tests/cxa/main.cpp
 tests/cxa/withoutcxa.mk
 tests/cxa/withcxa.make
 tests/cxa/withoutcxa.make
+tests/timers/Makefile
+tests/timers/deploy.sh
+tests/timers/main.cpp

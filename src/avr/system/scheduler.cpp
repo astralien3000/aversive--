@@ -40,23 +40,8 @@ Scheduler::Scheduler(void) {
   Timer<SCHEDULER_TIMER_ID>::overflowEvent().setFunction([](void){
       Interrupts::lock();
       Scheduler& s = sched_instance();
-      s._data.current += SCHEDULER_COUNTER_INC;
-      if(!s._data.ordered_tasks.isEmpty()) {
-	TaskRef tsk = s._data.ordered_tasks.max();
-	while(!s._data.ordered_tasks.isEmpty() && s._data.current > tsk.nextCall()) {
-	  s._data.ordered_tasks.pop();
-	  
-	  tsk.exec();
-	  
-	  if(!tsk.unique()) {
-	    s._data.ordered_tasks.insert(TaskRef(tsk, tsk.nextCall()));
-	  }
-	  
-	  if(!s._data.ordered_tasks.isEmpty()) {
-	    tsk = s._data.ordered_tasks.max();
-	  }
-	}
-      }
+      s._current += SCHEDULER_COUNTER_INC;
+      s.ProcessTasks();
       Interrupts::unlock();
     });
   Timer<SCHEDULER_TIMER_ID>::overflowEvent().start();

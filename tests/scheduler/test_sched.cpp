@@ -13,6 +13,10 @@ void inter(void) {
   *st << count++ << "\n\r";
 }
 
+void inter2(void) {
+  *st << "miew\n\r";
+}
+
 int main(int argc, char** argv) {
   (void) argc;
   (void) argv;
@@ -24,16 +28,21 @@ int main(int argc, char** argv) {
   st = &stream;
   
   Task t(inter);
-  t.setPeriod(10000);
+  t.setPeriod(1000000);
   t.setRepeat();
-  
-  Scheduler::instance().addTask(t);
-  
+
+  Task t2(inter2);
+  t2.setPeriod(1000000 / 2);
+  t2.setRepeat();
+
+  Scheduler<DefaultSchedulerConfig>::instance().addTask(t);
+  Scheduler<DefaultSchedulerConfig>::instance().addTask(t2);
+
   Interrupts::init();
 
   while(Aversive::sync()) {
     // Your while(1) code
-    st->setValue('a');
+    //st->setValue('a');
     //inter();
   }
   

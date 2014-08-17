@@ -56,7 +56,7 @@ public:
   template<int PRESCALE> static void setPrescaler(void) {
     // Set to ID all prescaler bits
     REG(timer<ID>::control) &= 
-      ~CFG(timer<ID>::control::prescaler::disable);
+      ~CFG(timer<ID>::control::prescaler::mask);
     
     // Set prescaler value
     REG(timer<ID>::control) |= 

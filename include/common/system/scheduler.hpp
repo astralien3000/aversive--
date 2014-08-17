@@ -95,7 +95,7 @@ class Scheduler : public Singleton<Scheduler<Config>> {
   u32 _current;
 
   //! \brief Execute current tasks
-  void ProcessTasks(void) {
+  inline void processTasks(void) {
     while(!_heap.isEmpty() && _current > _heap.max().task().nextCall()) {
       HeapElement e = _heap.max();
       e.task().operator ()();
