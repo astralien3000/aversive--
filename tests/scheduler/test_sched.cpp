@@ -6,50 +6,48 @@
 
 #include <aversive.hpp>
 
-UartStream<0>* st;
-long long count = 0;
+UartStream<0> io("io");
 
-void inter(void) {
-  *st << count++ << "\n\r";
-}
+Scheduler<DefaultSchedulerConfig>& sched = Scheduler<DefaultSchedulerConfig>::instance();
 
-void inter2(void) {
-  *st << "miew\n\r";
-}
+template<int ID>
+struct Tester {
+  static u32 count;
+
+  static void exec(void) {
+    io << "Tester[" << ID << "] : " << count << "\n\r";
+    count++;
+  }
+
+  static void configTask(void) {
+    Task t(exec);
+    t.setPeriod(1000000 * ID);
+    t.setRepeat();
+    sched.addTask(t);
+  }
+};
+
+template<int ID>
+u32 Tester<ID>::count = 0;
 
 int main(int argc, char** argv) {
   (void) argc;
   (void) argv;
   
   Aversive::init();
-  // Declare your devices here
-  // Initialize your stuff here
-  UartStream<0> stream(0);
-  st = &stream;
-  
-  Task t(inter);
-  t.setPeriod(1000000);
-  t.setRepeat();
 
-  Task t2(inter2);
-  t2.setPeriod(1000000 / 2);
-  t2.setRepeat();
-
-  Scheduler<DefaultSchedulerConfig>::instance().addTask(t);
-  Scheduler<DefaultSchedulerConfig>::instance().addTask(t2);
+  Tester<1>::configTask();
+  Tester<2>::configTask();
+  Tester<3>::configTask();
+  Tester<4>::configTask();
+  Tester<5>::configTask();
+  Tester<6>::configTask();
+  Tester<7>::configTask();
+  Tester<8>::configTask();
 
   Interrupts::init();
 
-  while(Aversive::sync()) {
-    // Your while(1) code
-    //st->setValue('a');
-    //inter();
-  }
-  
-  // You can have several "while(Aversive::isRunning())" loops if needed
-  // Keep the "Aversive::sleep()" at the end of the loop in each of your loops
-  
-  // Unintialize your stuff here
-  Aversive::setReturnCode(0); // Optional; default value is already 0
+  while(Aversive::sync());
+  Aversive::setReturnCode(0);
   return Aversive::exit();
 }
