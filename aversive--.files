@@ -254,7 +254,6 @@ src/avr/hardware/Makefile
 src/avr/hardware/timer.cpp
 src/avr/hardware/uart.cpp
 src/avr/system/Makefile
-src/avr/system/scheduler.cpp
 src/avr/trash/interrupts.cpp
 src/avr/trash/static_list.hpp
 src/avr/trash/timer.cpp
@@ -287,7 +286,6 @@ src/sasiae/device/stream/eeprom_stream.cpp
 src/sasiae/device/stream/Makefile
 src/sasiae/device/Makefile
 src/sasiae/system/Makefile
-src/sasiae/system/scheduler.cpp
 src/sasiae/aversive.cpp
 src/sasiae/client_thread.cpp
 src/sasiae/Makefile
@@ -685,7 +683,6 @@ src/avr/hardware/Makefile
 src/avr/hardware/timer.cpp
 src/avr/hardware/uart.cpp
 src/avr/system/Makefile
-src/avr/system/scheduler.cpp
 src/avr/trash/interrupts.cpp
 src/avr/trash/static_list.hpp
 src/avr/trash/timer.cpp
@@ -718,7 +715,6 @@ src/sasiae/device/stream/eeprom_stream.cpp
 src/sasiae/device/stream/Makefile
 src/sasiae/device/Makefile
 src/sasiae/system/Makefile
-src/sasiae/system/scheduler.cpp
 src/sasiae/aversive.cpp
 src/sasiae/client_thread.cpp
 src/sasiae/Makefile

@@ -38,4 +38,15 @@ Scheduler<Config>::Scheduler(void) {
   });
 }
 
+template<class Config>
+inline void Scheduler<Config>::lock(void) {
+
+}
+
+template<class Config>
+inline void Scheduler<Config>::unlock(void) {
+
+}
+
+
 #endif//SASIAE_SCHEDULER_HPP

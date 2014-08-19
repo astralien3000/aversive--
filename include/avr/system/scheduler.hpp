@@ -44,13 +44,21 @@ Scheduler<Config>::Scheduler(void) {
   Timer<Config::TIMER_ID>::init();
   Timer<Config::TIMER_ID>::template setPrescaler<Config::TIMER_PRESCALER>();
   Timer<Config::TIMER_ID>::overflowEvent().setFunction([](void){
-      Interrupts::lock();
       Scheduler& s = Scheduler::instance();
       s._current += SCHEDULER_GRANULARITY;
       s.processTasks();
-      Interrupts::unlock();
     });
   Timer<Config::TIMER_ID>::overflowEvent().start();
+}
+
+template<class Config>
+inline void Scheduler<Config>::lock(void) {
+  Interrupts::lock();
+}
+
+template<class Config>
+inline void Scheduler<Config>::unlock(void) {
+  Interrupts::unlock();
 }
 
 

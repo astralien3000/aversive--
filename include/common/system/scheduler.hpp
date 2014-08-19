@@ -35,6 +35,12 @@ class Scheduler : public Singleton<Scheduler<Config>> {
   //! \brief Default Constructor (implementation dependent)
   Scheduler(void);
 
+  //! \biref Disable interrupts
+  void lock(void);
+
+  //! \brief Cancel the effect of lock
+  void unlock(void);
+
   //! \brief A task with more information used by the scheduler
   class PrivateTask : public Task {
   private:
@@ -96,6 +102,7 @@ class Scheduler : public Singleton<Scheduler<Config>> {
 
   //! \brief Execute current tasks
   inline void processTasks(void) {
+    lock();
     while(!_heap.isEmpty() && _current > _heap.max().task().nextCall()) {
       HeapElement e = _heap.max();
       e.task().operator ()();
@@ -109,33 +116,31 @@ class Scheduler : public Singleton<Scheduler<Config>> {
         _heap.insert(e);
       }
     }
+    unlock();
   }
 
 public:
   //! \brief Add a task to execute
-  bool addTask(Task& tsk) {
-    bool ret = _tasks.append(tsk);
-
-    if(ret) {
+  void addTask(Task& tsk) {
+    lock();
+    if(_tasks.append(tsk)) {
       PrivateTask& ptsk = _tasks.get(_tasks.indexOf(tsk));
       ptsk.setNextCall(_current + ptsk.period());
-      _heap.insert(HeapElement(ptsk));
+      Scheduler::instance()._heap.insert(HeapElement(ptsk));
     }
-
-    return ret;
+    unlock();
   }
   
   //! \brief Remove a Task
-  bool rmTask(Task& tsk) {
-    _heap.flush();
-
-    bool ret = _tasks.remove(tsk);
-
-    _tasks.doForeach([&](PrivateTask& tsk){
-      _heap.insert(HeapElement(tsk));
-    });
-
-    return ret;
+  void rmTask(Task& tsk) {
+    lock();
+    if(_tasks.remove(tsk)) {
+      Scheduler::instance()._heap.flush();
+      _tasks.doForeach([](PrivateTask& tsk) {
+        Scheduler::instance()._heap.insert(HeapElement(tsk));
+      });
+    }
+    unlock();
   }
   
   u16 freeSlot(void) const {
