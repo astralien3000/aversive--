@@ -173,6 +173,7 @@
 
 
 
+
 // Architecture : atmega2560
 template<int param> struct timer;
 template<int param> struct timer;
@@ -424,6 +425,7 @@ struct timer<1>::control::prescaler {
   template<int param> struct value;
   template<int param> struct value;
   template<int param> struct value;
+  struct mask;
 };
 
 struct timer<1>::control::prescaler::disable {
@@ -473,6 +475,13 @@ struct timer<1>::control::prescaler::value<1024> {
   };
 };
 
+struct timer<1>::control::prescaler::mask {
+  enum {
+    CONFIG = 24,
+    SIZE = 8
+  };
+};
+
 struct timer<1>::counter {
   enum {
     REG = 0,
@@ -510,7 +519,7 @@ struct timer<1>::imask {
 template<>
 struct timer<1>::imask::match<0> {
   enum {
-    CONFIG = 24,
+    CONFIG = 25,
     SIZE = 8
   };
 };
@@ -518,14 +527,14 @@ struct timer<1>::imask::match<0> {
 template<>
 struct timer<1>::imask::match<1> {
   enum {
-    CONFIG = 25,
+    CONFIG = 26,
     SIZE = 8
   };
 };
 
 struct timer<1>::imask::overflow {
   enum {
-    CONFIG = 26,
+    CONFIG = 27,
     SIZE = 8
   };
 };
@@ -558,21 +567,21 @@ struct uart<0>::flag {
 
 struct uart<0>::flag::recvend {
   enum {
-    CONFIG = 27,
+    CONFIG = 28,
     SIZE = 8
   };
 };
 
 struct uart<0>::flag::sendend {
   enum {
-    CONFIG = 28,
+    CONFIG = 29,
     SIZE = 8
   };
 };
 
 struct uart<0>::flag::empty {
   enum {
-    CONFIG = 29,
+    CONFIG = 30,
     SIZE = 8
   };
 };
@@ -598,14 +607,14 @@ struct uart<0>::control::enable {
 
 struct uart<0>::control::enable::recv {
   enum {
-    CONFIG = 30,
+    CONFIG = 31,
     SIZE = 8
   };
 };
 
 struct uart<0>::control::enable::send {
   enum {
-    CONFIG = 31,
+    CONFIG = 32,
     SIZE = 8
   };
 };
@@ -618,21 +627,21 @@ struct uart<0>::control::ienable {
 
 struct uart<0>::control::ienable::recv {
   enum {
-    CONFIG = 32,
+    CONFIG = 33,
     SIZE = 8
   };
 };
 
 struct uart<0>::control::ienable::send {
   enum {
-    CONFIG = 33,
+    CONFIG = 34,
     SIZE = 8
   };
 };
 
 struct uart<0>::control::ienable::empty {
   enum {
-    CONFIG = 34,
+    CONFIG = 35,
     SIZE = 8
   };
 };
@@ -645,21 +654,21 @@ struct uart<0>::control::flag {
 
 struct uart<0>::control::flag::recvend {
   enum {
-    CONFIG = 35,
+    CONFIG = 36,
     SIZE = 8
   };
 };
 
 struct uart<0>::control::flag::sendend {
   enum {
-    CONFIG = 36,
+    CONFIG = 37,
     SIZE = 8
   };
 };
 
 struct uart<0>::control::flag::empty {
   enum {
-    CONFIG = 37,
+    CONFIG = 38,
     SIZE = 8
   };
 };
@@ -675,7 +684,7 @@ struct uart<0>::control::charsize {
 template<>
 struct uart<0>::control::charsize::value<5> {
   enum {
-    CONFIG = 38,
+    CONFIG = 39,
     SIZE = 8
   };
 };
@@ -683,7 +692,7 @@ struct uart<0>::control::charsize::value<5> {
 template<>
 struct uart<0>::control::charsize::value<6> {
   enum {
-    CONFIG = 39,
+    CONFIG = 40,
     SIZE = 8
   };
 };
@@ -691,7 +700,7 @@ struct uart<0>::control::charsize::value<6> {
 template<>
 struct uart<0>::control::charsize::value<7> {
   enum {
-    CONFIG = 40,
+    CONFIG = 41,
     SIZE = 8
   };
 };
@@ -699,7 +708,7 @@ struct uart<0>::control::charsize::value<7> {
 template<>
 struct uart<0>::control::charsize::value<8> {
   enum {
-    CONFIG = 41,
+    CONFIG = 42,
     SIZE = 8
   };
 };
@@ -707,7 +716,7 @@ struct uart<0>::control::charsize::value<8> {
 template<>
 struct uart<0>::control::charsize::value<9> {
   enum {
-    CONFIG = 42,
+    CONFIG = 43,
     SIZE = 8
   };
 };
@@ -720,21 +729,21 @@ struct uart<0>::control::parity {
 
 struct uart<0>::control::parity::disabled {
   enum {
-    CONFIG = 43,
+    CONFIG = 44,
     SIZE = 8
   };
 };
 
 struct uart<0>::control::parity::even {
   enum {
-    CONFIG = 44,
+    CONFIG = 45,
     SIZE = 8
   };
 };
 
 struct uart<0>::control::parity::odd {
   enum {
-    CONFIG = 45,
+    CONFIG = 46,
     SIZE = 8
   };
 };
@@ -747,7 +756,7 @@ struct uart<0>::control::stopbit {
 template<>
 struct uart<0>::control::stopbit::value<1> {
   enum {
-    CONFIG = 46,
+    CONFIG = 47,
     SIZE = 8
   };
 };
@@ -755,7 +764,7 @@ struct uart<0>::control::stopbit::value<1> {
 template<>
 struct uart<0>::control::stopbit::value<2> {
   enum {
-    CONFIG = 47,
+    CONFIG = 48,
     SIZE = 8
   };
 };
@@ -808,21 +817,21 @@ struct eeprom<0>::control {
 
 struct eeprom<0>::control::masterwrite {
   enum {
-    CONFIG = 48,
+    CONFIG = 49,
     SIZE = 8
   };
 };
 
 struct eeprom<0>::control::write {
   enum {
-    CONFIG = 49,
+    CONFIG = 50,
     SIZE = 8
   };
 };
 
 struct eeprom<0>::control::read {
   enum {
-    CONFIG = 50,
+    CONFIG = 51,
     SIZE = 8
   };
 };
@@ -1050,45 +1059,46 @@ template<> inline Config<8, 20>::Config(void) : conf{0, (0 << CS12) | (1 << CS11
 template<> inline Config<8, 21>::Config(void) : conf{0, (0 << CS12) | (1 << CS11) | (1 << CS10), 0} {}
 template<> inline Config<8, 22>::Config(void) : conf{0, (1 << CS12) | (0 << CS11) | (0 << CS10), 0} {}
 template<> inline Config<8, 23>::Config(void) : conf{0, (1 << CS12) | (0 << CS11) | (1 << CS10), 0} {}
+template<> inline Config<8, 24>::Config(void) : conf{0, (1 << CS12) | (1 << CS11) | (1 << CS10), 0} {}
 template<> inline Register<16, 0>::Register(void) : reg_size(1), reg{(u16*)&TCNT1} {}
 template<> inline Register<16, 1>::Register(void) : reg_size(1), reg{(u16*)&OCR1A} {}
 template<> inline Register<16, 2>::Register(void) : reg_size(1), reg{(u16*)&OCR1B} {}
 template<> inline Register<8, 7>::Register(void) : reg_size(1), reg{(u8*)&TIMSK1} {}
-template<> inline Config<8, 24>::Config(void) : conf{(1 << OCIE1A)} {}
-template<> inline Config<8, 25>::Config(void) : conf{(1 << OCIE1B)} {}
-template<> inline Config<8, 26>::Config(void) : conf{(1 << TOIE1)} {}
+template<> inline Config<8, 25>::Config(void) : conf{(1 << OCIE1A)} {}
+template<> inline Config<8, 26>::Config(void) : conf{(1 << OCIE1B)} {}
+template<> inline Config<8, 27>::Config(void) : conf{(1 << TOIE1)} {}
 template<> inline Register<8, 8>::Register(void) : reg_size(1), reg{(u8*)&TIFR0} {}
 template<> inline Register<8, 9>::Register(void) : reg_size(1), reg{(u8*)&UCSR0A} {}
-template<> inline Config<8, 27>::Config(void) : conf{(1 << RXC0)} {}
-template<> inline Config<8, 28>::Config(void) : conf{(1 << TXC0)} {}
-template<> inline Config<8, 29>::Config(void) : conf{(1 << UDRE0)} {}
+template<> inline Config<8, 28>::Config(void) : conf{(1 << RXC0)} {}
+template<> inline Config<8, 29>::Config(void) : conf{(1 << TXC0)} {}
+template<> inline Config<8, 30>::Config(void) : conf{(1 << UDRE0)} {}
 template<> inline Register<8, 10>::Register(void) : reg_size(3), reg{(u8*)&UCSR0A, (u8*)&UCSR0B, (u8*)&UCSR0C} {}
-template<> inline Config<8, 30>::Config(void) : conf{0, (1 << RXEN0), 0} {}
-template<> inline Config<8, 31>::Config(void) : conf{0, (1 << TXEN0), 0} {}
-template<> inline Config<8, 32>::Config(void) : conf{0, (1 << RXCIE0), 0} {}
-template<> inline Config<8, 33>::Config(void) : conf{0, (1 << TXCIE0), 0} {}
-template<> inline Config<8, 34>::Config(void) : conf{0, (1 << UDRIE0), 0} {}
-template<> inline Config<8, 35>::Config(void) : conf{(1 << RXC0), 0, 0} {}
-template<> inline Config<8, 36>::Config(void) : conf{(1 << TXC0), 0, 0} {}
-template<> inline Config<8, 37>::Config(void) : conf{(1 << UDRE0), 0, 0} {}
-template<> inline Config<8, 38>::Config(void) : conf{0, (0 << UCSZ02), (0 << UCSZ01) | (0 << UCSZ00)} {}
-template<> inline Config<8, 39>::Config(void) : conf{0, (0 << UCSZ02), (0 << UCSZ01) | (1 << UCSZ00)} {}
-template<> inline Config<8, 40>::Config(void) : conf{0, (0 << UCSZ02), (1 << UCSZ01) | (0 << UCSZ00)} {}
-template<> inline Config<8, 41>::Config(void) : conf{0, (0 << UCSZ02), (1 << UCSZ01) | (1 << UCSZ00)} {}
-template<> inline Config<8, 42>::Config(void) : conf{0, (1 << UCSZ02), (1 << UCSZ01) | (1 << UCSZ00)} {}
-template<> inline Config<8, 43>::Config(void) : conf{0, 0, 0} {}
-template<> inline Config<8, 44>::Config(void) : conf{0, 0, (1 << UPM01)} {}
-template<> inline Config<8, 45>::Config(void) : conf{0, 0, (1 << UPM01) | (1 << UPM00)} {}
-template<> inline Config<8, 46>::Config(void) : conf{0, 0, 0} {}
-template<> inline Config<8, 47>::Config(void) : conf{0, 0, (1 << USBS0)} {}
+template<> inline Config<8, 31>::Config(void) : conf{0, (1 << RXEN0), 0} {}
+template<> inline Config<8, 32>::Config(void) : conf{0, (1 << TXEN0), 0} {}
+template<> inline Config<8, 33>::Config(void) : conf{0, (1 << RXCIE0), 0} {}
+template<> inline Config<8, 34>::Config(void) : conf{0, (1 << TXCIE0), 0} {}
+template<> inline Config<8, 35>::Config(void) : conf{0, (1 << UDRIE0), 0} {}
+template<> inline Config<8, 36>::Config(void) : conf{(1 << RXC0), 0, 0} {}
+template<> inline Config<8, 37>::Config(void) : conf{(1 << TXC0), 0, 0} {}
+template<> inline Config<8, 38>::Config(void) : conf{(1 << UDRE0), 0, 0} {}
+template<> inline Config<8, 39>::Config(void) : conf{0, (0 << UCSZ02), (0 << UCSZ01) | (0 << UCSZ00)} {}
+template<> inline Config<8, 40>::Config(void) : conf{0, (0 << UCSZ02), (0 << UCSZ01) | (1 << UCSZ00)} {}
+template<> inline Config<8, 41>::Config(void) : conf{0, (0 << UCSZ02), (1 << UCSZ01) | (0 << UCSZ00)} {}
+template<> inline Config<8, 42>::Config(void) : conf{0, (0 << UCSZ02), (1 << UCSZ01) | (1 << UCSZ00)} {}
+template<> inline Config<8, 43>::Config(void) : conf{0, (1 << UCSZ02), (1 << UCSZ01) | (1 << UCSZ00)} {}
+template<> inline Config<8, 44>::Config(void) : conf{0, 0, 0} {}
+template<> inline Config<8, 45>::Config(void) : conf{0, 0, (1 << UPM01)} {}
+template<> inline Config<8, 46>::Config(void) : conf{0, 0, (1 << UPM01) | (1 << UPM00)} {}
+template<> inline Config<8, 47>::Config(void) : conf{0, 0, 0} {}
+template<> inline Config<8, 48>::Config(void) : conf{0, 0, (1 << USBS0)} {}
 template<> inline Register<8, 11>::Register(void) : reg_size(2), reg{(u8*)&UBRR0L, (u8*)&UBRR0H} {}
 template<> inline Register<8, 12>::Register(void) : reg_size(1), reg{(u8*)&UDR0} {}
 template<> inline Register<8, 13>::Register(void) : reg_size(2), reg{(u8*)&EEARL, (u8*)&EEARH} {}
 template<> inline Register<8, 14>::Register(void) : reg_size(1), reg{(u8*)&EEDR} {}
 template<> inline Register<8, 15>::Register(void) : reg_size(1), reg{(u8*)&EECR} {}
-template<> inline Config<8, 48>::Config(void) : conf{(1 << EEMPE)} {}
-template<> inline Config<8, 49>::Config(void) : conf{(1 << EEPE)} {}
-template<> inline Config<8, 50>::Config(void) : conf{(1 << EERE)} {}
+template<> inline Config<8, 49>::Config(void) : conf{(1 << EEMPE)} {}
+template<> inline Config<8, 50>::Config(void) : conf{(1 << EEPE)} {}
+template<> inline Config<8, 51>::Config(void) : conf{(1 << EERE)} {}
 template<> inline Register<8, 16>::Register(void) : reg_size(1), reg{(u8*)&DDRA} {}
 template<> inline Register<8, 17>::Register(void) : reg_size(1), reg{(u8*)&DDRB} {}
 template<> inline Register<8, 18>::Register(void) : reg_size(1), reg{(u8*)&DDRC} {}
