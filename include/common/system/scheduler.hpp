@@ -100,10 +100,26 @@ class Scheduler : public Singleton<Scheduler<Config>> {
   List<Config::MAX_TASKS, PrivateTask> _tasks;
   u32 _current;
 
+  inline bool isInPast(u32 date) {
+    constexpr u32 LIM = (1L << 31);
+    constexpr u32 HIG = LIM + LIM / 2;
+    constexpr u32 LOW = LIM - LIM / 2;
+
+    if(_current < LOW && date > HIG) {
+      return true;
+    }
+    else if(date < LOW && _current > HIG) {
+      return false;
+    }
+    else {
+      return date < _current;
+    }
+  }
+
   //! \brief Execute current tasks
   inline void processTasks(void) {
     lock();
-    while(!_heap.isEmpty() && _current > _heap.max().task().nextCall()) {
+    while(!_heap.isEmpty() && isInPast(_heap.max().task().nextCall())) {
       HeapElement e = _heap.max();
       e.task().operator ()();
       _heap.pop();
