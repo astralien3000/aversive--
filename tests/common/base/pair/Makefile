@@ -2,14 +2,15 @@ CC=g++
 CFLAGS=-Wall -Wextra --std=c++11 -g
 
 CLASS=pair
+EXEC=$(CLASS).elf
 
-all: $(CLASS)
+all: $(EXEC)
 
-$(CLASS): main.cpp ../../../../include/common/base/$(CLASS).hpp
+$(EXEC): main.cpp ../../../../include/common/base/$(CLASS).hpp
 	@$(CC) $(CFLAGS) -I../../../../include/common -o $@ $<
 
 clean:
 	@rm -rf *~ \#*\#
 
 mrproper: clean
-	@rm -rf $(CLASS)
+	@rm -rf $(EXEC)

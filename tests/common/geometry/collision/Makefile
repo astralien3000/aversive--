@@ -4,14 +4,15 @@ LDFLAGS=-L../../../../build -laversive_sasiae
 
 CLASS=collision
 DEP=$(CLASS).hpp shape.hpp point.hpp segment.hpp circle.hpp aabb.hpp triangle.hpp quadrilateral.hpp collision.hpp
+EXEC=$(CLASS).elf
 
-all: $(CLASS)
+all: $(EXEC)
 
-$(CLASS): main.cpp $(addprefix ../../../../include/common/geometry/,$(DEP)) ../../../../build/libaversive_sasiae.a
+$(EXEC): main.cpp $(addprefix ../../../../include/common/geometry/,$(DEP)) ../../../../build/libaversive_sasiae.a
 	@$(CC) $(CFLAGS) -I../../../../include/common -o $@ $< $(LDFLAGS)
 
 clean:
 	@rm -rf *~ \#*\#
 
 mrproper: clean
-	@rm -rf $(CLASS)
+	@rm -rf $(EXEC)

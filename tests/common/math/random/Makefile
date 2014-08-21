@@ -3,14 +3,15 @@ CFLAGS=-Wall -Wextra --std=c++11 -g
 LDFLAGS=-L../../../../build -laversive_sasiae
 
 CLASS=random
+EXEC=$(CLASS).elf
 
-all: $(CLASS)
+all: $(EXEC)
 
-$(CLASS): main.cpp ../../../../include/common/math/$(CLASS).hpp ../../../../build/libaversive_sasiae.a
+$(EXEC): main.cpp ../../../../include/common/math/$(CLASS).hpp ../../../../build/libaversive_sasiae.a
 	@$(CC) $(CFLAGS) -I../../../../include/common -o $@ $< $(LDFLAGS)
 
 clean:
 	@rm -rf *~ \#*\#
 
 mrproper: clean
-	@rm -rf $(CLASS)
+	@rm -rf $(EXEC)

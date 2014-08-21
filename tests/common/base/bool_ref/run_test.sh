@@ -15,7 +15,7 @@ if [ "$1" = "test" ]; then
         echo "Compilation error"
         exit 1
     fi
-    ./bool_ref
+    ./bool_ref.elf
     exit $?
 elif [ "$1" = "clean" ]; then
     make mrproper &>> /dev/null

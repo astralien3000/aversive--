@@ -15,7 +15,7 @@ if [ "$1" = "test" ]; then
         echo "Compilation error"
         exit 1
     fi
-    ./function
+    ./function.elf
     exit $?
 elif [ "$1" = "clean" ]; then
     make mrproper &>> /dev/null
