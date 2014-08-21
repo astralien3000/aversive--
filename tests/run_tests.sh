@@ -25,14 +25,24 @@ function recur {
         FILE_PATH="$1/$FILE"
         if [ -d "$FILE_PATH" ]; then
             for (( i=1; i<$DEPTH; i++ )); do
-                echo -n "  "
+                local C="$FILE_PATH"
+                for (( j=$i; j<$DEPTH; j++)); do
+                    C="$C/.."
+                done
+                if [ "$(lastDir $(cd $C && echo ${PWD%/*}))" != "$(cd $C && echo ${PWD##*/})" ]; then
+                    echo -n "│   "
+                else
+                    echo -n "    "
+                fi
             done
             if [ "$FILE" = "$LAST" ]; then
-                echo -n "└─"
+                echo -n "└── "
             else
-                echo -n "├─"
+                echo -n "├── "
             fi
+            echo -ne "\e[94m"
             echo -n "$FILE"
+            echo -ne "\e[39m"
             if [ -f "$FILE_PATH/run_test.sh" ]; then
                 echo -n ": "
                 RES=$(cd "$FILE_PATH" && ./run_test.sh "$TARGET")
@@ -51,14 +61,18 @@ function recur {
 }
 
 if [ "$1" = "test" ]; then
+    echo -ne "\e[94m"
     echo "."
+    echo -ne "\e[39m"
     recur . test 0
     exit 0
 elif [ "$1" = "clean" ]; then
     recur . clean 0 &>> /dev/null
     exit 0
 elif [ -d "$1" ]; then
+    echo -ne "\e[94m"
     echo "$1"
+    echo -ne "\e[39m"
     recur "$1" test 0
     exit 0
 else
