@@ -2,9 +2,9 @@
 *~
 *.hex
 *build*
-client
-server
 a.out
 *.user
 *.autosave
 *.mk
+*.o
+*.gch
