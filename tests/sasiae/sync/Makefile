@@ -5,19 +5,16 @@ CFLAGS=-Wall -Wextra --std=c++11 -DQT_CORE_LIB -fpic -g
 LDFLAGS=-L$(AVERSIVE_ROOT)/build -laversive_sasiae -lQt5Core -lpthread
 INCLUDE=-I$(AVERSIVE_ROOT)/include/sasiae -I/usr/include/qt5 -I/usr/include/qt5/QtCore
 
-all: client server
+all: client.elf server.elf
 
-client: client.cpp
+client.elf: client.cpp
 	@$(CC) $(CFLAGS) $(INCLUDE) -o $@ $< $(LDFLAGS)
 
-server: server.cpp
+server.elf: server.cpp
 	@$(CC) $(CFLAGS) $(INCLUDE) -o $@ $< $(LDFLAGS)
 
 clean:
 	@rm -rf *~ \#*\#
 
-test: all
-	@./server
-
 mrproper: clean
-	@rm -rf client server
+	@rm -rf client.elf server.elf

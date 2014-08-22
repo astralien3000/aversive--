@@ -1,4 +1,3 @@
-#include <QThread>
 #include <QProcess>
 #include <cstring>
 #include <iostream>

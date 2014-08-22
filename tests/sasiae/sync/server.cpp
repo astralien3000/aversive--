@@ -1,9 +1,9 @@
-#include <QThread>
 #include <QProcess>
 #include <cstring>
 #include <iostream>
+#include "../../my_assert.hpp"
 
-#define BUFFER_SIZE 1024
+static constexpr int BUFFER_SIZE = 1024;
 
 char buffer[BUFFER_SIZE];
 
@@ -16,10 +16,12 @@ bool readLine(QProcess& client) {
   else {
     buffer[i++] = c;
   }
+  
   while(client.getChar(&c) && c != '\n') {
     buffer[i++] = c;
   }
   buffer[i] = '\0';
+  
   if(c == '\n') {
     return true;
   }
@@ -34,74 +36,48 @@ bool checkMsg(QProcess& client, const char* str) {
   if(!readLine(client)) {
     return false;
   }
+  
   return !strcmp(buffer, str);
-}
-
-void res(bool ok, int i = 0) {
-  if(ok) {
-    std::cout << "OK" << std::endl;
-  }
-  else {
-    std::cout << "NOK " << i << std::endl;
-  }
 }
 
 int main(int argc, char** argv) {
   (void) argc;
   (void) argv;
-
+  
   QProcess client;
-  client.start("./client", QStringList());
+  client.start("./client.elf", QStringList());
   if(!client.waitForStarted()) {
-    res(false, 1);
-    return EXIT_FAILURE;
+    myAssert(false, "Line " S__LINE__ ": The client could not be initialized properly.");
   }
-
+  
   client.write("T 1 10\n");
   
   char buffer2[80];
   for(int i = 0; i < 10; i++) {
     sprintf(buffer2, "D TESTER value is %d", i);
-    if(!checkMsg(client, buffer2)) {
-      res(false, 2 + i);
-      return EXIT_FAILURE;
-    }
+    myAssert(checkMsg(client, buffer2), "Line " S__LINE__ ": Unexpected message.");
   }
   
-  if(!checkMsg(client, "T")) {
-    res(false, 12);
-    return EXIT_FAILURE;
-  }
-
+  myAssert(checkMsg(client, "T"), "Line " S__LINE__ ": The client thread did not send \"T\" as expected.");
+  
   client.write("T 2 100\n");
   
   for(int i = 10; i < 110; i++) {
     sprintf(buffer2, "D TESTER value is %d", i);
-    if(!checkMsg(client, buffer2)) {
-      res(false, 13 + i);
-      return EXIT_FAILURE;
-    }
+    myAssert(checkMsg(client, buffer2), "Line " S__LINE__ ": Unexpected message.");
   }
   
-  if(!checkMsg(client, "T")) {
-    res(false, 113);
-    return EXIT_FAILURE;
-  }
-
+  myAssert(checkMsg(client, "T"), "Line " S__LINE__ ": The client thread did not send \"T\" as expected.");
+  
   client.write("S\n");
-
-  if(!checkMsg(client, "S")) {
-    res(false, 114);
-    return EXIT_FAILURE;
-  }
-
-  client.closeWriteChannel();
   
+  myAssert(checkMsg(client, "S"), "Line " S__LINE__ ": The client thread did not send \"S\" as expected.");
+  
+  client.closeWriteChannel();
   if(!client.waitForFinished()) {
-    res(false, 115);
-    return EXIT_FAILURE;
+    myAssert(false, "Line " S__LINE__ ": The client did not close properly.");
   }
-
-  res(true);
-  return EXIT_SUCCESS;
+  
+  std::cout << "OK" << std::endl;
+  return 0;
 }
