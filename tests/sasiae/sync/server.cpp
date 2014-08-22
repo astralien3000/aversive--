@@ -9,9 +9,7 @@ int main(int argc, char** argv) {
   
   QProcess client;
   client.start("./client.elf", QStringList());
-  if(!client.waitForStarted()) {
-    myAssert(false, "Line " S__LINE__ ": The client could not be initialized properly.");
-  }
+  myAssert(client.waitForStarted(), "Line " S__LINE__ ": The client could not be initialized properly.");
   
   client.write("T 1 10\n");
   
@@ -37,9 +35,7 @@ int main(int argc, char** argv) {
   myAssert(checkMsg(client, "S"), "Line " S__LINE__ ": The client thread did not send \"S\" as expected.");
   
   client.closeWriteChannel();
-  if(!client.waitForFinished()) {
-    myAssert(false, "Line " S__LINE__ ": The client did not close properly.");
-  }
+  myAssert(client.waitForFinished(), "Line " S__LINE__ ": The client did not close properly.");
   
   std::cout << "OK" << std::endl;
   return 0;
