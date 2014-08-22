@@ -46,7 +46,7 @@ int main(int argc, char** argv) {
   (void) argv;
   
   QProcess client;
-  client.start("./client", QStringList());
+  client.start("./client.elf", QStringList());
   if(!client.waitForStarted()) {
     myAssert(false, "Line " S__LINE__ ": The client could not be initialized properly.");
   }
