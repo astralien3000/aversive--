@@ -1,3 +1,30 @@
+/*
+
+Expected output :
+
+Tester[1] : 1
+Tester[1] : 2
+Tester[2] : 1
+Tester[1] : 3
+Tester[3] : 1
+Tester[1] : 4
+Tester[2] : 2
+Tester[4] : 1
+Tester[1] : 5
+Tester[5] : 1
+Tester[1] : 6
+Tester[2] : 3
+Tester[3] : 2
+Tester[6] : 1
+Tester[1] : 7
+Tester[7] : 1
+Tester[1] : 8
+Tester[2] : 4
+Tester[4] : 2
+Tester[8] : 1
+
+ */
+
 #include <aversive.hpp>
 #include <system/scheduler.hpp>
 #include <device/stream/uart_stream.hpp>
@@ -15,8 +42,8 @@ struct Tester {
   static u32 count;
 
   static void exec(void) {
-    io << "Tester[" << ID << "] : " << count << "\n\r";
     count++;
+    io << "Tester[" << ID << "] : " << count << "\n\r";
   }
 
   static void configTask(void) {

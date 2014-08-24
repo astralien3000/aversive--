@@ -365,7 +365,7 @@ tests/sasiae/Makefile
 tests/scheduler/Makefile
 
 
-tests/scheduler/test_sched.cpp
+tests/scheduler/main.cpp
 tests/stack/main.cpp
 tests/stack/Makefile
 tests/timer/timer_test.cpp
@@ -1298,3 +1298,4 @@ tests/cxa/withoutcxa.make
 tests/timers/Makefile
 tests/timers/deploy.sh
 tests/timers/main.cpp
+tests/scheduler/deploy.sh
