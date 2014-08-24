@@ -22,6 +22,7 @@ struct Tester {
   static void configTask(void) {
     Task t(exec);
     t.setPeriod(1000000 * ID);
+    t.setPriority(8 - ID);
     t.setRepeat();
     sched.addTask(t);
   }

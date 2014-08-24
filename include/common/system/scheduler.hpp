@@ -81,6 +81,10 @@ class Scheduler : public Singleton<Scheduler<Config>> {
     void setNextCall(u32 val) {
       _next_call += val;
     }
+
+    u8 priority(void) {
+      return _priority;
+    }
   };
 
   //! \brief Encapsulate the PrivateTask into an interface usable with the Heap
@@ -91,7 +95,11 @@ class Scheduler : public Singleton<Scheduler<Config>> {
     HeapElement(void) : _task(0) {}
     HeapElement(PrivateTask& tsk) : _task(&tsk) {}
 
-    bool operator<(const HeapElement& other) { return _task->nextCall() > other._task->nextCall(); }
+    bool operator<(const HeapElement& other) {
+      return _task->nextCall() > other._task->nextCall()
+          || ((_task->nextCall() == other._task->nextCall())
+              && (_task->priority() < other._task->priority()));
+    }
 
     PrivateTask& task(void) const { return *_task; }
   };
