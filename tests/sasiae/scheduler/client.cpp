@@ -7,17 +7,28 @@
 
 Device d("TESTER");
 
-template<int i>
-void send_value(void) {
-    char buffer[80];
-    sprintf(buffer, "value %d", i);
-    ClientThread::instance().sendDeviceMessage(d, buffer);
-}
-
 struct MyConfig : public DefaultSchedulerConfig {};
 
-
 Scheduler<MyConfig>& sched = Scheduler<MyConfig>::instance();
+
+template<int ID>
+struct Tester {
+  static u32 count;
+
+  static void exec(void) {
+      char buffer[80];
+      sprintf(buffer, "value %d", ID);
+      ClientThread::instance().sendDeviceMessage(d, buffer);
+  }
+
+  static void configTask(void) {
+    Task t(exec);
+    t.setPeriod(10 * ID);
+    t.setPriority(8 - ID);
+    t.setRepeat();
+    sched.addTask(t);
+  }
+};
 
 int main(int argc, char** argv) {
   (void) argc;
@@ -25,34 +36,18 @@ int main(int argc, char** argv) {
   
   Aversive::init();
 
-  Task tasks[16];
+  Tester<1>::configTask();
+  Tester<2>::configTask();
+  Tester<3>::configTask();
+  Tester<4>::configTask();
+  Tester<5>::configTask();
+  Tester<6>::configTask();
+  Tester<7>::configTask();
+  Tester<8>::configTask();
 
-  tasks[0] = Task(send_value<0>);
-  tasks[1] = Task(send_value<1>);
-  tasks[2] = Task(send_value<2>);
-  tasks[3] = Task(send_value<3>);
-  tasks[4] = Task(send_value<4>);
-  tasks[5] = Task(send_value<5>);
-  tasks[6] = Task(send_value<6>);
-  tasks[7] = Task(send_value<7>);
-
-  for(int i = 0 ; i < 16 ; i++) {
-      tasks[i].setPeriod(10);
-      tasks[i].setRepeat();
-      sched.addTask(tasks[i]);
-  }
-
-  //Scheduler::instance().rmTask(t1);
-  //Scheduler::instance().rmTask(t2);
-  
   while(Aversive::sync()) {
-    // Your while(1) code
   }
-  
-  // You can have several "while(Aversive::isRunning())" loops if needed
-  // Keep the "Aversive::sleep()" at the end of the loop in each of your loops
-  
-  // Unintialize your stuff here
-  Aversive::setReturnCode(0); // Optional; default value is already 0
+
+  Aversive::setReturnCode(0);
   return Aversive::exit();
 }
