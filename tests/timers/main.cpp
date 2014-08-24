@@ -29,7 +29,7 @@ void configure_timer(void) {
       }
     });
   MyTimer::init();
-  MyTimer::template setPrescaler<0>();
+  MyTimer::template setPrescaler<1>();
   MyTimer::overflowEvent().start();
   MyTimer::setCounter(0);
 }

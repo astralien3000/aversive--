@@ -247,7 +247,7 @@ struct timer<0>::control::prescaler::disable {
 };
 
 template<>
-struct timer<0>::control::prescaler::value<0> {
+struct timer<0>::control::prescaler::value<1> {
   enum {
     CONFIG = 5,
     SIZE = 8
@@ -429,7 +429,7 @@ struct timer<1>::control::prescaler::disable {
 };
 
 template<>
-struct timer<1>::control::prescaler::value<0> {
+struct timer<1>::control::prescaler::value<1> {
   enum {
     CONFIG = 20,
     SIZE = 8

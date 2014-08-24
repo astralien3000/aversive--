@@ -37,7 +37,7 @@ struct DefaultSchedulerConfig {
 
 template<class Config>
 Scheduler<Config>::Scheduler(void) {
-  static const double SCHEDULER_FREQ = (Config::TIMER_FREQUENCY/((1 << Config::TIMER_COUNTER_SIZE) * ((Config::TIMER_PRESCALER) ? Config::TIMER_PRESCALER : 1)));
+  static const double SCHEDULER_FREQ = (Config::TIMER_FREQUENCY/((1 << Config::TIMER_COUNTER_SIZE) * Config::TIMER_PRESCALER));
   static const u32 SCHEDULER_GRANULARITY = (1000000 / SCHEDULER_FREQ);
 
   _current = 0;
