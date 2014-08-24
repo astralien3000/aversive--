@@ -37,13 +37,13 @@ int main(int argc, char** argv) {
   Aversive::init();
 
   Tester<1>::configTask();
-//  Tester<2>::configTask();
-//  Tester<3>::configTask();
-//  Tester<4>::configTask();
-//  Tester<5>::configTask();
-//  Tester<6>::configTask();
-//  Tester<7>::configTask();
-//  Tester<8>::configTask();
+  Tester<2>::configTask();
+  Tester<3>::configTask();
+  Tester<4>::configTask();
+  Tester<5>::configTask();
+  Tester<6>::configTask();
+  Tester<7>::configTask();
+  Tester<8>::configTask();
 
   Interrupts::init();
 
