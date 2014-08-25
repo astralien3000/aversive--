@@ -35,7 +35,7 @@ class Scheduler : public Singleton<Scheduler<Config>> {
   //! \brief Default Constructor (implementation dependent)
   Scheduler(void);
 
-  //! \biref Disable interrupts
+  //! \brief Disable interrupts
   void lock(void);
 
   //! \brief Cancel the effect of lock
