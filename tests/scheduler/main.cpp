@@ -75,7 +75,9 @@ int main(int argc, char** argv) {
 
   Interrupts::init();
 
-  while(Aversive::sync());
+  while(Aversive::sync()) {
+  }
+
   Aversive::setReturnCode(0);
   return Aversive::exit();
 }
