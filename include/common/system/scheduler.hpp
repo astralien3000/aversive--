@@ -47,13 +47,19 @@ class Scheduler : public Singleton<Scheduler<Config>> {
     u32 _next_call;
   public:
     //! \brief Default constructor
-    PrivateTask(void) : Task(), _next_call(0) {}
+    PrivateTask(void)
+      : Task(), _next_call(0) {
+    }
 
     //! \brief Copy constructor
-    PrivateTask(const PrivateTask& other) : Task((Task&)other), _next_call(other._next_call) {}
+    PrivateTask(const PrivateTask& other)
+      : Task((Task&)other), _next_call(other._next_call) {
+    }
 
     //! \brief Task constructor
-    PrivateTask(const Task& other) : Task(other), _next_call(0) {}
+    PrivateTask(const Task& other)
+      : Task(other), _next_call(0) {
+    }
 
     //! \brief Copy operator
     PrivateTask& operator=(const PrivateTask& other) {
@@ -73,15 +79,17 @@ class Scheduler : public Singleton<Scheduler<Config>> {
       return _next_call;
     }
 
-    //! \brief Set the next call date
+    //! \brief Add the task's period to the nextCall date
     void setNextCall(void) {
       _next_call += _period;
     }
 
+    //! \brief Add a value to the next call date
     void setNextCall(u32 val) {
       _next_call += val;
     }
 
+    //! \brief Return the priority of the task
     u8 priority(void) {
       return _priority;
     }
@@ -92,8 +100,13 @@ class Scheduler : public Singleton<Scheduler<Config>> {
     PrivateTask* _task;
 
   public:
-    HeapElement(void) : _task(0) {}
-    HeapElement(PrivateTask& tsk) : _task(&tsk) {}
+    HeapElement(void)
+      : _task(0) {
+    }
+
+    HeapElement(PrivateTask& tsk)
+      : _task(&tsk) {
+    }
 
     bool operator<(const HeapElement& other) {
       return _task->nextCall() > other._task->nextCall()
@@ -108,6 +121,7 @@ class Scheduler : public Singleton<Scheduler<Config>> {
   List<Config::MAX_TASKS, PrivateTask> _tasks;
   u32 _current;
 
+  //! \brief Check if a date is anterior to the current date
   inline bool isInPast(u32 date) {
     constexpr u32 LIM = (1L << 31);
     constexpr u32 HIG = LIM + LIM / 2;
@@ -167,6 +181,7 @@ public:
     unlock();
   }
   
+  //! \brief Return the number of slots available
   u16 freeSlot(void) const {
     return _tasks.freeSpace();
   }
