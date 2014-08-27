@@ -85,7 +85,7 @@ public:
     return _period;
   }
 
-  inline bool unique(void) const {
+  inline bool isUnique(void) const {
     return _unique;
   }
 

@@ -146,7 +146,7 @@ class Scheduler : public Singleton<Scheduler<Config>> {
       e.task().operator ()();
       _heap.pop();
 
-      if(e.task().unique()) {
+      if(e.task().isUnique()) {
         rmTask(e.task());
       }
       else {
