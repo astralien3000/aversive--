@@ -34,10 +34,14 @@ protected:
 
 public:
   //! \brief Default constructor
-  inline Task(void) : _func(0), _period(0), _priority(0), _unique(true) {}
+  inline Task(void)
+    : _func(0), _period(0), _priority(0), _unique(true) {
+  }
 
   //! \brief Task constructor
-  inline Task(TaskFunc f) : _func(f), _period(0), _priority(0), _unique(true) {}
+  inline Task(TaskFunc f)
+    : _func(f), _period(0), _priority(0), _unique(true) {
+  }
 
   //! \brief Copy Constructor
   inline Task(const Task& other)
@@ -48,7 +52,6 @@ public:
   //! \brief Copy operation
   inline Task& operator=(const Task& other) {
     _func = other._func;
-
     _period = other._period;
     _priority = other._priority;
     _unique = other._unique;
