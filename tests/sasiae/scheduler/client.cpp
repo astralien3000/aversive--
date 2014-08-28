@@ -1,50 +1,53 @@
+#include <iostream>
+
 #include <aversive.hpp>
 #include <system/scheduler.hpp>
 
 #include <device/eirbot2014/motor.hpp>
 
 Device d("TESTER");
-int i = 0;
-char buffer[80];
+
+struct MyConfig : public DefaultSchedulerConfig {};
+
+Scheduler<MyConfig>& sched = Scheduler<MyConfig>::instance();
+
+template<int ID>
+struct Tester {
+  static u32 count;
+
+  static void exec(void) {
+      char buffer[80];
+      sprintf(buffer, "value %d", ID);
+      ClientThread::instance().sendDeviceMessage(d, buffer);
+  }
+
+  static void configTask(void) {
+    Task t(exec);
+    t.setPeriod(10 * ID);
+    t.setPriority(8 - ID);
+    t.setRepeat();
+    sched.addTask(t);
+  }
+};
 
 int main(int argc, char** argv) {
   (void) argc;
   (void) argv;
   
   Aversive::init();
-  // Declare your devices here
-  // Initialize your stuff here
 
-  Task t1([]() {
-      sprintf(buffer, "value 1");
-      ClientThread::instance().sendDeviceMessage(d, buffer);
-    });
+  Tester<1>::configTask();
+  Tester<2>::configTask();
+  Tester<3>::configTask();
+  Tester<4>::configTask();
+  Tester<5>::configTask();
+  Tester<6>::configTask();
+  Tester<7>::configTask();
+  Tester<8>::configTask();
 
-  Task t2([]() {
-      sprintf(buffer, "value 2");
-      ClientThread::instance().sendDeviceMessage(d, buffer);
-    });
-  
-  t1.setPeriod(10);
-  t2.setPeriod(10);
-
-  t1.setRepeat();
-  t2.setRepeat();
-
-  Scheduler::instance().addTask(t1);
-  Scheduler::instance().addTask(t2);
-
-  //Scheduler::instance().rmTask(t1);
-  //Scheduler::instance().rmTask(t2);
-  
   while(Aversive::sync()) {
-    // Your while(1) code
   }
-  
-  // You can have several "while(Aversive::isRunning())" loops if needed
-  // Keep the "Aversive::sleep()" at the end of the loop in each of your loops
-  
-  // Unintialize your stuff here
-  Aversive::setReturnCode(0); // Optional; default value is already 0
+
+  Aversive::setReturnCode(0);
   return Aversive::exit();
 }
