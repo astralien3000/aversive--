@@ -48,6 +48,7 @@ struct IntegerInfo {
   This class will cause an assertion at compile-time if you use it with a size different than 8, 16, 32 or 64 bits.
   You can easily use this class to do metaprogramming.
   Short type names are also provided for classic usages: u8 (unsigned 8 bits), s8 (signed 8 bits), uf8 (fast unsigned 8 bits), sf8 (fast signed 8 bits) and so on for 16, 32 and 64 bits integers.
+  Short type names for pointer-sized unsigned and signed integers are also provided: usys (unsigned pointer-sized) and ssys (signed pointer-sized). You can retrieve these types' information easily with IntegerInfo<sizeof(usys) * 8>.
 */
 template<uint8_t _SIZE, bool _FAST = false>
 struct Integer {
@@ -92,5 +93,8 @@ MACRO_SHORT_NAME(32)
 MACRO_SHORT_NAME(64)
 
 #undef MACRO_SHORT_NAME
+
+typedef uintptr_t usys;
+typedef intptr_t ssys;
 
 #endif//TYPE_HPP
