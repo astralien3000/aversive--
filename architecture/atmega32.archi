@@ -11,13 +11,14 @@ uc atmega32 {
 
       config-list prescaler {
         config disable = { (0 << CS02) | (0 << CS01) | (0 << CS00) };
-        config 0       = { (0 << CS02) | (0 << CS01) | (1 << CS00) };
+        config 1       = { (0 << CS02) | (0 << CS01) | (1 << CS00) };
         config 8       = { (0 << CS02) | (1 << CS01) | (0 << CS00) };
         config 32      = { (0 << CS02) | (1 << CS01) | (1 << CS00) };
         config 64      = { (1 << CS02) | (0 << CS01) | (0 << CS00) };
         config 128     = { (1 << CS02) | (0 << CS01) | (1 << CS00) };
         config 256     = { (1 << CS02) | (1 << CS01) | (0 << CS00) };
         config 1024    = { (1 << CS02) | (1 << CS01) | (1 << CS00) };
+        config mask    = { (1 << CS02) | (1 << CS01) | (1 << CS00) };
       };
     };
 
@@ -44,11 +45,12 @@ uc atmega32 {
 
       config-list prescaler {
         config disable = { 0, (0 << CS12) | (0 << CS11) | (0 << CS10), 0 };
-        config 0       = { 0, (0 << CS12) | (0 << CS11) | (1 << CS10), 0 };
+        config 1       = { 0, (0 << CS12) | (0 << CS11) | (1 << CS10), 0 };
         config 8       = { 0, (0 << CS12) | (1 << CS11) | (0 << CS10), 0 };
         config 64      = { 0, (0 << CS12) | (1 << CS11) | (1 << CS10), 0 };
         config 256     = { 0, (1 << CS12) | (0 << CS11) | (0 << CS10), 0 };
         config 1024    = { 0, (1 << CS12) | (0 << CS11) | (1 << CS10), 0 };
+        config mask    = { 0, (1 << CS12) | (1 << CS11) | (1 << CS10), 0 };
       };
     };
 
