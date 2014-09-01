@@ -1,9 +1,6 @@
-#include <iostream>
-
 #include <aversive.hpp>
 #include <system/scheduler.hpp>
-
-#include <device/eirbot2014/motor.hpp>
+#include <device/device.hpp>
 
 Device d("TESTER");
 
@@ -14,13 +11,13 @@ Scheduler<MyConfig>& sched = Scheduler<MyConfig>::instance();
 template<int ID>
 struct Tester {
   static u32 count;
-
+  
   static void exec(void) {
-      char buffer[80];
-      sprintf(buffer, "value %d", ID);
-      ClientThread::instance().sendDeviceMessage(d, buffer);
+    char buffer[80];
+    sprintf(buffer, "value %d", ID);
+    ClientThread::instance().sendDeviceMessage(d, buffer);
   }
-
+  
   static void configTask(void) {
     Task t(exec);
     t.setPeriod(10 * ID);
@@ -35,7 +32,7 @@ int main(int argc, char** argv) {
   (void) argv;
   
   Aversive::init();
-
+  
   Tester<1>::configTask();
   Tester<2>::configTask();
   Tester<3>::configTask();
@@ -44,10 +41,9 @@ int main(int argc, char** argv) {
   Tester<6>::configTask();
   Tester<7>::configTask();
   Tester<8>::configTask();
-
+  
   while(Aversive::sync()) {
   }
-
-  Aversive::setReturnCode(0);
+  
   return Aversive::exit();
 }
