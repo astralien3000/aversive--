@@ -39,6 +39,9 @@ exporthpp:
 config_symbols:
 	@./tools/script/config_symbols.sh
 
+qtcreator:
+	@./tools/compilation/configure_qtcreator.sh
+
 todo:
 	@grep --color=auto -nr todo include/ src/
 
