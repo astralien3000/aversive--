@@ -11,7 +11,9 @@ echo -n "" > $QTCREATOR_FILES
 
 find $AVERSIVE_ROOT -name "*.hpp" >> $QTCREATOR_FILES
 find $AVERSIVE_ROOT -name "*.cpp" >> $QTCREATOR_FILES
+
 find $AVERSIVE_ROOT -name "Makefile" >> $QTCREATOR_FILES
+find $AVERSIVE_ROOT -name "*.pro" | grep "generated" -v >> $QTCREATOR_FILES
 
 find $AVERSIVE_ROOT -name "*.archi" >> $QTCREATOR_FILES
 
