@@ -3,19 +3,19 @@
 all: mk/all.mk
 	$(MAKE) -f mk/all.mk all_targets
 
-sasiae:
+sasiae: mk/all.mk
 	$(MAKE) -f mk/sasiae.mk
 
-atmega32:
+atmega32: mk/all.mk
 	$(MAKE) -f mk/atmega32.mk
 
-atmega128:
+atmega128: mk/all.mk
 	$(MAKE) -f mk/atmega128.mk
 
-atmega2560:
+atmega2560: mk/all.mk
 	$(MAKE) -f mk/atmega2560.mk
 
-stm32:
+stm32: mk/all.mk
 	$(MAKE) -f mk/stm32.mk
 
 update: clean_mk
@@ -60,11 +60,14 @@ qtcreator:
 todo:
 	@grep --color=auto -nr todo include/ src/
 
-mrproper: clean clean_archiparser clean_test clean_mk
+mrproper: clean clean_archiparser clean_test clean_mk clean_qtcreator
 	@rm -rf build/*
 
 clean_mk:
 	@rm -rf mk/*
+
+clean_qtcreator:
+	@rm -f aversive--.{creator,files,includes,config} aversive--.creator.user*
 
 clean_doc:
 	@rm -rf build/doc/*
