@@ -44,6 +44,7 @@ archiparser:
 
 clean:
 	@rm -f $(shell find . -name "*~" -o -name "#*#" -o -name "*.o" -o -name "*.gch")
+	@rm -f *.mk
 
 newhpp:
 	@./tools/script/newhpp.sh
