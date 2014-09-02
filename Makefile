@@ -32,7 +32,7 @@ architecture: archiparser
 	tools/license_header/license_header.sh tools/license_header/license.txt include/avr/hardware/part/atmega2560.hpp
 	tools/license_header/license_header.sh tools/license_header/license.txt include/avr/hardware/part/atmega32.hpp
 
-mk/all.mk:
+mk/all.mk: update
 	./tools/compilation/generate_all_mk.sh > mk/all.mk
 
 doc:
@@ -60,11 +60,14 @@ qtcreator:
 todo:
 	@grep --color=auto -nr todo include/ src/
 
-mrproper: clean clean_archiparser clean_test clean_mk clean_qtcreator
+mrproper: clean clean_archiparser clean_test clean_mk clean_generated clean_qtcreator
 	@rm -rf build/*
 
 clean_mk:
 	@rm -rf mk/*
+
+clean_generated:
+	@rm -rf project/generated/*
 
 clean_qtcreator:
 	@rm -f aversive--.{creator,files,includes,config} aversive--.creator.user*
