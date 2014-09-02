@@ -14,6 +14,8 @@ int main(int argc, char** argv) {
   myAssert(sizeof(s32) == 4, "Line " S__LINE__ ": sizeof(s32) != 4.");
   myAssert(sizeof(u64) == 8, "Line " S__LINE__ ": sizeof(u64) != 8.");
   myAssert(sizeof(s64) == 8, "Line " S__LINE__ ": sizeof(s64) != 8.");
+  myAssert(sizeof(ssys) == sizeof(usys), "Line " S__LINE__ ": sizeof(ssys) != sizeof(usys).");
+  myAssert(sizeof(usys) == sizeof(void*), "Line " S__LINE__ ": sizeof(usys) != sizeof(void*).");
   
   std::cout << "OK" << std::endl;
   return 0;
