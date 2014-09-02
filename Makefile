@@ -3,6 +3,21 @@
 all: mk/all.mk
 	$(MAKE) -f mk/all.mk all_targets
 
+sasiae:
+	$(MAKE) -f mk/sasiae.mk
+
+atmega32:
+	$(MAKE) -f mk/atmega32.mk
+
+atmega128:
+	$(MAKE) -f mk/atmega128.mk
+
+atmega2560:
+	$(MAKE) -f mk/atmega2560.mk
+
+stm32:
+	$(MAKE) -f mk/stm32.mk
+
 update: clean_mk
 	tools/compilation/generate_files_pro.sh common > project/generated/common.files.pro
 	tools/compilation/generate_files_pro.sh avr > project/generated/avr.files.pro
