@@ -25,16 +25,19 @@ function generate_mk
     MMCU=$2
     echo "MMCU = " $MMCU > project/generated/avr.mmcu.pro
     $QMAKE project/$TARGET.pro -o $MMCU.mk
-    mv $MMCU.mk mk/
+    cat $MMCU.mk | grep '$(QMAKE)' -v > mk/$MMCU.mk
+    rm -f $MMCU.mk
   elif [ "$TARGET" == "stm32" ]
   then
     MMCU=$2
     echo "MMCU = " $MMCU > project/generated/stm32.mmcu.pro
     $QMAKE project/$TARGET.pro -o $MMCU.mk
-    mv $MMCU.mk mk/
+    cat $MMCU.mk | grep '$(QMAKE)' -v > mk/$MMCU.mk
+    rm -f $MMCU.mk
   else
     $QMAKE project/$TARGET.pro -o $TARGET.mk
-    mv $TARGET.mk mk/
+    cat $TARGET.mk | grep '$(QMAKE)' -v > mk/$TARGET.mk
+    rm -f $TARGET.mk
   fi
 }
 
