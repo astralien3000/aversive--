@@ -13,12 +13,22 @@ function lastDir {
     ls -l "$1" | grep "^d" | tr -s " " | cut -f 9 -d " " | sort | tail -n 1
 }
 
+function run {
+    echo -n ": "
+    local RES=
+
+    RES=$(cd "$1" && ./run_test.sh "$2")
+    if [ $? -eq 0 ]; then
+        echo -e "\e[92mOK\e[39m"
+    else
+        echo -e "\e[31m$RES\e[39m"
+    fi
+}
+
 function recur {
     local LAST=$(lastDir "$1")
     local TARGET="$2"
     local DEPTH="$3"
-    local RES=
-    local RET=
     let DEPTH+=1
 
     ls -1 "$1" | while read FILE; do
@@ -44,14 +54,7 @@ function recur {
             echo -n "$FILE"
             echo -ne "\e[39m"
             if [ -f "$FILE_PATH/run_test.sh" ]; then
-                echo -n ": "
-                RES=$(cd "$FILE_PATH" && ./run_test.sh "$TARGET")
-                RET=$?
-                if [ $RET -eq 0 ]; then
-                    echo -e "\e[92mOK\e[39m"
-                else
-                    echo -e "\e[31m$RES\e[39m"
-                fi
+                run "$FILE_PATH" "$TARGET"
             else
                 echo
                 recur "$FILE_PATH" "$TARGET" "$DEPTH"
@@ -71,9 +74,14 @@ elif [ "$1" = "clean" ]; then
     exit 0
 elif [ -d "$1" ]; then
     echo -ne "\e[94m"
-    echo "$1"
+    echo -n "$1"
     echo -ne "\e[39m"
-    recur "$1" test 0
+    if [ -f "$1/run_test.sh" ]; then
+        run "$1" "test"
+    else
+        echo
+        recur "$1" test 0
+    fi
     exit 0
 else
     usage
