@@ -44,7 +44,6 @@ archiparser:
 
 clean:
 	@rm -f $(shell find . -name "*~" -o -name "#*#" -o -name "*.o" -o -name "*.gch")
-	@rm -f *.mk
 
 newhpp:
 	@./tools/script/newhpp.sh
@@ -61,7 +60,7 @@ qtcreator:
 todo:
 	@grep --color=auto -nr todo include/ src/
 
-mrproper: clean clean_archiparser clean_test clean_mk clean_generated clean_qtcreator
+mrproper: clean clean_archiparser clean_test clean_mk clean_generated
 	@rm -rf build/*
 
 clean_mk:
