@@ -1,10 +1,7 @@
 #include <aversive.hpp>
 #include <device/eirbot2014/gp2.hpp>
 
-#include <base/integer.hpp>
-
 #include <iostream>
-using namespace std;
 
 int main(int argc, char** argv) {
   (void) argc;
@@ -13,10 +10,10 @@ int main(int argc, char** argv) {
   Aversive::init();
   GP2<0> in("in");
   
-  cout << "in value " << in.getValue() << endl;
+  std::cout << "in value " << in.getValue() << std::endl;
   Aversive::sync();
-  cout << "in value " << in.getValue() << endl;
-
+  std::cout << "in value " << in.getValue() << std::endl;
+  
   Aversive::setReturnCode(0);
   return Aversive::exit();
 }

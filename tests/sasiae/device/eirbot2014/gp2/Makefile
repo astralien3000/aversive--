@@ -1,23 +1,25 @@
-AVERSIVE_ROOT=../../..
+AVERSIVE_ROOT=../../../../..
+SASIAE_TESTS=$(AVERSIVE_ROOT)/tests/sasiae
 
 CC=g++
 CFLAGS=-Wall -Wextra --std=c++11 -DQT_CORE_LIB -fpic -g
 LDFLAGS=-L$(AVERSIVE_ROOT)/build -laversive_sasiae -lQt5Core -lpthread
 INCLUDE=-I$(AVERSIVE_ROOT)/include/sasiae -I/usr/include/qt5 -I/usr/include/qt5/QtCore
+EXECS=client.elf server.elf
 
-all: client server
+all: $(EXECS)
 
-client: client.cpp
+client.elf: client.cpp $(AVERSIVE_ROOT)/build/libaversive_sasiae.a
 	@$(CC) $(CFLAGS) $(INCLUDE) -o $@ $< $(LDFLAGS)
 
-server: server.cpp
-	@$(CC) $(CFLAGS) $(INCLUDE) -o $@ $< $(LDFLAGS)
+server.elf: server.cpp $(SASIAE_TESTS)/util.o
+	@$(CC) $(CFLAGS) $(INCLUDE) -o $@ $^ $(LDFLAGS)
+
+$(SASIAE_TESTS)/%.o: $(SASIAE_TESTS)/%.cpp $(SASIAE_TESTS)/%.hpp
+	@$(CC) $(CFLAGS) $(INCLUDE) -o $@ -c $< $(LDFLAGS)
 
 clean:
 	@rm -rf *~ \#*\#
 
-test: all
-	@./server
-
 mrproper: clean
-	@rm -rf client server
+	@rm -rf $(EXECS) $(SASIAE_TESTS)/util.o
