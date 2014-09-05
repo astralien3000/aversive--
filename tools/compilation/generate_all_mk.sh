@@ -2,8 +2,57 @@
 
 TARGET_LIST=
 
-GENERATE_MK=tools/compilation/generate_mk.sh
-GENERATE_RULE=tools/compilation/generate_rule.sh
+GENERATE_MK=generate_mk
+GENERATE_RULE=generate_rule
+
+########################################
+# Generate mk
+
+function generate_mk
+{
+  TARGET=$1
+
+  if type qmake 2> /dev/null
+  then
+      QMAKE=qmake
+  else
+      QMAKE=qmake-qt5
+  fi
+
+
+  if [ "$TARGET" == "avr" ]
+  then
+    MMCU=$2
+    echo "MMCU = " $MMCU > project/generated/avr.mmcu.pro
+    $QMAKE project/$TARGET.pro -o $MMCU.mk
+    cat $MMCU.mk | grep '$(QMAKE)' -v > mk/$MMCU.mk
+    rm -f $MMCU.mk
+  elif [ "$TARGET" == "stm32" ]
+  then
+    MMCU=$2
+    echo "MMCU = " $MMCU > project/generated/stm32.mmcu.pro
+    $QMAKE project/$TARGET.pro -o $MMCU.mk
+    cat $MMCU.mk | grep '$(QMAKE)' -v > mk/$MMCU.mk
+    rm -f $MMCU.mk
+  else
+    $QMAKE project/$TARGET.pro -o $TARGET.mk
+    cat $TARGET.mk | grep '$(QMAKE)' -v > mk/$TARGET.mk
+    rm -f $TARGET.mk
+  fi
+}
+
+########################################
+# Generate rule
+
+function generate_rule
+{
+  TARGET=$1
+
+  echo ""
+  echo -e "$1:"
+  echo -e "\t\$(MAKE) -f mk/$TARGET.mk"
+  echo ""
+}
 
 ########################################
 # SASIAE
