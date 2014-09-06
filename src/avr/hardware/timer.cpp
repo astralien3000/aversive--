@@ -24,7 +24,7 @@ void Timer<ID>::init(void) {
   // Set Prescaler to 0
   REG(timer<ID>::control) = 
     CFG(timer<ID>::control::wgm::normal) |
-      CFG(timer<ID>::control::prescaler::template value<0>);
+      CFG(timer<ID>::control::prescaler::template value<1>);
   
   // Set Counter to 0
   REG(timer<ID>::counter) = VAL(timer<ID>::counter, 0);

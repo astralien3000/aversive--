@@ -34,8 +34,8 @@ public:
 
   //! \brief Get the value of the dummy parameter.
   //! \return The dummy parameter's value.
-  static inline s8 dummy(void) {
-    return (s8) ((intptr_t) &__PARAM_DUMMY);
+  static inline ssys dummy(void) {
+    return (ssys) &__PARAM_DUMMY;
   }
 };
 
