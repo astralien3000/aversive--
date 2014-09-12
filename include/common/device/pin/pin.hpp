@@ -3,7 +3,8 @@
 
 #include <device/pin/output_pin.hpp>
 
-class Pin : public OutputPin {
+template<int ID>
+class Pin : public OutputPin<ID> {
 public:
   Pin(const char* name);
   void setValue(bool value);
