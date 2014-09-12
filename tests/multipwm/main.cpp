@@ -1,10 +1,9 @@
 #include <aversive.hpp>
 #include <system/multipwm.hpp>
+#include <device/other/pin.hpp>
 
-//#include <device/other/pin.hpp>
-
+#include <hardware/interrupts.hpp>
 //#include <hardware/timer.hpp>
-//#include <hardware/interrupts.hpp>
 
 
 
@@ -117,9 +116,7 @@
 //int MultiServo::_servo_count = 0;
 //Array<MultiServo::MAX_SERVO, MultiServo::Servo> MultiServo::_servo;
 
-//Pin<8 * 4 + 3> servopin("");
-//Pin<8 * 7 + 3> servopin2("");
-//Pin<8 * 7 + 4> servopin3("");
+Pin<12> pin("");
 
 
 int main(int argc, char** argv) {
@@ -128,68 +125,17 @@ int main(int argc, char** argv) {
   
   Aversive::init();
 
-//  servopin.setMode(PinMode::OUTPUT);
-//  servopin2.setMode(PinMode::OUTPUT);
-//  servopin3.setMode(PinMode::OUTPUT);
+  pin.setMode(PinMode::OUTPUT);
 
-//  MultiServo ms;
-//  MultiServo::Servo& s = ms.createServo(servopin);
-//  MultiServo::Servo& s2 = ms.createServo(servopin2);
-//  MultiServo::Servo& s3 = ms.createServo(servopin3);
+  MultiPWM<DefaultMultiPWMConfig>::Pin servo =
+      MultiPWM<DefaultMultiPWMConfig>::instance().createPin(pin);
 
-//  // ARM2(s3) : MIN = 800 ; MAX = 1900
-//  // ARM1(s ) : MIN = 800 ; MAX = 1400
-//  // SLDR(s2) : MIN = 500 : MAX = 1400
+  servo.setValue(900);
 
-//  Interrupts::set();
+  Interrupts::set();
 
-//  u32 i = 500;
-//  s32 dir = 10;
-//  u32 j = 1200;
-//  u32 k = 1500;
-//  while(Aversive::sync()) {
-//    s2.setValue(i);
-
-
-//    if(dir > 0) {
-//      if(j < 1300) j += 30;
-//      s.setValue(j);
-//      if(k > 1600) k -= 30;
-//      s3.setValue(k);
-//    }
-//    else {
-//      if(j > 800) j -=30;
-//      s.setValue(j);
-//      if(k < 1900) k += 30;
-//      s3.setValue(k);
-//    }
-
-//    for(volatile u32 i = 0 ; i < 500 ; i++) {}
-//    i += dir;
-//    if(i < 500 || i > 1400) {
-//      dir = -dir;
-//      i += 2 * dir;
-//    }
-    
-//    // s.setValue(700);
-//    // s2.setValue(600);
-//    // s3.setValue(700);
-//    // for(volatile u32 i = 0 ; i < 500000 ; i++) {}
-
-//    // if(i == PWM) {
-//    //   servopin.setValue(false);
-//    //   //PORTE = 0x00;
-//    // }
-//    // if(i == PERIOD) {
-//    //   servopin.setValue(true);
-//    //   //PORTE = 0xFF;
-//    //   i = 0;
-//    //   //test();
-//    //   //PWM++;
-//    // }
-//    // i++;
-//    //PWM++;
-//  }
+  while(Aversive::sync()) {
+  }
   
   Aversive::setReturnCode(0);
   return Aversive::exit();
