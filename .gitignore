@@ -3,8 +3,14 @@
 *.hex
 *build*
 a.out
-*.user
 *.autosave
 *.mk
 *.o
 *.gch
+
+*.user
+*.config
+*.creator
+*.files
+*.includes
+*.style.xml
