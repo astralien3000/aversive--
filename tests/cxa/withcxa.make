@@ -10,7 +10,7 @@ AVERSIVE_ROOT=../..
 OBJ=main.o
 
 ## Your executable file name
-GEN_EXEC=robot
+GEN_EXEC=robot_with_cxa
 
 ########################################
 # Aversive++ Configuration
@@ -27,7 +27,7 @@ SASIAE_CC=g++
 AVR_CC=avr-g++
 
 ## Flags
-GEN_CFLAGS=-Wall -Wextra --std=c++11
+GEN_CFLAGS=-Wall -Wextra --std=c++11 -DREDEFINE_CXA
 SASIAE_CFLAGS=$(GEN_CFLAGS) -DQT_CORE_LIB -fpic
 AVR_CFLAGS=$(GEN_CFLAGS) -fno-threadsafe-statics -D__STDC_LIMIT_MACROS -O3
 
@@ -45,7 +45,7 @@ SYMBOL_LIST=$(DUMMY_SYM)
 DEFSYM=-Wl,--defsym=
 GEN_LDFLAGS= -L$(AVERSIVE_ROOT)/build $(addprefix $(DEFSYM), $(SYMBOL_LIST))
 SASIAE_LDFLAGS= $(GEN_LDFLAGS) -laversive_sasiae -lQt5Core -lpthread
-AVR_LDFLAGS= $(GEN_LDFLAGS) -fno-threadsafe-statics
+AVR_LDFLAGS= $(GEN_LDFLAGS) 
 
 ## Build Directory
 GEN_BUILD_DIR=build

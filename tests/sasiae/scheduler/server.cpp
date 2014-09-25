@@ -57,44 +57,30 @@ int main(int argc, char** argv) {
     return EXIT_FAILURE;
   }
 
-  client.write("T 11 0\n");
+  for(int i = 1 ; i <= 8 ; i++) {
+    char buffer[80];
+    sprintf(buffer, "T %d 0\n", (i * 10) + 1);
+    client.write(buffer);
 
-  client.waitForReadyRead();
-  if(!checkMsg(client, "D TESTER value 1")) {
-    res(false, 1);
-    return EXIT_FAILURE;
-  }
-
-  if(!checkMsg(client, "D TESTER value 2")) {
-    res(false, 2);
-    return EXIT_FAILURE;
-  }
-
-  if(!checkMsg(client, "T")) {
-    res(false, 3);
-    return EXIT_FAILURE;
-  }
-
-  client.write("T 31 0\n");
-
-  client.waitForReadyRead();
-  for(int i = 0 ; i < 2 ; i++) {
-    if(!checkMsg(client, "D TESTER value 1")) {
-      res(false, 4 + 2 * i);
-      return EXIT_FAILURE;
+    client.waitForReadyRead();
+    for(int id = 1 ; id <= 8 ; id++) {
+      if(i % id == 0) {
+        char buffer[80];
+        sprintf(buffer, "D TESTER value %d", id);
+        if(!checkMsg(client, buffer)) {
+          res(false, i * 8 + id - 1);
+          printf("%d %d", i, id);
+          return EXIT_FAILURE;
+        }
+      }
     }
-  
-    if(!checkMsg(client, "D TESTER value 2")) {
-      res(false, 5 + 2 * i);
+
+    if(!checkMsg(client, "T")) {
+      res(false, 3);
       return EXIT_FAILURE;
     }
   }
 
-  if(!checkMsg(client, "T")) {
-    res(false, 8);
-    return EXIT_FAILURE;
-  }
-  
   client.write("S\n");
 
   if(!checkMsg(client, "S")) {

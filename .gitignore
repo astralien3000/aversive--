@@ -5,6 +5,12 @@
 client
 server
 a.out
-*.user
 *.autosave
 *.mk
+
+*.user
+*.config
+*.creator
+*.files
+*.includes
+*.style.xml
