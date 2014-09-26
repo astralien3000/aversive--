@@ -37,20 +37,15 @@ public:
   }
 };
 
-
-Pin<14> pin("");
-Pin<13> pin2("");
-Pin<12> pin3("");
-
 int main(int argc, char** argv) {
   (void) argc;
   (void) argv;
   
   Aversive::init();
 
-  ServoTester<12> test1;
-  ServoTester<13> test2;
-  ServoTester<14> test3;
+  ServoTester<12> test1; // D10
+  ServoTester<13> test2; // D11
+  ServoTester<14> test3; // D12
 
   Interrupts::set();
 
