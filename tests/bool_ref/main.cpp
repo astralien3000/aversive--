@@ -37,7 +37,7 @@ int main(int argc, char** argv) {
   u8 b2 = 0xF0;
   
   for(int i = 0; i < 4; i++) {
-    BoolRef r(&b2, i);
+    BoolRef r(b2, i);
     if(r) {
       std::cout << "NOK" << std::endl;
       return 1;
@@ -46,7 +46,7 @@ int main(int argc, char** argv) {
   }
   
   for(int i = 4; i < 8; i++) {
-    BoolRef r(&b2, i);
+    BoolRef r(b2, i);
     if(!r) {
       std::cout << "NOK" << std::endl;
       return 1;
