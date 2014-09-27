@@ -52,4 +52,17 @@ inline void operator delete(void* p) {
   Alloc::free(p);
 }
 
+//! \brief New[] operator. Allocate a memory area.
+//! \param s : the size of the memory area to allocate.
+//! \return A pointer to the newly allocated memory area.
+inline void* operator new[](usys s) {
+  return Alloc::malloc(s);
+}
+
+//! \brief Delete[] operator.
+//! \param p : the memory area address to free.
+inline void operator delete[](void* p) {
+  Alloc::free(p);
+}
+
 #endif//AVR_ALLOC_HPP
