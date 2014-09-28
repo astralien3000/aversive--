@@ -5,12 +5,12 @@
 #include <device/input.hpp>
 
 template<int ID>
-class InputPin : public Device, public Input<bool> {
+class InputDigitalPin : public Device, public Input<bool> {
 protected:
-  InputPin(const char* name, bool init);
+  InputDigitalPin(const char* name, bool init);
 
 public:
-  InputPin(const char* name);
+  InputDigitalPin(const char* name);
   bool getValue(void);
 };
 

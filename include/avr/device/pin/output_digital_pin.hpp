@@ -1,7 +1,7 @@
 #ifndef AVR_OUTPUT_PIN_HPP
 #define AVR_OUTPUT_PIN_HPP
 
-#include "../../../common/device/pin/output_pin.hpp"
+#include "../../../common/device/pin/output_digital_pin.hpp"
 
 
 

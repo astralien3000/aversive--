@@ -1,12 +1,12 @@
 #ifndef PIN_HPP
 #define PIN_HPP
 
-#include <device/pin/output_pin.hpp>
+#include <device/pin/output_digital_pin.hpp>
 
 template<int ID>
-class Pin : public OutputPin<ID> {
+class DigitalPin : public OutputDigitalPin<ID> {
 public:
-  Pin(const char* name);
+  DigitalPin(const char* name);
   void setValue(bool value);
   bool getValue(void);
 
