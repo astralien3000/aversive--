@@ -26,7 +26,7 @@
 class BoolRef {
 private:
   //! \brief The address where the boolean is stored.
-  u8* _byte;
+  u8& _byte;
   
   //! \brief The mask to retrieve the required bit.
   u8 _mask;
@@ -38,7 +38,7 @@ public:
   //! \brief Constructor to reference a boolean within a byte.
   //! \param byte : the address where the boolean is stored.
   //! \param bit : the index of the bit at which the boolean is stored.
-  inline BoolRef(u8* byte, u8 bit)
+  inline BoolRef(u8& byte, u8 bit)
     : _byte(byte), _mask(1 << bit) {
   }
   
@@ -46,7 +46,7 @@ public:
   //! \warning This assumes that the boolean is coded by the first bit at the address of the given boolean, however, how a boolean is represented in memory is platform-dependent.
   //! \todo Investigate how are booleans reprensented in memory on the supported platforms by Aversive++ and possibly specialise this method per platform (according to the first test, it works on x86-64).
   inline BoolRef(const bool& b)
-    : _byte((u8*) &b), _mask(1) {
+    : _byte((u8&) b), _mask(1) {
   }
   
   //! \brief Copy constructor, the new BoolRef references the same boolean.
@@ -57,7 +57,7 @@ public:
   //! \brief Cast operator to retrieve a regular C++ boolean representing the referenced boolean.
   //! \return A regular C++ boolean.
   inline operator bool(void) const {
-    return (bool) (*_byte & _mask);
+    return (bool) (_byte & _mask);
   }
   
   //! \brief Assign a new value to the referenced boolean.
@@ -65,10 +65,10 @@ public:
   //! \return A reference to the BoolRef.
   inline BoolRef& operator=(bool b) {
     if(b) {
-      *_byte |= _mask;
+      _byte |= _mask;
     }
     else {
-      *_byte &= ~_mask;
+      _byte &= ~_mask;
     }
     
     return (*this);

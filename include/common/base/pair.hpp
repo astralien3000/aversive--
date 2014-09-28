@@ -166,13 +166,13 @@ public:
   //! \brief Access the left member.
   //! \return The reference to the left member.
   inline LeftRef left(void) {
-    return BoolRef(&_pair, 1);
+    return BoolRef(_pair, 1);
   }
   
   //! \brief Access the right member.
   //! \return The reference to the right member.
   inline RightRef right(void) {
-    return BoolRef(&_pair, 0);
+    return BoolRef(_pair, 0);
   }
   
   //! \brief Access the left member (constant version).
