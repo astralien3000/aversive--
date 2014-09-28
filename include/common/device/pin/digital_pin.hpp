@@ -12,6 +12,9 @@ public:
 
   void setOutput(void);
   void setInput(void);
+
+  bool isOutput(void);
+  bool isInput(void);
 };
 
 #endif//PIN_HPP

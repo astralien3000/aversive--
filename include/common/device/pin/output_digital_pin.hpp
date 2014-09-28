@@ -13,6 +13,8 @@ public:
   OutputDigitalPin(const char* name);
   void setValue(bool value);
   bool getValue(void);
+
+  void toggle(void);
 };
 
 #endif//OUTPUT_PIN_HPP
