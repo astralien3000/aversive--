@@ -36,12 +36,14 @@ inline void DigitalPin<ID>::setOutput(void) {
 template<int ID>
 inline bool DigitalPin<ID>::isInput(void) {
   //return Pinmap::Pin<ID>::mode() == Pinmap::IN;
+#warning "This method is not implemented"
   return false;
 }
 
 template<int ID>
 inline bool DigitalPin<ID>::isOutput(void) {
   //return Pinmap::Pin<ID>::mode() == Pinmap::OUT;
+#warning "This method is not implemented"
   return true;
 }
 

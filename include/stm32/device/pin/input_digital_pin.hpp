@@ -21,6 +21,7 @@ inline InputDigitalPin<ID>::InputDigitalPin(const char *name)
 template<int ID>
 inline bool InputDigitalPin<ID>::getValue(void) {
   // TODO
+#warning "This method is not implemented"
   return false;
 }
 
