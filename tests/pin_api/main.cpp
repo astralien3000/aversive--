@@ -8,7 +8,8 @@ int main(int argc, char** argv) {
   
   Aversive::init();
 
-  OutputDigitalPin<15> led("LED");
+  DigitalPin<15> led("LED");
+  led.setOutput();
   led.setValue(true);
   
   while(Aversive::sync()) {

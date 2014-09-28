@@ -7,7 +7,8 @@
 
 template<int ID>
 inline DigitalPin<ID>::DigitalPin(const char *name)
-  : InputDigitalPin<ID>(name) {
+  : OutputDigitalPin<ID>(name, false) {
+  Pinmap::Pin<ID>::setMode(Pinmap::IN);
 }
 
 template<int ID>
