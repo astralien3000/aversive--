@@ -3,18 +3,20 @@
 #include <device/other/pin.hpp>
 #include <base/array.hpp>
 
+#include <device/pin/digital_pin.hpp>
+
 int main(int argc, char* argv[]) {
   (void)argc;
   (void)argv;
 
   Aversive::init();
 
-  Pin<3 * 16 + 12> led1("");
+  DigitalPin<3 * 16 + 12> led1("");
   Pin<3 * 16 + 13> led2("");
   Pin<3 * 16 + 14> led3("");
   Pin<3 * 16 + 15> led4("");
 
-  led1.setMode(PinMode::OUTPUT);
+  led1.setOutput();
   led2.setMode(PinMode::OUTPUT);
   led3.setMode(PinMode::OUTPUT);
   led4.setMode(PinMode::OUTPUT);
