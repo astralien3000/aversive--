@@ -1,5 +1,5 @@
-#ifndef AVR_INPUT_PIN_HPP
-#define AVR_INPUT_PIN_HPP
+#ifndef AVR_INPUT_DIGITAL_PIN_HPP
+#define AVR_INPUT_DIGITAL_PIN_HPP
 
 #include "../../../common/device/pin/input_digital_pin.hpp"
 
@@ -22,4 +22,4 @@ inline bool InputDigitalPin<ID>::getValue(void) {
   return Pinmap::Pin<ID>::read();
 }
 
-#endif//AVR_INPUT_PIN_HPP
+#endif//AVR_INPUT_DIGITAL_PIN_HPP

@@ -1,5 +1,5 @@
-#ifndef AVR_PIN_HPP
-#define AVR_PIN_HPP
+#ifndef AVR_DIGITAL_PIN_HPP
+#define AVR_DIGITAL_PIN_HPP
 
 #include "../../../common/device/pin/digital_pin.hpp"
 
@@ -44,4 +44,4 @@ inline bool DigitalPin<ID>::isOutput(void) {
 }
 
 
-#endif//AVR_PIN_HPP
+#endif//AVR_DIGITAL_PIN_HPP

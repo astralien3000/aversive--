@@ -1,5 +1,5 @@
-#ifndef AVR_OUTPUT_PIN_HPP
-#define AVR_OUTPUT_PIN_HPP
+#ifndef AVR_OUTPUT_DIGITAL_PIN_HPP
+#define AVR_OUTPUT_DIGITAL_PIN_HPP
 
 #include "../../../common/device/pin/output_digital_pin.hpp"
 
@@ -31,4 +31,4 @@ inline void OutputDigitalPin<ID>::toggle(void) {
   setValue(!getValue());
 }
 
-#endif//AVR_OUTPUT_PIN_HPP
+#endif//AVR_OUTPUT_DIGITAL_PIN_HPP

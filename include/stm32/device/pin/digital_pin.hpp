@@ -1,8 +1,8 @@
-#ifndef STM32_PIN_HPP
-#define STM32_PIN_HPP
+#ifndef STM32_DIGITAL_PIN_HPP
+#define STM32_DIGITAL_PIN_HPP
 
 #include "../../../common/device/pin/digital_pin.hpp"
 
 
 
-#endif//STM32_PIN_HPP
+#endif//STM32_DIGITAL_PIN_HPP

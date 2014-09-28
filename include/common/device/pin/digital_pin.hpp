@@ -1,5 +1,5 @@
-#ifndef PIN_HPP
-#define PIN_HPP
+#ifndef DIGITAL_PIN_HPP
+#define DIGITAL_PIN_HPP
 
 #include <device/pin/output_digital_pin.hpp>
 
@@ -17,4 +17,4 @@ public:
   bool isInput(void);
 };
 
-#endif//PIN_HPP
+#endif//DIGITAL_PIN_HPP

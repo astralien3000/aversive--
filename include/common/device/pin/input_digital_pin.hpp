@@ -1,5 +1,5 @@
-#ifndef INPUT_PIN_HPP
-#define INPUT_PIN_HPP
+#ifndef INPUT_DIGITAL_PIN_HPP
+#define INPUT_DIGITAL_PIN_HPP
 
 #include <device/device.hpp>
 #include <device/input.hpp>
@@ -14,4 +14,4 @@ public:
   bool getValue(void);
 };
 
-#endif//INPUT_PIN_HPP
+#endif//INPUT_DIGITAL_PIN_HPP

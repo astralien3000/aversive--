@@ -1,5 +1,5 @@
-#ifndef OUTPUT_PIN_HPP
-#define OUTPUT_PIN_HPP
+#ifndef OUTPUT_DIGITAL_PIN_HPP
+#define OUTPUT_DIGITAL_PIN_HPP
 
 #include <device/pin/input_digital_pin.hpp>
 #include <device/output.hpp>
@@ -17,4 +17,4 @@ public:
   void toggle(void);
 };
 
-#endif//OUTPUT_PIN_HPP
+#endif//OUTPUT_DIGITAL_PIN_HPP
