@@ -16,17 +16,17 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <stdlib.h>
+#ifndef ALLOC_HPP
+#define ALLOC_HPP
 
-//! \brief New operator. Allocate a memory area.
-//! \param s : the size of the memory area to allocate.
-//! \return A pointer to the newly allocated memory area.
-inline void* operator new(size_t s) {
-  return malloc(s);
-}
+#include <base/integer.hpp>
 
-//! \brief Delete operator.
-//! \param p : the memory area address to free.
-inline void operator delete(void* p) {
-  free(p);
-}
+class Alloc {
+public:
+  static void* malloc(usys size);
+  static void free(void* ptr);
+  static void* calloc(usys n, usys size);
+  static void* realloc(void* ptr, usys size);
+};
+
+#endif//ALLOC_HPP

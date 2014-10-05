@@ -21,6 +21,22 @@
 
 #include "../../common/base/alloc.hpp"
 
+#include <cstdlib>
 
+inline void* Alloc::malloc(usys size) {
+  return ::malloc((size_t) size);
+}
+
+inline void Alloc::free(void* ptr) {
+  ::free(ptr);
+}
+
+inline void* Alloc::calloc(usys n, usys size) {
+  return ::calloc((size_t) n, (size_t) size);
+}
+
+inline void* Alloc::realloc(void* ptr, usys size) {
+  return ::realloc(ptr, (size_t) size);
+}
 
 #endif//SASIAE_ALLOC_HPP
