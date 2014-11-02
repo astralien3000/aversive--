@@ -21,6 +21,6 @@
 
 #include "../../common/base/alloc.hpp"
 
-
+static_assert(false, "Dynamic memory allocation is not yet supported on STM32 platforms.");
 
 #endif//STM32_ALLOC_HPP

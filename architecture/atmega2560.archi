@@ -10,12 +10,13 @@ uc atmega2560 {
       };
       
       config-list prescaler {
-        config disable = { (0 << CS02) | (0 << CS01) | (0 << CS00) };
-        config 0       = { (0 << CS02) | (0 << CS01) | (1 << CS00) };
-        config 8       = { (0 << CS02) | (1 << CS01) | (0 << CS00) };
-        config 64      = { (0 << CS02) | (1 << CS01) | (1 << CS00) };
-        config 256     = { (1 << CS02) | (0 << CS01) | (0 << CS00) };
-        config 1024    = { (1 << CS02) | (0 << CS01) | (1 << CS00) };
+        config disable = { 0, (0 << CS02) | (0 << CS01) | (0 << CS00) };
+        config 1       = { 0, (0 << CS02) | (0 << CS01) | (1 << CS00) };
+        config 8       = { 0, (0 << CS02) | (1 << CS01) | (0 << CS00) };
+        config 64      = { 0, (0 << CS02) | (1 << CS01) | (1 << CS00) };
+        config 256     = { 0, (1 << CS02) | (0 << CS01) | (0 << CS00) };
+        config 1024    = { 0, (1 << CS02) | (0 << CS01) | (1 << CS00) };
+        config mask    = { 0, (1 << CS02) | (1 << CS01) | (1 << CS00) };
       };
     };
 
@@ -44,11 +45,12 @@ uc atmega2560 {
       
       config-list prescaler {
         config disable = { 0, (0 << CS12) | (0 << CS11) | (0 << CS10), 0 };
-        config 0       = { 0, (0 << CS12) | (0 << CS11) | (1 << CS10), 0 };
+        config 1       = { 0, (0 << CS12) | (0 << CS11) | (1 << CS10), 0 };
         config 8       = { 0, (0 << CS12) | (1 << CS11) | (0 << CS10), 0 };
         config 64      = { 0, (0 << CS12) | (1 << CS11) | (1 << CS10), 0 };
         config 256     = { 0, (1 << CS12) | (0 << CS11) | (0 << CS10), 0 };
         config 1024    = { 0, (1 << CS12) | (0 << CS11) | (1 << CS10), 0 };
+        config mask    = { 0, (1 << CS12) | (1 << CS11) | (1 << CS10), 0 };
       };
     };
 
@@ -57,7 +59,7 @@ uc atmega2560 {
     register[16] compare[0] = { OCR1A };
     register[16] compare[1] = { OCR1B };
 
-    register[8] imask = { TIMSK0 } {
+    register[8] imask = { TIMSK1 } {
       config match[0] = { (1 << OCIE1A) };
       config match[1] = { (1 << OCIE1B) };
       config overflow = { (1 << TOIE1)  };
@@ -93,21 +95,21 @@ uc atmega2560 {
 
       config-list charsize {
         config 5 = { 0, (0 << UCSZ02), (0 << UCSZ01) | (0 << UCSZ00) };
-	config 6 = { 0, (0 << UCSZ02), (0 << UCSZ01) | (1 << UCSZ00) };
-	config 7 = { 0, (0 << UCSZ02), (1 << UCSZ01) | (0 << UCSZ00) };
-	config 8 = { 0, (0 << UCSZ02), (1 << UCSZ01) | (1 << UCSZ00) };
-	config 9 = { 0, (1 << UCSZ02), (1 << UCSZ01) | (1 << UCSZ00) };
+        config 6 = { 0, (0 << UCSZ02), (0 << UCSZ01) | (1 << UCSZ00) };
+        config 7 = { 0, (0 << UCSZ02), (1 << UCSZ01) | (0 << UCSZ00) };
+        config 8 = { 0, (0 << UCSZ02), (1 << UCSZ01) | (1 << UCSZ00) };
+        config 9 = { 0, (1 << UCSZ02), (1 << UCSZ01) | (1 << UCSZ00) };
       };
 
       config-list parity {
         config disabled = { 0, 0, 0                           };
-	config even     = { 0, 0, (1 << UPM01)                };
-	config odd      = { 0, 0, (1 << UPM01) | (1 << UPM00) };
+        config even     = { 0, 0, (1 << UPM01)                };
+        config odd      = { 0, 0, (1 << UPM01) | (1 << UPM00) };
       };
 
       config-list stopbit {
         config 1 = { 0, 0, 0            };
-	config 2 = { 0, 0, (1 << USBS0) };
+        config 2 = { 0, 0, (1 << USBS0) };
       };
     };
 

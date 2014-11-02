@@ -441,7 +441,7 @@ public:
   //! \param i : the index of the element to access.
   //! \return The reference to the element contained at the specified index.
   inline ElementRef operator[](array_t i) {
-    return BoolRef(&_elements[i / 8], i % 8);
+    return BoolRef(_elements[i / 8], i % 8);
   }
   
   //! \brief Access to an element's constant reference via its field's index.
