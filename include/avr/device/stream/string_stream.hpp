@@ -16,11 +16,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef STM32_ALLOC_HPP
-#define STM32_ALLOC_HPP
+#ifndef AVR_STRING_STREAM_HPP
+#define AVR_STRING_STREAM_HPP
 
-#include "../../common/base/alloc.hpp"
+#include "../../../../common//device/stream/string_stream.hpp"
 
-static_assert(false, "Dynamic memory allocation is not yet supported on STM32 platforms.");
 
-#endif//STM32_ALLOC_HPP
+
+#endif//AVR_STRING_STREAM_HPP

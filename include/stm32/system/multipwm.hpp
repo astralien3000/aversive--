@@ -16,11 +16,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef STM32_ALLOC_HPP
-#define STM32_ALLOC_HPP
+#ifndef STM32_MULTIPWM_HPP
+#define STM32_MULTIPWM_HPP
 
-#include "../../common/base/alloc.hpp"
+#include "../../common/system/multipwm.hpp"
 
-static_assert(false, "Dynamic memory allocation is not yet supported on STM32 platforms.");
+static_assert(false, "MultiPWM is not yet supported on STM32 platforms.");
 
-#endif//STM32_ALLOC_HPP
+#endif//STM32_MULTIPWM_HPP
