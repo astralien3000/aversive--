@@ -1,0 +1,170 @@
+uc atmega2560 {
+  
+  hardware timer[0] {
+    register[8] control = { TCCR0A, TCCR0B } {
+      config-list wgm {
+        config normal  = { 0                          , 0            };
+        config pwm     = { (1 << WGM00) | (1 << WGM01), 0            };
+        config ctc     = { 0                          , (1 << WGM02) };
+        config fastpwm = { (1 << WGM00) | (1 << WGM01), (1 << WGM02) };
+      };
+      
+      config-list prescaler {
+        config disable = { 0, (0 << CS02) | (0 << CS01) | (0 << CS00) };
+        config 1       = { 0, (0 << CS02) | (0 << CS01) | (1 << CS00) };
+        config 8       = { 0, (0 << CS02) | (1 << CS01) | (0 << CS00) };
+        config 64      = { 0, (0 << CS02) | (1 << CS01) | (1 << CS00) };
+        config 256     = { 0, (1 << CS02) | (0 << CS01) | (0 << CS00) };
+        config 1024    = { 0, (1 << CS02) | (0 << CS01) | (1 << CS00) };
+        config mask    = { 0, (1 << CS02) | (1 << CS01) | (1 << CS00) };
+      };
+    };
+
+    register[8] counter = { TCNT0 };
+
+    register[8] compare[0] = { OCR0A };
+    register[8] compare[1] = { OCR0B };
+
+    register[8] imask = { TIMSK0 } {
+      config match[0] = { (1 << OCIE0A) };
+      config match[1] = { (1 << OCIE0B) };
+      config overflow = { (1 << TOIE0) };
+    };
+
+    register[8] iflag = { TIFR0 };
+  };
+
+  hardware timer[1] {
+    register[8] control = { TCCR1A, TCCR1B, TCCR1C } {
+      config-list wgm {
+        config normal  = { 0                          , 0           , 0 };
+        config pwm     = { (1 << WGM10) | (1 << WGM11), 0           , 0 };
+        config ctc     = { 0                          , (1 << WGM12), 0 };
+        config fastpwm = { (1 << WGM10) | (1 << WGM11), (1 << WGM12), 0 };
+      };
+      
+      config-list prescaler {
+        config disable = { 0, (0 << CS12) | (0 << CS11) | (0 << CS10), 0 };
+        config 1       = { 0, (0 << CS12) | (0 << CS11) | (1 << CS10), 0 };
+        config 8       = { 0, (0 << CS12) | (1 << CS11) | (0 << CS10), 0 };
+        config 64      = { 0, (0 << CS12) | (1 << CS11) | (1 << CS10), 0 };
+        config 256     = { 0, (1 << CS12) | (0 << CS11) | (0 << CS10), 0 };
+        config 1024    = { 0, (1 << CS12) | (0 << CS11) | (1 << CS10), 0 };
+        config mask    = { 0, (1 << CS12) | (1 << CS11) | (1 << CS10), 0 };
+      };
+    };
+
+    register[16] counter = { TCNT1 };
+
+    register[16] compare[0] = { OCR1A };
+    register[16] compare[1] = { OCR1B };
+
+    register[8] imask = { TIMSK1 } {
+      config match[0] = { (1 << OCIE1A) };
+      config match[1] = { (1 << OCIE1B) };
+      config overflow = { (1 << TOIE1)  };
+    };
+
+    register[8] iflag = { TIFR0 };
+  };
+
+  hardware uart[0] {
+    register[8] flag = { UCSR0A } {
+      config recvend = { (1 << RXC0)  };
+      config sendend = { (1 << TXC0)  };
+      config empty   = { (1 << UDRE0) };
+    };
+
+    register[8] control = { UCSR0A, UCSR0B, UCSR0C } {
+      config-list enable {
+        config recv = { 0, (1 << RXEN0), 0 };
+        config send = { 0, (1 << TXEN0), 0 };
+      };
+
+      config-list ienable {
+        config recv  = { 0, (1 << RXCIE0), 0 };
+	config send  = { 0, (1 << TXCIE0), 0 };
+      	config empty = { 0, (1 << UDRIE0), 0 };
+      };
+
+      config-list flag {
+        config recvend = { (1 << RXC0) , 0, 0 };
+	config sendend = { (1 << TXC0) , 0, 0 };
+	config empty   = { (1 << UDRE0), 0, 0 };
+      };
+
+      config-list charsize {
+        config 5 = { 0, (0 << UCSZ02), (0 << UCSZ01) | (0 << UCSZ00) };
+        config 6 = { 0, (0 << UCSZ02), (0 << UCSZ01) | (1 << UCSZ00) };
+        config 7 = { 0, (0 << UCSZ02), (1 << UCSZ01) | (0 << UCSZ00) };
+        config 8 = { 0, (0 << UCSZ02), (1 << UCSZ01) | (1 << UCSZ00) };
+        config 9 = { 0, (1 << UCSZ02), (1 << UCSZ01) | (1 << UCSZ00) };
+      };
+
+      config-list parity {
+        config disabled = { 0, 0, 0                           };
+        config even     = { 0, 0, (1 << UPM01)                };
+        config odd      = { 0, 0, (1 << UPM01) | (1 << UPM00) };
+      };
+
+      config-list stopbit {
+        config 1 = { 0, 0, 0            };
+        config 2 = { 0, 0, (1 << USBS0) };
+      };
+    };
+
+    register[8] baudrate = { UBRR0L, UBRR0H };
+
+    register[8] data = { UDR0 };
+  };
+
+  hardware eeprom[0] {
+    register[8] address = { EEARL, EEARH };
+    register[8] data = { EEDR };
+
+    register[8] control = { EECR } {
+      config masterwrite = { (1 << EEMPE) };
+      config write       = { (1 << EEPE)  };
+      config read        = { (1 << EERE)  };
+    };
+  };
+
+  hardware pinmap {
+    register[8] control_out[0]  = { DDRA };
+    register[8] control_out[1]  = { DDRB };
+    register[8] control_out[2]  = { DDRC };
+    register[8] control_out[3]  = { DDRD };
+    register[8] control_out[4]  = { DDRE };
+    register[8] control_out[5]  = { DDRF };
+    register[8] control_out[6]  = { DDRG };
+    register[8] control_out[7]  = { DDRH };
+    register[8] control_out[8]  = { DDRJ };
+    register[8] control_out[9]  = { DDRK };
+    register[8] control_out[10] = { DDRL };
+
+    register[8] port[0]  = { PORTA };
+    register[8] port[1]  = { PORTB };
+    register[8] port[2]  = { PORTC };
+    register[8] port[3]  = { PORTD };
+    register[8] port[4]  = { PORTE };
+    register[8] port[5]  = { PORTF };
+    register[8] port[6]  = { PORTG };
+    register[8] port[7]  = { PORTH };
+    register[8] port[8]  = { PORTJ };
+    register[8] port[9]  = { PORTK };
+    register[8] port[10] = { PORTL };
+
+    register[8] pin[0]  = { PINA };
+    register[8] pin[1]  = { PINB };
+    register[8] pin[2]  = { PINC };
+    register[8] pin[3]  = { PIND };
+    register[8] pin[4]  = { PINE };
+    register[8] pin[5]  = { PINF };
+    register[8] pin[6]  = { PING };
+    register[8] pin[7]  = { PINH };
+    register[8] pin[8]  = { PINJ };
+    register[8] pin[9]  = { PINK };
+    register[8] pin[10] = { PINL };
+
+  };
+};

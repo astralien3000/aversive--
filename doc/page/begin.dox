@@ -1,0 +1,47 @@
+/*!
+
+\page "Begining Tutorial" Begining Tutorial
+
+Aversive++ can be currently used to develop applications on AVR or
+with the SASIAE simulator.  It can be compiled for both
+architecture. Here are the instructions for compiling :
+
+\section SASIAE
+
+The SASIAE part is dependent from the Qt5 framework. If you already
+compiled the simulator, you may not have anything to install.
+
+The command on Debian/Ubuntu : 
+\code{.sh}
+apt-get install qt5-default
+\endcode
+
+\section AVR
+
+You must have avr-gcc and avr-libc to compile the AVR part.
+
+The command on Debian/Ubuntu :
+\code{.sh}
+apt-get install avr-gcc libc-avr
+\endcode
+
+\section Compiling
+
+To compile all the library, you juste have to be on the library's
+root, and call the command make.
+
+To compile eiter the AVR or the SASIAE part, you may execute:
+
+ - "make $MMCU" (where $MMCU is the name of the microcontroller). Supported microcontrollers :
+  - atmega128
+  - atmega2560
+
+ - "make sasiae".
+
+To compile the last version of this present documentation. You may
+call "make doc"
+
+The library is compiled !
+Now, you can go to "HOWTO Create a Project" tutorial to use it.
+
+*/

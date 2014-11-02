@@ -1,0 +1,68 @@
+/*!
+
+\page "Add a new parameter to Aversive::Config" Add a new parameter to Aversive::Config
+\warning
+For Aversive++ developer only. This is not meant to be used by Aversive++ user.
+
+To add a new parameter to Aversive::Config, you just need to follow a few steps. In this tutorial, the parameter we want to add is named "dummy".
+
+First, open include/common/config.hpp and add a "static const void*" private attribute to the class. The name of the attribute must be prefixed by "__PARAM_".
+\n
+So in our case, we would add the following code in the private scope of the class Aversive::Config:
+\code{.cpp}
+static const void* __PARAM_DUMMY;
+\endcode
+
+Now we have a symbol to hold our parameter, we need a way to retrieve its value. Therefore, add a "static inline" method in the public scope of the class. This method must be called the same as our parameter, in our case, "dummy". This method can optionally take parameters and can return anything. Nevertheless, in most of the cases (if not all), it should not take any parameter and just return an integral value.
+\n
+So in our case, we would add the following code in the public scope of the class Aversive::Config:
+\code{.cpp}
+static inline s8 dummy(void) {
+  return (s8) ((intptr_t) &__PARAM_DUMMY);
+}
+\endcode
+
+\note
+The interim cast to intptr_t is there to avoid a compile-time warning. Indeed, it is an integral type with the same size as an address on the targeted platform. Its unsigned counterpart also exists and is just prefixed with an "u".
+
+\note
+Remember to document both the attribute and the method.
+
+We can now close this file and execute the following command at the root of Aversive++:
+\code{.sh}
+make config_symbols | grep DUMMY
+\endcode
+This command outputs the name of the symbol that will hold the value of the parameter. Copy it somewhere, we will need it soon.
+
+Now open the file doc/example/new_project/Makefile which is the blank Makefile the users use to create a new project using Aversive++.
+
+Look for the section "Aversive++ Configuration" in this file. This where we add the parameter the users will be able to set up as they will. The variable must be prefixed by "PARAM_". And we need to give it a value. Thus it has a default value and the users do not need to bother to set it up if they are in the most average case.
+\n
+So in our case, we would add the line:
+\code{makefile}
+PARAM_DUMMY=42
+\endcode
+
+\note
+Document what is the purpose of the parameter we are adding with a comment on the line above.
+
+\warning
+As you may remember, we casted the address of the symbol into intptr_t in our method. Because that is all we can set through this method, we actually let the user set the address of our symbol. Therefore, the range of value is limited to the length of the addresses on the targeted platform for our parameter. Thus, we have to consider choosing a right scale for the parameter value. For example, if we want a parameter to hold the frequency of an AVR chip, we should not ask the user to put it in Hz because 16 Mhz will not fit in 16 bits. We should ask the user to put it in KHz or MHz instead.
+
+Now that we gave a way to the user to set our new parameter up, we still need to pass it to the linker. Still in the same file, look for the subsection Config symboles under Automatic Configuration. Here we need to add a variable that will hold the name of our symbol and its value given by the user. Thys variable must be called after the name of our parameter and be suffixed by "_SYM".
+\n
+So in our case, we would add the line:
+\code{makefile}
+DUMMY_SYM=_ZN8Aversive6Config13__PARAM_DUMMYE=$(PARAM_DUMMY)
+\endcode
+
+Finally, at the end of the section should be a "SYMBOL_LIST" variable. We just add our symbol variable to the list.
+\n
+So in our case, the line would look like (... being the symbols already there):
+\code{makefile}
+SYMBOL_LIST=... $(DUMMY_SYM)
+\endcode
+
+And that is all. We successfully added a new parameter to Aversive++.
+
+*/

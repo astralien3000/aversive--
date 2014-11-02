@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['macro_5finteger',['MACRO_INTEGER',['../integer_8hpp.html#a8dbea52de49845c7dc1532b4b0a48207',1,'integer.hpp']]],
+  ['macro_5fshort_5fname',['MACRO_SHORT_NAME',['../integer_8hpp.html#ae4be7e93d8f0ced242bc5fc63a9f9f6a',1,'integer.hpp']]],
+  ['main_5fpage_2edox',['main_page.dox',['../main__page_8dox.html',1,'']]],
+  ['malloc',['malloc',['../class_alloc.html#a061aec0cff8dcea58bc17dc4ac1e12e4',1,'Alloc']]],
+  ['math',['Math',['../namespace_math.html',1,'']]],
+  ['matrix',['Matrix',['../class_matrix.html',1,'Matrix&lt; WIDTH, HEIGHT, ElementType &gt;'],['../class_matrix.html#af5347d79bb2d2e7af0f26632403ff9ee',1,'Matrix::Matrix(void)'],['../class_matrix.html#a7cd283c3cc41c4be251df3e65d0d4af8',1,'Matrix::Matrix(const Matrix &amp;other)']]],
+  ['matrix_2ehpp',['matrix.hpp',['../matrix_8hpp.html',1,'']]],
+  ['matrix_3c_20dim_2c_20dim_2c_20t_20_3e',['Matrix&lt; DIM, DIM, T &gt;',['../class_matrix.html',1,'']]],
+  ['max',['max',['../class_heap.html#a9b9792a3993f92fefac579b4f4b77e45',1,'Heap::max()'],['../namespace_math.html#a6761f8a959693d031cbe8610f8e38ce1',1,'Math::max()']]],
+  ['max_5fsize',['MAX_SIZE',['../class_array.html#ad4e7e29c12a00573eaa0cd057eeea26c',1,'Array::MAX_SIZE()'],['../class_array_3_01___s_i_z_e_00_01bool_01_4.html#a9c4c55b9258223067da5a8572b0a1962',1,'Array&lt; _SIZE, bool &gt;::MAX_SIZE()'],['../class_buffer.html#adf912862d06d9f65df0c8c3595060608',1,'Buffer::MAX_SIZE()'],['../class_heap.html#ac3c82152b66170614512a59a54d27292',1,'Heap::MAX_SIZE()'],['../class_list.html#ad7ab5fc037e7389525ad9ca704e1c96a',1,'List::MAX_SIZE()'],['../class_queue.html#a3c8196f908b1b9c4223a2106e6428c93',1,'Queue::MAX_SIZE()'],['../class_stack.html#a52d060d34c81cd83ae64d46276bbe323',1,'Stack::MAX_SIZE()']]],
+  ['microseconds',['microseconds',['../class_fpga_timer.html#aee6b677173cf79c8e041f6ae87b8a488',1,'FpgaTimer']]],
+  ['milliseconds',['milliseconds',['../class_fpga_timer.html#ac438c9da83596e675174202d9d1b5e17',1,'FpgaTimer']]],
+  ['min',['min',['../namespace_math.html#aada6f19a38d1d16d5c17a5922ac8f14e',1,'Math']]],
+  ['mod',['mod',['../namespace_math.html#af55e0f6bf3e591ededf5e78c4d17c20f',1,'Math']]],
+  ['mode',['mode',['../class_stream.html#aa6a83f64a5eaba21f9db22f2645ba248',1,'Stream::mode()'],['../class_rds.html#a0d0e11b6be203cfa15154483860f7c2e',1,'Rds::Mode()'],['../class_fpga_timer.html#aa12ee3b9e264d927c0bd7d5cfea5c963',1,'FpgaTimer::Mode()'],['../class_stream.html#ad877b2588340ac21e40b67502c6e2f93',1,'Stream::Mode()']]],
+  ['motor',['Motor',['../class_motor.html',1,'Motor&lt; T &gt;'],['../class_motor.html#a1a24c731ca1563743b34a3a863abda1c',1,'Motor::Motor(const char *name, T *addr)'],['../class_motor.html#a0d25713ebf6a0a34fc8b225c3a312356',1,'Motor::Motor(const char *name)']]],
+  ['motor_2ehpp',['motor.hpp',['../eirbot2014_2motor_8hpp.html',1,'']]],
+  ['motor_2ehpp',['motor.hpp',['../motor_2motor_8hpp.html',1,'']]],
+  ['motor_5fcontroller_2ehpp',['motor_controller.hpp',['../motor__controller_8hpp.html',1,'']]],
+  ['motorcontroller',['MotorController',['../class_motor_controller.html',1,'MotorController'],['../class_motor_controller.html#a40597bc80a6effa6b1eddad4f68a4fdd',1,'MotorController::MotorController()']]],
+  ['move',['move',['../class_random_access_stream.html#a8672cec085849b43f28b69be396be305',1,'RandomAccessStream']]],
+  ['mul_5foverflow_5fcallback',['MUL_OVERFLOW_CALLBACK',['../safe__integer_8hpp.html#a8aa1d40842a1d34f9d6122ebdbc4b724',1,'safe_integer.hpp']]],
+  ['multipwm',['MultiPWM',['../class_multi_p_w_m.html',1,'MultiPWM&lt; Config &gt;'],['../class_multi_p_w_m.html#a14a8e545faf2719a8ff9f31c5c77cf13',1,'MultiPWM::MultiPWM()']]],
+  ['multipwm_2ehpp',['multipwm.hpp',['../multipwm_8hpp.html',1,'']]]
+];

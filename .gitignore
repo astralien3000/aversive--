@@ -1,0 +1,16 @@
+*.elf
+*~
+*.hex
+*build*
+a.out
+*.autosave
+*.mk
+*.o
+*.gch
+
+*.user
+*.config
+*.creator
+*.files
+*.includes
+*.style.xml

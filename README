@@ -1,0 +1,41 @@
+///////////////////////////////////////////////////////////////////////////////////
+// Begin
+
+Build the documentation by executing "make doc" at the root of the project.
+
+Then, you can open build/doc/html/index.html with any web browser.
+
+///////////////////////////////////////////////////////////////////////////////////
+// Compile
+
+//// Compile for SASIAE
+////// dependency
+Qt5
+
+//// Compile for AVR
+////// dependency
+avr-gcc
+libc-avr
+avr-binutils
+
+////// microcontroller support
+atmega128
+atmega2560
+
+//// Compile every implementations
+make update
+make
+
+You have to do a make update when a new source file has been added to an implementation, or the first time you try to compile.
+
+If you want to compile only for a specific microcontroller (or sasiae), you should do :
+make -f mk/<implementation>.mk
+
+Where <implementation> is the name of the microcontroller or "sasiae"
+example :
+make -f mk/atmega128.mk
+
+
+//////////////////////////////////////////////////////////////////////////////////
+// Unit tests for SASIAE
+make test
