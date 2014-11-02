@@ -130,29 +130,41 @@ uc atmega2560 {
   };
 
   hardware pinmap {
-    register[8] control_out[0] = { DDRA };
-    register[8] control_out[1] = { DDRB };
-    register[8] control_out[2] = { DDRC };
-    register[8] control_out[3] = { DDRD };
-    register[8] control_out[4] = { DDRE };
-    register[8] control_out[5] = { DDRF };
-    register[8] control_out[6] = { DDRG };
+    register[8] control_out[0]  = { DDRA };
+    register[8] control_out[1]  = { DDRB };
+    register[8] control_out[2]  = { DDRC };
+    register[8] control_out[3]  = { DDRD };
+    register[8] control_out[4]  = { DDRE };
+    register[8] control_out[5]  = { DDRF };
+    register[8] control_out[6]  = { DDRG };
+    register[8] control_out[7]  = { DDRH };
+    register[8] control_out[8]  = { DDRJ };
+    register[8] control_out[9]  = { DDRK };
+    register[8] control_out[10] = { DDRL };
 
-    register[8] port[0] = { PORTA };
-    register[8] port[1] = { PORTB };
-    register[8] port[2] = { PORTC };
-    register[8] port[3] = { PORTD };
-    register[8] port[4] = { PORTE };
-    register[8] port[5] = { PORTF };
-    register[8] port[6] = { PORTG };
+    register[8] port[0]  = { PORTA };
+    register[8] port[1]  = { PORTB };
+    register[8] port[2]  = { PORTC };
+    register[8] port[3]  = { PORTD };
+    register[8] port[4]  = { PORTE };
+    register[8] port[5]  = { PORTF };
+    register[8] port[6]  = { PORTG };
+    register[8] port[7]  = { PORTH };
+    register[8] port[8]  = { PORTJ };
+    register[8] port[9]  = { PORTK };
+    register[8] port[10] = { PORTL };
 
-    register[8] pin[0] = { PINA };
-    register[8] pin[1] = { PINB };
-    register[8] pin[2] = { PINC };
-    register[8] pin[3] = { PIND };
-    register[8] pin[4] = { PINE };
-    register[8] pin[5] = { PINF };
-    register[8] pin[6] = { PING };
+    register[8] pin[0]  = { PINA };
+    register[8] pin[1]  = { PINB };
+    register[8] pin[2]  = { PINC };
+    register[8] pin[3]  = { PIND };
+    register[8] pin[4]  = { PINE };
+    register[8] pin[5]  = { PINF };
+    register[8] pin[6]  = { PING };
+    register[8] pin[7]  = { PINH };
+    register[8] pin[8]  = { PINJ };
+    register[8] pin[9]  = { PINK };
+    register[8] pin[10] = { PINL };
 
   };
 };
