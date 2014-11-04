@@ -1,94 +1,31 @@
-#include <QThread>
 #include <QProcess>
-#include <cstring>
 #include <iostream>
-
-#define BUFFER_SIZE 1024
-
-char buffer[BUFFER_SIZE];
-
-bool readLine(QProcess& client) {
-  unsigned int i = 0;
-  char c;
-  if(!client.getChar(&c)) {
-    client.waitForReadyRead();
-  }
-  else {
-    buffer[i++] = c;
-  }
-  while(client.getChar(&c) && c != '\n') {
-    buffer[i++] = c;
-  }
-  buffer[i] = '\0';
-  if(c == '\n') {
-    return true;
-  }
-  else {
-    client.kill();
-    client.waitForFinished();
-    return false;
-  }
-}
-
-bool checkMsg(QProcess& client, const char* str) {
-  if(!readLine(client)) {
-    return false;
-  }
-  return !strcmp(buffer, str);
-}
-
-void res(bool ok, int i = 0) {
-  if(ok) {
-    std::cout << "OK" << std::endl;
-  }
-  else {
-    std::cout << "NOK " << i << std::endl;
-  }
-}
+#include "../../my_assert.hpp"
+#include "../util.hpp"
 
 int main(int argc, char** argv) {
   (void) argc;
   (void) argv;
   
   QProcess client;
-  client.start("./client", QStringList());
-  if(!client.waitForStarted()) {
-    res(false, 1);
-    return EXIT_FAILURE;
-  }
+  client.start("./client.elf", QStringList());
+  myAssert(client.waitForStarted(), "Line " S__LINE__ ": The client could not be initialized properly.");
   
-  if(!checkMsg(client, "D TESTER I'm new")) {
-    res(false, 2);
-    return EXIT_FAILURE;
-  }
+  myAssert(checkMsg(client, "D TESTER I'm new"), "Line " S__LINE__ ": The first message is not the device declaration.");
   
   client.write("D TESTER Stop\n");
   
-  if(!checkMsg(client, "D TESTER Stop? :'(")) {
-    res(false, 3);
-    return EXIT_FAILURE;
-  }
-
-  if(!checkMsg(client, "S")) {
-    res(false, 4);
-    return EXIT_FAILURE;
-  }
+  myAssert(checkMsg(client, "D TESTER Stop? :'("), "Line " S__LINE__ ": The device did not answer properly.");
+  myAssert(checkMsg(client, "S"), "Line " S__LINE__ ": The client thread did not send \"S\" as expected.");
   
   client.write("D TESTER Love u\n");
   
-  if(!checkMsg(client, "D TESTER Love u too")) {
-    res(false, 5);
-    return EXIT_FAILURE;
-  }
+  myAssert(checkMsg(client, "D TESTER Love u too"), "Line " S__LINE__ ": The device did not answer properly.");
   
   client.write("S\n");
   client.closeWriteChannel();
+  myAssert(client.waitForFinished(), "Line " S__LINE__ ": The client did not close properly.");
   
-  if(!client.waitForFinished()) {
-    res(false, 6);
-    return EXIT_FAILURE;
-  }
-  
-  res(true);
-  return EXIT_SUCCESS;
+  std::cout << "OK" << std::endl;
+  return 0;
 }

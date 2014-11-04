@@ -1,4 +1,4 @@
-.PHONY: all generate doc test clean update mrproper
+.PHONY: all generate doc clean update mrproper
 
 all: mk/all.mk
 	$(MAKE) -f mk/all.mk all_targets
@@ -36,7 +36,7 @@ mk/all.mk: update
 	./tools/compilation/generate_all_mk.sh > mk/all.mk
 
 doc:
-	mkdir -p build/doc
+	@mkdir -p build/doc
 	@doxygen 1> /dev/null
 
 archiparser:
@@ -79,7 +79,19 @@ clean_archiparser:
 	@$(MAKE) clean -sC tools/archi_parser
 
 clean_test:
-	@$(MAKE) mrproper -sC tests/sasiae
+	@(cd tests && ./run_tests.sh clean)
 
-test:
-	$(MAKE) test -C tests/sasiae
+test_all:
+	@(cd tests && ./run_tests.sh test)
+
+test_common:
+	@(cd tests && ./run_tests.sh common)
+
+test_sasiae:
+	@(cd tests && ./run_tests.sh sasiae)
+
+test_avr:
+	@(cd tests && ./run_tests.sh avr)
+
+test_stm32:
+	@(cd tests && ./run_tests.sh stm32)
