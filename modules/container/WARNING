@@ -1,0 +1,1 @@
+#include <stdlib.h> // It's needed since, oddly, abort() ins't included in assert.h on AVR while it's on PC.
