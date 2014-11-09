@@ -16,28 +16,30 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef AVR_FPGA_MOTOR_HPP
-#define AVR_FPGA_MOTOR_HPP
+#ifndef SERVOMOTOR_FPGA_HPP
+#define SERVOMOTOR_FPGA_HPP
 
-#include "../../../common/device/motor/fpga_motor.hpp"
+#include <device/servomotor/servomotor.hpp>
 
-#include <math/saturate.hpp>
-
-template<typename T, int ADDR>
-inline FpgaMotor<T, ADDR>::FpgaMotor(const char* name)
-  : Motor(name) {
-}
+//! \brief A servomotor, used by Eirbot in 2014
+//! \param ADDR : the address where to set the motor pwm
 
 template<typename T, int ADDR>
-inline void FpgaMotor<T, ADDR>::setValue(s32 val) {
-  const s32 cmd = Math::saturate(val, _min, _max);
-  if(_inverse) {
-    (*(T*)ADDR) = -cmd;
-  }
-  else {
-    (*(T*)ADDR) = cmd;
-  }
+class FpgaServomotor : public Servomotor {
+public:
+  FpgaServomotor(const char*);
+
+  void setValue(u32);
+};
+
+////////////////////////////////////////////////////////////////////
+
+template<typename T, int ADDR>
+FpgaServomotor<T, ADDR>::FpgaServomotor(const char* name) : Servomotor(name) {}
+
+template<typename T, int ADDR>
+void FpgaServomotor<T, ADDR>::setValue(u32 val) {
+  *((T*)ADDR) = val;
 }
 
-
-#endif//AVR_FPGA_MOTOR_HPP
+#endif//SERVOMOTOR_FPGA_HPP
