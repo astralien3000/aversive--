@@ -16,30 +16,65 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef AVR_ENCODER_HPP
-#define AVR_ENCODER_HPP
+#ifndef MOTOR_HPP
+#define MOTOR_HPP
 
-#include "../../../common/device/eirbot2014/encoder.hpp"
+#include <device/device.hpp>
+#include <device/output.hpp>
+#include <base/integer.hpp>
+
+//! \brief A propulsion motor, used by Eirbot in 2014
+//! \param ADDR : the address where to set the motor pwm
+/*! 
+
+  This actuator is actually connected to a FPGA, which is viewed as an
+  external memory by the microcontroller. The address is set by the
+  user, so I hope you know how your FPGA works ;) !
+
+*/
+template<typename T>
+class Motor : public Device, public Output<s32> {
+public:
+  //! \brief Create a named motor
+  //! \param name : the name of the device (used with sasiae)
+  //! \param addr : the fpga register address
+  Motor(const char* name, T* addr);
+
+  //! \brief Send an command to the motor
+  //! \warning The value is saturated if not in a valid interval
+  void setValue(s32);
+
+  //! \brief Switch positive and negative command
+  void inverse(void);
+
+private:
+  volatile T* const _addr;
+  bool _inverse;
+};
+
+/////////////////////////////////////////////////////////////
+
+#include <math/saturate.hpp>
 
 template<typename T>
-inline Encoder<T>::Encoder(const char* name, T* addr)
+inline Motor<T>::Motor(const char* name, T* addr)
   : Device(name), _addr(addr), _inverse(false) {
 
 }
 
 template<typename T>
-inline s32 Encoder<T>::getValue(void) {
+inline void Motor<T>::setValue(s32 val) {
   if(_inverse) {
-    return -(*_addr);
+    val = -val;
   }
-  else {
-    return *_addr;
-  }
+
+  (*_addr) = Math::saturate<-127, 127>(val);
 }
 
 template<typename T>
-inline void Encoder<T>::inverse(void) {
+inline void Motor<T>::inverse(void) {
   _inverse = !_inverse;
 }
 
-#endif//AVR_ENCODER_HPP
+#endif//MOTOR_HPP
+
