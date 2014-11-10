@@ -1,7 +1,24 @@
-#ifndef AVR_OUTPUT_DIGITAL_PIN_HPP
-#define AVR_OUTPUT_DIGITAL_PIN_HPP
+#ifndef OUTPUT_DIGITAL_PIN_HPP
+#define OUTPUT_DIGITAL_PIN_HPP
 
-#include "../../../common/device/pin/output_digital_pin.hpp"
+#include <device/pin/input_digital_pin.hpp>
+#include <device/output.hpp>
+
+template<int ID>
+class OutputDigitalPin : public InputDigitalPin<ID>, public Output<bool> {
+protected:
+  OutputDigitalPin(const char* name, bool init);
+
+public:
+  OutputDigitalPin(const char* name);
+  void setValue(bool value);
+  bool getValue(void);
+
+  void toggle(void);
+};
+
+/////////////////////////////////////////////////////////////////////
+
 
 #include <hardware/pinmap.hpp>
 
@@ -31,4 +48,5 @@ inline void OutputDigitalPin<ID>::toggle(void) {
   setValue(!getValue());
 }
 
-#endif//AVR_OUTPUT_DIGITAL_PIN_HPP
+
+#endif//OUTPUT_DIGITAL_PIN_HPP

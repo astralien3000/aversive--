@@ -1,7 +1,23 @@
-#ifndef AVR_DIGITAL_PIN_HPP
-#define AVR_DIGITAL_PIN_HPP
+#ifndef DIGITAL_PIN_HPP
+#define DIGITAL_PIN_HPP
 
-#include "../../../common/device/pin/digital_pin.hpp"
+#include <device/pin/output_digital_pin.hpp>
+
+template<int ID>
+class DigitalPin : public OutputDigitalPin<ID> {
+public:
+  DigitalPin(const char* name);
+  void setValue(bool value);
+  bool getValue(void);
+
+  void setOutput(void);
+  void setInput(void);
+
+  bool isOutput(void);
+  bool isInput(void);
+};
+
+/////////////////////////////////////////////////////////////////////////
 
 #include <hardware/pinmap.hpp>
 
@@ -43,5 +59,4 @@ inline bool DigitalPin<ID>::isOutput(void) {
   return Pinmap::Pin<ID>::mode() == Pinmap::OUT;
 }
 
-
-#endif//AVR_DIGITAL_PIN_HPP
+#endif//DIGITAL_PIN_HPP
