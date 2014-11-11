@@ -19,7 +19,23 @@
 #ifndef SASIAE_SERVOMOTOR_PIN_HPP
 #define SASIAE_SERVOMOTOR_PIN_HPP
 
-#include "../../../common/device/eirbot2014/servomotor_pin.hpp"
+
+#include <device/eirbot2014/servomotor.hpp>
+
+
+//! \brief A servomotor
+//! \param PORT : the port (1, 2, etc) where the servo is plugged
+//! \param PIN : the number of the pin (1, 2, etc)
+
+template<u8 PORT, u8 PIN>
+class ServomotorPin : public Servomotor {
+public:
+  ServomotorPin(const char*);
+
+  void setValue(u32);
+};
+
+//////////////////////////////////////////////////////////////////
 
 template<u8 PORT, u8 PIN>
 ServomotorPin<PORT, PIN>::ServomotorPin(const char* name) : Servomotor(name) {}
