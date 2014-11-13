@@ -19,7 +19,7 @@
 #ifndef BUFFERED_STREAM_HPP
 #define BUFFERED_STREAM_HPP
 
-#include <device/stream/stream.hpp>
+#include <stream/stream.hpp>
 #include <base/integer.hpp>
 
 //! \class BufferedStream buffered_stream.hpp <device/stream/buffered_stream.hpp>

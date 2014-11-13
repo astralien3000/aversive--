@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <device/stream/stream.hpp>
+#include <stream/stream.hpp>
 
 // const u16 MAX_BUFF = 32;
 

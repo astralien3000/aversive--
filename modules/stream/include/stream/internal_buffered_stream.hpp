@@ -19,7 +19,7 @@
 #ifndef INTERNAL_BUFFERED_STREAM_HPP
 #define INTERNAL_BUFFERED_STREAM_HPP
 
-#include <device/stream/buffered_stream.hpp>
+#include <stream/buffered_stream.hpp>
 #include <container/buffer.hpp>
 
 //! \class InternalBufferedStream internal_buffered_stream.hpp <device/stream/internal_buffered_stream.hpp>

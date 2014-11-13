@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <device/stream/binary_stream.hpp>
+#include <stream/binary_stream.hpp>
 
 ////////////////////////////////////////
 // Binary Write

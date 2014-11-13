@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <device/stream/internal_buffered_stream.hpp>
+#include <stream/internal_buffered_stream.hpp>
 
 char InternalBufferedStream::getValue(void) {
   if(_mini_buffer_used) {

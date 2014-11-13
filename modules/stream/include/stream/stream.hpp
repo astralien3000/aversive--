@@ -19,7 +19,7 @@
 #ifndef STREAM_HPP
 #define STREAM_HPP
 
-#include <device/stream/formatted_stream.hpp>
+#include <stream/formatted_stream.hpp>
 
 //! \class Stream stream.hpp <device/stream/stream.hpp>
 //! \brief Abstract two-way stream with formatted and binary read and write.

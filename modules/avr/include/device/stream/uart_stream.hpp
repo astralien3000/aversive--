@@ -20,7 +20,7 @@
 #define UART_STREAM_HPP
 
 #include <base/integer.hpp>
-#include <device/stream/stream.hpp>
+#include <stream/stream.hpp>
 #include <device/device.hpp>
 
 //! \class UartStream uart_stream.hpp <device/stream/uart_stream.hpp>

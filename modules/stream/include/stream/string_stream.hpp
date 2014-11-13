@@ -19,7 +19,7 @@
 #ifndef STRING_STREAM_HPP
 #define STRING_STREAM_HPP
 
-#include <device/stream/buffered_stream.hpp>
+#include <stream/buffered_stream.hpp>
 #include <container/buffer.hpp>
 
 //! \class StringStream string_stream.hpp <device/stream/string_stream.hpp>
