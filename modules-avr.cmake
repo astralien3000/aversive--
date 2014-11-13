@@ -1,0 +1,8 @@
+add_subdirectory(modules/base)
+add_subdirectory(modules/container)
+add_subdirectory(modules/math)
+add_subdirectory(modules/geometry)
+add_subdirectory(modules/avr)
+add_subdirectory(modules/avr.system)
+add_subdirectory(modules/device)
+add_subdirectory(modules/filter)
