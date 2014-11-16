@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 2.8)
 
 project(aversive++)
 
+add_compile_options(-mmcu=${TARGET})
 add_compile_options(-std=c++11)
-add_compile_options(-mmcu=atmega2560)
 message(STATUS ${CMAKE_CXX_COMPILER})
 
 macro(add_module name)
@@ -11,9 +11,9 @@ macro(add_module name)
   add_subdirectory(modules/${name})
 endmacro(add_module)
 
-include(modules-atmega2560.cmake)
+include(mk/target/${TARGET}.cmake)
 
 include_directories (${INCLUDE_DIRS})
-add_library(aversive++_atmega2560 STATIC ${SOURCES})
+add_library(aversive++_${TARGET} STATIC ${SOURCES})
 
 unset(TARGET CACHE)
