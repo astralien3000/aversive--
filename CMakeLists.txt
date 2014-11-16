@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 2.8)
 
 project(aversive++)
 
-add_compile_options(-mmcu=${TARGET})
 add_compile_options(-std=c++11)
 message(STATUS ${CMAKE_CXX_COMPILER})
 
