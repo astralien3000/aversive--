@@ -1,6 +1,6 @@
 .PHONY: all generate doc clean update mrproper
 
-all: sasiae atmega32 atmega128 atmega2560
+all: sasiae atmega32 atmega128 atmega2560 stm32f4
 
 sasiae: 
 	@mkdir -p build/$@ 
