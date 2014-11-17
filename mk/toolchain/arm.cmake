@@ -6,11 +6,11 @@ SET(CMAKE_SYSTEM_VERSION 1)
 
 #SET(CMAKE_C_COMPILER   /usr/bin/avr-gcc)
 #SET(CMAKE_CXX_COMPILER /usr/bin/avr-g++)
-CMAKE_FORCE_C_COMPILER(avr-gcc GNU)
-CMAKE_FORCE_CXX_COMPILER(avr-g++ GNU)
+CMAKE_FORCE_C_COMPILER(arm-none-eabi-gcc GNU)
+CMAKE_FORCE_CXX_COMPILER(arm-none-eabi-g++ GNU)
 
 # Where is the target environment:
-SET(CMAKE_FIND_ROOT_PATH  /usr/avr)
+SET(CMAKE_FIND_ROOT_PATH  /usr/arm-none-eabi)
 
 # Search for programs in the build host directories:
 SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)

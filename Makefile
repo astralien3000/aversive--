@@ -12,8 +12,10 @@ atmega32 atmega128 atmega2560:
 	@cd build/$@ && cmake -DCMAKE_TOOLCHAIN_FILE=../../mk/toolchain/avr.cmake -DTARGET=$@ ../..
 	@cd build/$@ && make
 
-stm32: mk/all.mk
-	@echo "Not supported yet"
+stm32f4:
+	@mkdir -p build/$@ 
+	@cd build/$@ && cmake -DCMAKE_TOOLCHAIN_FILE=../../mk/toolchain/arm.cmake -DTARGET=$@ ../..
+	@cd build/$@ && make
 
 
 update: clean_mk
