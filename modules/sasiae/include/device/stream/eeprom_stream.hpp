@@ -16,8 +16,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef EEPROM_STREAM_HPP
-#define EEPROM_STREAM_HPP
+#ifndef SASIAE_EEPROM_STREAM_HPP
+#define SASIAE_EEPROM_STREAM_HPP
 
 #include <stream/random_access_stream.hpp>
 #include <device/device.hpp>
@@ -39,30 +39,5 @@ public:
   void setValue(char c);
 };
 
-/////////////////////////////////////////////////////////////////////////////////
 
-
-#include <hardware/eeprom.hpp>
-
-inline EepromStream::EepromStream(const char* name) : Device(name) {
-}
-
-inline char EepromStream::getValue(void) {
-  if(_mini_buffer_used) {
-    _mini_buffer_used = false;
-    return _mini_buffer;
-  }
-  else {
-    char ret = Eeprom::read(cursor());
-    seek(cursor()+1);
-    return ret;
-  }
-}
-
-inline void EepromStream::setValue(char val) {
-  Eeprom::write(cursor(), val);
-  seek(cursor()+1);
-}
-
-
-#endif//EEPROM_STREAM_HPP
+#endif//SASIAE_EEPROM_STREAM_HPP

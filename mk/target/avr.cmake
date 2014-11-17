@@ -7,3 +7,5 @@ add_module(stream)
 add_module(avr.system)
 add_module(device)
 add_module(filter)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmcu=${TARGET}")

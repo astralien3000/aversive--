@@ -1,22 +1,20 @@
 .PHONY: all generate doc clean update mrproper
 
-all: mk/all.mk
-	$(MAKE) -f mk/all.mk all_targets
+all: sasiae atmega32 atmega128 atmega2560
 
-sasiae: mk/all.mk
-	$(MAKE) -f mk/sasiae.mk
+sasiae: 
+	@mkdir -p build/$@ 
+	@cd build/$@ && cmake -DTARGET=$@ ../..
+	@cd build/$@ && make
 
-atmega32: mk/all.mk
-	$(MAKE) -f mk/atmega32.mk
-
-atmega128: mk/all.mk
-	$(MAKE) -f mk/atmega128.mk
-
-atmega2560: mk/all.mk
-	$(MAKE) -f mk/atmega2560.mk
+atmega32 atmega128 atmega2560:
+	@mkdir -p build/$@ 
+	@cd build/$@ && cmake -DCMAKE_TOOLCHAIN_FILE=../../mk/toolchain/avr.cmake -DTARGET=$@ ../..
+	@cd build/$@ && make
 
 stm32: mk/all.mk
-	$(MAKE) -f mk/stm32.mk
+	@echo "Not supported yet"
+
 
 update: clean_mk
 	tools/compilation/generate_files_pro.sh common > project/generated/common.files.pro

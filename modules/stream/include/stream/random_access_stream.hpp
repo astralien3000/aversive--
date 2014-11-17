@@ -19,7 +19,7 @@
 #ifndef RANDOM_ACCESS_STREAM
 #define RANDOM_ACCESS_STREAM
 
-#include <device/stream/stream.hpp>
+#include <stream/stream.hpp>
 
 //! \class RandomAccessStream random_access_stream.hpp <device/stream/random_access_device.hpp>
 //! \brief Abstract random access stream.
