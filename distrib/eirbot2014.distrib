@@ -1,0 +1,15 @@
+modules/avr-gcc
+modules/geometry
+modules/base
+modules/rds2014
+modules/scheduler
+modules/avr.system
+modules/robot
+modules/device
+modules/math
+modules/avr
+modules/eirbot2014
+modules/filter
+modules/multipwm
+modules/container
+modules/stream

@@ -1,0 +1,14 @@
+modules/gcc
+modules/qt
+modules/geometry
+modules/base
+modules/scheduler
+modules/sasiae
+modules/robot
+modules/device
+modules/math
+modules/eirbot2014
+modules/filter
+modules/multipwm
+modules/container
+modules/stream
