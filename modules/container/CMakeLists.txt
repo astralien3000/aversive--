@@ -1,1 +1,0 @@
-include(${PROJECT_SOURCE_DIR}/mk/module/module.cmake)

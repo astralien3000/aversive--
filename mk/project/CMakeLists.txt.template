@@ -1,7 +1,0 @@
-cmake_minimum_required(VERSION 2.8)
-
-set(PROJECT my_project)
-set(AVERSIVE_ROOT .)
-set(TARGET sasiae)
-
-include(${AVERSIVE_ROOT}/mk/project/project.cmake)
