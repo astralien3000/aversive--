@@ -1,5 +1,5 @@
 set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-fno-threadsafe-statics -D__STDC_LIMIT_MACROS -O3 -mmcu=${TARGET} -std=c++11")
-link_directories(${AVERSIVE_ROOT}/build/)
+link_directories(${AVERSIVE_ROOT}/build/${TARGET})
 
 macro(add_module name)
   include_directories(${AVERSIVE_ROOT}/modules/${name}/include)
