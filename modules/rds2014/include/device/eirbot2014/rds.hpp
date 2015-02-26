@@ -25,10 +25,7 @@
 #include <math/vect.hpp>
 #include <container/list.hpp>
 #include <base/integer.hpp>
-#include <device/stream/binary_stream.hpp>
-
-
-#include <device/stream/binary_stream.hpp>
+#include <stream/binary_stream.hpp>
 
 struct RdsPrivateData {
   BinaryStream &rds_io;

@@ -20,6 +20,7 @@
 #define ARCHITECTURE_HPP
 
 #include "register.hpp"
+#include "config.hpp"
 
 #include <avr/io.h>
 

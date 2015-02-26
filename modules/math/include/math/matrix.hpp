@@ -19,8 +19,8 @@
 #ifndef MATRIX_HPP
 #define MATRIX_HPP
 
-#include "../base/integer.hpp"
-#include "../base/array.hpp"
+#include <base/integer.hpp>
+#include <base/array.hpp>
 #include "vect.hpp"
 
 template<int WIDTH, int HEIGHT, typename ElementType>

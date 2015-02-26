@@ -21,7 +21,7 @@
 
 struct RdsPrivateData {};
 
-#include "../../../common/device/eirbot2014/rds.hpp"
+#include <device/eirbot2014/rds.hpp>
 
 #include <aversive.hpp>
 #include <client_thread.hpp>

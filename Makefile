@@ -32,17 +32,26 @@ compile: C_RULES_BEGIN=$(addsuffix ":",$(COBJECTS))
 compile: C_RULES=$(join $(C_RULES_BEGIN),$(CSOURCES))
 compile: C_RULE_CMD='\t$(CC) -c $(CFLAGS) $(INCLUDE_FLAGS) $$< -o $$@\n'
 compile: C_RULES_CMD=$(addsuffix $(C_RULE_CMD),$(foreach i,$(C_RULES),"$(i)\n"))
+# Compiled Headers
+compile: HEADER=$(shell $(DISTRIB_INFO) $(DISTRIB_FILE) headers)
+compile: HEADER_TREE=$(foreach hdr,$(HEADER),$(shell echo $(hdr) | sed 's/^.*\/include\///g'))
+compile: HEADER_OBJECTS=$(addprefix $(OBJECTS_BUILD_DIR)/include/,$(HEADER_TREE:%.hpp=%.gch))
+compile: HEADER_RULES_BEGIN=$(addsuffix ":",$(HEADER_OBJECTS))
+compile: HEADER_RULES=$(join $(HEADER_RULES_BEGIN),$(HEADER))
+compile: HEADER_RULE_CMD='\tmkdir -p $$(shell dirname $$@) && $(CXX) -c $(CXXFLAGS) $(INCLUDE_FLAGS) $$< -o $$@\n'
+compile: HEADER_RULES_CMD=$(addsuffix $(HEADER_RULE_CMD),$(foreach i,$(HEADER_RULES),"$(i)\n"))
 # Archive
 compile: AR=$(shell $(DISTRIB_INFO) $(DISTRIB_FILE) ar)
 compile: AR_OBJECTS=$(COBJECTS) $(CXXOBJECTS)
-compile: AR_TARGET=$(BUILD_DIR)/aversive_$(DISTRIB)_$(TARGET).a
+compile: AR_TARGET=$(OBJECTS_BUILD_DIR)/lib/aversive_$(DISTRIB)_$(TARGET).a
 compile: 
-	@mkdir -p $(OBJECTS_BUILD_DIR)
-	@echo -e "all: $(AR_TARGET)\n" > $(OBJECTS_BUILD_DIR)/Makefile
-	@echo -e "$(AR_TARGET): $(CXXOBJECTS)" > $(OBJECTS_BUILD_DIR)/Makefile
+	@mkdir -p $(OBJECTS_BUILD_DIR)/lib
+	@echo -e "all: $(AR_TARGET) $(HEADER_OBJECTS)\n" > $(OBJECTS_BUILD_DIR)/Makefile
+	@echo -e "$(AR_TARGET): $(AR_OBJECTS)" >> $(OBJECTS_BUILD_DIR)/Makefile
 	@echo -e "\t$(AR) r $(AR_TARGET) $(AR_OBJECTS)\n" >> $(OBJECTS_BUILD_DIR)/Makefile
 	@echo -en $(CXX_RULES_CMD) >> $(OBJECTS_BUILD_DIR)/Makefile
 	@echo -en $(C_RULES_CMD) >> $(OBJECTS_BUILD_DIR)/Makefile
+	@echo -en $(HEADER_RULES_CMD) >> $(OBJECTS_BUILD_DIR)/Makefile
 	@${MAKE} -f $(OBJECTS_BUILD_DIR)/Makefile
 
 eirbot2014: DISTRIB=eirbot2014

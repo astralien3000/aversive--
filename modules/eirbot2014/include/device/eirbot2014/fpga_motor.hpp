@@ -19,7 +19,7 @@
 #ifndef FPGA_MOTOR_HPP
 #define FPGA_MOTOR_HPP
 
-#include <device/motor/motor.hpp>
+#include <device/eirbot2014/motor.hpp>
 
 //! \brief A propulsion motor, used by Eirbot in 2014
 //! \param ADDR : the address where to set the motor pwm
@@ -31,7 +31,10 @@
 
 */
 template<typename T, int ADDR>
-class FpgaMotor : public Motor {
+class FpgaMotor : public Motor<T> {
+  static constexpr T _min = -127;
+  static constexpr T _max =  127;
+
 public:
   FpgaMotor(const char* name);
 
@@ -44,13 +47,13 @@ public:
 
 template<typename T, int ADDR>
 inline FpgaMotor<T, ADDR>::FpgaMotor(const char* name)
-  : Motor(name) {
+  : Motor<T>(name) {
 }
 
 template<typename T, int ADDR>
 inline void FpgaMotor<T, ADDR>::setValue(s32 val) {
   const s32 cmd = Math::saturate(val, _min, _max);
-  if(_inverse) {
+  if(Motor<T>::_inverse) {
     (*(T*)ADDR) = -cmd;
   }
   else {

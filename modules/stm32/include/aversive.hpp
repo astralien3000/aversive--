@@ -19,7 +19,7 @@
 #ifndef STM32_AVERSIVE_HPP
 #define STM32_AVERSIVE_HPP
 
-#include "../common/aversive.hpp"
+#include <aversive.hpp>
 
 
 

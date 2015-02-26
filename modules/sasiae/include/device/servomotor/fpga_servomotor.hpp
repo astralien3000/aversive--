@@ -19,7 +19,7 @@
 #ifndef SASIAE_SERVOMOTOR_FPGA_HPP
 #define SASIAE_SERVOMOTOR_FPGA_HPP
 
-#include "../../../common/device/servomotor/fpga_servomotor.hpp"
+#include <device/eirbot2014/fpga_servomotor.hpp>
 
 template<typename T, int ADDR>
 FpgaServomotor<T, ADDR>::FpgaServomotor(const char* name) : Servomotor(name) {}

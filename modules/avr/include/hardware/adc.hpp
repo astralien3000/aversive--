@@ -23,8 +23,8 @@
 
 //! \brief class providing routines for microcontroller's analog-to-digital functionalities management
 //! \param ID : the ID of the ADC port to use
-tempate<int ID>
-class Adc : public Singleton<Adc> {
+template<int ID>
+class Adc : public Singleton<Adc<ID>> {
 public:
   inline void init(void);
   inline void reset(void);

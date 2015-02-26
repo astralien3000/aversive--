@@ -16,9 +16,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#if defined (__AVR_ATmega128__)
 
-
-
+#include "../register.hpp"
+#include <avr/io.h>
 
 
 
@@ -1171,3 +1172,5 @@ template<> inline Register<8, 33>::Register(void) : reg_size(1), reg{(u8*)&PIND}
 template<> inline Register<8, 34>::Register(void) : reg_size(1), reg{(u8*)&PINE} {}
 template<> inline Register<8, 35>::Register(void) : reg_size(1), reg{(u8*)&PINF} {}
 template<> inline Register<8, 36>::Register(void) : reg_size(1), reg{(u8*)&PING} {}
+
+#endif

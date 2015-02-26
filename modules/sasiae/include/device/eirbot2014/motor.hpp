@@ -19,7 +19,7 @@
 #ifndef SASIAE_MOTOR_HPP
 #define SASIAE_MOTOR_HPP
 
-#include "../../../common/device/eirbot2014/motor.hpp"
+#include <common/device/eirbot2014/motor.hpp>
 
 #include <aversive.hpp>
 #include <client_thread.hpp>

@@ -20,7 +20,7 @@
 #define FUNCTION_HPP
 
 #include <base/integer.hpp>
-#include <base/alloc.hpp>
+#include <base/_base_alloc.hpp>
 
 //! \class Function function.hpp <base/function.hpp>
 //! \brief Class representing a generic function (works with both standard function and lambda).

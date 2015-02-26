@@ -19,9 +19,9 @@
 #ifndef KALMAN_FILTER_HPP
 #define KALMAN_FILTER_HPP
 
-#include "../base/integer.hpp"
-#include "../math/vect.hpp"
-#include "../math/matrix.hpp"
+#include <base/integer.hpp>
+#include <math/vect.hpp>
+#include <math/matrix.hpp>
 
 template<int DIM, typename T = s32>
 class KalmanFilter {

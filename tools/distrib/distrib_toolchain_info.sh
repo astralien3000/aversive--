@@ -146,6 +146,17 @@ then
 	fi
     done
 
+elif [ "$CMD" == "headers" ]
+then
+
+    for m in $MODULE_PATHS
+    do
+	if [ -d $m/include ]
+	then
+	    find $m/include -name "*\.h" -or -name "*\.hpp"
+	fi
+    done
+
 elif [ "$CMD" == "csources" ]
 then
 

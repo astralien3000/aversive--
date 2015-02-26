@@ -24,7 +24,7 @@ struct SimpleInputDevicePrivateData {
   T last_in;
 };
 
-#include "../../common/device/input_device.hpp"
+#include <device/input_device.hpp>
 
 #include <aversive.hpp>
 #include <client_thread.hpp>

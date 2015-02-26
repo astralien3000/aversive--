@@ -19,7 +19,7 @@
 #ifndef SASIAE_AVERSIVE_HPP
 #define SASIAE_AVERSIVE_HPP
 
-#include "../common/aversive.hpp"
+#include <aversive.hpp>
 
 
 

@@ -22,8 +22,11 @@
 #include <base/singleton.hpp>
 #include "architecture.hpp"
 
-class Xmem : public Singleton<Xmem> {
-  friend class Singleton<Xmem>;
+template<int ID> struct xmem;
+
+template<int ID>
+class Xmem : public Singleton<Xmem<ID>> {
+  friend class Singleton<Xmem<ID>>;
 
 private:
   //! \brief Private Default Constructor
@@ -32,8 +35,8 @@ Xmem(void) {}
 public:
   //! \brief Enable external memory management
   void init(void) {
-    REG(xmem<0>::control) |= CFG(xmem<0>::control::enable);
-    REG(xmem<0>::control) |= CFG(xmem<0>::control::defaultwait);  
+    REG(xmem<ID>::control) |= CFG(xmem<ID>::control::enable);
+    REG(xmem<ID>::control) |= CFG(xmem<ID>::control::defaultwait);  
   }
   
   //! \brief Disable external memory management

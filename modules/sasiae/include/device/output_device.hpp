@@ -24,7 +24,7 @@ struct SimpleOutputDevicePrivateData {
 
 };
 
-#include "../../common/device/output_device.hpp"
+#include <device/output_device.hpp>
 
 #include <aversive.hpp>
 #include <client_thread.hpp>

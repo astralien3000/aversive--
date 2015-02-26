@@ -19,7 +19,7 @@
 #ifndef FPGA_UART_STREAM
 #define FPGA_UART_STREAM
 
-#include <device/stream/buffered_stream.hpp>
+#include <stream/buffered_stream.hpp>
 #include <device/device.hpp>
 #include <base/integer.hpp>
 

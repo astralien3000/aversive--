@@ -19,7 +19,7 @@
 #ifndef SASIAE_ENCODER_HPP
 #define SASIAE_ENCODER_HPP
 
-#include "../../../common/device/eirbot2014/encoder.hpp"
+#include <device/eirbot2014/encoder.hpp>
 
 #include <aversive.hpp>
 #include <client_thread.hpp>

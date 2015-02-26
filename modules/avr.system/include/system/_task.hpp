@@ -19,7 +19,7 @@
 #ifndef AVR_TASK_HPP
 #define AVR_TASK_HPP
 
-#include "../../common/system/task.hpp"
+#include <system/task.hpp>
 
 
 

@@ -19,7 +19,7 @@
 #ifndef BUFFERED_UART_STREAM_HPP
 #define BUFFERED_UART_STREAM_HPP
 
-#include <device/stream/internal_buffered_stream.hpp>
+#include <stream/internal_buffered_stream.hpp>
 #include <device/device.hpp>
 #include <base/singleton.hpp>
 

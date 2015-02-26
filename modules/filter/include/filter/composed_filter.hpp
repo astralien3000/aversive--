@@ -19,7 +19,7 @@
 #ifndef COMPOSED_FILTER_HPP
 #define COMPOSED_FILTER_HPP
 
-#include "../base/integer.hpp"
+#include <base/integer.hpp>
 #include <filter/filter.hpp>
 
 class ComposedFilter : public Filter<s32> {

@@ -19,13 +19,14 @@
 #ifndef SERVOMOTOR_FPGA_HPP
 #define SERVOMOTOR_FPGA_HPP
 
-#include <device/servomotor/servomotor.hpp>
+#include <device/device.hpp>
+#include <base/integer.hpp>
 
 //! \brief A servomotor, used by Eirbot in 2014
 //! \param ADDR : the address where to set the motor pwm
 
 template<typename T, int ADDR>
-class FpgaServomotor : public Servomotor {
+class FpgaServomotor : Device {
 public:
   FpgaServomotor(const char*);
 
@@ -35,7 +36,7 @@ public:
 ////////////////////////////////////////////////////////////////////
 
 template<typename T, int ADDR>
-FpgaServomotor<T, ADDR>::FpgaServomotor(const char* name) : Servomotor(name) {}
+FpgaServomotor<T, ADDR>::FpgaServomotor(const char* name) : Device(name) {}
 
 template<typename T, int ADDR>
 void FpgaServomotor<T, ADDR>::setValue(u32 val) {

@@ -19,7 +19,7 @@
 #ifndef FPGA_ENCODER_HPP
 #define FPGA_ENCODER_HPP
 
-#include <device/encoder/encoder.hpp>
+#include <device/eirbot2014/encoder.hpp>
 
 //! \brief An incremental encoder, used by Eirbot in 2014
 //! \param T the FPGA register type
@@ -32,7 +32,7 @@
 
 */
 template<typename T, int ADDR>
-class FpgaEncoder : public Encoder {
+class FpgaEncoder : public Encoder<T> {
 public:
   //! \brief Create a named encoder
   //! \param name : the name of the device (used with sasiae)
@@ -54,12 +54,12 @@ public:
 
 template<typename T, int ADDR>
 inline FpgaEncoder<T, ADDR>::FpgaEncoder(const char* name)
-  : Encoder(name) {
+  : Encoder<T>(name) {
 }
 
 template<typename T, int ADDR>
 inline s32 FpgaEncoder<T, ADDR>::getValue(void) {
-  if(_inverse) {
+  if(Encoder<T>::_inverse) {
     return -(*(T*)ADDR);
   }
   else {

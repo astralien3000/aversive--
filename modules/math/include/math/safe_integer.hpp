@@ -19,6 +19,8 @@
 #ifndef SAFE_INTEGER_HPP
 #define SAFE_INTEGER_HPP
 
+#include <base/integer.hpp>
+
 #define MUL_OVERFLOW_CALLBACK(value, ret) //cout << "MUL ERR " << value << " " << ret << endl;
 #define DIF_OVERFLOW_CALLBACK(value, ret) //cout << "DIF ERR " << value << " " << ret << endl;
 #define ADD_OVERFLOW_CALLBACK(value, ret) //cout << "ADD ERR " << value << " " << ret << endl;

@@ -19,7 +19,7 @@
 #ifndef FIXED_POINT_HPP
 #define FIXED_POINT_HPP
 
-#include "../base/types.hpp"
+#include <base/integer.hpp>
 
 template<int SIZE, int UNIT_BIT>
 class FixedPoint {

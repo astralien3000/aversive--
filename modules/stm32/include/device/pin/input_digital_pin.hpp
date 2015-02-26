@@ -1,7 +1,7 @@
 #ifndef STM32_INPUT_DIGITAL_PIN_HPP
 #define STM32_INPUT_DIGITAL_PIN_HPP
 
-#include "../../../common/device/pin/input_digital_pin.hpp"
+#include <device/pin/input_digital_pin.hpp>
 
 #include <hardware/pinmap.hpp>
 
