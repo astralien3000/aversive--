@@ -1,4 +1,4 @@
-#include <device/stream/string_stream.hpp>
+#include <stream/string_stream.hpp>
 #include <iostream>
 #include <cstring>
 #include <cstdio>

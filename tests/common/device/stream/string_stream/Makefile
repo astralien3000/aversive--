@@ -6,8 +6,8 @@ EXEC=$(CLASS).elf
 
 all: $(EXEC)
 
-$(EXEC): main.cpp ../../../../../include/common/device/stream/$(CLASS).hpp
-	@$(CC) $(CFLAGS) -I../../../../../include/common/ -o $@ $< -L../../../../../build -laversive_sasiae
+$(EXEC): main.cpp $(AVERSIVE_ROOT)/modules/stream/include/stream/$(CLASS).hpp
+	@$(CC) $(CFLAGS) -I$(AVERSIVE_ROOT)/modules/{base,device,container,stream}/include -o $@ $< -L$(AVERSIVE_ROOT)/build/sasiae_x86/lib -laversive_sasiae_x86
 
 clean:
 	@rm -rf *~ \#*\#
