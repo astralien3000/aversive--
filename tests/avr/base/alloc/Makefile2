@@ -3,9 +3,6 @@
 ########################################
 # User Configuration
 
-## The root aversive directory
-AVERSIVE_ROOT=../../../..
-
 ## Your project's object .o files
 OBJ=main.o
 
@@ -32,9 +29,9 @@ SASIAE_CFLAGS=$(GEN_CFLAGS) -DQT_CORE_LIB -fpic
 AVR_CFLAGS=$(GEN_CFLAGS) -fno-threadsafe-statics -D__STDC_LIMIT_MACROS -O3
 
 ## Include
-GEN_INCLUDE= -I$(AVERSIVE_ROOT)/include
+GEN_INCLUDE= -I$(AVERSIVE_ROOT)/build
 SASIAE_INCLUDE= $(GEN_INCLUDE)/sasiae -I/usr/include/qt5 -I/usr/include/qt5/QtCore
-AVR_INCLUDE= $(GEN_INCLUDE)/avr
+AVR_INCLUDE= $(GEN_INCLUDE)/eirbot2014_atmega2560/include
 
 ## Config symbols
 DUMMY_SYM=_ZN8Aversive6Config13__PARAM_DUMMYE=$(PARAM_DUMMY)
@@ -43,9 +40,9 @@ SYMBOL_LIST=$(DUMMY_SYM)
 
 ## Link
 DEFSYM=-Wl,--defsym=
-GEN_LDFLAGS= -L$(AVERSIVE_ROOT)/build $(addprefix $(DEFSYM), $(SYMBOL_LIST))
+GEN_LDFLAGS= -L$(AVERSIVE_ROOT)/build/eirbot2014_atmega2560/lib
 SASIAE_LDFLAGS= $(GEN_LDFLAGS) -laversive_sasiae -lQt5Core -lpthread
-AVR_LDFLAGS= $(GEN_LDFLAGS) 
+AVR_LDFLAGS= $(GEN_LDFLAGS)
 
 ## Build Directory
 GEN_BUILD_DIR=build
@@ -78,7 +75,7 @@ atmega2560: avr
 avr: export CC=$(AVR_CC)
 avr: export CFLAGS=$(AVR_CFLAGS) -mmcu=$(AVERSIVE_MMCU)
 avr: export INCLUDE=$(AVR_INCLUDE)
-avr: export LDFLAGS=$(AVR_LDFLAGS) -laversive_$(AVERSIVE_MMCU)
+avr: export LDFLAGS=$(AVR_LDFLAGS) -laversive_eirbot2014_$(AVERSIVE_MMCU)
 avr: export BUILD_DIR=$(AVR_BUILD_DIR)/$(AVERSIVE_MMCU)
 avr: export EXEC=$(GEN_EXEC)_$(AVERSIVE_MMCU).elf
 avr: compile
