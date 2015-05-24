@@ -3,7 +3,7 @@
 DISTRIB_INFO=./tools/distrib/distrib_toolchain_info.sh
 BUILD_DIR=./build
 
-all: 
+all: setenv
 	@${MAKE} atmega2560
 	@${MAKE} atmega128
 	@${MAKE} atmega32
@@ -74,6 +74,9 @@ architecture: archiparser
 	tools/license_header/license_header.sh tools/license_header/license.txt include/avr/hardware/part/atmega128.hpp
 	tools/license_header/license_header.sh tools/license_header/license.txt include/avr/hardware/part/atmega2560.hpp
 	tools/license_header/license_header.sh tools/license_header/license.txt include/avr/hardware/part/atmega32.hpp
+
+setenv:
+	echo "export AVERSIVE_ROOT=$(shell pwd)" > setenv.sh
 
 doc:
 	@mkdir -p build/doc
