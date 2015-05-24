@@ -35,7 +35,13 @@ Where <implementation> is the name of the microcontroller or "sasiae"
 example :
 make -f mk/atmega128.mk
 
+//////////////////////////////////////////////////////////////////////////////////
+// Compiling tests and projects
+It is now very important to execute the command :
+source $(AVERSIVE_ROOT)/setenv.sh
+
+Before trying to compile any aversive project or test.
 
 //////////////////////////////////////////////////////////////////////////////////
 // Unit tests for SASIAE
-make test
+make test_sasiae
