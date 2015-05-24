@@ -1,13 +1,15 @@
 CC=g++
 CFLAGS=-Wall -Wextra --std=c++11 -g
+LDFLAGS=-pthread
 
+MODULE=container
 CLASS=list
 EXEC=$(CLASS).elf
 
 all: $(EXEC)
 
-$(EXEC): main.cpp ../../../../include/common/container/$(CLASS).hpp
-	@$(CC) $(CFLAGS) -I../../../../include/common -o $@ $<
+$(EXEC): main.cpp $(AVERSIVE_ROOT)/modules/$(MODULE)/include/$(MODULE)/$(CLASS).hpp
+	@$(CC) $(CFLAGS) -I$(AVERSIVE_ROOT)/modules/base/include -I$(AVERSIVE_ROOT)/modules/$(MODULE)/include -o $@ $< $(LDFLAGS)
 
 clean:
 	@rm -rf *~ \#*\#
