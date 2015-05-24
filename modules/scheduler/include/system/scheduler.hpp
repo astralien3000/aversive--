@@ -190,4 +190,6 @@ public:
 //! \brief The default Scheduler Configuration structure
 struct DefaultSchedulerConfig;
 
+#include <system/_scheduler.hpp>
+
 #endif//SCHEDULER_HPP
