@@ -62,13 +62,13 @@ namespace Math {
 
   //! \brief The maximum of two values
   template<typename T>
-  inline T& max(T& v1, T& v2) {
+  inline T max(T v1, T v2) {
     return ((v1 > v2) ? v1 : v2);
   }
 
   //! \brief The minimum of two values
   template<typename T>
-  inline T& min(T& v1, T& v2) {
+  inline T min(T v1, T v2) {
     return ((v1 < v2) ? v1 : v2);
   }
 
