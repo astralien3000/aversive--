@@ -1,0 +1,131 @@
+#############################
+# Introduction
+
+Ceci est un compte rendu de la comparaison en terme de taille en mémoire du code de deux projets de robots.
+L'un est le code 1A 2013, utilisant la bibliothèque Aversive.
+L'autre est le code 2A 2014, utilisant la bibliothèque Aversive++.
+
+Le code 1A 2013 a été choisi parcequ'il est tipique des code d'eirbot d'avant 2014 (et surtout parceque je savais le compiler...)
+
+Les projets ne sont pas exactement comparables, car ils ne font pas la même chose et n'ont pas la même complexité. Il faut donc ne comparer que les modules communs.
+Les modules d'aversive++ et aversive ne sont pas point à point identiques, il faut donc faire des adaptation pour comparer la taille des fichiers objet.
+
+De plus, des choix de conception différents rendent la comparaison encore plus difficile.
+
+L'objectif est ici de trouver les points de faiblesse d'Aversive++.
+
+#############################
+# Asservissement et positionnement
+
+Une partie du positionnement du projet 2014 a été couplé avec l'asservissement, il faut donc associer les deux modules pour pouvoir les comparer.
+De plus la comparaison de la mémoire RAM est impossilble à cause du choix suivant :
+ - en 2013, la mémoire est allouée automatiquement sur la pile, et n'est pas comptabilisée dans la colone bss
+ - en 2014, la mémoir est allouée statiquement (les variables sont globales), ce qui donne la taille en mémoire RAM utilisée.
+
+## Aversive++:
+
+   text	   data	    bss	    dec	    hex	filename
+   4893	      0	    586	   5479	   1567	asserv.o
+    740	      0	      0	    740	    2e4	position_manager.o
+
+TOTAL MÉMOIRE FLASH : 5633
+
+## Aversive:
+
+   text	   data	    bss	    dec	    hex	filename
+   2812	      0	     16	   2828	    b0c	asserv_manager.avr.o
+   2036	      0	      1	   2037	    7f5	position_manager.avr.o
+
+TOTAL MÉMOIRE FLASH : 4848
+
+## Conclusion
+
+Aversive++ prend 16% de flash en plus, ça n'est pas génial.
+Mais je veux me défendre en ajouant que la version aversive++ incluait aussi quelques fonctinnalités qui n'étaient pas présentes dans aversive.
+(la détection de patinage, par exemple).
+Cependant, je doute que les fonctionnalités en plus justifient totalement de la différence.
+
+#############################
+# Trajectoire
+
+## Aversive++
+
+   text	   data	    bss	    dec	    hex	filename
+    630	      0	      0	    630	    276	trajectory_manager.o
+   1056	      0	    284	   1340	    53c	trajectory.o
+   5564	      0	      0	   5564	   15bc	rect_trajectory_manager.o
+
+TOTAL FLASH : 7250
+
+## Aversive
+
+   text	   data	    bss	    dec	    hex	filename
+   8450	      0	      1	   8451	   2103	trajectory_manager.avr.o
+
+TOTAL FLASH : 8450
+
+## Conclusion
+
+Aversive prend 16% de flash en plus.
+Il faut cependant notter que le trajectory manager d'Aversive possède une fonctionnalité de file d'attente des déplacement, que n'a pas la version Aversive++.
+
+#############################
+# Scheduler
+
+## Aversive++
+
+   text	   data	    bss	    dec	    hex	filename
+   3612	      0	    136	   3748	    ea4	scheduler.o
+
+TOTAL FLASH : 3612
+
+## Aversive
+
+   text	   data	    bss	    dec	    hex	filename
+    184	      0	      0	    184	     b8	scheduler_add.avr.o
+    108	      0	      0	    108	     6c	scheduler.avr.o
+     38	      0	      0	     38	     26	scheduler_del.avr.o
+    488	      0	      0	    488	    1e8	scheduler_dump.avr.o
+    338	      0	      2	    340	    154	scheduler_interrupt.avr.o
+
+TOTAL FLASH : 1156
+
+## Conclusion
+
+Aversive++ prend 212% de flash en plus...
+Euh... j'ai fais une bêtise ?
+Même en prenant en compte le système de tas qu'aversive++ possède, ça ne justifie rien.
+TODO : Regarder plus en détail ce qui va pas.
+
+#############################
+# Filtres
+
+## Aversive++
+
+   text	   data	    bss	    dec	    hex	filename
+    190	      0	      0	    190	     be	diff_filter.o
+   1098	      0	     42	   1140	    474	pid_filter.o
+   1800	      0	      0	   1800	    708	quadramp_filter.o
+
+
+## Aversive
+
+   text	   data	    bss	    dec	    hex	filename
+    158	      0	      0	    158	     9e	diff.avr.o
+    642	      0	      0	    642	    282	pid.avr.o
+   1482	      0	      0	   1482	    5ca	quadramp.avr.o
+
+## Conclusion
+
+Pour le diff et le quadramp, Aversive++ prend 20% de mémoire flash en plus.
+Pour le pid, c'est 70% en plus pour Aversive++...
+Bon, j'ai pas géré pour le pid. Il faut que je l'améliore.
+
+
+#############################
+# Conclusions générales
+
+Aversive++ a encore une grande marge de progression au niveau de la place occupée en flash.
+Il semblerai que l'on puisse tabler sur une augmentation du code d'environs 20% à cause du C++ et du polymorphisme, avec le design actuel.
+Quelques cas, comme le scheduler et le pid sont inquiétants et à étudier.
+Un parcoure rapide du code incriminé n'a pas permis de pointer rapidement les failles.
