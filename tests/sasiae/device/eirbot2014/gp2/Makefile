@@ -1,15 +1,14 @@
-AVERSIVE_ROOT=../../../../..
 SASIAE_TESTS=$(AVERSIVE_ROOT)/tests/sasiae
 
 CC=g++
 CFLAGS=-Wall -Wextra --std=c++11 -DQT_CORE_LIB -fpic -g
-LDFLAGS=-L$(AVERSIVE_ROOT)/build -laversive_sasiae -lQt5Core -lpthread
-INCLUDE=-I$(AVERSIVE_ROOT)/include/sasiae -I/usr/include/qt5 -I/usr/include/qt5/QtCore
+LDFLAGS=-L$(AVERSIVE_ROOT)/build/sasiae_x86/lib -laversive_sasiae_x86 -lQt5Core -lpthread
+INCLUDE=-I$(AVERSIVE_ROOT)/build/sasiae_x86/include -I/usr/include/qt5 -I/usr/include/qt5/QtCore
 EXECS=client.elf server.elf
 
 all: $(EXECS)
 
-client.elf: client.cpp $(AVERSIVE_ROOT)/build/libaversive_sasiae.a
+client.elf: client.cpp $(AVERSIVE_ROOT)/build/sasiae_x86/lib/libaversive_sasiae_x86.a
 	@$(CC) $(CFLAGS) $(INCLUDE) -o $@ $< $(LDFLAGS)
 
 server.elf: server.cpp $(SASIAE_TESTS)/util.o

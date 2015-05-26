@@ -6,10 +6,10 @@ EXEC=$(CLASS).elf
 
 all: $(EXEC)
 
-$(EXEC): tester.cpp ../../../../include/common/base/$(CLASS).hpp ../../../../include/avr/base/$(CLASS).hpp
+$(EXEC): tester.cpp $(AVERSIVE_ROOT)/modules/base/include/base/_base_$(CLASS).hpp $(AVERSIVE_ROOT)/modules/avr/include/base/$(CLASS).hpp
 #	@$(CC) $(CFLAGS) -I../../../../include/sasiae -I../../../../../aversive--serial/include -o $@ $< -L../../../../build -laversive_sasiae -L../../../../../aversive--serial/build -laversive_serial
 	$(MAKE) -f Makefile2 atmega2560
-	./deploy.sh
+#./deploy.sh
 
 clean:
 	@rm -rf *~ \#*\#

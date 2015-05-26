@@ -1,5 +1,6 @@
 *.elf
 *~
+*\#
 *.hex
 *build*
 a.out
@@ -14,3 +15,5 @@ a.out
 *.files
 *.includes
 *.style.xml
+
+setenv.sh
