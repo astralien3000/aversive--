@@ -76,7 +76,7 @@ class Odometer : public Input<Vect<2, s32> > {
 
   void update(void) {
     _dist = (s32)((s32)_enc_l.getValue() + (s32)_enc_r.getValue());
-    _angle = (s32)(_enc_l.getValue() - _enc_r.getValue());
+    _angle = (s32)(_enc_r.getValue() - _enc_l.getValue());
   }
 
 };
