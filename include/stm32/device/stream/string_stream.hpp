@@ -19,7 +19,7 @@
 #ifndef STM32_STRING_STREAM_HPP
 #define STM32_STRING_STREAM_HPP
 
-#include "../../../../common//device/stream/string_stream.hpp"
+#include "../../../common/device/stream/string_stream.hpp"
 
 
 
