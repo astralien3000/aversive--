@@ -19,7 +19,7 @@
 #ifndef SASIAE_STRING_STREAM_HPP
 #define SASIAE_STRING_STREAM_HPP
 
-#include "../../../../common//device/stream/string_stream.hpp"
+#include "../../../common/device/stream/string_stream.hpp"
 
 
 
