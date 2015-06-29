@@ -1,43 +1,39 @@
 # Aversive++
 
-This project provides a C++ library that ease microcontroller programming.
+This project provides a C++ library that eases microcontroller programming.
 
-It's aim is to provide an interface simple enough to be able to create complex applications, 
-and optimized enough to enable small microcontrollers to execute these applications.
+Its aim is to provide an interface simple enough to be able to create complex applications, and optimized enough to enable small microcontrollers to execute these applications.
 
-The other aspect of this library is to be multiplatform. 
-Indeed, it is designed to provide the same API for a simulator, called SASIAE, 
-AVR's microcontrollers, and ARM-based microcontrollers.
+The other aspect of this library is to be multiplatform. Indeed, it is designed to provide the same API for a simulator (named SASIAE) and for AVR-based and ARM-based microcontrollers.
 
 ## Documentation
 
 A big part of the API is documented. 
-You can find an [online documentation](http://astralien3000.github.io/aversive--), 
-or compile the documentation from the source code with Doxygen.
+You can find an [online documentation](http://astralien3000.github.io/aversive--), or compile the documentation from the source code with Doxygen.
 
-Build the documentation by executing this command at the root of the project :
+Build the documentation by executing this command at the root of the project:
 
 `make doc`
 
 Then, you can open build/doc/html/index.html with any web browser.
 
-## Compile
+## Building
 
-### Compile for SASIAE
-Type the command :
+### Building for SASIAE
+Type the command:
 
 `make sasiae`
 
 #### dependencies
- - Qt5
+ - Qt5-core
 
-### Compile for AVR
-Type the command :
+### Building for AVR
+Type the command:
 
 `make ${MMCU}`
 
 Where `${MMCU}` is the microcontroller's name.
-You can find a list of supported microcontrollers after the dependencies.
+You can find the names of the supported microcontrollers below.
 
 #### dependencies
  - avr-gcc
@@ -49,12 +45,12 @@ You can find a list of supported microcontrollers after the dependencies.
  - atmega128
  - atmega2560
 
-### Compile for STM32
-Type the command :
+### Building for STM32
+Type the command:
 
 `make stm32`
 
-You can find a list of supported microcontrollers after the dependencies.
+You can find the names of the supported microcontrollers below.
 
 #### dependencies
  - arm-none-eabi-gcc
@@ -62,15 +58,15 @@ You can find a list of supported microcontrollers after the dependencies.
 #### microcontroller support
  - stm32f4
 
-### Compile all
-This command will compile Aversive++ for all supported platform.
+### Building for all the supported platforms
+The command below will build Aversive++ for all the supported platforms:
 
 `make`
 
-## Execute unit tests
-Some unit tests are implemented for each platform.
+## Running unit tests
+Note: some unit tests are implemented for every supported platforms.
 
-### Hardware intependent code
+### Hardware independent code
 
 `make test_common`
 
@@ -79,9 +75,8 @@ Some unit tests are implemented for each platform.
 `make test_sasiae`
 
 ### AVR
-The AVR tests needs you to have an arduino Mega2560 connected to the computer.
+The AVR tests requires an Arduino Mega2560 to be connected to the computer.
 The board will be automatically programmed with different unit tests.
 
 `make test_avr`
-
 
