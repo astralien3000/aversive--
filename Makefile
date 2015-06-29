@@ -1,7 +1,6 @@
-.PHONY: all generate doc clean update mrproper
+.PHONY: all atmega2560 doc clean mrproper
 
-all: mk/all.mk
-	$(MAKE) -f mk/all.mk all_targets
+all: sasiae atmega32 atmega128 atmega2560 stm32
 
 sasiae: mk/all.mk
 	$(MAKE) -f mk/sasiae.mk
@@ -12,17 +11,11 @@ atmega32: mk/all.mk
 atmega128: mk/all.mk
 	$(MAKE) -f mk/atmega128.mk
 
-atmega2560: mk/all.mk
-	$(MAKE) -f mk/atmega2560.mk
+atmega2560:
+	@(mkdir -p build/atmega2560/ && cd build/atmega2560/ && cmake -DCMAKE_TOOLCHAIN_FILE=../../cmake/target/atmega2560.cmake ../../ -Wno-dev && $(MAKE) -s)
 
 stm32: mk/all.mk
 	$(MAKE) -f mk/stm32.mk
-
-update: clean_mk
-	tools/compilation/generate_files_pro.sh common > project/generated/common.files.pro
-	tools/compilation/generate_files_pro.sh avr > project/generated/avr.files.pro
-	tools/compilation/generate_files_pro.sh sasiae > project/generated/sasiae.files.pro
-	tools/compilation/generate_files_pro.sh stm32 > project/generated/stm32.files.pro
 
 architecture: archiparser
 	cat architecture/atmega128.archi | tools/archi_parser/build/archiparser > include/avr/hardware/part/atmega128.hpp
@@ -31,9 +24,6 @@ architecture: archiparser
 	tools/license_header/license_header.sh tools/license_header/license.txt include/avr/hardware/part/atmega128.hpp
 	tools/license_header/license_header.sh tools/license_header/license.txt include/avr/hardware/part/atmega2560.hpp
 	tools/license_header/license_header.sh tools/license_header/license.txt include/avr/hardware/part/atmega32.hpp
-
-mk/all.mk: update
-	./tools/compilation/generate_all_mk.sh > mk/all.mk
 
 doc:
 	@mkdir -p build/doc
@@ -62,12 +52,6 @@ todo:
 
 mrproper: clean clean_archiparser clean_test clean_mk clean_generated
 	@rm -rf build/*
-
-clean_mk:
-	@rm -rf mk/*
-
-clean_generated:
-	@rm -rf project/generated/*
 
 clean_qtcreator:
 	@rm -f aversive--.{creator,files,includes,config} aversive--.creator.user*
