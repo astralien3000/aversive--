@@ -45,8 +45,8 @@ class RobotController : public Output<Vect<2, s32>> {
     s32 corr_d = _loop_d.doFilter(val.coord(0));
     s32 corr_a = _loop_a.doFilter(val.coord(1));
     
-    _mot_l.setValue(corr_d + corr_a/2);
-    _mot_r.setValue(corr_d - corr_a/2);
+    _mot_l.setValue(corr_d - corr_a/2);
+    _mot_r.setValue(corr_d + corr_a/2);
   }
 };
 
