@@ -1,6 +1,6 @@
-.PHONY: all atmega32 atmega128 atmega2560 doc clean mrproper
+.PHONY: all atmega32 atmega128 atmega2560 stm32f4 doc clean mrproper
 
-all: sasiae atmega32 atmega128 atmega2560 stm32
+all: sasiae atmega32 atmega128 atmega2560 stm32f4
 
 ifeq ($(VERBOSE),1)
 _VERBOSE=VERBOSE=1
@@ -20,8 +20,8 @@ atmega128:
 atmega2560:
 	@(mkdir -p build/atmega2560/ && cd build/atmega2560/ && cmake -DCMAKE_TOOLCHAIN_FILE=../../cmake/toolchain/avr/atmega2560.cmake ../../ && $(MAKE) $(_VERBOSE))
 
-stm32: mk/all.mk
-	$(MAKE) -f mk/stm32.mk
+stm32f4:
+	@(mkdir -p build/stm32f4/ && cd build/stm32f4/ && cmake -DCMAKE_TOOLCHAIN_FILE=../../cmake/toolchain/arm/stm32f4.cmake ../../ && $(MAKE) $(_VERBOSE))
 
 architecture: archiparser
 	cat architecture/atmega128.archi | tools/archi_parser/build/archiparser > include/avr/hardware/part/atmega128.hpp
