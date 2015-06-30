@@ -12,7 +12,7 @@ atmega128: mk/all.mk
 	$(MAKE) -f mk/atmega128.mk
 
 atmega2560:
-	@(mkdir -p build/atmega2560/ && cd build/atmega2560/ && cmake -DCMAKE_TOOLCHAIN_FILE=../../cmake/target/atmega2560.cmake ../../ -Wno-dev && $(MAKE) -s)
+	@(mkdir -p build/atmega2560/ && cd build/atmega2560/ && cmake -DCMAKE_TOOLCHAIN_FILE=../../cmake/toolchain/avr/atmega2560.cmake ../../ && $(MAKE) -s)
 
 stm32: mk/all.mk
 	$(MAKE) -f mk/stm32.mk
