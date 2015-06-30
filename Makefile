@@ -1,18 +1,24 @@
-.PHONY: all atmega2560 doc clean mrproper
+.PHONY: all atmega32 atmega128 atmega2560 doc clean mrproper
 
 all: sasiae atmega32 atmega128 atmega2560 stm32
+
+ifeq ($(VERBOSE),1)
+_VERBOSE=VERBOSE=1
+else
+_VERBOSE=-s
+endif
 
 sasiae: mk/all.mk
 	$(MAKE) -f mk/sasiae.mk
 
-atmega32: mk/all.mk
-	$(MAKE) -f mk/atmega32.mk
+atmega32:
+	@(mkdir -p build/atmega32/ && cd build/atmega32/ && cmake -DCMAKE_TOOLCHAIN_FILE=../../cmake/toolchain/avr/atmega32.cmake ../../ && $(MAKE) $(_VERBOSE))
 
-atmega128: mk/all.mk
-	$(MAKE) -f mk/atmega128.mk
+atmega128:
+	@(mkdir -p build/atmega128/ && cd build/atmega128/ && cmake -DCMAKE_TOOLCHAIN_FILE=../../cmake/toolchain/avr/atmega128.cmake ../../ && $(MAKE) $(_VERBOSE))
 
 atmega2560:
-	@(mkdir -p build/atmega2560/ && cd build/atmega2560/ && cmake -DCMAKE_TOOLCHAIN_FILE=../../cmake/toolchain/avr/atmega2560.cmake ../../ && $(MAKE) -s)
+	@(mkdir -p build/atmega2560/ && cd build/atmega2560/ && cmake -DCMAKE_TOOLCHAIN_FILE=../../cmake/toolchain/avr/atmega2560.cmake ../../ && $(MAKE) $(_VERBOSE))
 
 stm32: mk/all.mk
 	$(MAKE) -f mk/stm32.mk
