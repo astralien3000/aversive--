@@ -31,19 +31,7 @@ class Uart {
 
 public:
   //! \brief Configure Uart
-  static void init(void) {
-    setBaudrate(9600);
-    setNBits<8>();
-
-    // 1 Stop bit
-    REG(uart<ID>::control) |=
-      CFG(uart<ID>::control::stopbit::template value<1>);
-
-    // Enable RX and TX
-    REG(uart<ID>::control) |=
-      CFG(uart<ID>::control::enable::send)|
-      CFG(uart<ID>::control::enable::recv);
-  }
+  static void init(void);
 
   //! \brief Make UART available for an other purpose
   static void reset(void);

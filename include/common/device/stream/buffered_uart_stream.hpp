@@ -33,7 +33,7 @@ class BufferedUartStream : public Device, public InternalBufferedStream, public 
   //! \brief BufferedUartStream constructor.
   //! \param name : the device's name.
   inline BufferedUartStream(const char* name)
-    : InternalBufferedStream(), Device(name) {
+    : Device(name), InternalBufferedStream() {
   }
   
   //! \brief Default constructor.
@@ -42,7 +42,7 @@ class BufferedUartStream : public Device, public InternalBufferedStream, public 
   //! \brief Copy constructor.
   //! \param s : the buffered uart stream to copy.
   inline BufferedUartStream(const BufferedUartStream& s)
-    : InternalBufferedStream(s), Device(s) {
+    : Device(s), InternalBufferedStream(s) {
   }
   
   //! \brief Deprecated method.

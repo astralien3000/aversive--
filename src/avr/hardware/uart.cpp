@@ -20,9 +20,22 @@
 
 #include "interrupt_bind.hpp"
 
-template<int ID> Uart<ID>::Uart() {}
+template<int ID>
+void Uart<ID>::init(void) {
+  setBaudrate(9600);
+  setNBits<8>();
+  
+  // 1 Stop bit
+  REG(uart<ID>::control) |=
+    CFG(uart<ID>::control::stopbit::template value<1>);
+  
+  // Enable RX and TX
+  REG(uart<ID>::control) |=
+    CFG(uart<ID>::control::enable::send)|
+    CFG(uart<ID>::control::enable::recv);
+}
 
-template Uart<0>::Uart();
+template void Uart<0>::init(void);
 
 #if defined (__AVR_ATmega128__)
 MACRO_INTERRUPT_BIND(Uart<0>, recvEvent, USART0_RX_vect)
