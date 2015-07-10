@@ -26,13 +26,13 @@ int main(int argc, char** argv) {
   u8 b2 = 0xF0;
   
   for(int i = 0; i < 4; i++) {
-    BoolRef r(&b2, i);
+    BoolRef r(b2, i);
     myAssert(!r, "Line " S__LINE__ ": Construction to reference a bit within a byte, r should be false.");
     r = !r;
   }
   
   for(int i = 4; i < 8; i++) {
-    BoolRef r(&b2, i);
+    BoolRef r(b2, i);
     myAssert(r, "Line " S__LINE__ ": Construction to reference a bit within a byte, r should be true.");
     r = !r;
   }
