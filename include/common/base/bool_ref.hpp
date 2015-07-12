@@ -36,7 +36,7 @@ private:
   
 public:
   //! \brief Constructor to reference a boolean within a byte.
-  //! \param byte : a reference to the boolean to reference with this BoolRef.
+  //! \param byte : a reference to the byte where the boolean is stored.
   //! \param bit : the index of the bit at which the boolean is stored.
   inline BoolRef(u8& byte, u8 bit)
     : _byte(byte), _mask(1 << bit) {
