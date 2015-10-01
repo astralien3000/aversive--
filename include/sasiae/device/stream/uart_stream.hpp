@@ -23,7 +23,15 @@
 
 #include <aversive.hpp>
 #include <client_thread.hpp>
+
 #include <sstream>
+#include <QList>
+
+template<u8 _CHANNEL>
+class UartStreamPrivateData {
+  static QList<char> _buffer;
+  friend class UartStream<_CHANNEL>;
+};
 
 template<u8 _CHANNEL>
 UartStream<_CHANNEL>::UartStream(const char* name) : Device(name) {
@@ -32,7 +40,20 @@ UartStream<_CHANNEL>::UartStream(const char* name) : Device(name) {
   ClientThread::instance().
     registerDevice(*this,
 		   std::function<void(char*)>([&] (char* msg) mutable -> void {
-		       (void) msg; //! \todo Write parser
+		       using namespace std;
+		       string cmd;
+		       int val;
+		       istringstream iss(msg);
+		       
+		       iss >> cmd;
+		       
+		       if(cmd == "value") {
+			 iss >> val;
+			 UartStreamPrivateData<_CHANNEL>::_buffer.append((char) val);
+		       }
+		       else {
+			 ClientThread::instance().sendMessage(ClientThread::ERROR, "unable to parse message correctly");
+		       }
 		     }));
 
   ClientThread::instance().
@@ -41,6 +62,10 @@ UartStream<_CHANNEL>::UartStream(const char* name) : Device(name) {
 
 template<u8 _CHANNEL>
 char UartStream<_CHANNEL>::getValue(void) {
+  QList<char> &buffer = UartStreamPrivateData<_CHANNEL>::_buffer;
+  if(buffer.size()) {
+    return buffer.takeFirst();
+  }
   return 0;
 }
 
