@@ -32,8 +32,18 @@ namespace MemoryMapping {
 
   template<typename RegType, typename Group, int BITNUM>
   inline const BitField<RegType, Group, BITNUM>& BitField<RegType, Group, BITNUM>::operator=(const bool val) const {
+    
+    if(val) {
+      REGISTER |= (1 << BITNUM);
+    }
+    else {
+      REGISTER &= ~(1 << BITNUM);
+    }
+    
+    /*
     const RegType v = val?1:0;
     REGISTER = (REGISTER & ~(1 << BITNUM)) | (v << BITNUM);
+    */
     return *this;
   }
 

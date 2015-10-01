@@ -7,7 +7,7 @@ namespace MemoryMapping {
 
   template<typename RegType, typename Group>
   inline const RegType VAL(const Register<RegType, Group>& reg) {
-    return *(RegType*)reg.ADDRESS;
+    return *(volatile RegType*)reg.ADDRESS;
   }
 
   template<typename RegType, typename Group>
