@@ -19,6 +19,8 @@ int main(int, char**) {
   GPIO_A::Fields::PIN<6>::Field = false;
   GPIO_G::Fields::PIN<5>::Field = true;
 
+  //GPIO<7>::Fields::PIN<5>::Field = true; // should not compile
+
 #else
   
   PINA &= ~(1 << 0);
