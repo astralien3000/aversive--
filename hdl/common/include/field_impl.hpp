@@ -10,6 +10,92 @@ namespace MemoryMapping {
     : REGISTER(reg) {
   }
 
+// Assignment
+#define OP =
+#include "field_impl_assign.hpp"
+#undef OP
+
+#define OP |=
+#include "field_impl_assign.hpp"
+#undef OP
+
+#define OP &=
+#include "field_impl_assign.hpp"
+#undef OP
+
+#define OP ^=
+#include "field_impl_assign.hpp"
+#undef OP
+
+#define OP <<=
+#include "field_impl_assign.hpp"
+#undef OP
+
+#define OP >>=
+#include "field_impl_assign.hpp"
+#undef OP
+
+#define OP +=
+#include "field_impl_assign.hpp"
+#undef OP
+
+#define OP -=
+#include "field_impl_assign.hpp"
+#undef OP
+
+#define OP *=
+#include "field_impl_assign.hpp"
+#undef OP
+
+#define OP /=
+#include "field_impl_assign.hpp"
+#undef OP
+
+#define OP %=
+#include "field_impl_assign.hpp"
+#undef OP
+
+// Arithmetic
+#define OP |
+#include "field_impl_arith.hpp"
+#undef OP
+
+#define OP &
+#include "field_impl_arith.hpp"
+#undef OP
+
+#define OP ^
+#include "field_impl_arith.hpp"
+#undef OP
+
+#define OP <<
+#include "field_impl_arith.hpp"
+#undef OP
+
+#define OP >>
+#include "field_impl_arith.hpp"
+#undef OP
+
+#define OP +
+#include "field_impl_arith.hpp"
+#undef OP
+
+#define OP -
+#include "field_impl_arith.hpp"
+#undef OP
+
+#define OP *
+#include "field_impl_arith.hpp"
+#undef OP
+
+#define OP /
+#include "field_impl_arith.hpp"
+#undef OP
+
+#define OP %
+#include "field_impl_arith.hpp"
+#undef OP
+
 }
 
 #endif//FIELD_IMPL_HPP
