@@ -17,9 +17,12 @@ namespace HDL {
     return 0x0020 +  addr;
   }
 
+  using DummyType = u8;
+  constexpr u8 DUMMY_VALUE = 0;
+
   /* GPIO Modules */
 
-  struct GPIO_Traits {
+  struct GPIO_ModuleTraits {
     static constexpr usys MODULE_SIZE = 0x0003;
     static constexpr u8 COUNT = 7;
   };
@@ -55,28 +58,55 @@ namespace HDL {
 
       template<u8 PIN_NUM>
       struct PIN : Check<PIN_NUM> {
-	static constexpr MemoryMapping::BitField8<typename Groups::PIN, PIN_NUM> Field = Registers::PIN;
+	static constexpr MemoryMapping::BitField8<typename Groups::PIN, PIN_NUM> field = Registers::PIN;
       };
 
       template<u8 PIN_NUM>
       struct DDR : Check<PIN_NUM> {
-	static constexpr MemoryMapping::BitField8<typename Groups::DDR, PIN_NUM> Field = Registers::DDR;
+	static constexpr MemoryMapping::BitField8<typename Groups::DDR, PIN_NUM> field = Registers::DDR;
       };
 
       template<u8 PIN_NUM>
       struct PORT : Check<PIN_NUM> {
-	static constexpr MemoryMapping::BitField8<typename Groups::PORT, PIN_NUM> Field = Registers::PORT;
+	static constexpr MemoryMapping::BitField8<typename Groups::PORT, PIN_NUM> field = Registers::PORT;
       };
+
+      static constexpr auto& PIN_0 = PIN<0>::field;
+      static constexpr auto& PIN_1 = PIN<1>::field;
+      static constexpr auto& PIN_2 = PIN<2>::field;
+      static constexpr auto& PIN_3 = PIN<3>::field;
+      static constexpr auto& PIN_4 = PIN<4>::field;
+      static constexpr auto& PIN_5 = PIN<5>::field;
+      static constexpr auto& PIN_6 = PIN<6>::field;
+      static constexpr auto& PIN_7 = PIN<7>::field;
+
+      static constexpr auto& DDR_0 = DDR<0>::field;
+      static constexpr auto& DDR_1 = DDR<1>::field;
+      static constexpr auto& DDR_2 = DDR<2>::field;
+      static constexpr auto& DDR_3 = DDR<3>::field;
+      static constexpr auto& DDR_4 = DDR<4>::field;
+      static constexpr auto& DDR_5 = DDR<5>::field;
+      static constexpr auto& DDR_6 = DDR<6>::field;
+      static constexpr auto& DDR_7 = DDR<7>::field;
+
+      static constexpr auto& PORT_0 = PORT<0>::field;
+      static constexpr auto& PORT_1 = PORT<1>::field;
+      static constexpr auto& PORT_2 = PORT<2>::field;
+      static constexpr auto& PORT_3 = PORT<3>::field;
+      static constexpr auto& PORT_4 = PORT<4>::field;
+      static constexpr auto& PORT_5 = PORT<5>::field;
+      static constexpr auto& PORT_6 = PORT<6>::field;
+      static constexpr auto& PORT_7 = PORT<7>::field;
     };
   };
 
   template<u8 ID>
-  struct GPIO : public GPIO_ModuleRegisters<GPIO_Traits::MODULE_SIZE*ID, 8>, public GPIO_ModuleFields<GPIO_Traits::MODULE_SIZE*ID, 8> {
-    static_assert(ID < GPIO_Traits::COUNT, "Invalid GPIO_ID");
+  struct GPIO : public GPIO_ModuleRegisters<GPIO_ModuleTraits::MODULE_SIZE*ID, 8>, public GPIO_ModuleFields<GPIO_ModuleTraits::MODULE_SIZE*ID, 8> {
+    static_assert(ID < GPIO_ModuleTraits::COUNT, "Invalid GPIO_ID");
   };
 
   template<>
-  struct GPIO<6> : public GPIO_ModuleRegisters<GPIO_Traits::MODULE_SIZE*6, 6>, public GPIO_ModuleFields<GPIO_Traits::MODULE_SIZE*6, 6> {};
+  struct GPIO<6> : public GPIO_ModuleRegisters<GPIO_ModuleTraits::MODULE_SIZE*6, 6>, public GPIO_ModuleFields<GPIO_ModuleTraits::MODULE_SIZE*6, 6> {};
 
   using GPIO_A = GPIO<0>;
   using GPIO_B = GPIO<1>;
@@ -86,7 +116,159 @@ namespace HDL {
   using GPIO_F = GPIO<5>;
   using GPIO_G = GPIO<6>;
 
+  /* Timer Modules */
+
+  struct TIMER_ModuleTraits {
+    static constexpr u8 COUNT = 6;
+  };
+
+  template<u8 BITS>
+  struct TIMER_ModuleGroups {
+    struct IFR;
+    struct CCR_A;
+    struct CCR_B;
+    struct CNT_OCR;
+    struct IMSK;
+  };
+
+  template<u8 ID, DummyType DUMMY>
+  struct _TIMER {
+    static_assert(ID < TIMER_ModuleTraits::COUNT, "Invalid ID");
+  };
+
+  template<DummyType DUMMY>
+  struct _TIMER<0, DUMMY> {
+    using Groups = TIMER_ModuleGroups<8>;
+    using Registers = _TIMER<0, DUMMY>;
+
+    static constexpr MemoryMapping::Register8<Groups::IFR> IFR = reg_addr(0x15);
+    
+    static constexpr MemoryMapping::Register8<Groups::CCR_A> CCR_A = reg_addr(0x24);
+    static constexpr MemoryMapping::Register8<Groups::CCR_B> CCR_B = reg_addr(0x25);
+
+    static constexpr MemoryMapping::Register8<Groups::CNT_OCR> CNT = reg_addr(0x26);
+
+    template<u8 OC_ID>
+    struct OCR {
+      static_assert(OC_ID < 2, "Invalid OC_ID");
+      static constexpr MemoryMapping::Register8<TIMER_ModuleGroups<8>::CNT_OCR> reg = reg_addr(0x27+OC_ID);
+    };
+    
+    static constexpr auto& OCR_A = OCR<0>::reg;
+    static constexpr auto& OCR_B = OCR<1>::reg;
+
+    static constexpr MemoryMapping::Register8<Groups::IMSK> IMSK = reg_addr(0x6E);
+
+    struct Fields {
+
+      //////////
+      // IFR Register
+
+      template<u8 BIT>
+      struct IFR {
+	static constexpr MemoryMapping::BitField8<TIMER_ModuleGroups<8>::IFR, BIT> field = Registers::IFR;
+      };
+
+      template<u8 OC_ID>
+      struct OCF : IFR<1+OC_ID> {
+	static_assert(OC_ID < 2, "Invalid OC_ID");
+      };
+
+      static constexpr auto& OCF_A = OCF<0>::field;
+      static constexpr auto& OCF_B = OCF<1>::field;
+      static constexpr auto&   TOV = IFR<0>::field;
+
+      //////////
+      // CCR_A Register
+
+      template<u8 BIT>
+      struct CCR_A {
+	static constexpr MemoryMapping::BitField8<TIMER_ModuleGroups<8>::CCR_A, BIT> field = Registers::CCR_A;
+      };
+
+      template<u8 OC_ID, DummyType DUMMY1>
+      struct _COM;
+
+      template<DummyType DUMMY1>
+      struct _COM<0, DUMMY1> {
+	static constexpr MemoryMapping::Field8<TIMER_ModuleGroups<8>::CCR_A, 0b11000000> field = Registers::CCR_A;
+      };
+
+      template<DummyType DUMMY1>
+      struct _COM<1, DUMMY1> {
+	static constexpr MemoryMapping::Field8<TIMER_ModuleGroups<8>::CCR_A, 0b00110000> field = Registers::CCR_A;
+      };
+
+      template <u8 OC_ID> using COM = _COM<OC_ID, DUMMY_VALUE>;
+
+      static constexpr auto& COM_A = COM<0>::field;
+      static constexpr auto& COM_B = COM<1>::field;
+
+      
+    };
+  };
+
+  /*
+  template<DummyType DUMMY>
+  struct _TIMER<2, DUMMY> {
+    using Groups = TIMER_ModuleGroups<8>;
+    using Registers = _TIMER<2, DUMMY>;
+
+      static constexpr MemoryMapping::Register8<Groups::IFR> IFR = reg_addr(0x17);
+    
+	static constexpr MemoryMapping::Register8<Groups::CCR_A> CCR_A = reg_addr(0xB0);
+	static constexpr MemoryMapping::Register8<Groups::CCR_B> CCR_B = reg_addr(0xB1);
+
+	static constexpr MemoryMapping::Register8<Groups::CNT_OCR> CNT = reg_addr(0xB2);
+
+    template<u8 OC_ID>
+    struct OCR {
+      static_assert(OC_ID < 2, "Invalid OC_ID");
+      static constexpr MemoryMapping::Register8<TIMER_ModuleGroups<8>::CNT_OCR> reg = reg_addr(0xB3+OC_ID);
+    };
+    
+    static constexpr auto& OCR_A = OCR<0>::reg;
+    static constexpr auto& OCR_B = OCR<1>::reg;
+
+    struct Fields {      
+      template<u8 BIT>
+      struct IFR {
+	static constexpr MemoryMapping::BitField8<TIMER_ModuleGroups<8>::IFR, BIT> field = Registers::IFR;
+      };
+
+      template<u8 OC_ID>
+      struct OCF : IFR<1+OC_ID> {
+	static_assert(OC_ID < 2, "Invalid OC_ID");
+      };
+
+      static constexpr auto& OCF_A = OCF<0>::field;
+      static constexpr auto& OCF_B = OCF<1>::field;
+      static constexpr auto&   TOV = IFR<0>::field;
+    };
+  };
+  */
+
+  template<u8 ID> using TIMER = _TIMER<ID, DUMMY_VALUE>;
+
+  using TIMER_0 = TIMER<0>;
+  using TIMER_2 = TIMER<2>;
 }
+
+/////
+/*
+#define TIFR2   _SFR_IO8(0x17)
+#define TCCR2A  _SFR_MEM8(0xB0)
+#define TCCR2B  _SFR_MEM8(0xB1)
+#define TCNT2   _SFR_MEM8(0xB2)
+#define OCR2A   _SFR_MEM8(0xB3)
+#define OCR2B   _SFR_MEM8(0xB4)
+*/
+
+/////
+
+
+
+
 
 #define TIFR0   _SFR_IO8(0x15)
 #define OCF0B   2
@@ -184,6 +366,7 @@ namespace HDL {
 #define PSRASY  1
 #define PSRSYNC 0
 
+//////////////////////////////////////////////////////////////////
 #define TCCR0A  _SFR_IO8(0x24)
 #define COM0A1  7
 #define COM0A0  6
