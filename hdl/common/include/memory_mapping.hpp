@@ -10,8 +10,8 @@ namespace MemoryMapping {
   template<typename RegType, typename Group, RegType MASK> struct Field;
   template<typename RegType, typename Group, RegType MASK> struct Config;
 
-  template<typename Register, typename Next> struct VirtualField;
-  template<typename Register, typename Next> struct VirtualConfig;
+  template<typename Field, typename ... Next> struct VirtualField;
+  template<typename Config, typename ... Next> struct VirtualConfig;
 
   // Aliases
   //// Register
@@ -53,10 +53,12 @@ namespace MemoryMapping {
 #include "config.hpp"
 #include "field.hpp"
 #include "bitfield.hpp"
+#include "virtual_field.hpp"
 
 #include "register_impl.hpp"
 #include "config_impl.hpp"
 #include "field_impl.hpp"
 #include "bitfield_impl.hpp"
+#include "virtual_field_impl.hpp"
 
 #endif//MEMORY_MAPPING_HPP
