@@ -8,10 +8,10 @@ namespace MemoryMapping {
   template<typename RegType, typename Group, RegType MASK>
   struct Field {
   public:
-    const Register<RegType, Group>& REGISTER;
+    const Register<RegType, Group> REGISTER;
 
   public:
-    constexpr Field(const Register<RegType, Group>& reg);
+    constexpr Field(const Register<RegType, Group> reg);
     
     // Assignment
     #define OP =

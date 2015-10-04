@@ -6,100 +6,28 @@
 namespace MemoryMapping {
 
   template<typename Field, typename ... Next>
-  inline constexpr VirtualField<Field,Next...>::VirtualField(Field field, Next... next)
+  inline constexpr VirtualField<Field,Next...>::VirtualField(const Field field, const Next... next)
     : FIELDS(field, next...) {
   }
-  
-  /*
-  // Assignment
-  #define OP =
-  #include "field_impl_assign.hpp"
-  #undef OP
 
-  #define OP |=
-  #include "field_impl_assign.hpp"
-  #undef OP
+  namespace Private {    
+    struct VirtualFieldAssignVisitor {
+      template<typename T1, typename T2>
+      void visit(T1& left, T2& right) const {
+	left = right;
+	//var = 0;
+      }
+    };
+  }
 
-  #define OP &=
-  #include "field_impl_assign.hpp"
-  #undef OP
-
-  #define OP ^=
-  #include "field_impl_assign.hpp"
-  #undef OP
-
-  #define OP <<=
-  #include "field_impl_assign.hpp"
-  #undef OP
-
-  #define OP >>=
-  #include "field_impl_assign.hpp"
-  #undef OP
-
-  #define OP +=
-  #include "field_impl_assign.hpp"
-  #undef OP
-
-  #define OP -=
-  #include "field_impl_assign.hpp"
-  #undef OP
-
-  #define OP *=
-  #include "field_impl_assign.hpp"
-  #undef OP
-
-  #define OP /=
-  #include "field_impl_assign.hpp"
-  #undef OP
-
-  #define OP %=
-  #include "field_impl_assign.hpp"
-  #undef OP
-
-  // Arithmetic
-  #define OP |
-  #include "field_impl_arith.hpp"
-  #undef OP
-
-  #define OP &
-  #include "field_impl_arith.hpp"
-  #undef OP
-
-  #define OP ^
-  #include "field_impl_arith.hpp"
-  #undef OP
-
-  #define OP <<
-  #include "field_impl_arith.hpp"
-  #undef OP
-
-  #define OP >>
-  #include "field_impl_arith.hpp"
-  #undef OP
-
-  #define OP +
-  #include "field_impl_arith.hpp"
-  #undef OP
-
-  #define OP -
-  #include "field_impl_arith.hpp"
-  #undef OP
-
-  #define OP *
-  #include "field_impl_arith.hpp"
-  #undef OP
-
-  #define OP /
-  #include "field_impl_arith.hpp"
-  #undef OP
-
-  #define OP %
-  #include "field_impl_arith.hpp"
-  #undef OP
-  */
+  template<typename Field, typename... Next>
+  inline const VirtualField<Field, Next...>& VirtualField<Field, Next...>::operator=(const VirtualField<Field, Next...>& field) const {
+    pair_static_list_foreach(FIELDS, field.FIELDS, Private::VirtualFieldAssignVisitor());
+    return *this;
+  }
 
   template<typename Field, typename ... Next>
-  constexpr VirtualField<Field, Next...> make_virtual_field(Field field, Next... next) {
+  constexpr VirtualField<Field, Next...> make_virtual_field(const Field field, const Next... next) {
     return VirtualField<Field, Next...>(field, next...);
   }
     
