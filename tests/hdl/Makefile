@@ -56,6 +56,9 @@ AVR_BUILD_DIR=$(GEN_BUILD_DIR)
 # Rules
 all: atmega2560
 
+aversive: export WCFLAGS=-DAVERSIVE
+aversive: atmega2560
+
 sasiae: export CC=$(SASIAE_CC)
 sasiae: export CFLAGS=$(SASIAE_CFLAGS)
 sasiae: export INCLUDE=$(SASIAE_INCLUDE)
@@ -71,7 +74,7 @@ atmega2560: export AVERSIVE_MMCU=atmega2560
 atmega2560: avr
 
 avr: export CC=$(AVR_CC)
-avr: export CFLAGS=$(AVR_CFLAGS) -mmcu=$(AVERSIVE_MMCU)
+avr: export CFLAGS=$(AVR_CFLAGS) $(WCFLAGS) -mmcu=$(AVERSIVE_MMCU)
 avr: export INCLUDE=$(AVR_INCLUDE)
 avr: export LDFLAGS=$(AVR_LDFLAGS) -laversive_$(AVERSIVE_MMCU)
 avr: export BUILD_DIR=$(AVR_BUILD_DIR)/$(AVERSIVE_MMCU)

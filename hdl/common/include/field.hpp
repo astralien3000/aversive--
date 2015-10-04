@@ -14,90 +14,9 @@ namespace MemoryMapping {
     constexpr Field(const Register<RegType, Group> reg);
     
     // Assignment
-    #define OP =
-    #include "field_decl_assign.hpp"
-    #undef OP
-
-    #define OP |=
-    #include "field_decl_assign.hpp"
-    #undef OP
-
-    #define OP &=
-    #include "field_decl_assign.hpp"
-    #undef OP
-
-    #define OP ^=
-    #include "field_decl_assign.hpp"
-    #undef OP
-
-    #define OP <<=
-    #include "field_decl_assign.hpp"
-    #undef OP
-
-    #define OP >>=
-    #include "field_decl_assign.hpp"
-    #undef OP
-
-    #define OP +=
-    #include "field_decl_assign.hpp"
-    #undef OP
-
-    #define OP -=
-    #include "field_decl_assign.hpp"
-    #undef OP
-
-    #define OP *=
-    #include "field_decl_assign.hpp"
-    #undef OP
-
-    #define OP /=
-    #include "field_decl_assign.hpp"
-    #undef OP
-
-    #define OP %=
-    #include "field_decl_assign.hpp"
-    #undef OP
-
-    // Arithmetic
-    #define OP |
-    #include "field_decl_arith.hpp"
-    #undef OP
-
-    #define OP &
-    #include "field_decl_arith.hpp"
-    #undef OP
-
-    #define OP ^
-    #include "field_decl_arith.hpp"
-    #undef OP
-
-    #define OP <<
-    #include "field_decl_arith.hpp"
-    #undef OP
-
-    #define OP >>
-    #include "field_decl_arith.hpp"
-    #undef OP
-
-    #define OP +
-    #include "field_decl_arith.hpp"
-    #undef OP
-
-    #define OP -
-    #include "field_decl_arith.hpp"
-    #undef OP
-
-    #define OP *
-    #include "field_decl_arith.hpp"
-    #undef OP
-
-    #define OP /
-    #include "field_decl_arith.hpp"
-    #undef OP
-
-    #define OP %
-    #include "field_decl_arith.hpp"
-    #undef OP
+    const Field& operator=(const Config<RegType, Group, MASK>& cfg) const;
+    const Field& operator=(const Field<RegType, Group, MASK>& field) const;
+    const Field& operator=(const RegType val) const;
 
   };
 

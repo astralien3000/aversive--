@@ -11,91 +11,24 @@ namespace MemoryMapping {
   }
 
 // Assignment
-#define OP =
-#include "field_impl_assign.hpp"
-#undef OP
+  template<typename RegType, typename Group, RegType MASK>
+  inline const Field<RegType, Group, MASK>& Field<RegType, Group, MASK>::operator=(const Config<RegType, Group, MASK>& cfg) const {
+    REGISTER = (REGISTER & ~MASK) | cfg.VALUE;
+    return *this;
+  }
 
-#define OP |=
-#include "field_impl_assign.hpp"
-#undef OP
 
-#define OP &=
-#include "field_impl_assign.hpp"
-#undef OP
+  template<typename RegType, typename Group, RegType MASK>
+  inline const Field<RegType, Group, MASK>& Field<RegType, Group, MASK>::operator=(const Field<RegType, Group, MASK>& field) const {
+    REGISTER = (REGISTER & ~MASK) | (field.REGISTER & MASK);
+    return *this;
+  }
 
-#define OP ^=
-#include "field_impl_assign.hpp"
-#undef OP
-
-#define OP <<=
-#include "field_impl_assign.hpp"
-#undef OP
-
-#define OP >>=
-#include "field_impl_assign.hpp"
-#undef OP
-
-#define OP +=
-#include "field_impl_assign.hpp"
-#undef OP
-
-#define OP -=
-#include "field_impl_assign.hpp"
-#undef OP
-
-#define OP *=
-#include "field_impl_assign.hpp"
-#undef OP
-
-#define OP /=
-#include "field_impl_assign.hpp"
-#undef OP
-
-#define OP %=
-#include "field_impl_assign.hpp"
-#undef OP
-
-// Arithmetic
-#define OP |
-#include "field_impl_arith.hpp"
-#undef OP
-
-#define OP &
-#include "field_impl_arith.hpp"
-#undef OP
-
-#define OP ^
-#include "field_impl_arith.hpp"
-#undef OP
-
-#define OP <<
-#include "field_impl_arith.hpp"
-#undef OP
-
-#define OP >>
-#include "field_impl_arith.hpp"
-#undef OP
-
-#define OP +
-#include "field_impl_arith.hpp"
-#undef OP
-
-#define OP -
-#include "field_impl_arith.hpp"
-#undef OP
-
-#define OP *
-#include "field_impl_arith.hpp"
-#undef OP
-
-#define OP /
-#include "field_impl_arith.hpp"
-#undef OP
-
-#define OP %
-#include "field_impl_arith.hpp"
-#undef OP
-
+  template<typename RegType, typename Group, RegType MASK>
+  inline const Field<RegType, Group, MASK>& Field<RegType, Group, MASK>::operator=(const RegType val) const {
+    REGISTER = make_config(*this, val);
+    return *this;
+  }
 }
 
 #endif//FIELD_IMPL_HPP

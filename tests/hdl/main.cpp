@@ -1,21 +1,17 @@
 //#include <memory_mapping.hpp>
 
-#define AVERSIVE
+//#define AVERSIVE
 
 #if defined AVERSIVE
 #include "../../hdl/avr/mega/xx0_1/include/reg.hpp"
+
+constexpr auto TEST = MemoryMapping::make_virtual_field(HDL::TIMER_0::Fields::TOV, HDL::TIMER_0::Fields::OCF_A, HDL::TIMER_0::Fields::COM_A);
+constexpr auto TEST2 = MemoryMapping::make_virtual_field(HDL::TIMER_2::Fields::TOV, HDL::TIMER_2::Fields::OCF_A, HDL::TIMER_2::Fields::COM_A);
+
 #else
 #include <avr/io.h>
+
 #endif
-
-constexpr auto TEST = MemoryMapping::make_virtual_field(HDL::TIMER_0::Fields::COM_A, HDL::TIMER_0::Fields::COM_B);
-constexpr auto TEST2 = MemoryMapping::make_virtual_field(HDL::TIMER_0::Fields::COM_A, HDL::TIMER_0::Fields::COM_B);
-
-constexpr auto TEST3 = static_list_fusion(TEST.FIELDS, TEST2.FIELDS);
-
-u8 a, b;
-constexpr auto T1 = make_static_list<u8&, u8&>(a, b);
-constexpr auto T2 = make_static_list(1, 2);
 
 int main(int, char**) {
 #if defined AVERSIVE
@@ -25,6 +21,9 @@ int main(int, char**) {
 
 #else
 
+  TIFR0 = (TIFR0 & ~(1 << TOV0)) | (TIFR2 & (1 << TOV2));
+  TIFR0 = (TIFR0 & ~(1 << OCF0A)) | (TIFR2 & (1 << OCF2A));
+  TCCR0A = (TCCR0A & ~0b11000000) | (TCCR2A & 0b11000000);
   
 #endif
   

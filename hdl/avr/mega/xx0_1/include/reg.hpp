@@ -203,12 +203,10 @@ namespace HDL {
 
       static constexpr auto& COM_A = COM<0>::field;
       static constexpr auto& COM_B = COM<1>::field;
-
       
     };
   };
 
-  /*
   template<DummyType DUMMY>
   struct _TIMER<2, DUMMY> {
     using Groups = TIMER_ModuleGroups<8>;
@@ -230,7 +228,13 @@ namespace HDL {
     static constexpr auto& OCR_A = OCR<0>::reg;
     static constexpr auto& OCR_B = OCR<1>::reg;
 
-    struct Fields {      
+    static constexpr MemoryMapping::Register8<Groups::IMSK> IMSK = reg_addr(0x70);
+
+    struct Fields {
+
+      //////////
+      // IFR Register
+
       template<u8 BIT>
       struct IFR {
 	static constexpr MemoryMapping::BitField8<TIMER_ModuleGroups<8>::IFR, BIT> field = Registers::IFR;
@@ -244,9 +248,35 @@ namespace HDL {
       static constexpr auto& OCF_A = OCF<0>::field;
       static constexpr auto& OCF_B = OCF<1>::field;
       static constexpr auto&   TOV = IFR<0>::field;
+
+      //////////
+      // CCR_A Register
+
+      template<u8 BIT>
+      struct CCR_A {
+	static constexpr MemoryMapping::BitField8<TIMER_ModuleGroups<8>::CCR_A, BIT> field = Registers::CCR_A;
+      };
+
+      template<u8 OC_ID, DummyType DUMMY1>
+      struct _COM;
+
+      template<DummyType DUMMY1>
+      struct _COM<0, DUMMY1> {
+	static constexpr MemoryMapping::Field8<TIMER_ModuleGroups<8>::CCR_A, 0b11000000> field = Registers::CCR_A;
+      };
+
+      template<DummyType DUMMY1>
+      struct _COM<1, DUMMY1> {
+	static constexpr MemoryMapping::Field8<TIMER_ModuleGroups<8>::CCR_A, 0b00110000> field = Registers::CCR_A;
+      };
+
+      template <u8 OC_ID> using COM = _COM<OC_ID, DUMMY_VALUE>;
+
+      static constexpr auto& COM_A = COM<0>::field;
+      static constexpr auto& COM_B = COM<1>::field;
+      
     };
   };
-  */
 
   template<u8 ID> using TIMER = _TIMER<ID, DUMMY_VALUE>;
 
