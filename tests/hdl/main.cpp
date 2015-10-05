@@ -4,11 +4,11 @@
 
 #if defined AVERSIVE
 #include "../../hdl/avr/mega/xx0_1/include/reg.hpp"
-
+/*
 constexpr auto TEST = MemoryMapping::make_virtual_field(HDL::TIMER_0::Fields::TOV, HDL::TIMER_0::Fields::OCF_A, HDL::TIMER_0::Fields::COM_A);
 constexpr auto TEST2 = MemoryMapping::make_virtual_field(HDL::TIMER_2::Fields::TOV, HDL::TIMER_2::Fields::OCF_A, HDL::TIMER_2::Fields::COM_A);
 constexpr auto TEST3 = MemoryMapping::make_virtual_config(true, true, 0b01);
-
+*/
 #else
 #include <avr/io.h>
 
@@ -18,6 +18,8 @@ int main(int, char**) {
 #if defined AVERSIVE
   using namespace HDL;
 
+  TIMER_1::Fields::OCF<0>::field = true;
+  
   GPIO_A::Fields::PIN_0 = true;
   GPIO_A::Fields::PORT_7 = true;
 
