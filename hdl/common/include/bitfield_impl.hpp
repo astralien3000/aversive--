@@ -37,7 +37,7 @@ namespace MemoryMapping {
       REGISTER |= (1 << BITNUM);
     }
     else {
-      REGISTER &= ~(1 << BITNUM);
+      REGISTER &= (RegType)(~(1 << BITNUM));
     }
     
     /*
