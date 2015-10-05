@@ -17,7 +17,7 @@ namespace MemoryMapping {
     inline const VirtualField& operator=(const VirtualField& field) const;
 
     template<typename... Configs>
-    inline const VirtualField& operator=(const VirtualConfig<Configs...>& field) const;
+    inline const VirtualField& operator=(const VirtualConfig<Configs...>& config) const;
 };
   
   template<typename Field, typename ... Next>
