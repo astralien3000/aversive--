@@ -13,7 +13,7 @@ namespace MemoryMapping {
   namespace Private {    
     struct VirtualFieldAssignVisitor {
       template<typename T1, typename T2>
-      void visit(T1& left, T2& right) const {
+      void visit(T1 left, T2 right) const {
 	left = right;
 	//var = 0;
       }
@@ -25,6 +25,13 @@ namespace MemoryMapping {
     pair_static_list_foreach(FIELDS, field.FIELDS, Private::VirtualFieldAssignVisitor());
     return *this;
   }
+
+  template<typename Field, typename... Next> template<typename... Configs>
+  inline const VirtualField<Field, Next...>& VirtualField<Field, Next...>::operator=(const VirtualConfig<Configs...>& config) const {
+    pair_static_list_foreach(FIELDS, config.CONFIGS, Private::VirtualFieldAssignVisitor());
+    return *this;
+  }
+  
 
   template<typename Field, typename ... Next>
   constexpr VirtualField<Field, Next...> make_virtual_field(const Field field, const Next... next) {

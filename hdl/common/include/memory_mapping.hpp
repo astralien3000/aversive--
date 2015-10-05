@@ -54,11 +54,13 @@ namespace MemoryMapping {
 #include "field.hpp"
 #include "bitfield.hpp"
 #include "virtual_field.hpp"
+#include "virtual_config.hpp"
 
 #include "register_impl.hpp"
 #include "config_impl.hpp"
 #include "field_impl.hpp"
 #include "bitfield_impl.hpp"
 #include "virtual_field_impl.hpp"
+#include "virtual_config_impl.hpp"
 
 #endif//MEMORY_MAPPING_HPP
