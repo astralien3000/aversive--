@@ -1,8 +1,6 @@
 #ifndef CONFIG_HPP
 #define CONFIG_HPP
 
-#include "memory_mapping.hpp"
-
 namespace MemoryMapping {
 
   template<typename RegType, typename Group, RegType MASK>

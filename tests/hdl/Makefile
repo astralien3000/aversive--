@@ -34,7 +34,7 @@ AVR_CFLAGS=$(GEN_CFLAGS) -fno-threadsafe-statics -D__STDC_LIMIT_MACROS -O3
 ## Include
 GEN_INCLUDE= -I$(AVERSIVE_ROOT)/include
 SASIAE_INCLUDE= $(GEN_INCLUDE)/sasiae -I/usr/include/qt5 -I/usr/include/qt5/QtCore -I$(AVERSIVE_ROOT)/hdl/common/include
-AVR_INCLUDE= $(GEN_INCLUDE)/avr -I$(AVERSIVE_ROOT)/hdl/common/include
+AVR_INCLUDE=-I$(AVERSIVE_ROOT)/hdl/common/include
 
 ## Config symbols
 DUMMY_SYM=_ZN8Aversive6Config13__PARAM_DUMMYE=$(PARAM_DUMMY)

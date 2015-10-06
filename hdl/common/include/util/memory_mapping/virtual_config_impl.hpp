@@ -1,8 +1,6 @@
 #ifndef VIRTUAL_CONFIG_IMPL_HPP
 #define VIRTUAL_CONFIG_IMPL_HPP
 
-#include "memory_mapping.hpp"
-
 namespace MemoryMapping {
 
   template<typename Config, typename ... Next>

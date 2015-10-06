@@ -1,8 +1,6 @@
 #ifndef BITFIELD_IMPL_HPP
 #define BITFIELD_IMPL_HPP
 
-#include "memory_mapping.hpp"
-
 namespace MemoryMapping {
 
   template<typename RegType, typename Group, int BITNUM>

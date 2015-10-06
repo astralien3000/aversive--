@@ -1,8 +1,6 @@
 #ifndef REGISTER_HPP
 #define REGISTER_HPP
 
-#include "memory_mapping.hpp"
-
 namespace MemoryMapping {
 
   template<typename RegType, typename Group>

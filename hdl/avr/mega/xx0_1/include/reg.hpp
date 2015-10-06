@@ -9,7 +9,7 @@
 # define __ATmegaxx1__
 #endif
 
-#include "../../../../common/include/memory_mapping.hpp"
+#include <util/memory_mapping.hpp>
 
 namespace HDL {
   using namespace MemoryMapping;
