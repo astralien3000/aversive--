@@ -16,8 +16,12 @@ namespace HDL {
   
   /* AVR_MACRO */
   namespace Private {
-    static constexpr usys SFR(usys addr) {
-      return (addr < 0x40)?(0x0020 +  addr):((addr >= 0x60)?(addr):0);
+    static constexpr usys SFR_IO(usys addr) {
+      return 0x0020 + addr;
+    }
+
+    static constexpr usys SFR_MEM(usys addr) {
+      return addr;
     }
     
     using DummyType = u8;
@@ -75,39 +79,39 @@ namespace HDL {
     };
 
     struct GPIO_A_ModuleDefs : GPIO_Common_ModuleDefs {
-      static constexpr usys PIN  = SFR(0x0000);
-      static constexpr usys DDR  = SFR(0x0001);
-      static constexpr usys PORT = SFR(0x0002);
+      static constexpr usys PIN  = SFR_IO(0x0000);
+      static constexpr usys DDR  = SFR_IO(0x0001);
+      static constexpr usys PORT = SFR_IO(0x0002);
     };
 
     struct GPIO_B_ModuleDefs : GPIO_Common_ModuleDefs {
-      static constexpr usys PIN  = SFR(0x0003);
-      static constexpr usys DDR  = SFR(0x0004);
-      static constexpr usys PORT = SFR(0x0005);
+      static constexpr usys PIN  = SFR_IO(0x0003);
+      static constexpr usys DDR  = SFR_IO(0x0004);
+      static constexpr usys PORT = SFR_IO(0x0005);
     };
 
     struct GPIO_C_ModuleDefs : GPIO_Common_ModuleDefs {
-      static constexpr usys PIN  = SFR(0x0006);
-      static constexpr usys DDR  = SFR(0x0007);
-      static constexpr usys PORT = SFR(0x0008);
+      static constexpr usys PIN  = SFR_IO(0x0006);
+      static constexpr usys DDR  = SFR_IO(0x0007);
+      static constexpr usys PORT = SFR_IO(0x0008);
     };
 
     struct GPIO_D_ModuleDefs : GPIO_Common_ModuleDefs {
-      static constexpr usys PIN  = SFR(0x0009);
-      static constexpr usys DDR  = SFR(0x000A);
-      static constexpr usys PORT = SFR(0x000B);
+      static constexpr usys PIN  = SFR_IO(0x0009);
+      static constexpr usys DDR  = SFR_IO(0x000A);
+      static constexpr usys PORT = SFR_IO(0x000B);
     };
 
     struct GPIO_E_ModuleDefs : GPIO_Common_ModuleDefs {
-      static constexpr usys PIN  = SFR(0x000C);
-      static constexpr usys DDR  = SFR(0x000D);
-      static constexpr usys PORT = SFR(0x000E);
+      static constexpr usys PIN  = SFR_IO(0x000C);
+      static constexpr usys DDR  = SFR_IO(0x000D);
+      static constexpr usys PORT = SFR_IO(0x000E);
     };
 
     struct GPIO_F_ModuleDefs : GPIO_Common_ModuleDefs {
-      static constexpr usys PIN  = SFR(0x000F);
-      static constexpr usys DDR  = SFR(0x0010);
-      static constexpr usys PORT = SFR(0x0011);
+      static constexpr usys PIN  = SFR_IO(0x000F);
+      static constexpr usys DDR  = SFR_IO(0x0010);
+      static constexpr usys PORT = SFR_IO(0x0011);
     };
 
     // warning : This GPIO only contains 6 pins
@@ -120,37 +124,37 @@ namespace HDL {
 
       static constexpr u8 PIN_MASK = 0b00111111;
     
-      static constexpr usys PIN  = SFR(0x0012);
-      static constexpr usys DDR  = SFR(0x0013);
-      static constexpr usys PORT = SFR(0x0014);
+      static constexpr usys PIN  = SFR_IO(0x0012);
+      static constexpr usys DDR  = SFR_IO(0x0013);
+      static constexpr usys PORT = SFR_IO(0x0014);
     };
 
 #if defined(__ATmegaxx0__)
   
     struct GPIO_H_ModuleDefs : GPIO_Common_ModuleDefs {
-      static constexpr usys PIN  = SFR(0x0100);
-      static constexpr usys DDR  = SFR(0x0101);
-      static constexpr usys PORT = SFR(0x0102);
+      static constexpr usys PIN  = SFR_MEM(0x0100);
+      static constexpr usys DDR  = SFR_MEM(0x0101);
+      static constexpr usys PORT = SFR_MEM(0x0102);
     };
 
     struct GPIO_I_ModuleDefs : GPIO_Undef_ModuleDefs {};
     
     struct GPIO_J_ModuleDefs : GPIO_Common_ModuleDefs {
-      static constexpr usys PIN  = SFR(0x0103);
-      static constexpr usys DDR  = SFR(0x0104);
-      static constexpr usys PORT = SFR(0x0105);
+      static constexpr usys PIN  = SFR_MEM(0x0103);
+      static constexpr usys DDR  = SFR_MEM(0x0104);
+      static constexpr usys PORT = SFR_MEM(0x0105);
     };
 
     struct GPIO_K_ModuleDefs : GPIO_Common_ModuleDefs {
-      static constexpr usys PIN  = SFR(0x0106);
-      static constexpr usys DDR  = SFR(0x0107);
-      static constexpr usys PORT = SFR(0x0108);
+      static constexpr usys PIN  = SFR_MEM(0x0106);
+      static constexpr usys DDR  = SFR_MEM(0x0107);
+      static constexpr usys PORT = SFR_MEM(0x0108);
     };
 
     struct GPIO_L_ModuleDefs : GPIO_Common_ModuleDefs {
-      static constexpr usys PIN  = SFR(0x0109);
-      static constexpr usys DDR  = SFR(0x010A);
-      static constexpr usys PORT = SFR(0x010B);
+      static constexpr usys PIN  = SFR_MEM(0x0109);
+      static constexpr usys DDR  = SFR_MEM(0x010A);
+      static constexpr usys PORT = SFR_MEM(0x010B);
     };
 
 #else
@@ -401,143 +405,143 @@ namespace HDL {
     };
 
     struct TIMER_0_ModuleDefs : TIMER_8bits_ModuleDefs {
-      static constexpr usys IFR   = SFR(0x15);
-      static constexpr usys IMSK  = SFR(0x6E);
+      static constexpr usys IFR   = SFR_IO(0x0015);
+      static constexpr usys IMSK  = SFR_MEM(0x006E);
 
-      static constexpr usys CCR_A = SFR(0x24);
-      static constexpr usys CCR_B = SFR(0x25);
+      static constexpr usys CCR_A = SFR_IO(0x0024);
+      static constexpr usys CCR_B = SFR_IO(0x0025);
 
-      static constexpr usys CNT   = SFR(0x26);
-      static constexpr usys OCR_A = SFR(0x27);
-      static constexpr usys OCR_B = SFR(0x28);
+      static constexpr usys CNT   = SFR_IO(0x0026);
+      static constexpr usys OCR_A = SFR_IO(0x0027);
+      static constexpr usys OCR_B = SFR_IO(0x0028);
     };
 
     struct TIMER_1_ModuleDefs : TIMER_16bits_ModuleDefs {
-      static constexpr usys IFR   = SFR(0x16);
-      static constexpr usys IMSK  = SFR(0x6F);
+      static constexpr usys IFR   = SFR_IO(0x0016);
+      static constexpr usys IMSK  = SFR_MEM(0x006F);
 
-      static constexpr usys CCR_A = SFR(0x80);
-      static constexpr usys CCR_B = SFR(0x81);
-      static constexpr usys CCR_C = SFR(0x82);
+      static constexpr usys CCR_A = SFR_MEM(0x0080);
+      static constexpr usys CCR_B = SFR_MEM(0x0081);
+      static constexpr usys CCR_C = SFR_MEM(0x0082);
 
-      static constexpr usys CNT   = SFR(0x84);
-      static constexpr usys CNT_L = SFR(0x84);
-      static constexpr usys CNT_H = SFR(0x85);
+      static constexpr usys CNT   = SFR_MEM(0x0084);
+      static constexpr usys CNT_L = SFR_MEM(0x0084);
+      static constexpr usys CNT_H = SFR_MEM(0x0085);
 
-      static constexpr usys ICR   = SFR(0x86);
-      static constexpr usys ICR_L = SFR(0x86);
-      static constexpr usys ICR_H = SFR(0x87);
+      static constexpr usys ICR   = SFR_MEM(0x0086);
+      static constexpr usys ICR_L = SFR_MEM(0x0086);
+      static constexpr usys ICR_H = SFR_MEM(0x0087);
     
-      static constexpr usys OCR_A   = SFR(0x88);
-      static constexpr usys OCR_A_L = SFR(0x88);
-      static constexpr usys OCR_A_H = SFR(0x89);
+      static constexpr usys OCR_A   = SFR_MEM(0x0088);
+      static constexpr usys OCR_A_L = SFR_MEM(0x0088);
+      static constexpr usys OCR_A_H = SFR_MEM(0x0089);
     
-      static constexpr usys OCR_B   = SFR(0x8A);
-      static constexpr usys OCR_B_L = SFR(0x8A);
-      static constexpr usys OCR_B_H = SFR(0x8B);
+      static constexpr usys OCR_B   = SFR_MEM(0x008A);
+      static constexpr usys OCR_B_L = SFR_MEM(0x008A);
+      static constexpr usys OCR_B_H = SFR_MEM(0x008B);
     
-      static constexpr usys OCR_C   = SFR(0x8C);
-      static constexpr usys OCR_C_L = SFR(0x8C);
-      static constexpr usys OCR_C_H = SFR(0x8D);
+      static constexpr usys OCR_C   = SFR_MEM(0x008C);
+      static constexpr usys OCR_C_L = SFR_MEM(0x008C);
+      static constexpr usys OCR_C_H = SFR_MEM(0x008D);
     };
   
     struct TIMER_2_ModuleDefs : TIMER_8bits_ModuleDefs {
-      static constexpr usys IFR   = SFR(0x17);
-      static constexpr usys IMSK  = SFR(0x70);
+      static constexpr usys IFR   = SFR_IO(0x0017);
+      static constexpr usys IMSK  = SFR_MEM(0x0070);
 
-      static constexpr usys CCR_A = SFR(0xB0);
-      static constexpr usys CCR_B = SFR(0xB1);
+      static constexpr usys CCR_A = SFR_MEM(0x00B0);
+      static constexpr usys CCR_B = SFR_MEM(0x00B1);
 
-      static constexpr usys CNT   = SFR(0xB2);
-      static constexpr usys OCR_A = SFR(0xB3);
-      static constexpr usys OCR_B = SFR(0xB4);
+      static constexpr usys CNT   = SFR_MEM(0x00B2);
+      static constexpr usys OCR_A = SFR_MEM(0x00B3);
+      static constexpr usys OCR_B = SFR_MEM(0x00B4);
     };
   
     struct TIMER_3_ModuleDefs : TIMER_16bits_ModuleDefs {
-      static constexpr usys IFR   = SFR(0x18);
-      static constexpr usys IMSK  = SFR(0x71);
+      static constexpr usys IFR   = SFR_IO(0x0018);
+      static constexpr usys IMSK  = SFR_MEM(0x0071);
 
-      static constexpr usys CCR_A = SFR(0x90);
-      static constexpr usys CCR_B = SFR(0x91);
-      static constexpr usys CCR_C = SFR(0x92);
+      static constexpr usys CCR_A = SFR_MEM(0x0090);
+      static constexpr usys CCR_B = SFR_MEM(0x0091);
+      static constexpr usys CCR_C = SFR_MEM(0x0092);
 
-      static constexpr usys CNT   = SFR(0x94);
-      static constexpr usys CNT_L = SFR(0x94);
-      static constexpr usys CNT_H = SFR(0x95);
+      static constexpr usys CNT   = SFR_MEM(0x0094);
+      static constexpr usys CNT_L = SFR_MEM(0x0094);
+      static constexpr usys CNT_H = SFR_MEM(0x0095);
 
-      static constexpr usys ICR   = SFR(0x96);
-      static constexpr usys ICR_L = SFR(0x96);
-      static constexpr usys ICR_H = SFR(0x97);
+      static constexpr usys ICR   = SFR_MEM(0x0096);
+      static constexpr usys ICR_L = SFR_MEM(0x0096);
+      static constexpr usys ICR_H = SFR_MEM(0x0097);
     
-      static constexpr usys OCR_A   = SFR(0x98);
-      static constexpr usys OCR_A_L = SFR(0x98);
-      static constexpr usys OCR_A_H = SFR(0x99);
+      static constexpr usys OCR_A   = SFR_MEM(0x0098);
+      static constexpr usys OCR_A_L = SFR_MEM(0x0098);
+      static constexpr usys OCR_A_H = SFR_MEM(0x0099);
     
-      static constexpr usys OCR_B   = SFR(0x9A);
-      static constexpr usys OCR_B_L = SFR(0x9A);
-      static constexpr usys OCR_B_H = SFR(0x9B);
+      static constexpr usys OCR_B   = SFR_MEM(0x009A);
+      static constexpr usys OCR_B_L = SFR_MEM(0x009A);
+      static constexpr usys OCR_B_H = SFR_MEM(0x009B);
     
-      static constexpr usys OCR_C   = SFR(0x9C);
-      static constexpr usys OCR_C_L = SFR(0x9C);
-      static constexpr usys OCR_C_H = SFR(0x9D);
+      static constexpr usys OCR_C   = SFR_MEM(0x009C);
+      static constexpr usys OCR_C_L = SFR_MEM(0x009C);
+      static constexpr usys OCR_C_H = SFR_MEM(0x009D);
     };
   
     struct TIMER_4_ModuleDefs : TIMER_16bits_ModuleDefs {
-      static constexpr usys IFR   = SFR(0x19);
-      static constexpr usys IMSK  = SFR(0x72);
+      static constexpr usys IFR   = SFR_IO(0x0019);
+      static constexpr usys IMSK  = SFR_MEM(0x0072);
 
-      static constexpr usys CCR_A = SFR(0xA0);
-      static constexpr usys CCR_B = SFR(0xA1);
-      static constexpr usys CCR_C = SFR(0xA2);
+      static constexpr usys CCR_A = SFR_MEM(0x00A0);
+      static constexpr usys CCR_B = SFR_MEM(0x00A1);
+      static constexpr usys CCR_C = SFR_MEM(0x00A2);
 
-      static constexpr usys CNT   = SFR(0xA4);
-      static constexpr usys CNT_L = SFR(0xA4);
-      static constexpr usys CNT_H = SFR(0xA5);
+      static constexpr usys CNT   = SFR_MEM(0x00A4);
+      static constexpr usys CNT_L = SFR_MEM(0x00A4);
+      static constexpr usys CNT_H = SFR_MEM(0x00A5);
 
-      static constexpr usys ICR   = SFR(0xA6);
-      static constexpr usys ICR_L = SFR(0xA6);
-      static constexpr usys ICR_H = SFR(0xA7);
+      static constexpr usys ICR   = SFR_MEM(0x00A6);
+      static constexpr usys ICR_L = SFR_MEM(0x00A6);
+      static constexpr usys ICR_H = SFR_MEM(0x00A7);
     
-      static constexpr usys OCR_A   = SFR(0xA8);
-      static constexpr usys OCR_A_L = SFR(0xA8);
-      static constexpr usys OCR_A_H = SFR(0xA9);
+      static constexpr usys OCR_A   = SFR_MEM(0x00A8);
+      static constexpr usys OCR_A_L = SFR_MEM(0x00A8);
+      static constexpr usys OCR_A_H = SFR_MEM(0x00A9);
     
-      static constexpr usys OCR_B   = SFR(0xAA);
-      static constexpr usys OCR_B_L = SFR(0xAA);
-      static constexpr usys OCR_B_H = SFR(0xAB);
+      static constexpr usys OCR_B   = SFR_MEM(0x00AA);
+      static constexpr usys OCR_B_L = SFR_MEM(0x00AA);
+      static constexpr usys OCR_B_H = SFR_MEM(0x00AB);
     
-      static constexpr usys OCR_C   = SFR(0xAC);
-      static constexpr usys OCR_C_L = SFR(0xAC);
-      static constexpr usys OCR_C_H = SFR(0xAD);
+      static constexpr usys OCR_C   = SFR_MEM(0x00AC);
+      static constexpr usys OCR_C_L = SFR_MEM(0x00AC);
+      static constexpr usys OCR_C_H = SFR_MEM(0x00AD);
     };
   
     struct TIMER_5_ModuleDefs : TIMER_16bits_ModuleDefs {
-      static constexpr usys IFR   = SFR(0x1A);
-      static constexpr usys IMSK  = SFR(0x73);
+      static constexpr usys IFR   = SFR_IO(0x001A);
+      static constexpr usys IMSK  = SFR_MEM(0x0073);
 
-      static constexpr usys CCR_A = SFR(0x120);
-      static constexpr usys CCR_B = SFR(0x121);
-      static constexpr usys CCR_C = SFR(0x122);
+      static constexpr usys CCR_A = SFR_MEM(0x0120);
+      static constexpr usys CCR_B = SFR_MEM(0x0121);
+      static constexpr usys CCR_C = SFR_MEM(0x0122);
 
-      static constexpr usys CNT   = SFR(0x124);
-      static constexpr usys CNT_L = SFR(0x124);
-      static constexpr usys CNT_H = SFR(0x125);
+      static constexpr usys CNT   = SFR_MEM(0x0124);
+      static constexpr usys CNT_L = SFR_MEM(0x0124);
+      static constexpr usys CNT_H = SFR_MEM(0x0125);
 
-      static constexpr usys ICR   = SFR(0x126);
-      static constexpr usys ICR_L = SFR(0x126);
-      static constexpr usys ICR_H = SFR(0x127);
+      static constexpr usys ICR   = SFR_MEM(0x0126);
+      static constexpr usys ICR_L = SFR_MEM(0x0126);
+      static constexpr usys ICR_H = SFR_MEM(0x0127);
     
-      static constexpr usys OCR_A   = SFR(0x128);
-      static constexpr usys OCR_A_L = SFR(0x128);
-      static constexpr usys OCR_A_H = SFR(0x129);
+      static constexpr usys OCR_A   = SFR_MEM(0x0128);
+      static constexpr usys OCR_A_L = SFR_MEM(0x0128);
+      static constexpr usys OCR_A_H = SFR_MEM(0x0129);
     
-      static constexpr usys OCR_B   = SFR(0x12A);
-      static constexpr usys OCR_B_L = SFR(0x12A);
-      static constexpr usys OCR_B_H = SFR(0x12B);
+      static constexpr usys OCR_B   = SFR_MEM(0x012A);
+      static constexpr usys OCR_B_L = SFR_MEM(0x012A);
+      static constexpr usys OCR_B_H = SFR_MEM(0x012B);
     
-      static constexpr usys OCR_C   = SFR(0x12C);
-      static constexpr usys OCR_C_L = SFR(0x12C);
-      static constexpr usys OCR_C_H = SFR(0x12D);
+      static constexpr usys OCR_C   = SFR_MEM(0x012C);
+      static constexpr usys OCR_C_L = SFR_MEM(0x012C);
+      static constexpr usys OCR_C_H = SFR_MEM(0x012D);
     };
   
     /* END Simple defs */
@@ -837,53 +841,53 @@ namespace HDL {
     };
     
     struct UART_0_ModuleDefs : UART_Common_ModuleDefs {
-      static constexpr usys CSR_A = SFR(0x00C0);
-      static constexpr usys CSR_B = SFR(0x00C1);
-      static constexpr usys CSR_C = SFR(0x00C2);
+      static constexpr usys CSR_A = SFR_MEM(0x00C0);
+      static constexpr usys CSR_B = SFR_MEM(0x00C1);
+      static constexpr usys CSR_C = SFR_MEM(0x00C2);
 
-      static constexpr usys BRR   = SFR(0x00C4);
-      static constexpr usys BRR_L = SFR(0x00C4);
-      static constexpr usys BRR_H = SFR(0x00C5);
+      static constexpr usys BRR   = SFR_MEM(0x00C4);
+      static constexpr usys BRR_L = SFR_MEM(0x00C4);
+      static constexpr usys BRR_H = SFR_MEM(0x00C5);
 
-      static constexpr usys DR    = SFR(0x00C6);
+      static constexpr usys DR    = SFR_MEM(0x00C6);
     };
 
     struct UART_1_ModuleDefs : UART_Common_ModuleDefs {
-      static constexpr usys CSR_A = SFR(0x00C8);
-      static constexpr usys CSR_B = SFR(0x00C9);
-      static constexpr usys CSR_C = SFR(0x00CA);
+      static constexpr usys CSR_A = SFR_MEM(0x00C8);
+      static constexpr usys CSR_B = SFR_MEM(0x00C9);
+      static constexpr usys CSR_C = SFR_MEM(0x00CA);
 
-      static constexpr usys BRR   = SFR(0x00CC);
-      static constexpr usys BRR_L = SFR(0x00CC);
-      static constexpr usys BRR_H = SFR(0x00CD);
+      static constexpr usys BRR   = SFR_MEM(0x00CC);
+      static constexpr usys BRR_L = SFR_MEM(0x00CC);
+      static constexpr usys BRR_H = SFR_MEM(0x00CD);
 
-      static constexpr usys DR    = SFR(0x00CE);
+      static constexpr usys DR    = SFR_MEM(0x00CE);
     };
 
     struct UART_2_ModuleDefs : UART_Common_ModuleDefs {
-      static constexpr usys CSR_A = SFR(0x00D0);
-      static constexpr usys CSR_B = SFR(0x00D1);
-      static constexpr usys CSR_C = SFR(0x00D2);
+      static constexpr usys CSR_A = SFR_MEM(0x00D0);
+      static constexpr usys CSR_B = SFR_MEM(0x00D1);
+      static constexpr usys CSR_C = SFR_MEM(0x00D2);
 
-      static constexpr usys BRR   = SFR(0x00D4);
-      static constexpr usys BRR_L = SFR(0x00D4);
-      static constexpr usys BRR_H = SFR(0x00D5);
+      static constexpr usys BRR   = SFR_MEM(0x00D4);
+      static constexpr usys BRR_L = SFR_MEM(0x00D4);
+      static constexpr usys BRR_H = SFR_MEM(0x00D5);
 
-      static constexpr usys DR    = SFR(0x00D6);
+      static constexpr usys DR    = SFR_MEM(0x00D6);
     };
 
 #if defined(__ATmegaxx0__)
     
     struct UART_3_ModuleDefs : UART_Common_ModuleDefs {
-      static constexpr usys CSR_A = SFR(0x0130);
-      static constexpr usys CSR_B = SFR(0x0131);
-      static constexpr usys CSR_C = SFR(0x0132);
+      static constexpr usys CSR_A = SFR_MEM(0x0130);
+      static constexpr usys CSR_B = SFR_MEM(0x0131);
+      static constexpr usys CSR_C = SFR_MEM(0x0132);
 
-      static constexpr usys BRR   = SFR(0x0134);
-      static constexpr usys BRR_L = SFR(0x0134);
-      static constexpr usys BRR_H = SFR(0x0135);
+      static constexpr usys BRR   = SFR_MEM(0x0134);
+      static constexpr usys BRR_L = SFR_MEM(0x0134);
+      static constexpr usys BRR_H = SFR_MEM(0x0135);
 
-      static constexpr usys DR    = SFR(0x0136);
+      static constexpr usys DR    = SFR_MEM(0x0136);
     };
 
 #endif   //(__ATmegaxx0__)
