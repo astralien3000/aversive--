@@ -32,7 +32,6 @@ namespace MemoryMapping {
     return *this;
   }
   
-
   template<typename Field, typename ... Next>
   constexpr VirtualField<Field, Next...> make_virtual_field(const Field field, const Next... next) {
     return VirtualField<Field, Next...>(field, next...);

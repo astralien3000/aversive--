@@ -13,21 +13,18 @@ namespace MemoryMapping {
     : VALUE(other.VALUE) {
   }
 
-  // WARNING ! this code is only compatible with GCC !
   template<typename RegType, typename Group, typename ValType>
-  inline constexpr Config<RegType, Group, IntegerInfo<sizeof(RegType)>::UNSIGNED_MAX> make_config(__attribute__((unused)) const Register<RegType, Group>& reg, const ValType value) {
+  inline constexpr Config<RegType, Group, IntegerInfo<sizeof(RegType)>::UNSIGNED_MAX> make_config(const Register<RegType, Group>& , const ValType value) {
     return Config<RegType, Group, IntegerInfo<sizeof(RegType)>::UNSIGNED_MAX>((RegType)value);
   }
 
-  // WARNING ! this code is only compatible with GCC !
   template<typename RegType, typename Group, RegType MASK, typename ValType>
-  inline constexpr Config<RegType, Group, MASK> make_config(__attribute__((unused)) const Field<RegType, Group, MASK>& field, const ValType value) {
+  inline constexpr Config<RegType, Group, MASK> make_config(const Field<RegType, Group, MASK>& , const ValType value) {
     return Config<RegType, Group, MASK>(Private::field_value(MASK, (RegType)value));
   }
 
-  // WARNING ! this code is only compatible with GCC !
   template<typename RegType, typename Group, int BITNUM>
-  inline constexpr Config<RegType, Group, (1<<BITNUM)> make_config(__attribute__((unused)) const BitField<RegType, Group, BITNUM>& bf, const bool value) {
+  inline constexpr Config<RegType, Group, (1<<BITNUM)> make_config(const BitField<RegType, Group, BITNUM>& , const bool value) {
     return Config<RegType, Group, (1<<BITNUM)>(value?0:(1<<BITNUM));
   }
 
