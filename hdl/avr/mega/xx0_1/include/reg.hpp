@@ -588,23 +588,23 @@ namespace HDL {
 	static constexpr Register8<typename Defs::Groups::CCR_B> CCR_B = Defs::CCR_B;
 	static constexpr Register8<typename Defs::Groups::CCR_C> CCR_C = Defs::CCR_C;
       
-	static constexpr Register8<typename Defs::Groups::CNT16> CNT   = Defs::CNT;
+	static constexpr Register16<typename Defs::Groups::CNT16> CNT   = Defs::CNT;
 	static constexpr Register8<typename Defs::Groups::CNT_L> CNT_L = Defs::CNT_L;
 	static constexpr Register8<typename Defs::Groups::CNT_H> CNT_H = Defs::CNT_H;
       
-	static constexpr Register8<typename Defs::Groups::CNT16> ICR   = Defs::ICR;
+	static constexpr Register16<typename Defs::Groups::CNT16> ICR   = Defs::ICR;
 	static constexpr Register8<typename Defs::Groups::CNT_L> ICR_L = Defs::ICR_L;
 	static constexpr Register8<typename Defs::Groups::CNT_H> ICR_H = Defs::ICR_H;
       
-	static constexpr Register8<typename Defs::Groups::CNT16> OCR_A   = Defs::OCR_A;
+	static constexpr Register16<typename Defs::Groups::CNT16> OCR_A   = Defs::OCR_A;
 	static constexpr Register8<typename Defs::Groups::CNT_L> OCR_A_L = Defs::OCR_A_L;
 	static constexpr Register8<typename Defs::Groups::CNT_H> OCR_A_H = Defs::OCR_A_H;
 
-	static constexpr Register8<typename Defs::Groups::CNT16> OCR_B   = Defs::OCR_B;
+	static constexpr Register16<typename Defs::Groups::CNT16> OCR_B   = Defs::OCR_B;
 	static constexpr Register8<typename Defs::Groups::CNT_L> OCR_B_L = Defs::OCR_B_L;
 	static constexpr Register8<typename Defs::Groups::CNT_H> OCR_B_H = Defs::OCR_B_H;
       
-	static constexpr Register8<typename Defs::Groups::CNT16> OCR_C   = Defs::OCR_C;
+	static constexpr Register16<typename Defs::Groups::CNT16> OCR_C   = Defs::OCR_C;
 	static constexpr Register8<typename Defs::Groups::CNT_L> OCR_C_L = Defs::OCR_C_L;
 	static constexpr Register8<typename Defs::Groups::CNT_H> OCR_C_H = Defs::OCR_C_H;
 

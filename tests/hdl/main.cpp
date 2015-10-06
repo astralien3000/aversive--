@@ -16,8 +16,9 @@ int main(int, char**) {
 
   //TIMER_1::Fields::WGM = TIMER_5::Fields::WGM;
   //UART_0::Fields::CSZ = UART_1::Fields::CSZ;
-  UART_0::Fields::RXC = true;
-  TIMER_0::IFR = 0x10;
+  //UART_0::Fields::RXC = true;
+  //TIMER_0::IFR = 0x10;
+  TIMER_1::CNT = (u16)8;
   
 #else
 
