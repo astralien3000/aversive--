@@ -322,13 +322,13 @@ namespace HDL {
     static constexpr u8 OCF_B = 2;
 
     //! CCR_A Register Fields
-    static constexpr u8 COM_A   = 0b11000000;
-    static constexpr u8 COM_B   = 0b00110000;
-    static constexpr u8 WGM_0_1 = 0b00000011;
+    static constexpr u8 COM_A     = 0b11000000;
+    static constexpr u8 COM_B     = 0b00110000;
+    static constexpr u8 CCR_A_WGM = 0b00000011;
     
     //! CCR_B Register Fields
-    static constexpr u8 CS    = 0b00000111;
-    static constexpr u8 WGM_2 = 0b00001000;
+    static constexpr u8 CS        = 0b00000111;
+    static constexpr u8 CCR_B_WGM = 0b00001000;
 
     //! CCR_B Register Bits
     static constexpr u8 FOC_A = 7;
@@ -361,16 +361,23 @@ namespace HDL {
     static constexpr u8 OCF_B = 2;
     static constexpr u8 OCF_C = 3;
     static constexpr u8 ICF   = 5;
+    
+    //! IMSK Register Bits
+    static constexpr u8 TOIE   = 0;
+    static constexpr u8 OCIE_A = 1;
+    static constexpr u8 OCIE_B = 2;
+    static constexpr u8 OCIE_C = 3;
+    static constexpr u8 ICIE   = 5;
 
     //! CCR_A Register Fields
-    static constexpr u8 COM_A   = 0b11000000;
-    static constexpr u8 COM_B   = 0b00110000;
-    static constexpr u8 COM_C   = 0b00001100;
-    static constexpr u8 WGM_0_1 = 0b00000011;
+    static constexpr u8 COM_A     = 0b11000000;
+    static constexpr u8 COM_B     = 0b00110000;
+    static constexpr u8 COM_C     = 0b00001100;
+    static constexpr u8 CCR_A_WGM = 0b00000011;
     
     //! CCR_B Register Fields
-    static constexpr u8 CS      = 0b00000111;
-    static constexpr u8 WGM_2_3 = 0b00011000;
+    static constexpr u8 CS        = 0b00000111;
+    static constexpr u8 CCR_B_WGM = 0b00011000;
 
     //! CCR_B Register Bits
     static constexpr u8 ICNC = 7;
@@ -380,13 +387,6 @@ namespace HDL {
     static constexpr u8 FOC_A = 7;
     static constexpr u8 FOC_B = 6;
     static constexpr u8 FOC_C = 5;
-    
-    //! IMSK Register Bits
-    static constexpr u8 TOIE   = 0;
-    static constexpr u8 OCIE_A = 1;
-    static constexpr u8 OCIE_B = 2;
-    static constexpr u8 OCIE_C = 3;
-    static constexpr u8 ICIE   = 5;
   };
 
   struct TIMER_0_ModuleDefs : TIMER_8bits_ModuleDefs {
@@ -440,6 +440,93 @@ namespace HDL {
     static constexpr usys CNT   = SFR(0xB2);
     static constexpr usys OCR_A = SFR(0xB3);
     static constexpr usys OCR_B = SFR(0xB4);
+  };
+  
+  struct TIMER_3_ModuleDefs : TIMER_16bits_ModuleDefs {
+    static constexpr usys IFR   = SFR(0x18);
+    static constexpr usys IMSK  = SFR(0x71);
+
+    static constexpr usys CCR_A = SFR(0x90);
+    static constexpr usys CCR_B = SFR(0x91);
+    static constexpr usys CCR_C = SFR(0x92);
+
+    static constexpr usys CNT   = SFR(0x94);
+    static constexpr usys CNT_L = SFR(0x94);
+    static constexpr usys CNT_H = SFR(0x95);
+
+    static constexpr usys ICR   = SFR(0x96);
+    static constexpr usys ICR_L = SFR(0x96);
+    static constexpr usys ICR_H = SFR(0x97);
+    
+    static constexpr usys OCR_A   = SFR(0x98);
+    static constexpr usys OCR_A_L = SFR(0x98);
+    static constexpr usys OCR_A_H = SFR(0x99);
+    
+    static constexpr usys OCR_B   = SFR(0x9A);
+    static constexpr usys OCR_B_L = SFR(0x9A);
+    static constexpr usys OCR_B_H = SFR(0x9B);
+    
+    static constexpr usys OCR_C   = SFR(0x9C);
+    static constexpr usys OCR_C_L = SFR(0x9C);
+    static constexpr usys OCR_C_H = SFR(0x9D);
+  };
+  
+  struct TIMER_4_ModuleDefs : TIMER_16bits_ModuleDefs {
+    static constexpr usys IFR   = SFR(0x19);
+    static constexpr usys IMSK  = SFR(0x72);
+
+    static constexpr usys CCR_A = SFR(0xA0);
+    static constexpr usys CCR_B = SFR(0xA1);
+    static constexpr usys CCR_C = SFR(0xA2);
+
+    static constexpr usys CNT   = SFR(0xA4);
+    static constexpr usys CNT_L = SFR(0xA4);
+    static constexpr usys CNT_H = SFR(0xA5);
+
+    static constexpr usys ICR   = SFR(0xA6);
+    static constexpr usys ICR_L = SFR(0xA6);
+    static constexpr usys ICR_H = SFR(0xA7);
+    
+    static constexpr usys OCR_A   = SFR(0xA8);
+    static constexpr usys OCR_A_L = SFR(0xA8);
+    static constexpr usys OCR_A_H = SFR(0xA9);
+    
+    static constexpr usys OCR_B   = SFR(0xAA);
+    static constexpr usys OCR_B_L = SFR(0xAA);
+    static constexpr usys OCR_B_H = SFR(0xAB);
+    
+    static constexpr usys OCR_C   = SFR(0xAC);
+    static constexpr usys OCR_C_L = SFR(0xAC);
+    static constexpr usys OCR_C_H = SFR(0xAD);
+  };
+  
+  struct TIMER_5_ModuleDefs : TIMER_16bits_ModuleDefs {
+    static constexpr usys IFR   = SFR(0x1A);
+    static constexpr usys IMSK  = SFR(0x73);
+
+    static constexpr usys CCR_A = SFR(0x120);
+    static constexpr usys CCR_B = SFR(0x121);
+    static constexpr usys CCR_C = SFR(0x122);
+
+    static constexpr usys CNT   = SFR(0x124);
+    static constexpr usys CNT_L = SFR(0x124);
+    static constexpr usys CNT_H = SFR(0x125);
+
+    static constexpr usys ICR   = SFR(0x126);
+    static constexpr usys ICR_L = SFR(0x126);
+    static constexpr usys ICR_H = SFR(0x127);
+    
+    static constexpr usys OCR_A   = SFR(0x128);
+    static constexpr usys OCR_A_L = SFR(0x128);
+    static constexpr usys OCR_A_H = SFR(0x129);
+    
+    static constexpr usys OCR_B   = SFR(0x12A);
+    static constexpr usys OCR_B_L = SFR(0x12A);
+    static constexpr usys OCR_B_H = SFR(0x12B);
+    
+    static constexpr usys OCR_C   = SFR(0x12C);
+    static constexpr usys OCR_C_L = SFR(0x12C);
+    static constexpr usys OCR_C_H = SFR(0x12D);
   };
   
   /* END Simple defs */
@@ -550,6 +637,56 @@ namespace HDL {
       template<DummyType _DUMMY> struct OCF<1, _DUMMY> {
 	static constexpr auto& field = OCF_B;
       };
+
+      //! IMSK Register Bits
+      static constexpr BitField8<typename Defs::Groups::IMSK, Defs::TOIE> TOIE = Registers::IMSK;
+      static constexpr BitField8<typename Defs::Groups::IMSK, Defs::OCIE_A> OCIE_A = Registers::IMSK;
+      static constexpr BitField8<typename Defs::Groups::IMSK, Defs::OCIE_B> OCIE_B = Registers::IMSK;
+
+      template<u8 OC_ID, DummyType _DUMMY = DUMMY_VALUE> struct OCIE {};
+
+      template<DummyType _DUMMY> struct OCIE<0, _DUMMY> {
+	static constexpr auto& field = OCIE_A;
+      };
+
+      template<DummyType _DUMMY> struct OCIE<1, _DUMMY> {
+	static constexpr auto& field = OCIE_B;
+      };
+
+      //! CCR_A Register Fields
+      static constexpr Field8<typename Defs::Groups::CCR_A, Defs::COM_A> COM_A = Registers::CCR_A;
+      static constexpr Field8<typename Defs::Groups::CCR_A, Defs::COM_B> COM_B = Registers::CCR_A;
+
+      template<u8 OC_ID, DummyType _DUMMY = DUMMY_VALUE> struct COM { static_assert(!OC_ID && OC_ID, "Invalid OC_ID"); };
+
+      template<DummyType _DUMMY> struct COM<0, _DUMMY> {
+	static constexpr auto& field = COM_A;
+      };
+      
+      template<DummyType _DUMMY> struct COM<1, _DUMMY> {
+	static constexpr auto& field = COM_B;
+      };
+
+      //! CCR_B Register Fields
+      static constexpr Field8<typename Defs::Groups::CCR_B, Defs::CS> CS = Registers::CCR_B;
+      static constexpr BitField8<typename Defs::Groups::CCR_B, Defs::FOC_A> FOC_A = Registers::CCR_B;
+      static constexpr BitField8<typename Defs::Groups::CCR_B, Defs::FOC_B> FOC_B = Registers::CCR_B;
+      
+      template<u8 OC_ID, DummyType _DUMMY = DUMMY_VALUE> struct FOC { static_assert(!OC_ID && OC_ID, "Invalid OC_ID"); };
+
+      template<DummyType _DUMMY> struct FOC<0, _DUMMY> {
+	static constexpr auto& field = FOC_A;
+      };
+      
+      template<DummyType _DUMMY> struct FOC<1, _DUMMY> {
+	static constexpr auto& field = FOC_B;
+      };
+
+      //! CCR_A_B Register Fields
+      static constexpr Field8<typename Defs::Groups::CCR_A, Defs::CCR_A_WGM> CCR_A_WGM = Registers::CCR_A;
+      static constexpr Field8<typename Defs::Groups::CCR_B, Defs::CCR_B_WGM> CCR_B_WGM = Registers::CCR_B;
+      static constexpr auto WGM = make_virtual_field(CCR_B_WGM, CCR_A_WGM);
+      
     };
     
     template<DummyType DUMMY>
@@ -562,6 +699,49 @@ namespace HDL {
       
       template<DummyType _DUMMY> struct OCF<2, _DUMMY> {
 	static constexpr auto& field = OCF_C;
+      };
+      
+      //! IMSK Register Bits
+      static constexpr BitField8<typename Defs::Groups::IMSK, Defs::OCIE_C> OCIE_C = Registers::IMSK;
+      static constexpr BitField8<typename Defs::Groups::IMSK, Defs::ICIE> ICIE = Registers::IMSK;
+      
+      template<u8 OC_ID, DummyType _DUMMY = DUMMY_VALUE> struct OCIE : _Fields<8, DUMMY>::template OCIE<OC_ID, _DUMMY> {};
+      
+      template<DummyType _DUMMY> struct OCIE<2, _DUMMY> {
+	static constexpr auto& field = OCIE_C;
+      };
+      
+      //! CCR_A Register Fields
+      static constexpr Field8<typename Defs::Groups::CCR_A, Defs::COM_C> COM_C = Registers::CCR_A;
+
+      template<u8 OC_ID, DummyType _DUMMY = DUMMY_VALUE> struct COM : _Fields<8, DUMMY>::template COM<OC_ID, _DUMMY> {};
+      
+      template<DummyType _DUMMY> struct COM<2, _DUMMY> {
+	static constexpr auto& field = COM_C;
+      };
+      
+      //! CCR_B Register Fields
+      static constexpr Field8<typename Defs::Groups::CCR_B, Defs::CS> CS = Registers::CCR_B;      
+      static constexpr BitField8<typename Defs::Groups::CCR_B, Defs::ICNC> ICNC = Registers::CCR_B;
+      static constexpr BitField8<typename Defs::Groups::CCR_B, Defs::ICES> ICES = Registers::CCR_B;
+
+      //! CCR_C Register Fields
+      static constexpr BitField8<typename Defs::Groups::CCR_C, Defs::FOC_A> FOC_A = Registers::CCR_C;
+      static constexpr BitField8<typename Defs::Groups::CCR_C, Defs::FOC_B> FOC_B = Registers::CCR_C;
+      static constexpr BitField8<typename Defs::Groups::CCR_C, Defs::FOC_C> FOC_C = Registers::CCR_C;
+      
+      template<u8 OC_ID, DummyType _DUMMY = DUMMY_VALUE> struct FOC { static_assert(!OC_ID && OC_ID, "Invalid OC_ID"); };
+
+      template<DummyType _DUMMY> struct FOC<0, _DUMMY> {
+	static constexpr auto& field = FOC_A;
+      };
+      
+      template<DummyType _DUMMY> struct FOC<1, _DUMMY> {
+	static constexpr auto& field = FOC_B;
+      };
+
+      template<DummyType _DUMMY> struct FOC<2, _DUMMY> {
+	static constexpr auto& field = FOC_C;
       };
     };
 
@@ -577,179 +757,18 @@ namespace HDL {
   template<> struct _TIMER_Defs<0> : TIMER_0_ModuleDefs {};
   template<> struct _TIMER_Defs<1> : TIMER_1_ModuleDefs {};
   template<> struct _TIMER_Defs<2> : TIMER_2_ModuleDefs {};
+  template<> struct _TIMER_Defs<3> : TIMER_3_ModuleDefs {};
+  template<> struct _TIMER_Defs<4> : TIMER_4_ModuleDefs {};
+  template<> struct _TIMER_Defs<5> : TIMER_5_ModuleDefs {};
   
   template<u8 ID> struct TIMER : _TIMER<_TIMER_Defs<ID>> {};
 
   using TIMER_0 = TIMER<0>;
   using TIMER_1 = TIMER<1>;
   using TIMER_2 = TIMER<2>;
-  
-  /*
-  struct TIMER_ModuleTraits {
-    static constexpr u8 COUNT = 6;
-  };
-
-  template<u8 BITS>
-  struct TIMER_ModuleGroups {
-    struct IFR;
-    struct CCR_A;
-    struct CCR_B;
-    struct CNT_OCR;
-    struct IMSK;
-  };
-
-  template<u8 ID, DummyType DUMMY>
-  struct _TIMER {
-    static_assert(ID < TIMER_ModuleTraits::COUNT, "Invalid ID");
-  };
-
-  template<DummyType DUMMY>
-  struct _TIMER<0, DUMMY> {
-    using Groups = TIMER_ModuleGroups<8>;
-    using Registers = _TIMER<0, DUMMY>;
-
-    static constexpr MemoryMapping::Register8<Groups::IFR> IFR = SFR(0x15);
-    
-    static constexpr MemoryMapping::Register8<Groups::CCR_A> CCR_A = SFR(0x24);
-    static constexpr MemoryMapping::Register8<Groups::CCR_B> CCR_B = SFR(0x25);
-
-    static constexpr MemoryMapping::Register8<Groups::CNT_OCR> CNT = SFR(0x26);
-
-    template<u8 OC_ID>
-    struct OCR {
-      static_assert(OC_ID < 2, "Invalid OC_ID");
-      static constexpr MemoryMapping::Register8<TIMER_ModuleGroups<8>::CNT_OCR> reg = SFR(0x27+OC_ID);
-    };
-    
-    static constexpr auto& OCR_A = OCR<0>::reg;
-    static constexpr auto& OCR_B = OCR<1>::reg;
-
-    static constexpr MemoryMapping::Register8<Groups::IMSK> IMSK = SFR(0x6E);
-
-    struct Fields {
-
-      //////////
-      // IFR Register
-
-      template<u8 BIT>
-      struct IFR {
-	static constexpr MemoryMapping::BitField8<TIMER_ModuleGroups<8>::IFR, BIT> field = Registers::IFR;
-      };
-
-      template<u8 OC_ID>
-      struct OCF : IFR<1+OC_ID> {
-	static_assert(OC_ID < 2, "Invalid OC_ID");
-      };
-
-      static constexpr auto& OCF_A = OCF<0>::field;
-      static constexpr auto& OCF_B = OCF<1>::field;
-      static constexpr auto&   TOV = IFR<0>::field;
-
-      //////////
-      // CCR_A Register
-
-      template<u8 BIT>
-      struct CCR_A {
-	static constexpr MemoryMapping::BitField8<TIMER_ModuleGroups<8>::CCR_A, BIT> field = Registers::CCR_A;
-      };
-
-      template<u8 OC_ID, DummyType DUMMY1>
-      struct _COM;
-
-      template<DummyType DUMMY1>
-      struct _COM<0, DUMMY1> {
-	static constexpr MemoryMapping::Field8<TIMER_ModuleGroups<8>::CCR_A, 0b11000000> field = Registers::CCR_A;
-      };
-
-      template<DummyType DUMMY1>
-      struct _COM<1, DUMMY1> {
-	static constexpr MemoryMapping::Field8<TIMER_ModuleGroups<8>::CCR_A, 0b00110000> field = Registers::CCR_A;
-      };
-
-      template <u8 OC_ID> using COM = _COM<OC_ID, DUMMY_VALUE>;
-
-      static constexpr auto& COM_A = COM<0>::field;
-      static constexpr auto& COM_B = COM<1>::field;
-      
-    };
-  };
-
-  template<DummyType DUMMY>
-  struct _TIMER<2, DUMMY> {
-    using Groups = TIMER_ModuleGroups<8>;
-    using Registers = _TIMER<2, DUMMY>;
-
-      static constexpr MemoryMapping::Register8<Groups::IFR> IFR = SFR(0x17);
-    
-	static constexpr MemoryMapping::Register8<Groups::CCR_A> CCR_A = SFR(0xB0);
-	static constexpr MemoryMapping::Register8<Groups::CCR_B> CCR_B = SFR(0xB1);
-
-	static constexpr MemoryMapping::Register8<Groups::CNT_OCR> CNT = SFR(0xB2);
-
-    template<u8 OC_ID>
-    struct OCR {
-      static_assert(OC_ID < 2, "Invalid OC_ID");
-      static constexpr MemoryMapping::Register8<TIMER_ModuleGroups<8>::CNT_OCR> reg = SFR(0xB3+OC_ID);
-    };
-    
-    static constexpr auto& OCR_A = OCR<0>::reg;
-    static constexpr auto& OCR_B = OCR<1>::reg;
-
-    static constexpr MemoryMapping::Register8<Groups::IMSK> IMSK = SFR(0x70);
-
-    struct Fields {
-
-      //////////
-      // IFR Register
-
-      template<u8 BIT>
-      struct IFR {
-	static constexpr MemoryMapping::BitField8<TIMER_ModuleGroups<8>::IFR, BIT> field = Registers::IFR;
-      };
-
-      template<u8 OC_ID>
-      struct OCF : IFR<1+OC_ID> {
-	static_assert(OC_ID < 2, "Invalid OC_ID");
-      };
-
-      static constexpr auto& OCF_A = OCF<0>::field;
-      static constexpr auto& OCF_B = OCF<1>::field;
-      static constexpr auto&   TOV = IFR<0>::field;
-
-      //////////
-      // CCR_A Register
-
-      template<u8 BIT>
-      struct CCR_A {
-	static constexpr MemoryMapping::BitField8<TIMER_ModuleGroups<8>::CCR_A, BIT> field = Registers::CCR_A;
-      };
-
-      template<u8 OC_ID, DummyType DUMMY1>
-      struct _COM;
-
-      template<DummyType DUMMY1>
-      struct _COM<0, DUMMY1> {
-	static constexpr MemoryMapping::Field8<TIMER_ModuleGroups<8>::CCR_A, 0b11000000> field = Registers::CCR_A;
-      };
-
-      template<DummyType DUMMY1>
-      struct _COM<1, DUMMY1> {
-	static constexpr MemoryMapping::Field8<TIMER_ModuleGroups<8>::CCR_A, 0b00110000> field = Registers::CCR_A;
-      };
-
-      template <u8 OC_ID> using COM = _COM<OC_ID, DUMMY_VALUE>;
-
-      static constexpr auto& COM_A = COM<0>::field;
-      static constexpr auto& COM_B = COM<1>::field;
-      
-    };
-  };
-
-  template<u8 ID> using TIMER = _TIMER<ID, DUMMY_VALUE>;
-
-  using TIMER_0 = TIMER<0>;
-  using TIMER_2 = TIMER<2>;
-  */
+  using TIMER_3 = TIMER<3>;
+  using TIMER_4 = TIMER<4>;
+  using TIMER_5 = TIMER<5>;
 }
 
 #endif
