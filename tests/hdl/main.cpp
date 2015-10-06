@@ -20,7 +20,7 @@ int main(int, char**) {
 #if defined AVERSIVE
 
   TIMER_1::Fields::WGM = TIMER_5::Fields::WGM;
-  _TIMER<_TIMER_Defs<0>>::Fields::OCF_A = 0;
+
 #else
 
 #endif
