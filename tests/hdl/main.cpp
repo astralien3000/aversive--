@@ -5,11 +5,6 @@
 #if defined AVERSIVE
 #include <hdl/reg.hpp>
 using namespace HDL;
-using namespace MemoryMapping;
-
-constexpr auto TEST = make_virtual_field(TIMER_0::Fields::OCF_A, TIMER_0::Fields::COM_A);
-constexpr auto TEST2 = make_virtual_field(TIMER_2::Fields::COM_A, TIMER_2::Fields::COM_A);
-constexpr auto TEST3 = make_virtual_config(true, 0b01);
 
 #else
 #include <avr/io.h>
@@ -19,9 +14,12 @@ constexpr auto TEST3 = make_virtual_config(true, 0b01);
 int main(int, char**) {
 #if defined AVERSIVE
 
-  TIMER_1::Fields::WGM = TIMER_5::Fields::WGM;
+  //TIMER_1::Fields::WGM = TIMER_5::Fields::WGM;
+  UART_0::Fields::CSZ = UART_1::Fields::CSZ;
 
 #else
+
+  //UCSR0A |= (1 << RXC0);
 
 #endif
   
