@@ -3,6 +3,7 @@
 
 #include "regs.hpp"
 #include "fields.hpp"
+#include "defs.hpp"
 
 namespace HDL {
   using namespace MemoryMapping;
@@ -29,6 +30,23 @@ namespace HDL {
 	
       }
     }
+
+    template<u8 ID> struct GPIO : Private::GPIO::_GPIO<Private::GPIO::_GPIO_Defs<ID>>::Module {};  
+  
+    using GPIO_A = GPIO<0>;
+    using GPIO_B = GPIO<1>;
+    using GPIO_C = GPIO<2>;
+    using GPIO_D = GPIO<3>;
+    using GPIO_E = GPIO<4>;
+    using GPIO_F = GPIO<5>;
+    using GPIO_G = GPIO<6>;
+
+    
+    using GPIO_H = GPIO<7>;
+
+    using GPIO_J = GPIO<9>;
+    using GPIO_K = GPIO<10>;
+    using GPIO_L = GPIO<11>;
   }
 }
 

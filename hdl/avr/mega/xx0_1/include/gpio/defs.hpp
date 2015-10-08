@@ -111,8 +111,6 @@ namespace HDL {
 	  static constexpr usys DDR  = SFR_MEM(0x0101);
 	  static constexpr usys PORT = SFR_MEM(0x0102);
 	};
-
-	struct GPIO_I_ModuleDefs : GPIO_Undef_ModuleDefs {};
     
 	struct GPIO_J_ModuleDefs : GPIO_Common_ModuleDefs {
 	  static constexpr usys PIN  = SFR_MEM(0x0103);
@@ -132,16 +130,37 @@ namespace HDL {
 	  static constexpr usys PORT = SFR_MEM(0x010B);
 	};
 
-#else
-
-	struct GPIO_H_ModuleDefs : GPIO_Undef_ModuleDefs {};
-	struct GPIO_I_ModuleDefs : GPIO_Undef_ModuleDefs {};
-	struct GPIO_J_ModuleDefs : GPIO_Undef_ModuleDefs {};
-	struct GPIO_K_ModuleDefs : GPIO_Undef_ModuleDefs {};
-	struct GPIO_L_ModuleDefs : GPIO_Undef_ModuleDefs {};
-
 #endif   //(__ATmegaxx0__)
   
+      }
+    }
+  }
+}
+
+namespace HDL {
+  namespace ATMegaxx0_1 {
+    
+    namespace Private {
+      using namespace SimpleDefs;
+      
+      namespace GPIO {
+	
+	template<u8 ID> struct _GPIO_Defs : GPIO_Undef_ModuleDefs {};
+	template<> struct _GPIO_Defs<0>  : GPIO_A_ModuleDefs {};
+	template<> struct _GPIO_Defs<1>  : GPIO_B_ModuleDefs {};
+	template<> struct _GPIO_Defs<2>  : GPIO_C_ModuleDefs {};
+	template<> struct _GPIO_Defs<3>  : GPIO_D_ModuleDefs {};
+	template<> struct _GPIO_Defs<4>  : GPIO_E_ModuleDefs {};
+	template<> struct _GPIO_Defs<5>  : GPIO_F_ModuleDefs {};
+	template<> struct _GPIO_Defs<6>  : GPIO_G_ModuleDefs {};
+
+#if defined(__ATmegaxx0__)
+	template<> struct _GPIO_Defs<7>  : GPIO_H_ModuleDefs {};
+	
+	template<> struct _GPIO_Defs<9>  : GPIO_J_ModuleDefs {};
+	template<> struct _GPIO_Defs<10> : GPIO_K_ModuleDefs {};
+	template<> struct _GPIO_Defs<11> : GPIO_L_ModuleDefs {};
+#endif   //(__ATmegaxx0__)
       }
     }
   }

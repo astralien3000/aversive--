@@ -12,52 +12,12 @@
 # define __ATmegaxx1__
 #endif
 
-#include "gpio/fields.hpp"
-#include "gpio/regs.hpp"
 #include "gpio/modules.hpp"
-#include "gpio/defs.hpp"
 
 namespace HDL {
   using namespace MemoryMapping;
     
-  namespace ATMegaxx0_1 {
-    
-    namespace Private {
-      using namespace SimpleDefs;
-      
-      namespace GPIO {
-
-	template<u8 ID> struct _GPIO_Defs : GPIO_Undef_ModuleDefs {};
-	template<> struct _GPIO_Defs<0>  : GPIO_A_ModuleDefs {};
-	template<> struct _GPIO_Defs<1>  : GPIO_B_ModuleDefs {};
-	template<> struct _GPIO_Defs<2>  : GPIO_C_ModuleDefs {};
-	template<> struct _GPIO_Defs<3>  : GPIO_D_ModuleDefs {};
-	template<> struct _GPIO_Defs<4>  : GPIO_E_ModuleDefs {};
-	template<> struct _GPIO_Defs<5>  : GPIO_F_ModuleDefs {};
-	template<> struct _GPIO_Defs<6>  : GPIO_G_ModuleDefs {};
-	template<> struct _GPIO_Defs<7>  : GPIO_H_ModuleDefs {};
-	template<> struct _GPIO_Defs<8>  : GPIO_I_ModuleDefs {};
-	template<> struct _GPIO_Defs<9>  : GPIO_J_ModuleDefs {};
-	template<> struct _GPIO_Defs<10> : GPIO_K_ModuleDefs {};
-	template<> struct _GPIO_Defs<11> : GPIO_L_ModuleDefs {};
-      }
-    }
-  
-    template<u8 ID> struct GPIO : Private::GPIO::_GPIO<Private::GPIO::_GPIO_Defs<ID>>::Module {};  
-  
-    using GPIO_A = GPIO<0>;
-    using GPIO_B = GPIO<1>;
-    using GPIO_C = GPIO<2>;
-    using GPIO_D = GPIO<3>;
-    using GPIO_E = GPIO<4>;
-    using GPIO_F = GPIO<5>;
-    using GPIO_G = GPIO<6>;
-    using GPIO_H = GPIO<7>;
-    using GPIO_I = GPIO<8>;
-    using GPIO_J = GPIO<9>;
-    using GPIO_K = GPIO<10>;
-    using GPIO_L = GPIO<11>;
-  
+  namespace ATMegaxx0_1 {  
 
     /* Timer Modules */
   
