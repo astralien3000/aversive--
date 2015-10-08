@@ -22,8 +22,8 @@ namespace MemoryMapping {
     return *this;
   }
 
-  template<typename RegType, typename Group, int BITNUM> template<int OTHER_BITNUM>
-  inline const BitField<RegType, Group, BITNUM>& BitField<RegType, Group, BITNUM>::operator=(const BitField<RegType, Group, OTHER_BITNUM>& bf) const {
+  template<typename RegType, typename Group, int BITNUM> template<typename OtherRegType, typename OtherGroup, int OTHER_BITNUM>
+  inline const BitField<RegType, Group, BITNUM>& BitField<RegType, Group, BITNUM>::operator=(const BitField<OtherRegType, OtherGroup, OTHER_BITNUM>& bf) const {
     REGISTER = (REGISTER & ~(1 << BITNUM)) | (((bf.REGISTER >> OTHER_BITNUM) & 1) << BITNUM);
     return *this;
   }

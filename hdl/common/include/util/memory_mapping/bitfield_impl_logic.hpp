@@ -5,8 +5,8 @@ inline bool BitField<RegType, Group, BITNUM>::operator OP(const Config<RegType, 
   return ((bool)*this) OP cfg;
 }
 
-template<typename RegType, typename Group, int BITNUM> template<int OTHER_BITNUM>
-inline bool BitField<RegType, Group, BITNUM>::operator OP(const BitField<RegType, Group, OTHER_BITNUM>& bf) const {
+template<typename RegType, typename Group, int BITNUM> template<typename OtherRegType, typename OtherGroup, int OTHER_BITNUM>
+inline bool BitField<RegType, Group, BITNUM>::operator OP(const BitField<OtherRegType, OtherGroup, OTHER_BITNUM>& bf) const {
   return ((bool)*this) OP ((bool)bf);
 }
 

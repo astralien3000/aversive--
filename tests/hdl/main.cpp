@@ -11,14 +11,14 @@ using namespace HDL;
 
 #endif
 
+
 int main(int, char**) {
 #if defined AVERSIVE
 
-  //TIMER_1::Fields::WGM = TIMER_5::Fields::WGM;
-  //UART_0::Fields::CSZ = UART_1::Fields::CSZ;
-  //UART_0::Fields::RXC = true;
-  //TIMER_0::IFR = 0x10;
-  TIMER_1::CNT = TIMER_3::CNT;
+  bool test = TIMER_2::Fields::OCF_A && TIMER_5::Fields::OCF_B;
+  if(GPIO_A::Fields::DDR_0) {
+    GPIO_A::Fields::PORT_0 = test;
+  }
   
 #else
 
