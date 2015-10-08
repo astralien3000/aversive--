@@ -1,6 +1,8 @@
 #ifndef REGISTER_IMPL_HPP
 #define REGISTER_IMPL_HPP
 
+#include <base/integer.hpp>
+
 namespace MemoryMapping {
 
   template<typename RegType, typename Group>
@@ -19,7 +21,7 @@ namespace MemoryMapping {
   }
 
   template<typename RegType, typename Group>
-  inline constexpr Register<RegType, Group>::Register(const uintptr_t address)
+  inline constexpr Register<RegType, Group>::Register(const usys address)
     : ADDRESS(address) {
   }
 
