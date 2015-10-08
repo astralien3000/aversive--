@@ -17,6 +17,10 @@ int main(int, char**) {
 
   GPIO_A::PIN = 0x00;
   GPIO<2>::Fields::PORT_2 = true;
+  TIMER_0::CCR_A = 0x00;
+  TIMER_1::Fields::TOV = false;
+  UART_0::DR = 'a';
+  UART_1::Fields::RXC = true;
   
 #else
 
