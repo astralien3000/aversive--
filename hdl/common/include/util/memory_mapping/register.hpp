@@ -116,6 +116,9 @@ namespace MemoryMapping {
 
   };
 
+  //! \brief Return the Register's value
+  template<typename RegType, typename Group>
+  inline const RegType VAL(const Register<RegType, Group>& reg);
 }
 
 #endif//REGISTER_HPP

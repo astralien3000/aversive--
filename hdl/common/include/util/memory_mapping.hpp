@@ -39,8 +39,9 @@ namespace MemoryMapping {
   template<typename Group, int BITNUM> using BitField64 = BitField<u64, Group, BITNUM>;
 
 
-  // Private functions
+  //! \brief Everithing inside this namespace should not be used ouside of the MemoryMapping namespace
   namespace Private {
+    //! \brief This is a recursive function that computes a Register value from a Field MASK and an integer value
     template<typename RegType>
     inline constexpr RegType  field_value(const RegType mask, const RegType value, const RegType res = 0, const int offset = 0) {
       return (mask)?field_value(mask>>1, (mask&1)?value>>1:value, res | ((value & mask & 1)<<offset), offset+1):res;
