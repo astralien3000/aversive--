@@ -6,6 +6,9 @@
 #include <hdl/reg.hpp>
 using namespace HDL;
 
+static constexpr auto CFG1 = make_config(TIMER_0::Fields::OCF_A, true);
+static constexpr auto CFG2 = make_config(GPIO_A::Fields::PIN_0, false);
+
 #else
 #include <avr/io.h>
 
@@ -14,16 +17,11 @@ using namespace HDL;
 
 int main(int, char**) {
 #if defined AVERSIVE
-
-  bool test = TIMER_2::Fields::OCF_A && TIMER_5::Fields::OCF_B;
-  if(GPIO_A::Fields::DDR_0) {
-    GPIO_A::Fields::PORT_0 = test;
-  }
+  
+  //CFG1 & CFG2;
+  //CFG1 & GPIO_A::PIN;
   
 #else
-
-  UCSR0A |= (1 << RXC0);
-  TIFR0 = 0x10;
 
 #endif
   
