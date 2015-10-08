@@ -18,8 +18,8 @@ namespace MemoryMapping {
     };
   }
 
-  template<typename Field, typename... Next>
-  inline const VirtualField<Field, Next...>& VirtualField<Field, Next...>::operator=(const VirtualField<Field, Next...>& field) const {
+  template<typename Field, typename... Next> template<typename... Fields>
+  inline const VirtualField<Field, Next...>& VirtualField<Field, Next...>::operator=(const VirtualField<Fields...>& field) const {
     pair_static_list_foreach(FIELDS, field.FIELDS, Private::VirtualFieldAssignVisitor());
     return *this;
   }
