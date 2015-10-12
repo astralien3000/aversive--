@@ -8,7 +8,7 @@ inline constexpr Config<RegType, Group, MASK | OTHER_MASK> Config<RegType, Group
 
 template<typename RegType, typename Group, RegType MASK> template<RegType OTHER_MASK>
 inline constexpr Config<RegType, Group, MASK | OTHER_MASK> Config<RegType, Group, MASK>::operator OP(const Config<RegType, Group, OTHER_MASK>& cfg) const {
-  return Config<RegType, Group, MASK>(VALUE OP cfg.VALUE);
+  return Config<RegType, Group, MASK | OTHER_MASK>(VALUE OP cfg.VALUE);
 }
 
 template<typename RegType, typename Group, RegType MASK> template<typename OtherRegType, typename OtherGroup>

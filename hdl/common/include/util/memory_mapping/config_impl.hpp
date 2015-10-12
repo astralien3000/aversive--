@@ -25,7 +25,7 @@ namespace MemoryMapping {
 
   template<typename RegType, typename Group, int BITNUM>
   inline constexpr Config<RegType, Group, (1<<BITNUM)> make_config(const BitField<RegType, Group, BITNUM>& , const bool value) {
-    return Config<RegType, Group, (1<<BITNUM)>(value?0:(1<<BITNUM));
+    return Config<RegType, Group, (1<<BITNUM)>(value?(1<<BITNUM):0);
   }
 
 #define OP |
