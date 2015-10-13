@@ -49,7 +49,7 @@ make_build_dir:
 	@ mkdir -p $(BUILD_DIR)
 
 clean:
-	@ rm -rf $(shell find . -name "*~" -o -name "#*#" -o -name "*.o") $(BUILD_DIR)
+	@ rm -rf $(shell find . -name "*~" -o -name "#*#" -o -name "*.o" -o -name "*.log") $(BUILD_DIR)
 
 mrproper: clean
 	@ rm -rf *.elf

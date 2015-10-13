@@ -73,6 +73,18 @@ atmega128: avr
 atmega2560: export AVERSIVE_MMCU=atmega2560
 atmega2560: avr
 
+atmega2561: export AVERSIVE_MMCU=atmega2561
+atmega2561: avr
+
+atmega1280: export AVERSIVE_MMCU=atmega1280
+atmega1280: avr
+
+atmega1281: export AVERSIVE_MMCU=atmega1281
+atmega1281: avr
+
+atmega640: export AVERSIVE_MMCU=atmega640
+atmega640: avr
+
 avr: export CC=$(AVR_CC)
 avr: export CFLAGS=$(AVR_CFLAGS) $(WCFLAGS) -mmcu=$(AVERSIVE_MMCU)
 avr: export INCLUDE=$(AVR_INCLUDE)

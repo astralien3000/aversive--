@@ -1,6 +1,6 @@
 //#include <memory_mapping.hpp>
 
-//#define AVERSIVE
+#define AVERSIVE
 
 #if defined AVERSIVE
 #include <hdl/reg.hpp>
@@ -21,6 +21,7 @@ int main(int, char**) {
   TIMER_1::Fields::TOV = false;
   UART_0::DR = 'a';
   UART_1::Fields::RXC = true;
+  GPIO_L::Fields::PORT_2 = true;
   
 #else
 
