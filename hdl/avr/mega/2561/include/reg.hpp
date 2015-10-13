@@ -6,4 +6,4 @@
 namespace HDL {
 }
 
-#endif//HDL_AVR_MEGA_2560_REG_HPP
+#endif//HDL_AVR_MEGA_2561_REG_HPP
