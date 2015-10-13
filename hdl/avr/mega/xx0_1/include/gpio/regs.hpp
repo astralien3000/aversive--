@@ -9,8 +9,7 @@ namespace HDL {
   namespace ATMegaxx0_1 {
     
     namespace Private {
-      using namespace HDL::Private;
-      using namespace MemoryMapping;
+      using namespace ::MemoryMapping;
       
       namespace GPIO {
 	template<typename ModuleDefs>

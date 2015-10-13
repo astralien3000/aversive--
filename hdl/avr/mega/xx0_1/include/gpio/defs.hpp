@@ -6,8 +6,8 @@ namespace HDL {
   namespace ATMegaxx0_1 {
       
     namespace Private {
-      using namespace HDL::AVR::Private;
-
+      using namespace ::HDL::AVR::Private;
+      
       namespace SimpleDefs {
   
 	struct GPIO_Undef_ModuleDefs {

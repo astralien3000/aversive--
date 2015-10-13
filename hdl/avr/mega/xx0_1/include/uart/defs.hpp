@@ -7,6 +7,7 @@ namespace HDL {
   namespace ATMegaxx0_1 {  
 
     namespace Private {
+      using namespace ::HDL::AVR::Private;
 
       namespace SimpleDefs {
 	struct UART_Common_ModuleDefs {

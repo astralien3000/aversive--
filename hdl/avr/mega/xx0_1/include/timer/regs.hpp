@@ -8,9 +8,8 @@ namespace HDL {
     
   namespace ATMegaxx0_1 {  
 
-    /* Timer Modules */
-
     namespace Private {
+      using namespace ::MemoryMapping;
 
       namespace TIMER {
 	

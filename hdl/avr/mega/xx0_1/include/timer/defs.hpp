@@ -6,7 +6,8 @@ namespace HDL {
   namespace ATMegaxx0_1 {  
   
     namespace Private {
-    
+      using namespace ::HDL::AVR::Private;
+      
       namespace SimpleDefs {
 
 	struct TIMER_8bits_ModuleDefs {

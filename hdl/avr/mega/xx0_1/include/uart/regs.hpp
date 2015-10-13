@@ -10,7 +10,8 @@ namespace HDL {
   namespace ATMegaxx0_1 {  
 
     namespace Private {
-
+      using namespace ::MemoryMapping;
+      
       namespace UART {
 
 	template<typename ModuleDefs>

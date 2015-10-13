@@ -6,7 +6,6 @@
 #include "defs.hpp"
 
 namespace HDL {
-  using namespace MemoryMapping;
     
   namespace ATMegaxx0_1 {
     
