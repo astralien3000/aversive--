@@ -37,6 +37,10 @@ constexpr auto G1B1C1 = make_config(R1B1, true);
 constexpr auto G2F2C1 = make_config(R3F2, 0b01);
 constexpr auto G2F2C2 = make_config(R3F2, 0b11);
 
+constexpr auto VF1 = make_virtual_field(R1F1, R3F2);
+constexpr auto VF2 = make_virtual_field(R2F1, R3F2);
+constexpr auto VC1 = make_virtual_field(G1F1C2, G2F2C1);
+
 struct Test {
   static std::vector<const char*> list;
 
@@ -51,7 +55,7 @@ std::vector<const char*> Test::list;
   struct _##name {					\
     _##name(void) { Test::list.push_back(#name); }	\
   };							\
-  _##name _##name##_elem;					\
+  _##name _##name##_elem;				\
   template<DummyType DUMMY = DUMMY_VALUE>		\
   struct name : Test
 
@@ -419,6 +423,36 @@ MACRO_TEST_CLASS(TestConfigsArith2OK) {
     assert(RES1.VALUE == 0b10000100);
   }
 };
+
+////////////////////////////////////////////////////////////////
+// VirtualFields
+
+MACRO_TEST_CLASS(TestVirtualFieldsSimpleAssignOK) {
+  void run(void) {
+    r1 = 0;
+    r3 = 0;
+
+    VF1 = VC1;
+    
+    assert(r1 == 0b00100100);
+    assert(r3 == 0b01000000);
+  }
+};
+
+MACRO_TEST_CLASS(TestVirtualFieldsSimpleAssign2OK) {
+  void run(void) {
+    r1 = 0b11000000;
+    r2 = 0b00101100;
+    r3 = 0b01000000;
+
+    VF1 = VF2;
+    
+    assert(r1 == 0b11101100);
+    assert(r2 == 0b00101100);
+    assert(r3 == 0b01000000);
+  }
+};
+
 
 
 int main(int, char**) {

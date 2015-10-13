@@ -8,7 +8,7 @@ do
     echo -n "    .........................  "
     if [[ $i =~ .*KO$ ]]
     then
-	RET=$(TEST=$i make 2> log)
+	RET=$(TEST=$i make 2> build/$i.log)
 	if [[ $RET == "" ]]
 	then
 	    echo "ERROR, should not compile"
@@ -16,6 +16,6 @@ do
 	    echo "PASSED"
 	fi
     else
-	TEST=$i make && ./test.elf
+	TEST=$i make 2> build/$i.log && ./test.elf
     fi
 done
