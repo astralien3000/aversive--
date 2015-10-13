@@ -1,0 +1,114 @@
+/*!
+
+\page "Support a new microcontroller" Support a new microcontroller
+
+# Introduction
+
+To support a new microcontroller, you need to implement the two lowest layers of Aversive++ : HDL (Hardware Description Layer) and HAL (Hardware Abstraction Layer).
+
+The HDL is the piece of code that defines every registers, interrupts, and instructions used to control the hardware modules (for example, a GPIO, a UART, a TIMER). It is not supposed to have a common API for all microcontrollers, but it is highly recommended to use a common structure, described below.
+
+The HAL is the part of the code that provides a common, but complete, API to control the hardware. The whole API may not be implemented for a particular microcontroller, but it is not a problem. Indeed, the HAL system will inform the end user that a functionality is not available on the architecture he is trying to compile for.
+
+# HDL
+
+## Interface's Structure Specification
+
+### Vocabulary
+
+ - A "module" is a physical component of the microcontroller that provides a specific service. It can be controlled by setting registers or getting their value.
+ - A "register" is a memory case, defined by it's size and address, that is used to communicate with the hardware. In the HDL, it can be represented by a MemoryMapping::Register object
+ - A "field" is a set of bits in the memory that can be used together to configure or represent a specific option in the hardware. In the HDL, it can be represented by a MemoryMapping::BitField, a MemoryMapping::Field, a MemoryMapping::Register, or a MemoryMapping::VirtualField object.
+ - A configuration is a value that can be set to a MemoryMapping::BitField, a MemoryMapping::Field, a MemoryMapping::Register, or a MemoryMapping::VirtualField object. In HDL, it can be represented as a MemoryMapping::Config, or a MemoryMapping::VirtualConfig.
+
+### Specs
+
+ - The whole HDL definitions should be available for the user in the HDL namespace.
+ - The module-specific definitions should be in a structure which name should correspond to the Datasheet's name.
+ - The registers should be defined in the root module structure.
+ - The fields should be defined in a Fields sub-structure.
+ - The configurations should be defined in a Configs sub-structure.
+ - Everything that can be numbered should provide a templated interface with it's actual name.
+
+Example of user code:
+
+    GPIO_A::DDR = 0x00;
+    GPIO<0>::Fields::DDR_0 = true;
+    TIMER_0::Fields::WGM = TIMER_0::Fields::CTC;
+    
+There is a lot of ways to generate this structure. Some are easier than others. So the second part is a list of tips for the developer.
+
+## Tips for developers
+
+The model HDL definition is located in `HDL/avr/mega/xx0_1/`
+
+### Separate the modules
+
+Indeed, the HDL is likely to be a huge list of definitions. So that it is advised to separate definitions in modules
+
+Example:
+
+    +- my_awesome_mcu
+     +- gpio
+     +- uart
+     +- timer
+
+### Separate the definition from the structure
+
+Generating the structure is as huge as defining register's addresses, field's masks and config's values. You should define those in a simple way without any decoration (almost as a C developer would do). You can find examples of these in HDL/avr/mega/xx0_1/${modules}/defs.hpp.
+
+In the example, these definitions are in the sub-namespace `HDL::MyAwesomeMCU::Private::SimpleDefs`
+
+### Separate all the sub-structures
+
+You should have the following structure :
+
+    struct Module {
+      # Registers
+      struct Fields {
+        # Fields
+      };
+      struct Configs {
+        # Configs
+      };
+    };
+
+But it may be useful to split it into three different structures and gather it afterward.
+
+The example do as following :
+
+    +- my_awesome_module
+     +- defs.hpp
+     +- regs.hpp
+     |   struct Registers<...> {
+     |     ...
+     |   };
+     +- fields.hpp
+     |   struct Fields<...> {
+     |     ...
+     |   };
+     +- configs.hpp
+     |   struct Configs<...> {
+     |     ...
+     |   };
+     +- modules.hpp
+         struct MyAwesomeModule<...> : Registers<...> {
+           struct Fields : Fields<...> {};
+           struct Configs : Configs<...> {};
+         };
+        
+This example is quite simplified, and I recommend you to go and see the example code.
+
+### Everything except the API in the Private namespace
+
+The title is quite understandable, anything that the user is not supposed to use should be placed in a Private namespace.
+
+### Everything is `static constexpr`
+
+You don't want the user to get his precious RAM swallowed, do you ?
+
+# HAL
+
+(Comming soon !)
+
+*/
