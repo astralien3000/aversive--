@@ -123,10 +123,10 @@ namespace HDL {
 	template<> struct _UART_Defs<0> : UART_0_ModuleDefs {};
 	template<> struct _UART_Defs<1> : UART_1_ModuleDefs {};
 	template<> struct _UART_Defs<2> : UART_2_ModuleDefs {};
+	
 #if defined(__ATmegaxx0__)
 	template<> struct _UART_Defs<3> : UART_3_ModuleDefs {};
 #endif   //(__ATmegaxx0__)
-
       }
     }
   }

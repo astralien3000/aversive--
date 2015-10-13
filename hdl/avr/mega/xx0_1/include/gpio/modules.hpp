@@ -41,12 +41,13 @@ namespace HDL {
     using GPIO_F = GPIO<5>;
     using GPIO_G = GPIO<6>;
 
-    
+#if defined(__ATmegaxx0__)
     using GPIO_H = GPIO<7>;
 
     using GPIO_J = GPIO<9>;
     using GPIO_K = GPIO<10>;
     using GPIO_L = GPIO<11>;
+#endif   //(__ATmegaxx0__)
   }
 }
 

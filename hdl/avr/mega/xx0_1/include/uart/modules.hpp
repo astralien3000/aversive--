@@ -25,7 +25,10 @@ namespace HDL {
     using UART_0 = UART<0>;
     using UART_1 = UART<1>;
     using UART_2 = UART<2>;
+    
+#if defined(__ATmegaxx0__)
     using UART_3 = UART<3>;
+#endif   //(__ATmegaxx0__)
   }
 }
 
