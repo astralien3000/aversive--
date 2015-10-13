@@ -36,7 +36,6 @@ class FpgaEncoder : public Encoder {
 public:
   //! \brief Create a named encoder
   //! \param name : the name of the device (used with sasiae)
-  //! \param addr : the FPGA register address
   FpgaEncoder(const char* name);
 
   //! \brief Get the number of impulsion of the incremental encoder
