@@ -12,7 +12,11 @@ namespace HDL {
     namespace Private {
 
       namespace TIMER {
-	
+
+	//! \brief Here are defined TIMER module Fields, this class will be incorporated in the final TIMER Module
+	/*!
+	 * The fields are splitted into 2 cases : 8-bits and 16-bits
+	 */
 	template<typename ModuleDefs>
 	struct TIMER_ModuleFields {
 	  using Defs = ModuleDefs;
@@ -20,9 +24,11 @@ namespace HDL {
     
 	  template<u8 BITS, DummyType DUMMY = DUMMY_VALUE> struct _Fields {};
 
+	  //! \brief 8-bits specisalization
 	  template<DummyType DUMMY>
 	  struct _Fields<8, DUMMY> {
-	    // IFR Register Bits
+	    //! \name IFR Register Bits
+	    //! @{
 	    static constexpr BitField8<typename Defs::Groups::IMSK, Defs::TOV> TOV = Registers::IFR;
 	    static constexpr BitField8<typename Defs::Groups::IMSK, Defs::OCF_A> OCF_A = Registers::IFR;
 	    static constexpr BitField8<typename Defs::Groups::IMSK, Defs::OCF_B> OCF_B = Registers::IFR;
@@ -36,8 +42,10 @@ namespace HDL {
 	    template<DummyType _DUMMY> struct OCF<1, _DUMMY> {
 	      static constexpr auto& field = OCF_B;
 	    };
+	    //! @}
 
-	    // IMSK Register Bits
+	    //! \name IMSK Register Bits
+	    //! @{
 	    static constexpr BitField8<typename Defs::Groups::IMSK, Defs::TOIE> TOIE = Registers::IMSK;
 	    static constexpr BitField8<typename Defs::Groups::IMSK, Defs::OCIE_A> OCIE_A = Registers::IMSK;
 	    static constexpr BitField8<typename Defs::Groups::IMSK, Defs::OCIE_B> OCIE_B = Registers::IMSK;
@@ -51,8 +59,10 @@ namespace HDL {
 	    template<DummyType _DUMMY> struct OCIE<1, _DUMMY> {
 	      static constexpr auto& field = OCIE_B;
 	    };
+	    //! @}
 
-	    // CCR_A Register Fields
+	    //! \name CCR_A Register Fields
+	    //! @{
 	    static constexpr Field8<typename Defs::Groups::CCR_A, Defs::COM_A> COM_A = Registers::CCR_A;
 	    static constexpr Field8<typename Defs::Groups::CCR_A, Defs::COM_B> COM_B = Registers::CCR_A;
 
@@ -65,8 +75,10 @@ namespace HDL {
 	    template<DummyType _DUMMY> struct COM<1, _DUMMY> {
 	      static constexpr auto& field = COM_B;
 	    };
+	    //! @}
 
-	    // CCR_B Register Fields
+	    //! \name CCR_B Register Fields
+	    //! @{
 	    static constexpr Field8<typename Defs::Groups::CCR_B, Defs::CS> CS = Registers::CCR_B;
 	    static constexpr BitField8<typename Defs::Groups::CCR_B, Defs::FOC_A> FOC_A = Registers::CCR_B;
 	    static constexpr BitField8<typename Defs::Groups::CCR_B, Defs::FOC_B> FOC_B = Registers::CCR_B;
@@ -80,17 +92,21 @@ namespace HDL {
 	    template<DummyType _DUMMY> struct FOC<1, _DUMMY> {
 	      static constexpr auto& field = FOC_B;
 	    };
+	    //! @}
 
-	    // CCR_A_B Register Fields
+	    //! \name CCR_A_B Register Fields
+	    //! @{
 	    static constexpr Field8<typename Defs::Groups::CCR_A, Defs::CCR_A_WGM> CCR_A_WGM = Registers::CCR_A;
 	    static constexpr Field8<typename Defs::Groups::CCR_B, Defs::CCR_B_WGM> CCR_B_WGM = Registers::CCR_B;
 	    static constexpr auto WGM = make_virtual_field(CCR_B_WGM, CCR_A_WGM);
       
 	  };
     
+	  //! \brief 8-bits specisalization
 	  template<DummyType DUMMY>
 	  struct _Fields<16, DUMMY> : _Fields<8, DUMMY> {
-	    // IFR Register Bits
+	    //! \name IFR Register Bits
+	    //! @{
 	    static constexpr BitField8<typename Defs::Groups::IMSK, Defs::OCF_C> OCF_C = Registers::IFR;
 	    static constexpr BitField8<typename Defs::Groups::IMSK, Defs::ICF> ICF = Registers::IFR;
       
@@ -99,8 +115,10 @@ namespace HDL {
 	    template<DummyType _DUMMY> struct OCF<2, _DUMMY> {
 	      static constexpr auto& field = OCF_C;
 	    };
+	    //! @}
       
-	    // IMSK Register Bits
+	    //! \name IMSK Register Bits
+	    //! @{
 	    static constexpr BitField8<typename Defs::Groups::IMSK, Defs::OCIE_C> OCIE_C = Registers::IMSK;
 	    static constexpr BitField8<typename Defs::Groups::IMSK, Defs::ICIE> ICIE = Registers::IMSK;
       
@@ -109,8 +127,10 @@ namespace HDL {
 	    template<DummyType _DUMMY> struct OCIE<2, _DUMMY> {
 	      static constexpr auto& field = OCIE_C;
 	    };
+	    //! @}
       
-	    // CCR_A Register Fields
+	    //! \name CCR_A Register Fields
+	    //! @{
 	    static constexpr Field8<typename Defs::Groups::CCR_A, Defs::COM_C> COM_C = Registers::CCR_A;
 
 	    template<u8 OC_ID, DummyType _DUMMY = DUMMY_VALUE> struct COM : _Fields<8, DUMMY>::template COM<OC_ID, _DUMMY> {};
@@ -118,13 +138,17 @@ namespace HDL {
 	    template<DummyType _DUMMY> struct COM<2, _DUMMY> {
 	      static constexpr auto& field = COM_C;
 	    };
+	    //! @}
       
-	    // CCR_B Register Fields
+	    //! \name CCR_B Register Fields
+	    //! @{
 	    static constexpr Field8<typename Defs::Groups::CCR_B, Defs::CS> CS = Registers::CCR_B;      
 	    static constexpr BitField8<typename Defs::Groups::CCR_B, Defs::ICNC> ICNC = Registers::CCR_B;
 	    static constexpr BitField8<typename Defs::Groups::CCR_B, Defs::ICES> ICES = Registers::CCR_B;
+	    //! @}
 
-	    // CCR_C Register Fields
+	    //! \name CCR_C Register Fields
+	    //! @{
 	    static constexpr BitField8<typename Defs::Groups::CCR_C, Defs::FOC_A> FOC_A = Registers::CCR_C;
 	    static constexpr BitField8<typename Defs::Groups::CCR_C, Defs::FOC_B> FOC_B = Registers::CCR_C;
 	    static constexpr BitField8<typename Defs::Groups::CCR_C, Defs::FOC_C> FOC_C = Registers::CCR_C;
@@ -142,6 +166,7 @@ namespace HDL {
 	    template<DummyType _DUMMY> struct FOC<2, _DUMMY> {
 	      static constexpr auto& field = FOC_C;
 	    };
+	    //! @}
 	  };
 
 	  using Fields = _Fields<Defs::BITS>;

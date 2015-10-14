@@ -13,6 +13,7 @@ namespace HDL {
 
       namespace UART {
 
+	//! \brief This is the final UART module structure, which implements the HDL structure specification
 	template<typename Defs>
 	struct _UART : UART_ModuleRegisters<Defs> {
 	  struct Fields : UART_ModuleFields<Defs> {};
@@ -20,6 +21,7 @@ namespace HDL {
       }
     }
 
+    //! \brief This is the final UART module structure, associated with an ID
     template<u8 ID> struct UART : Private::UART::_UART<Private::UART::_UART_Defs<ID>> {};
 
     using UART_0 = UART<0>;

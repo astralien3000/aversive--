@@ -10,9 +10,12 @@ namespace HDL {
       
       namespace SimpleDefs {
 
+	//! \brief TIMER common modules definitions (8-bits case)
 	struct TIMER_8bits_ModuleDefs {
+	  //! \brief This is used for template specification
 	  static constexpr u8 BITS = 8;
 
+	  //! \brief Common groups
 	  struct Groups {
 	    struct IMSK;
 
@@ -22,33 +25,46 @@ namespace HDL {
 	    struct CNT;
 	  };
 
-	  // IFR Register Bits
+	  //! \name IFR Register Bits
+	  //! @{
 	  static constexpr u8 TOV   = 0;
 	  static constexpr u8 OCF_A = 1;
 	  static constexpr u8 OCF_B = 2;
+	  //! @}
 
-	  // CCR_A Register Fields
+	  //! \name CCR_A Register Fields
+	  //! @{
 	  static constexpr u8 COM_A     = 0b11000000;
 	  static constexpr u8 COM_B     = 0b00110000;
 	  static constexpr u8 CCR_A_WGM = 0b00000011;
+	  //! @}
     
-	  // CCR_B Register Fields
+	  //! \name CCR_B Register Fields
+	  //! @{
 	  static constexpr u8 CS        = 0b00000111;
 	  static constexpr u8 CCR_B_WGM = 0b00001000;
+	  //! @}
 
-	  // CCR_B Register Bits
+	  //! \name CCR_B Register Bits
+	  //! @{
 	  static constexpr u8 FOC_A = 7;
 	  static constexpr u8 FOC_B = 6;
+	  //! @}
 
-	  // IMSK Register Bits
+	  //! \name IMSK Register Bits
+	  //! @{
 	  static constexpr u8 TOIE   = 0;
 	  static constexpr u8 OCIE_A = 1;
 	  static constexpr u8 OCIE_B = 2;
+	  //! @}
 	};
 
+	//! \brief TIMER common modules definitions (16-bits case)
 	struct TIMER_16bits_ModuleDefs {
+	  //! \brief This is used for template specification
 	  static constexpr u8 BITS = 16;
 
+	  //! \brief Common groups
 	  struct Groups {
 	    struct IMSK;
 
@@ -61,40 +77,53 @@ namespace HDL {
 	    struct CNT_H;
 	  };
 
-	  // IFR Register Bits
+	  //! \name IFR Register Bits
+	  //! @{
 	  static constexpr u8 TOV   = 0;
 	  static constexpr u8 OCF_A = 1;
 	  static constexpr u8 OCF_B = 2;
 	  static constexpr u8 OCF_C = 3;
 	  static constexpr u8 ICF   = 5;
+	  //! @}
     
-	  // IMSK Register Bits
+	  //! \name IMSK Register Bits
+	  //! @{
 	  static constexpr u8 TOIE   = 0;
 	  static constexpr u8 OCIE_A = 1;
 	  static constexpr u8 OCIE_B = 2;
 	  static constexpr u8 OCIE_C = 3;
 	  static constexpr u8 ICIE   = 5;
+	  //! @}
 
-	  // CCR_A Register Fields
+	  //! \name CCR_A Register Fields
+	  //! @{
 	  static constexpr u8 COM_A     = 0b11000000;
 	  static constexpr u8 COM_B     = 0b00110000;
 	  static constexpr u8 COM_C     = 0b00001100;
 	  static constexpr u8 CCR_A_WGM = 0b00000011;
+	  //! @}
     
-	  // CCR_B Register Fields
+	  //! \name CCR_B Register Fields
+	  //! @{
 	  static constexpr u8 CS        = 0b00000111;
 	  static constexpr u8 CCR_B_WGM = 0b00011000;
+	  //! @}
 
-	  // CCR_B Register Bits
+	  //! \name CCR_B Register Bits
+	  //! @{
 	  static constexpr u8 ICNC = 7;
 	  static constexpr u8 ICES = 6;
+	  //! @}
     
-	  // CCR_C Register Bits
+	  //! \name CCR_C Register Bits
+	  //! @{
 	  static constexpr u8 FOC_A = 7;
 	  static constexpr u8 FOC_B = 6;
 	  static constexpr u8 FOC_C = 5;
+	  //! @}
 	};
 
+	//! \brief TIMER 0 (8-bits) module definitions
 	struct TIMER_0_ModuleDefs : TIMER_8bits_ModuleDefs {
 	  static constexpr usys IFR   = SFR_IO(0x0015);
 	  static constexpr usys IMSK  = SFR_MEM(0x006E);
@@ -107,6 +136,7 @@ namespace HDL {
 	  static constexpr usys OCR_B = SFR_IO(0x0028);
 	};
 
+	//! \brief TIMER 1 (16-bits) module definitions
 	struct TIMER_1_ModuleDefs : TIMER_16bits_ModuleDefs {
 	  static constexpr usys IFR   = SFR_IO(0x0016);
 	  static constexpr usys IMSK  = SFR_MEM(0x006F);
@@ -136,6 +166,7 @@ namespace HDL {
 	  static constexpr usys OCR_C_H = SFR_MEM(0x008D);
 	};
   
+	//! \brief TIMER 2 (8-bits) module definitions
 	struct TIMER_2_ModuleDefs : TIMER_8bits_ModuleDefs {
 	  static constexpr usys IFR   = SFR_IO(0x0017);
 	  static constexpr usys IMSK  = SFR_MEM(0x0070);
@@ -148,6 +179,7 @@ namespace HDL {
 	  static constexpr usys OCR_B = SFR_MEM(0x00B4);
 	};
   
+	//! \brief TIMER 3 (16-bits) module definitions
 	struct TIMER_3_ModuleDefs : TIMER_16bits_ModuleDefs {
 	  static constexpr usys IFR   = SFR_IO(0x0018);
 	  static constexpr usys IMSK  = SFR_MEM(0x0071);
@@ -177,6 +209,7 @@ namespace HDL {
 	  static constexpr usys OCR_C_H = SFR_MEM(0x009D);
 	};
   
+	//! \brief TIMER 4 (16-bits) module definitions
 	struct TIMER_4_ModuleDefs : TIMER_16bits_ModuleDefs {
 	  static constexpr usys IFR   = SFR_IO(0x0019);
 	  static constexpr usys IMSK  = SFR_MEM(0x0072);
@@ -206,6 +239,7 @@ namespace HDL {
 	  static constexpr usys OCR_C_H = SFR_MEM(0x00AD);
 	};
   
+	//! \brief TIMER 5 (16-bits) module definitions
 	struct TIMER_5_ModuleDefs : TIMER_16bits_ModuleDefs {
 	  static constexpr usys IFR   = SFR_IO(0x001A);
 	  static constexpr usys IMSK  = SFR_MEM(0x0073);
@@ -248,7 +282,7 @@ namespace HDL {
     namespace Private {
 
       namespace TIMER {
-
+	//! \brief This class associate a TIMER module definitions to a number
 	template<u8 ID> struct _TIMER_Defs { static_assert(!ID && ID, "Invalid TIMER"); };
 	template<> struct _TIMER_Defs<0> : TIMER_0_ModuleDefs {};
 	template<> struct _TIMER_Defs<1> : TIMER_1_ModuleDefs {};

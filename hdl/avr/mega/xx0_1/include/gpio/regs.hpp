@@ -12,6 +12,8 @@ namespace HDL {
       using namespace ::MemoryMapping;
       
       namespace GPIO {
+
+	//! \brief Here are defined GPIO module Registers, this class will be incorporated in the final GPIO Module
 	template<typename ModuleDefs>
 	struct GPIO_ModuleRegisters {
 	  using Defs = ModuleDefs;

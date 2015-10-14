@@ -13,6 +13,7 @@ namespace HDL {
       
       namespace GPIO {
 
+	//! \brief This is the final GPIO module structure, which implements the HDL structure specification
 	template<typename Defs>
 	struct _GPIO {
 	  static_assert(Defs::EXIST, "GPIO does not exists");
@@ -30,6 +31,7 @@ namespace HDL {
       }
     }
 
+    //! \brief This is the final GPIO module structure, associated with an ID
     template<u8 ID> struct GPIO : Private::GPIO::_GPIO<Private::GPIO::_GPIO_Defs<ID>>::Module {};  
   
     using GPIO_A = GPIO<0>;

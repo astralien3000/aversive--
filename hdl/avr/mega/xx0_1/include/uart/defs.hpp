@@ -10,7 +10,10 @@ namespace HDL {
       using namespace ::HDL::AVR::Private;
 
       namespace SimpleDefs {
+
+	//! \brief UART common modules definitions
 	struct UART_Common_ModuleDefs {
+	  //! \brief Common groups
 	  struct Groups {
 	    struct CSR_A;
 	    struct CSR_B;
@@ -23,7 +26,8 @@ namespace HDL {
 	    struct DR;
 	  };
       
-	  // CSR_A Register Bits
+	  //! \name CSR_A Register Bits
+	  //! @{
 	  static constexpr u8 RXC  = 7;
 	  static constexpr u8 TXC  = 6;
 	  static constexpr u8 DRE  = 5;
@@ -32,8 +36,10 @@ namespace HDL {
 	  static constexpr u8 PE   = 2;
 	  static constexpr u8 U2X  = 1;
 	  static constexpr u8 MPCM = 0;
+	  //! @}
       
-	  // CSR_B Register Bits
+	  //! \name CSR_B Register Bits
+	  //! @{
 	  static constexpr u8 RXCIE = 7;
 	  static constexpr u8 TXCIE = 6;
 	  static constexpr u8 DRIE  = 5;
@@ -41,20 +47,28 @@ namespace HDL {
 	  static constexpr u8 TXEN  = 3;
 	  static constexpr u8 RXB8  = 1;
 	  static constexpr u8 TXB8  = 0;
+	  //! @}
 
-	  // CSR_B Register Fields
+	  //! \name CSR_B Register Fields
+	  //! @{
 	  static constexpr u8 CSZ_2 = 0b00000100;
-      
-	  // CSR_C Register Bits
+      	  //! @}
+
+	  //! \name CSR_C Register Bits
+	  //! @{
 	  static constexpr u8 SBS  = 3;
 	  static constexpr u8 CPOL = 0;
+	  //! @}
 
-	  // CSR_C Register Fields
+	  //! \name CSR_C Register Fields
+	  //! @{
 	  static constexpr u8 MSEL    = 0b11000000;
 	  static constexpr u8 PM      = 0b00110000;
 	  static constexpr u8 CSZ_0_1 = 0b00000110;
+	  //! @}
 	};
     
+	//! \brief UART 0 module definitions
 	struct UART_0_ModuleDefs : UART_Common_ModuleDefs {
 	  static constexpr usys CSR_A = SFR_MEM(0x00C0);
 	  static constexpr usys CSR_B = SFR_MEM(0x00C1);
@@ -67,6 +81,7 @@ namespace HDL {
 	  static constexpr usys DR    = SFR_MEM(0x00C6);
 	};
 
+	//! \brief UART 1 module definitions
 	struct UART_1_ModuleDefs : UART_Common_ModuleDefs {
 	  static constexpr usys CSR_A = SFR_MEM(0x00C8);
 	  static constexpr usys CSR_B = SFR_MEM(0x00C9);
@@ -79,6 +94,9 @@ namespace HDL {
 	  static constexpr usys DR    = SFR_MEM(0x00CE);
 	};
 
+#if defined(__ATmegaxx0__)
+    
+	//! \brief UART 2 module definitions
 	struct UART_2_ModuleDefs : UART_Common_ModuleDefs {
 	  static constexpr usys CSR_A = SFR_MEM(0x00D0);
 	  static constexpr usys CSR_B = SFR_MEM(0x00D1);
@@ -91,8 +109,7 @@ namespace HDL {
 	  static constexpr usys DR    = SFR_MEM(0x00D6);
 	};
 
-#if defined(__ATmegaxx0__)
-    
+	//! \brief UART 3 module definitions
 	struct UART_3_ModuleDefs : UART_Common_ModuleDefs {
 	  static constexpr usys CSR_A = SFR_MEM(0x0130);
 	  static constexpr usys CSR_B = SFR_MEM(0x0131);
@@ -120,12 +137,13 @@ namespace HDL {
     namespace Private {
 
       namespace UART {
+	//! \brief This class associate a UART module definitions to a number
 	template<u8 ID> struct _UART_Defs { static_assert(!ID && ID, "Invalid UART"); };
 	template<> struct _UART_Defs<0> : UART_0_ModuleDefs {};
 	template<> struct _UART_Defs<1> : UART_1_ModuleDefs {};
-	template<> struct _UART_Defs<2> : UART_2_ModuleDefs {};
 	
 #if defined(__ATmegaxx0__)
+	template<> struct _UART_Defs<2> : UART_2_ModuleDefs {};
 	template<> struct _UART_Defs<3> : UART_3_ModuleDefs {};
 #endif   //(__ATmegaxx0__)
       }

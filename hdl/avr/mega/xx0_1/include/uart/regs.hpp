@@ -14,6 +14,7 @@ namespace HDL {
       
       namespace UART {
 
+	//! \brief Here are defined UART module Registers, this class will be incorporated in the final UART Module
 	template<typename ModuleDefs>
 	struct UART_ModuleRegisters {
 	  using Defs = ModuleDefs;

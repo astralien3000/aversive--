@@ -14,6 +14,7 @@ namespace HDL {
 
       namespace TIMER {
 
+	//! \brief This is the final TIMER module structure, which implements the HDL structure specification
 	template<typename Defs>
 	struct _TIMER : TIMER_ModuleRegisters<Defs>::Registers {
 	  struct Fields : TIMER_ModuleFields<Defs>::Fields {};
@@ -22,6 +23,7 @@ namespace HDL {
       }
     }
 
+    //! \brief This is the final TIMER module structure, associated with an ID
     template<u8 ID> struct TIMER : Private::TIMER::_TIMER<Private::TIMER::_TIMER_Defs<ID>> {};
 
     using TIMER_0 = TIMER<0>;

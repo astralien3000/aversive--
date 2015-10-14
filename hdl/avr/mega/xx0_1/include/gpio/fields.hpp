@@ -13,7 +13,8 @@ namespace HDL {
     namespace Private {
       
       namespace GPIO {
-	
+
+	//! \brief Here are defined GPIO module Templated Fields, this class will be incorporated in the final GPIO Module
 	template<typename ModuleDefs>
 	struct GPIO_ModuleFields {
 	  using Defs = ModuleDefs;
@@ -38,7 +39,11 @@ namespace HDL {
 	    static constexpr BitField8<typename Defs::Groups::PORT, PIN_NUM> field = Registers::PORT;
 	  };
 	};
-  
+
+	//! \brief Here are defined GPIO module Aliases for Templated Fields, this class will be incorporated in the final GPIO Module as a Field collection
+	/*!
+	 * The Aliases are splitted into 3 sub-structures, that will be fusioned in the final GPIO Module
+	 */
 	template<typename ModuleDefs>
 	struct GPIO_ModuleAliases {
 	  using Defs = ModuleDefs;
@@ -48,6 +53,7 @@ namespace HDL {
 	  template<u8 MASK = Defs::PIN_MASK, DummyType DUMMY = DUMMY_VALUE> struct _DDR_Fields {};
 	  template<u8 MASK = Defs::PIN_MASK, DummyType DUMMY = DUMMY_VALUE> struct _PORT_Fields {};
 
+	  //! \brief PIN Fields Definitions (6 pins case)
 	  template<DummyType DUMMY>
 	  struct _PIN_Fields<0b00111111, DUMMY> {
 	    static constexpr auto& PIN_0 = Fields::template PIN<0>::field;
@@ -58,12 +64,14 @@ namespace HDL {
 	    static constexpr auto& PIN_5 = Fields::template PIN<5>::field;
 	  };
 
+	  //! \brief PIN Fields Definitions (8 pins case)
 	  template<DummyType DUMMY>
 	  struct _PIN_Fields<0b11111111, DUMMY> : _PIN_Fields<0b00111111, DUMMY> {
 	    static constexpr auto& PIN_6 = Fields::template PIN<6>::field;
 	    static constexpr auto& PIN_7 = Fields::template PIN<7>::field;
 	  };
 
+	  //! \brief DDR Fields Definitions (6 pins case)
 	  template<DummyType DUMMY>
 	  struct _DDR_Fields<0b00111111, DUMMY> {
 	    static constexpr auto& DDR_0 = Fields::template DDR<0>::field;
@@ -74,12 +82,14 @@ namespace HDL {
 	    static constexpr auto& DDR_5 = Fields::template DDR<5>::field;
 	  };
 
+	  //! \brief DDR Fields Definitions (8 pins case)
 	  template<DummyType DUMMY>
 	  struct _DDR_Fields<0b11111111, DUMMY> : _DDR_Fields<0b00111111, DUMMY> {
 	    static constexpr auto& DDR_6 = Fields::template DDR<6>::field;
 	    static constexpr auto& DDR_7 = Fields::template DDR<7>::field;
 	  };
 
+	  //! \brief PORT Fields Definitions (6 pins case)
 	  template<DummyType DUMMY>
 	  struct _PORT_Fields<0b00111111, DUMMY> {
 	    static constexpr auto& PORT_0 = Fields::template PORT<0>::field;
@@ -90,6 +100,7 @@ namespace HDL {
 	    static constexpr auto& PORT_5 = Fields::template PORT<5>::field;
 	  };
 
+	  //! \brief PORT Fields Definitions (8 pins case)
 	  template<DummyType DUMMY>
 	  struct _PORT_Fields<0b11111111, DUMMY> : _PORT_Fields<0b00111111, DUMMY> {
 	    static constexpr auto& PORT_6 = Fields::template PORT<6>::field;

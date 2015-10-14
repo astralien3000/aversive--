@@ -13,12 +13,17 @@ namespace HDL {
 
       namespace TIMER {
 	
+	//! \brief Here are defined TIMER module Registers, this class will be incorporated in the final TIMER Module
+	/*!
+	 * The registers are splitted into 2 cases : 8-bits and 16-bits
+	 */
 	template<typename ModuleDefs>
 	struct TIMER_ModuleRegisters {
 	  using Defs = ModuleDefs;
 
 	  template<u8 BITS, DummyType DUMMY = DUMMY_VALUE> struct _Registers {};
 
+	  //! \brief 8-bits specisalization
 	  template<DummyType DUMMY>
 	  struct _Registers<8, DUMMY> {
 	    static constexpr Register8<typename Defs::Groups::IMSK> IFR  = Defs::IFR;
@@ -42,6 +47,7 @@ namespace HDL {
 	    };
 	  };
 
+	  //! \brief 16-bits specisalization
 	  template<DummyType DUMMY>
 	  struct _Registers<16, DUMMY> {
 	    static constexpr Register8<typename Defs::Groups::IMSK> IFR  = Defs::IFR;
