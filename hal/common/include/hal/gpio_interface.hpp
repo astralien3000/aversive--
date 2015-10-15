@@ -90,7 +90,7 @@ namespace HAL {
       static void init(const Settings&, u32 pinMask)            DEPRECATED;
 
       template<typename Settings, u8 PIN_NUMBER> static void setPinSettings(void) DEPRECATED;
-      template<typename Settings> static void init(void)                          DEPRECATED;
+      template<typename Settings, u32 PIN_MASK> static void init(void)            DEPRECATED;
       //! @}
 
       //! \name Module Enable
