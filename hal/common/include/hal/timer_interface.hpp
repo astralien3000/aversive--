@@ -159,24 +159,29 @@ namespace HAL {
 	  static void setHandler(IRQ_Handler);
 	  static IRQ_Handler getHandler(void);
 	};
-      };
+
+	struct Encoder {
 	
-      /*
-	void initEncoder(const Timer_Encoder_Settings&);
-	Timer_Encoder_Settings getEncoderSettings(void);
+	  static void init(const TIMER::Encoder::Settings&);
+	  template<TIMER::Encoder::Settings> static void init(void);
+	  static TIMER::Encoder::Settings getSettings(void);
 
-	setEncoderMode
-	getEncoderMode
+	  static void setMode(TIMER::Encoder::Mode::Type);
+	  template<TIMER::Encoder::Mode::Type> static void setMode(void);
+	  static TIMER::Encoder::Mode::Type getEncoderMode(void);
 
-	setEncoderChannelPolarity
-	getEncoderChannelPolarity
+	  /*
+	    setChannelPolarity
+	    getEncoderChannelPolarity
 
-	setEncoderChannelPrescaler
-	getEncoderChannelPrescaler
-      */
-    };
+	    setEncoderChannelPrescaler
+	    getEncoderChannelPrescaler
+	  */
+	};
 
+      };
 
+    }
   }
 }
 
