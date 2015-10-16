@@ -85,16 +85,6 @@ namespace HAL {
        * If a microcontroller provides a service that does not fit this interface, please, contact the main developpers of this project.
        */
       struct DriverInterface {
-	//! \name Settings
-	//! @{
-	static void getPinSettings(Settings&, u8 pinNumber)       DEPRECATED;
-	static void setPinSettings(const Settings&, u8 pinNumber) DEPRECATED;
-	static void init(const Settings&, u32 pinMask)            DEPRECATED;
-
-	template<typename Settings, u8 PIN_NUMBER> static void setPinSettings(void) DEPRECATED;
-	template<typename Settings, u32 PIN_MASK> static void init(void)            DEPRECATED;
-	//! @}
-
 	//! \name Module Enable
 	//! @{
 	static bool isModuleEnabled(void) DEPRECATED;
@@ -109,98 +99,138 @@ namespace HAL {
 	static void disableModuleSleep(void)   DEPRECATED;
 	//! @}
 
-	//! \name Mode
-	//! @{
-	static Mode::Type getPinMode(u8 pinNumber)       DEPRECATED;
-	static void setPinMode(Mode::Type, u8 pinNumber) DEPRECATED;
-	static void setMode(Mode::Type, u32 pinMask)     DEPRECATED;
-
-	template<u8 PIN_NUMBER> static Mode::Type getPinMode(void)       DEPRECATED;
-	template<Mode::Type, u8 PIN_NUMBER> static void setPinMode(void) DEPRECATED;
-	template<Mode::Type, u32 PIN_MASK> static void setMode(void)     DEPRECATED;
-	//! @}
-
-	//! \name Output Mode
-	//! @{
-	static OutputMode::Type getPinOutputMode(u8 pinNumber)       DEPRECATED;
-	static void setPinOutputMode(OutputMode::Type, u8 pinNumber) DEPRECATED;
-	static void setOutputMode(OutputMode::Type, u32 pinMask)     DEPRECATED;
-
-	template<u8 PIN_NUMBER> static OutputMode::Type getPinOutputMode(void)       DEPRECATED;
-	template<OutputMode::Type, u8 PIN_NUMBER> static void setPinOutputMode(void) DEPRECATED;
-	template<OutputMode::Type, u32 PIN_MASK> static void setOutputMode(void)     DEPRECATED;
-	//! @}
-
-	//! \name Alternate Function
-	//! @{
-	static Alternate::Type getPinAlternate(u8 pinNumber)       DEPRECATED;
-	static void setPinAlternate(Alternate::Type, u8 pinNumber) DEPRECATED;
-	static void setAlternate(Alternate::Type, u32 pinMask)     DEPRECATED;
-
-	template<u8 PIN_NUMBER> static Alternate::Type getPinAlternate(void)       DEPRECATED;
-	template<Alternate::Type, u8 PIN_NUMBER> static void setPinAlternate(void) DEPRECATED;
-	template<Alternate::Type, u32 PIN_MASK> static void setAlternate(void)     DEPRECATED;
-	//! @}
-
-	//! \name Pull policy
-	//! @{
-	static Pull::Type getPinPull(u8 pinNumber)       DEPRECATED;
-	static void setPinPull(Pull::Type, u8 pinNumber) DEPRECATED;
-	static void setPull(Pull::Type, u32 pinMask)     DEPRECATED;
-      
-	template<u8 PIN_NUMBER> static Pull::Type getPinPull(void)       DEPRECATED;
-	template<Pull::Type, u8 PIN_NUMBER> static void setPinPull(void) DEPRECATED;
-	template<Pull::Type, u32 PIN_MASK> static void setPull(void)     DEPRECATED;
-	//! @}
-
-	//! \name Speed
-	//! @{
-	static Speed::Type getPinSpeed(u8 pinNumber)       DEPRECATED;
-	static void setPinSpeed(Speed::Type, u8 pinNumber) DEPRECATED;
-	static void setSpeed(Speed::Type, u32 pinMask)     DEPRECATED;
-
-	template<u8 PIN_NUMBER> static Speed::Type getPinSpeed(void)       DEPRECATED;
-	template<Speed::Type, u8 PIN_NUMBER> static void setPinSpeed(void) DEPRECATED;
-	template<Speed::Type, u32 PIN_MASK> static void setSpeed(void)     DEPRECATED;
-	//! @}
-
-	//! \name External Interrupt Handler
-	//! @{
-	static IRQ_Handler getPinExtiHandler(u8 pinNumber)       DEPRECATED;
-	static void setPinExtiHandler(IRQ_Handler, u8 pinNumber) DEPRECATED;
-	//! @}
-
-	//! \name Trigger Detection
-	//! @{
-	static TriggerDetection::Type getPinTriggerDetection(u8 pinNumber)        DEPRECATED;
-	static void setPinTriggerDectection(TriggerDetection::Type, u8 pinNumber) DEPRECATED;
-
-	template<u8 PIN_NUMBER> static TriggerDetection::Type getPinTriggerDetection(void)        DEPRECATED;
-	template<TriggerDetection::Type, u8 PIN_NUMBER> static void setPinTriggerDectection(void) DEPRECATED;
-	//! @}
-
 	//! \name Value
 	//! @{
-	static bool getPinValue(u8 pinNumber)             DEPRECATED;
-	static void setPinValue(bool value, u8 pinNumber) DEPRECATED;
-	static void togglePin(u8 pinNumber)               DEPRECATED;
-
-	static u32 getValue(void)                     DEPRECATED;
-	static void setValue(u32 value)               DEPRECATED;
-	static void setValue(bool value, u32 pinMask) DEPRECATED;
-	static void toggle(u32 pinMask)               DEPRECATED;
-
-	template<u8 PIN_NUMBER> static bool getPinValue(void)             DEPRECATED;
-	template<bool VALUE, u8 PIN_NUMBER> static void setPinValue(void) DEPRECATED;
-	template<u8 PIN_NUMBER> static void togglePin(void)               DEPRECATED;
-
-	template<u32 VALUE> static void setValue(void)                DEPRECATED;
-	template<bool VALUE, u32 PIN_MASK> static void setValue(void) DEPRECATED;
-	template<u32 PIN_MASK> static void toggle(void)               DEPRECATED;
+	static u32 getValue(void)                      DEPRECATED;
+	static void setValue(u32 value)                DEPRECATED;
+	template<u32 VALUE> static void setValue(void) DEPRECATED;
 	//! @}
+	
+	template<u32 PIN_MASK>
+	struct PinSet {
+	  //! \name Settings
+	  //! @{
+	  static void init(const Settings&)                  DEPRECATED;
+	  template<typename Settings> static void init(void) DEPRECATED;
+	  //! @}
+
+	  //! \name Mode
+	  //! @{
+	  static void setMode(Mode::Type)                DEPRECATED;
+	  template<Mode::Type> static void setMode(void) DEPRECATED;
+	  //! @}
+
+	  //! \name Output Mode
+	  //! @{
+	  static void setOutputMode(OutputMode::Type)                DEPRECATED;
+	  template<OutputMode::Type> static void setOutputMode(void) DEPRECATED;
+	  //! @}
+
+	  //! \name Alternate Function
+	  //! @{
+	  static void setAlternate(Alternate::Type)                DEPRECATED;
+	  template<Alternate::Type> static void setAlternate(void) DEPRECATED;
+	  //! @}
+
+	  //! \name Pull policy
+	  //! @{
+	  static void setPull(Pull::Type)                DEPRECATED;
+	  template<Pull::Type> static void setPull(void) DEPRECATED;
+	  //! @}
+
+	  //! \name Speed
+	  //! @{
+	  static void setSpeed(Speed::Type)                DEPRECATED;
+	  template<Speed::Type> static void setSpeed(void) DEPRECATED;
+	  //! @}
+
+	  //! \name Value
+	  //! @{
+	  static void setValue(bool value)                DEPRECATED;
+	  template<bool VALUE> static void setValue(void) DEPRECATED;
+	  static void toggle(void)                        DEPRECATED;
+	  //! @}
+	};
+
+	template<u8 PIN_NUMBER>
+	struct Pin {
+	  //! \name Settings
+	  //! @{
+	  static void getSettings(Settings&)       DEPRECATED;
+	  static void setSettings(const Settings&) DEPRECATED;
+	  
+	  template<typename Settings> static void setSettings(void) DEPRECATED;
+	  //! @}
+
+	  //! \name Mode
+	  //! @{
+	  static Mode::Type getPinMode(void) DEPRECATED;
+	  static void setMode(Mode::Type)    DEPRECATED;
+	  
+	  template<Mode::Type> static void setPinMode(void) DEPRECATED;
+	  //! @}
+
+	  //! \name Output Mode
+	  //! @{
+	  static OutputMode::Type getOutputMode(void) DEPRECATED;
+	  static void setOutputMode(OutputMode::Type) DEPRECATED;
+
+	  template<OutputMode::Type> static void setOutputMode(void) DEPRECATED;
+	  //! @}
+
+	  //! \name Alternate Function
+	  //! @{
+	  static Alternate::Type getAlternate(void) DEPRECATED;
+	  static void setAlternate(Alternate::Type) DEPRECATED;
+
+	  template<Alternate::Type> static void setAlternate(void) DEPRECATED;
+	  //! @}
+
+	  //! \name Pull policy
+	  //! @{
+	  static Pull::Type getPull(void) DEPRECATED;
+	  static void setPull(Pull::Type) DEPRECATED;
+
+	  template<Pull::Type> static void setPull(void) DEPRECATED;
+	  //! @}
+
+	  //! \name Speed
+	  //! @{
+	  static Speed::Type getSpeed(void) DEPRECATED;
+	  static void setSpeed(Speed::Type) DEPRECATED;
+
+	  template<Speed::Type> static void setSpeed(void) DEPRECATED;
+	  //! @}
+
+	  //! \name External Interrupt Handler
+	  //! @{
+	  static IRQ_Handler getExtiHandler(void) DEPRECATED;
+	  static void setExtiHandler(IRQ_Handler) DEPRECATED;
+	  //! @}
+
+	  //! \name Trigger Detection
+	  //! @{
+	  static TriggerDetection::Type getTriggerDetection(void)  DEPRECATED;
+	  static void setTriggerDectection(TriggerDetection::Type) DEPRECATED;
+
+	  template<TriggerDetection::Type> static void setTriggerDectection(void) DEPRECATED;
+	  //! @}
+
+	  //! \name Value
+	  //! @{
+	  static bool getPinValue(void)       DEPRECATED;
+	  static void setPinValue(bool value) DEPRECATED;
+	  static void togglePin(void)         DEPRECATED;
+
+	  template<bool VALUE> static void setPinValue(void) DEPRECATED;
+	  //! @}
+
+	};
       };
     }
   }
 }
+
+#undef DEPRECATED
 
 #endif//HAL_COMMON_GPIO_INTERFACE_HPP

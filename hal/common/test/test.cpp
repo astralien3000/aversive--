@@ -4,8 +4,8 @@
 #include <iostream>
 using namespace std;
 
-struct TEST : HAL::GPIO::DriverInterface {
-  struct Mode : HAL::GPIO::Mode {
+struct TEST : HAL::Private::GPIO::DriverInterface {
+  struct Mode : HAL::Private::GPIO::Mode {
     static constexpr Type UNDEFINED = Type::UNDEFINED;
     static constexpr Type INPUT = Type::INPUT;
     static constexpr Type OUTPUT = Type::OUTPUT;
@@ -20,7 +20,7 @@ struct TEST : HAL::GPIO::DriverInterface {
     
   }
 
-  static void setMode(HAL::GPIO::Mode::Type, u32) {
+  static void setMode(Mode::Type, u32) {
 
   }
 
