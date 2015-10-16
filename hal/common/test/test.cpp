@@ -1,4 +1,5 @@
 #include <hal/gpio_interface.hpp>
+#include <hal/timer_interface.hpp>
 #include <util/dummy.hpp>
 
 #include <iostream>
@@ -24,6 +25,14 @@ struct TEST : HAL::Private::GPIO::DriverInterface {
 
   }
 
+};
+
+struct TEST_TIMER : HAL::Private::TIMER::DriverInterface {
+  struct Base : HAL::Private::TIMER::Base {
+    struct CounterMode : HAL::Private::TIMER::Base::CounterMode {
+      static constexpr Type UNDEFINED = Type::UNDEFINED;
+    };
+  };
 };
 
 struct Test {
