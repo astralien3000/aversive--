@@ -16,7 +16,11 @@ namespace HAL {
       //! \brief This is just an alias to build "deprecatable Enumerations"
 #define MACRO_ENUM_ELEMENT(elem)				\
       static constexpr Type elem DEPRECATED = Type::elem
-      
+
+      //! \brief Interrupt Handler
+      //! \todo May be gatered with others IRQ_Handlers
+      using IRQ_Handler = void (*)(void);
+
       struct Base {
 	struct CounterMode {
 	  enum class Type : u8 { UNDEFINED, UP, DOWN, CENTER_ALIGNED };
@@ -65,10 +69,9 @@ namespace HAL {
 	  using Type = u32;
 	};
 	
-	struct OutputCompare_Settings {
+	struct Settings {
 	  Mode::Type mode;
 	  Polarity::Type polarity;
-	  bool fast;
 	  PulseWidth::Type pulse_width;
 	};
       };
@@ -106,64 +109,77 @@ namespace HAL {
 	};
       };
 
-      class DriverInterface {
-	/*
-	  void init(const Timer_Settings&);
-	  Timer_Settings getSettings(void);
+      struct DriverInterface {
 
-	  isModuleEnabled
-	  enableModule
-	  disableModule
+	static bool isModuleEnabled(void) DEPRECATED;
+	static void enableModule(void)    DEPRECATED;
+	static void disableModule(void)   DEPRECATED;
 
-	  setCounterMode
-	  getCounterMode
+	static bool isModuleSleepEnabled(void) DEPRECATED;
+	static void enableModuleSleep(void)    DEPRECATED;
+	static void disableModuleSleep(void)   DEPRECATED;
 
-	  setClockSelect
-	  getClockSelect
+	static void init(const Base::Settings&)            DEPRECATED;
+	static void getSettings(Base::Settings&)           DEPRECATED;
+	template<typename Settings> static void init(void) DEPRECATED;
+	
+	static void setCounterMode(Base::CounterMode::Type)                DEPRECATED;
+	template<Base::CounterMode::Type> static void setCounterMode(void) DEPRECATED;
+	static Base::CounterMode::Type getCounterMode(void)                DEPRECATED;
 
-	  setPrescaler
-	  getPrescaler
+	static void setClockSelect(Base::CounterMode::Type)                DEPRECATED;
+	template<Base::CounterMode::Type> static void setClockSelect(void) DEPRECATED;
+	static Base::CounterMode::Type getClockSelect(void)                DEPRECATED;
 
-	  setOverflowHandler
-	  getOverflowHandler
+	static void setPrescaler(Base::Prescaler::Type)                DEPRECATED;
+	template<Base::Prescaler::Type> static void setPrescaler(void) DEPRECATED;
+	static Base::Prescaler::Type getPrescaler(void)                DEPRECATED;
 
-	  void initOutputCompare(const Timer_OutputCompare_Settings&, u8 channel);
-	  Timer_OutputCompare_Settings getOutputCompareSettings(u8 channel);
+	static void setOverflowHandler(IRQ_Handler);
+	static IRQ_Handler getOverflowHandler(void);
 
-	  setOutputCompareMode
-	  getOutputCompareMode
+	template<u8 CHANNEL>
+	struct OutputCompare {
+	  static void init(const TIMER::OutputCompare::Settings&);
+	  template<typename Settings> static void init(void);
+	  static TIMER::OutputCompare::Settings getSettings(void);
 
-	  setOutputComparePolarity
-	  getOutputComparePolarity
+	  static void setMode(TIMER::OutputCompare::Mode::Type);
+	  template<TIMER::OutputCompare::Mode::Type> static void setMode(void);
+	  static TIMER::OutputCompare::Mode::Type getMode(void);
 
-	  enableOuputCompareFastMode
-	  disableOuputCompareFastMode
-	  getOuputCompareFastMode
+	  static void setPolarity(TIMER::OutputCompare::Polarity::Type);
+	  template<TIMER::OutputCompare::Polarity::Type> static void setPolarity(void);
+	  static TIMER::OutputCompare::Polarity::Type getPolarity(void);
 
-	  setOuputComparePulseWidth
-	  getOuputComparePulseWidth
+	  static void setPulseWidth(TIMER::OutputCompare::PulseWidth::Type);
+	  template<TIMER::OutputCompare::PulseWidth::Type> static void setPulseWidth(void);
+	  TIMER::OutputCompare::PulseWidth::Type getPulseWidth(void);
 
-	  setOuputCompareHandler
-	  getOuputCompareHandler
-
-	  void initEncoder(const Timer_Encoder_Settings&);
-	  Timer_Encoder_Settings getEncoderSettings(void);
-
-	  setEncoderMode
-	  getEncoderMode
-
-	  setEncoderChannelPolarity
-	  getEncoderChannelPolarity
-
-	  setEncoderChannelPrescaler
-	  getEncoderChannelPrescaler
-	*/
+	  static void setHandler(IRQ_Handler);
+	  static IRQ_Handler getHandler(void);
+	};
       };
+	
+      /*
+	void initEncoder(const Timer_Encoder_Settings&);
+	Timer_Encoder_Settings getEncoderSettings(void);
+
+	setEncoderMode
+	getEncoderMode
+
+	setEncoderChannelPolarity
+	getEncoderChannelPolarity
+
+	setEncoderChannelPrescaler
+	getEncoderChannelPrescaler
+      */
+    };
 
 
-    }
   }
 }
+
 
 #undef DEPRECATED
 
