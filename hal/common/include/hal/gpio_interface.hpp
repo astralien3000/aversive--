@@ -78,7 +78,7 @@ namespace HAL {
 	Speed::Type speed;
       };
 
-      //! \brief GPIO Griver Interface
+      //! \brief GPIO Driver Interface
       /*!
        * This interface exists to show the develloper what can be implemented.
        * But the developper may not implement everything, since not every mirocontroller has as much functionnalities.
@@ -98,14 +98,76 @@ namespace HAL {
 	static void enableModuleSleep(void)    DEPRECATED;
 	static void disableModuleSleep(void)   DEPRECATED;
 	//! @}
+	
+	//! \name Settings
+	//! @{
+	static void getPinSettings(Settings&, u8 pin_number)       DEPRECATED;
+	static void setPinSettings(const Settings&, u8 pin_number) DEPRECATED;
+	static void init(const Settings&, u32 pin_mask)            DEPRECATED;
+	//! @}
+
+	//! \name Mode
+	//! @{
+	static Mode::Type getPinMode(u8 pin_number)       DEPRECATED;
+	static void setPinMode(Mode::Type, u8 pin_number) DEPRECATED;
+	static void setMode(Mode::Type, u32 pin_mask)     DEPRECATED;
+	//! @}
+
+	//! \name Output Mode
+	//! @{
+	static OutputMode::Type getPinOutputMode(u8 pin_number)       DEPRECATED;
+	static void setPinOutputMode(OutputMode::Type, u8 pin_number) DEPRECATED;
+	static void setOutputMode(OutputMode::Type, u32 pin_mask)     DEPRECATED;
+	//! @}
+
+	//! \name Alternate Function
+	//! @{
+	static Alternate::Type getPinAlternate(u8 pin_number)       DEPRECATED;
+	static void setPinAlternate(Alternate::Type, u8 pin_number) DEPRECATED;
+	static void setAlternate(Alternate::Type, u32 pin_mask)     DEPRECATED;
+	//! @}
+
+	//! \name Pull policy
+	//! @{
+	static Pull::Type getPinPull(u8 pin_number)       DEPRECATED;
+	static void setPinPull(Pull::Type, u8 pin_number) DEPRECATED;
+	static void setPull(Pull::Type, u32 pin_mask)     DEPRECATED;
+	//! @}
+
+	//! \name Speed
+	//! @{
+	static Speed::Type getPinSpeed(u8 pin_number)       DEPRECATED;
+	static void setPinSpeed(Speed::Type, u8 pin_number) DEPRECATED;
+	static void setSpeed(Speed::Type, u32 pin_mask)     DEPRECATED;
+	//! @}
+
+	//! \name External Interrupt Handler
+	//! @{
+	static IRQ_Handler getPinExtiHandler(u8 pin_number)       DEPRECATED;
+	static void setPinExtiHandler(IRQ_Handler, u8 pin_number) DEPRECATED;
+	//! @}
+
+	//! \name Trigger Detection
+	//! @{
+	static TriggerDetection::Type getPinTriggerDetection(u8 pin_number)        DEPRECATED;
+	static void setPinTriggerDectection(TriggerDetection::Type, u8 pin_number) DEPRECATED;
+	//! @}
 
 	//! \name Value
 	//! @{
 	static u32 getValue(void)                      DEPRECATED;
 	static void setValue(u32 value)                DEPRECATED;
 	template<u32 VALUE> static void setValue(void) DEPRECATED;
+
+	static bool getPinValue(u8 pin_number)             DEPRECATED;
+	static void setPinValue(bool value, u8 pin_number) DEPRECATED;
+	static void togglePin(u8 pin_number)               DEPRECATED;
+
+	static void setValue(bool value, u32 pin_mask) DEPRECATED;
+	static void toggle(u32 pin_mask)               DEPRECATED;
 	//! @}
-	
+
+	//! \brief Templated PinSet interface
 	template<u32 PIN_MASK>
 	struct PinSet {
 	  //! \name Settings
@@ -152,6 +214,7 @@ namespace HAL {
 	  //! @}
 	};
 
+	//! \brief Templated Pin interface
 	template<u8 PIN_NUMBER>
 	struct Pin {
 	  //! \name Settings
