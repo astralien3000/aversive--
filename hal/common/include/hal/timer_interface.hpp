@@ -119,9 +119,9 @@ namespace HAL {
 	static void enableModuleSleep(void)    DEPRECATED;
 	static void disableModuleSleep(void)   DEPRECATED;
 
-	static void init(const Base::Settings&)            DEPRECATED;
-	static void getSettings(Base::Settings&)           DEPRECATED;
-	template<typename Settings> static void init(void) DEPRECATED;
+	static void setSettings(const Base::Settings&)            DEPRECATED;
+	static void getSettings(Base::Settings&)                  DEPRECATED;
+	template<typename Settings> static void setSettings(void) DEPRECATED;
 	
 	static void setCounterMode(Base::CounterMode::Type)                DEPRECATED;
 	template<Base::CounterMode::Type> static void setCounterMode(void) DEPRECATED;
@@ -135,50 +135,73 @@ namespace HAL {
 	template<Base::Prescaler::Type> static void setPrescaler(void) DEPRECATED;
 	static Base::Prescaler::Type getPrescaler(void)                DEPRECATED;
 
-	static void setOverflowHandler(IRQ_Handler);
-	static IRQ_Handler getOverflowHandler(void);
+	static void setOverflowHandler(IRQ_Handler) DEPRECATED;
+	static IRQ_Handler getOverflowHandler(void) DEPRECATED;
+
+	//! \name OutputCompare Dynamic Functions
+	//! @{
+	static void setOutputCompareSettings(const TIMER::OutputCompare::Settings&, u8 channel) DEPRECATED;
+	static TIMER::OutputCompare::Settings getOutputCompareSettings(u8 channel)              DEPRECATED;
+
+	static void setOutputCompareMode(TIMER::OutputCompare::Mode::Type, u8 channel) DEPRECATED;
+	static TIMER::OutputCompare::Mode::Type getOutputCompareMode(u8 channel)       DEPRECATED;
+
+	static void setOutputComparePolarity(TIMER::OutputCompare::Polarity::Type, u8 channel) DEPRECATED;
+	static TIMER::OutputCompare::Polarity::Type getOutputComparePolarity(u8 channel)       DEPRECATED;
+
+	static void setOutputComparePulseWidth(TIMER::OutputCompare::PulseWidth::Type, u8 channel) DEPRECATED;
+	TIMER::OutputCompare::PulseWidth::Type getOutputComparePulseWidth(u8 channel)              DEPRECATED;
+
+	static void setOutputCompareHandler(IRQ_Handler, u8 channel) DEPRECATED;
+	static IRQ_Handler getOutputCompareHandler(u8 channel)       DEPRECATED;
+	//! @}
 
 	template<u8 CHANNEL>
 	struct OutputCompare {
-	  static void init(const TIMER::OutputCompare::Settings&);
-	  template<typename Settings> static void init(void);
-	  static TIMER::OutputCompare::Settings getSettings(void);
+	  static void setSettings(const TIMER::OutputCompare::Settings&) DEPRECATED;
+	  template<typename Settings> static void setSettings(void)      DEPRECATED;
+	  static TIMER::OutputCompare::Settings getSettings(void)        DEPRECATED;
 
-	  static void setMode(TIMER::OutputCompare::Mode::Type);
-	  template<TIMER::OutputCompare::Mode::Type> static void setMode(void);
-	  static TIMER::OutputCompare::Mode::Type getMode(void);
+	  static void setMode(TIMER::OutputCompare::Mode::Type)                DEPRECATED;
+	  template<TIMER::OutputCompare::Mode::Type> static void setMode(void) DEPRECATED;
+	  static TIMER::OutputCompare::Mode::Type getMode(void)                DEPRECATED;
 
-	  static void setPolarity(TIMER::OutputCompare::Polarity::Type);
-	  template<TIMER::OutputCompare::Polarity::Type> static void setPolarity(void);
-	  static TIMER::OutputCompare::Polarity::Type getPolarity(void);
+	  static void setPolarity(TIMER::OutputCompare::Polarity::Type)                DEPRECATED;
+	  template<TIMER::OutputCompare::Polarity::Type> static void setPolarity(void) DEPRECATED;
+	  static TIMER::OutputCompare::Polarity::Type getPolarity(void)                DEPRECATED;
 
-	  static void setPulseWidth(TIMER::OutputCompare::PulseWidth::Type);
-	  template<TIMER::OutputCompare::PulseWidth::Type> static void setPulseWidth(void);
-	  TIMER::OutputCompare::PulseWidth::Type getPulseWidth(void);
+	  static void setPulseWidth(TIMER::OutputCompare::PulseWidth::Type)                DEPRECATED;
+	  template<TIMER::OutputCompare::PulseWidth::Type> static void setPulseWidth(void) DEPRECATED;
+	  TIMER::OutputCompare::PulseWidth::Type getPulseWidth(void)                       DEPRECATED;
 
-	  static void setHandler(IRQ_Handler);
-	  static IRQ_Handler getHandler(void);
+	  static void setHandler(IRQ_Handler) DEPRECATED;
+	  static IRQ_Handler getHandler(void) DEPRECATED;
 	};
 
 	struct Encoder {
-	
-	  static void init(const TIMER::Encoder::Settings&);
-	  template<TIMER::Encoder::Settings> static void init(void);
-	  static TIMER::Encoder::Settings getSettings(void);
+	  static void setSettings(const TIMER::Encoder::Settings&)         DEPRECATED;
+	  template<TIMER::Encoder::Settings> static void setSettings(void) DEPRECATED;
+	  static TIMER::Encoder::Settings getSettings(void)                DEPRECATED;
 
-	  static void setMode(TIMER::Encoder::Mode::Type);
-	  template<TIMER::Encoder::Mode::Type> static void setMode(void);
-	  static TIMER::Encoder::Mode::Type getEncoderMode(void);
+	  static void setMode(TIMER::Encoder::Mode::Type)                DEPRECATED;
+	  template<TIMER::Encoder::Mode::Type> static void setMode(void) DEPRECATED;
+	  static TIMER::Encoder::Mode::Type getEncoderMode(void)         DEPRECATED;
 
-	  /*
-	    setChannelPolarity
-	    getEncoderChannelPolarity
+	  static void setChannelPolarity(TIMER::Encoder::Polarity, u8 channel) DEPRECATED;
+	  static TIMER::Encoder::Polarity getChannelPolarity(u8 channel)       DEPRECATED;
 
-	    setEncoderChannelPrescaler
-	    getEncoderChannelPrescaler
-	  */
+	  static void setChannelPrescaler(TIMER::Encoder::Polarity, u8 channel) DEPRECATED;
+	  static TIMER::Encoder::Polarity getChannelPrescaler(u8 channel)       DEPRECATED;
+
+	  template<u8 CHANNEL>
+	  struct Channel {
+	    static void setPolarity(TIMER::Encoder::Polarity) DEPRECATED;
+	    static TIMER::Encoder::Polarity getPolarity(void) DEPRECATED;
+	    
+	    static void setPrescaler(TIMER::Encoder::Polarity) DEPRECATED;
+	    static TIMER::Encoder::Polarity getPrescaler(void) DEPRECATED;
+	  };
 	};
-
       };
 
     }
