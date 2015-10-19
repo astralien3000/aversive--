@@ -1,5 +1,6 @@
 #include <hal/gpio_interface.hpp>
 #include <hal/timer_interface.hpp>
+#include <hal/uart_interface.hpp>
 #include <util/dummy.hpp>
 
 #include <iostream>
