@@ -101,44 +101,44 @@ namespace HAL {
 	
 	//! \name Settings
 	//! @{
-	static void getPinSettings(Settings&, u8 pin_number)       DEPRECATED;
-	static void setPinSettings(const Settings&, u8 pin_number) DEPRECATED;
-	static void init(const Settings&, u32 pin_mask)            DEPRECATED;
+	static void getPinSettings(Settings&, u8 pin_number)         DEPRECATED;
+	static void setPinSettings(const Settings&, u8 pin_number)   DEPRECATED;
+	static void setPinGroupSettings(const Settings&, u32 pin_mask) DEPRECATED;
 	//! @}
 
 	//! \name Mode
 	//! @{
-	static Mode::Type getPinMode(u8 pin_number)       DEPRECATED;
-	static void setPinMode(Mode::Type, u8 pin_number) DEPRECATED;
-	static void setMode(Mode::Type, u32 pin_mask)     DEPRECATED;
+	static Mode::Type getPinMode(u8 pin_number)         DEPRECATED;
+	static void setPinMode(Mode::Type, u8 pin_number)   DEPRECATED;
+	static void setPinGroupMode(Mode::Type, u32 pin_mask) DEPRECATED;
 	//! @}
 
 	//! \name Output Mode
 	//! @{
-	static OutputMode::Type getPinOutputMode(u8 pin_number)       DEPRECATED;
-	static void setPinOutputMode(OutputMode::Type, u8 pin_number) DEPRECATED;
-	static void setOutputMode(OutputMode::Type, u32 pin_mask)     DEPRECATED;
+	static OutputMode::Type getPinOutputMode(u8 pin_number)         DEPRECATED;
+	static void setPinOutputMode(OutputMode::Type, u8 pin_number)   DEPRECATED;
+	static void setPinGroupOutputMode(OutputMode::Type, u32 pin_mask) DEPRECATED;
 	//! @}
 
 	//! \name Alternate Function
 	//! @{
-	static Alternate::Type getPinAlternate(u8 pin_number)       DEPRECATED;
-	static void setPinAlternate(Alternate::Type, u8 pin_number) DEPRECATED;
-	static void setAlternate(Alternate::Type, u32 pin_mask)     DEPRECATED;
+	static Alternate::Type getPinAlternate(u8 pin_number)         DEPRECATED;
+	static void setPinAlternate(Alternate::Type, u8 pin_number)   DEPRECATED;
+	static void setPinGroupAlternate(Alternate::Type, u32 pin_mask) DEPRECATED;
 	//! @}
 
 	//! \name Pull policy
 	//! @{
 	static Pull::Type getPinPull(u8 pin_number)       DEPRECATED;
 	static void setPinPull(Pull::Type, u8 pin_number) DEPRECATED;
-	static void setPull(Pull::Type, u32 pin_mask)     DEPRECATED;
+	static void setPinGroupPull(Pull::Type, u32 pin_mask)     DEPRECATED;
 	//! @}
 
 	//! \name Speed
 	//! @{
-	static Speed::Type getPinSpeed(u8 pin_number)       DEPRECATED;
-	static void setPinSpeed(Speed::Type, u8 pin_number) DEPRECATED;
-	static void setSpeed(Speed::Type, u32 pin_mask)     DEPRECATED;
+	static Speed::Type getPinSpeed(u8 pin_number)         DEPRECATED;
+	static void setPinSpeed(Speed::Type, u8 pin_number)   DEPRECATED;
+	static void setPinGroupSpeed(Speed::Type, u32 pin_mask) DEPRECATED;
 	//! @}
 
 	//! \name External Interrupt Handler
@@ -163,17 +163,17 @@ namespace HAL {
 	static void setPinValue(bool value, u8 pin_number) DEPRECATED;
 	static void togglePin(u8 pin_number)               DEPRECATED;
 
-	static void setValue(bool value, u32 pin_mask) DEPRECATED;
-	static void toggle(u32 pin_mask)               DEPRECATED;
+	static void setPinGroupValue(bool value, u32 pin_mask) DEPRECATED;
+	static void toggle(u32 pin_mask)                     DEPRECATED;
 	//! @}
 
-	//! \brief Templated PinSet interface
+	//! \brief Templated PinGroup interface
 	template<u32 PIN_MASK>
-	struct PinSet {
+	struct PinGroup {
 	  //! \name Settings
 	  //! @{
-	  static void init(const Settings&)                  DEPRECATED;
-	  template<typename Settings> static void init(void) DEPRECATED;
+	  static void setSettings(const Settings&)                  DEPRECATED;
+	  template<typename Settings> static void setSettings(void) DEPRECATED;
 	  //! @}
 
 	  //! \name Mode
