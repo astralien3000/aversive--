@@ -11,6 +11,7 @@ namespace HAL {
 
   namespace Private {
 
+    //! \brief UART Driver Interface
     struct UART_DriverInterface {
       
       //! \brief This is just an alias to build "deprecatable Enumerations"
