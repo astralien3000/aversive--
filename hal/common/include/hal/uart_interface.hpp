@@ -90,7 +90,21 @@ namespace HAL {
       };
 
 #undef MACRO_ENUM_ELEMENT
-      
+
+      //! \name Module Enable
+      //! @{
+      static bool isModuleEnabled(void) DEPRECATED;
+      static void enableModule(void)    DEPRECATED;
+      static void disableModule(void)   DEPRECATED;
+      //! @}
+
+      //! \name Module Sleep Enable
+      //! @{
+      static bool isModuleSleepEnabled(void) DEPRECATED;
+      static void enableModuleSleep(void)    DEPRECATED;
+      static void disableModuleSleep(void)   DEPRECATED;
+      //! @}
+
       //! \name Settings
       //! @{
       static void setSettings(const Settings&)                  DEPRECATED;
