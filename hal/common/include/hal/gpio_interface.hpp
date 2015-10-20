@@ -163,7 +163,7 @@ namespace HAL {
       static void togglePin(u8 pin_number)               DEPRECATED;
 
       static void setPinGroupValue(bool value, u32 pin_mask) DEPRECATED;
-      static void toggle(u32 pin_mask)                     DEPRECATED;
+      static void togglePinGroup(u32 pin_mask)               DEPRECATED;
       //! @}
 
       //! \brief Templated PinGroup interface
