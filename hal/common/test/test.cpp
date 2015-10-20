@@ -6,8 +6,8 @@
 #include <iostream>
 using namespace std;
 
-struct TEST : HAL::Private::GPIO::DriverInterface {
-  struct Mode : HAL::Private::GPIO::Mode {
+struct TEST : HAL::Private::GPIO_DriverInterface {
+  struct Mode : GPIO_DriverInterface::Mode {
     static constexpr Type UNDEFINED = Type::UNDEFINED;
     static constexpr Type INPUT = Type::INPUT;
     static constexpr Type OUTPUT = Type::OUTPUT;
@@ -28,11 +28,9 @@ struct TEST : HAL::Private::GPIO::DriverInterface {
 
 };
 
-struct TEST_TIMER : HAL::Private::TIMER::DriverInterface {
-  struct Base : HAL::Private::TIMER::Base {
-    struct CounterMode : HAL::Private::TIMER::Base::CounterMode {
-      static constexpr Type UNDEFINED = Type::UNDEFINED;
-    };
+struct TEST_TIMER : HAL::Private::TIMER_DriverInterface {
+  struct CounterMode : TIMER_DriverInterface::CounterMode {
+    static constexpr Type UNDEFINED = Type::UNDEFINED;
   };
 };
 
@@ -66,6 +64,8 @@ int main(int, char**) {
   Test test;
   test.setValue(true);
   TEST::setMode(TEST::Mode::ALTERNATE_FUNCTION, 0);
+  //TEST::Settings ts;
+  //TEST::setPinSettings(ts, 5);
 
   cout << "OK !" << endl;
   return 0;
