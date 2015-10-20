@@ -11,86 +11,129 @@ namespace HAL {
 
   namespace Private {
 
-    namespace UART {
+    struct UART_DriverInterface {
+      
+      //! \brief This is just an alias to build "deprecatable Enumerations"
+#define MACRO_ENUM_ELEMENT(elem)				\
+      static constexpr Type elem DEPRECATED = Type::elem
 
+      struct Baudrate {
+	using Type = u32;
+      };
+
+      struct Parity {
+	enum class Type : u8 { UNDEFINED = 0, NONE, EVEN, ODD };
+	MACRO_ENUM_ELEMENT(UNDEFINED);
+	MACRO_ENUM_ELEMENT(NONE);
+	MACRO_ENUM_ELEMENT(EVEN);
+	MACRO_ENUM_ELEMENT(ODD);
+      };
+
+      struct StopBit {
+	enum class Type : u8 { UNDEFINED = 0, ONE_BIT, ONE_AND_HALF_BIT, TWO_BIT };
+	MACRO_ENUM_ELEMENT(UNDEFINED);
+	MACRO_ENUM_ELEMENT(ONE_BIT);
+	MACRO_ENUM_ELEMENT(ONE_AND_HALF_BIT);
+	MACRO_ENUM_ELEMENT(TWO_BIT);
+      };
+
+      struct WordSize {
+	using Type = u8;
+      };
+
+      struct FifoSize {
+	using Type = u8;
+      };
+
+      struct FlowControl {
+	enum class Type : u8 { UNDEFINED = 0, NONE, CTS, RTS };
+	MACRO_ENUM_ELEMENT(UNDEFINED);
+	MACRO_ENUM_ELEMENT(NONE);
+	MACRO_ENUM_ELEMENT(CTS);
+	MACRO_ENUM_ELEMENT(RTS);
+      };
+
+      struct Endianess {
+	enum class Type : u8 { UNDEFINED = 0, MSB, LSB };
+	MACRO_ENUM_ELEMENT(UNDEFINED);
+	MACRO_ENUM_ELEMENT(MSB);
+	MACRO_ENUM_ELEMENT(LSB);
+      };
+
+      using IRQ_Handler = void (*)(void);
+    
       struct Settings {
-	using Baudrate = u32;
-	Baudrate baudrate;
-
-	enum class Parity : u8 { NONE = 0, EVEN, ODD };
-	Parity parity;
-
-	enum class StopBit : u8 { UNDEFINED = 0, ONE_BIT, ONE_AND_HALF_BIT, TWO_BIT };
-	StopBit stop_bit;
-
-	using WordSize = u8;
-	WordSize word_size;
-
+	Baudrate::Type baudrate;
+	Parity::Type parity;
+	StopBit::Type stop_bit;
+	WordSize::Type word_size;
+      
 	bool tx_enabled;
 	bool rx_enabled;
 
-	using FifoSize = u8;
-	FifoSize tx_fifo_size;
-	FifoSize rx_fifo_size;
+	FifoSize::Type tx_fifo_size;
+	FifoSize::Type rx_fifo_size;
 
-	enum class FlowControl : u8 { UNDEFINED = 0, NONE, CTS, RTS };
-	FlowControl flow_control;
+	FlowControl::Type flow_control;
 
-	enum class Endianess: u8 { UNDEFINED = 0, MSB, LSB };
-	Endianess endianess;
-
-	using IRQ_Handler = void (*)(void);
-	IRQ_Handler tx_complete_handler;
-	IRQ_Handler rx_complete_handler;
+	Endianess::Type endianess;
       };
 
-      class DriverInterface {
-	inline static void init(const Settings&);
-	inline static void getSettings(Settings&);
+#undef MACRO_ENUM_ELEMENT
+
+      static void setSettings(const Settings&)                  DEPRECATED;
+      template<typename Settings> static void setSettings(void) DEPRECATED;
+      static void getSettings(Settings&)                        DEPRECATED;
     
-	void setParity(Settings::Parity);
-	Settings::Parity getParity(void);
+      static void setParity(Parity::Type)                DEPRECATED;
+      template<Parity::Type> static void setParity(void) DEPRECATED;
+      static Parity::Type getParity(void)                DEPRECATED;
     
-	void setStopBit(Settings::StopBit);
-	Settings::StopBit getStopBit(void);
+      static void setStopBit(StopBit::Type)                DEPRECATED;
+      template<StopBit::Type> static void setStopBit(void) DEPRECATED;
+      static StopBit::Type getStopBit(void)                DEPRECATED;
 
-	void setWordSize(Settings::WordSize);
-	Settings::WordSize getWordSize(void);
+      static void setWordSize(WordSize::Type)                DEPRECATED;
+      template<WordSize::Type> static void setWordSize(void) DEPRECATED;
+      static WordSize::Type getWordSize(void)                DEPRECATED;
 
-	void enableTx(void);
-	void disableTx(void);
-	bool isTxEnabled(void);
+      static void enableTx(void)    DEPRECATED;
+      static void disableTx(void)   DEPRECATED;
+      static bool isTxEnabled(void) DEPRECATED;
 
-	void enableRx(void);
-	void disableRx(void);
-	bool isRxEnabled(void);
+      static void enableRx(void)    DEPRECATED;
+      static void disableRx(void)   DEPRECATED;
+      static bool isRxEnabled(void) DEPRECATED;
 
-	void setTxFifoSize(Settings::FifoSize);
-	Settings::FifoSize getTxFifoSize(void);
+      static void setTxFifoSize(FifoSize::Type)                DEPRECATED;
+      template<FifoSize::Type> static void setTxFifoSize(void) DEPRECATED;
+      static FifoSize::Type getTxFifoSize(void)                DEPRECATED;
 
-	void setRxFifoSize(Settings::FifoSize);
-	Settings::FifoSize getRxFifoSize(void);
+      static void setRxFifoSize(FifoSize::Type)                DEPRECATED;
+      template<FifoSize::Type> static void setRxFifoSize(void) DEPRECATED;
+      static FifoSize::Type getRxFifoSize(void)                DEPRECATED;
 
-	void setFlowControl(Settings::FlowControl);
-	Settings::FlowControl getFlowControl(void);
+      static void setFlowControl(FlowControl::Type)                DEPRECATED;
+      template<FlowControl::Type> static void setFlowControl(void) DEPRECATED;
+      static FlowControl::Type getFlowControl(void)                DEPRECATED;
 
-	void setEndianess(Settings::Endianess);
-	Settings::Endianess getEndianess(void);
+      static void setEndianess(Endianess::Type)                DEPRECATED;
+      template<Endianess::Type> static void setEndianess(void) DEPRECATED;
+      static Endianess::Type getEndianess(void)                DEPRECATED;
 
-	void setTxCompleteHandler(Settings::IRQ_Handler); // Tx Fifo is Empty
-	void setRxCompleteHandler(Settings::IRQ_Handler); // Rx Fifo is Full
+      static void setTxCompleteHandler(IRQ_Handler) DEPRECATED; // Tx Fifo is Empty
+      static void setRxCompleteHandler(IRQ_Handler) DEPRECATED; // Rx Fifo is Full
 
-	void putChar(u8); // Bloquant
-	u8 getChar(void); // Bloquant
+      static void putChar(u8) DEPRECATED; // Blocking
+      static u8 getChar(void) DEPRECATED; // Blocking
 
-	u32 write(u8* data, u32 length); // Bloquant
-	u32 read(u8* data, u32 length); // Bloquant
+      static u32 write(u8* data, u32 length) DEPRECATED; // Blocking
+      static u32 read(u8* data, u32 length)  DEPRECATED; // Blocking
 
-	u32 getTxFifoAvailableSpace();
-	u32 getRxFifoAvailableWords();
-      };
+      static u32 getTxFifoAvailableSpace(void) DEPRECATED;
+      static u32 getRxFifoAvailableWords(void) DEPRECATED;
+    };
 
-    }
   }
 }
 
