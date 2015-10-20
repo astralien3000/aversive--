@@ -69,8 +69,6 @@ namespace HAL {
 	MACRO_ENUM_ELEMENT(BOTH);
       };
 
-#undef MACRO_ENUM_ELEMENT
-
       //! \brief Interrupt Handler
       //! \todo May be gatered with others IRQ_Handlers
       using IRQ_Handler = void (*)(void);
@@ -83,6 +81,8 @@ namespace HAL {
 	Pull::Type pull;
 	Speed::Type speed;
       };
+
+#undef MACRO_ENUM_ELEMENT
 
       //! \name Module Enable
       //! @{

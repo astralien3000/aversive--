@@ -56,33 +56,69 @@ namespace HAL {
 	Period::Type period;
       };
 
-      struct OC {
-	//! \brief The OutputCompare Mode
-	struct Mode {
-	  enum class Type : u8 { UNDEFINED, PWM };
-	  MACRO_ENUM_ELEMENT(UNDEFINED);
-	  MACRO_ENUM_ELEMENT(PWM);
-	};
-
-	//! \brief The OutputCompare Signal Polarity
-	struct Polarity {
-	  enum class Type : u8 { HIGH, LOW };
-	  MACRO_ENUM_ELEMENT(HIGH);
-	  MACRO_ENUM_ELEMENT(LOW);
-	};
-
-	//! \brief The OutputCompare Pulse Width
-	struct PulseWidth {
-	  using Type = u32;
-	};
-	
-	//! \brief The OutputCompare Pulse Width
-	struct Settings {
-	  Mode::Type mode;
-	  Polarity::Type polarity;
-	  PulseWidth::Type pulse_width;
-	};
+      //! \brief The OutputCompare Mode
+      struct OCMode {
+	enum class Type : u8 { UNDEFINED, PWM };
+	MACRO_ENUM_ELEMENT(UNDEFINED);
+	MACRO_ENUM_ELEMENT(PWM);
       };
+
+      //! \brief The OutputCompare Signal Polarity
+      struct OCPolarity {
+	enum class Type : u8 { HIGH, LOW };
+	MACRO_ENUM_ELEMENT(HIGH);
+	MACRO_ENUM_ELEMENT(LOW);
+      };
+
+      //! \brief The OutputCompare Pulse Width
+      struct OCPulseWidth {
+	using Type = u32;
+      };
+	
+      //! \brief The OutputCompare Pulse Width
+      struct OCSettings {
+	OCMode::Type mode;
+	OCPolarity::Type polarity;
+	OCPulseWidth::Type pulse_width;
+      };
+
+      //! \brief The Encoder Mode
+      struct EncoderMode {
+	enum class Type : u8 { UNDEFINED, CHANNEL1_COUNT, CHANNEL2_COUNT, BOTH_COUNT };
+	MACRO_ENUM_ELEMENT(UNDEFINED);
+	MACRO_ENUM_ELEMENT(CHANNEL1_COUNT);
+	MACRO_ENUM_ELEMENT(CHANNEL2_COUNT);
+	MACRO_ENUM_ELEMENT(BOTH_COUNT);
+      };
+
+      //! \brief The Encoder Polarity
+      struct EncoderPolarity {
+	enum class Type : u8 { UNDEFINED, RISING, FALLING, BOTH };
+	MACRO_ENUM_ELEMENT(UNDEFINED);
+	MACRO_ENUM_ELEMENT(RISING);
+	MACRO_ENUM_ELEMENT(FALLING);
+	MACRO_ENUM_ELEMENT(BOTH);
+      };
+	
+      //! \brief The Encoder Prescaler
+      struct EncoderPrescaler {
+	using Type = u32;
+      };
+	
+      //! \brief TIMER Encoder Channel Settings
+      struct EncoderChannelSettings {
+	EncoderPolarity::Type polarity;
+	EncoderPrescaler::Type prescaler;
+      }; 
+
+      //! \brief TIMER Encoder Settings
+      struct EncoderSettings {
+	EncoderMode::Type mode;
+	EncoderChannelSettings channel1;
+	EncoderChannelSettings channel2;
+      };
+
+#undef MACRO_ENUM_ELEMENT
       
       //! \name Module Enable
       //! @{
@@ -134,17 +170,17 @@ namespace HAL {
 
       //! \name OutputCompare Dynamic Functions
       //! @{
-      static void setOutputCompareSettings(const OC::Settings&, u8 channel) DEPRECATED;
-      static OC::Settings getOutputCompareSettings(u8 channel)              DEPRECATED;
+      static void setOutputCompareSettings(const OCSettings&, u8 channel) DEPRECATED;
+      static void getOutputCompareSettings(OCSettings&, u8 channel)              DEPRECATED;
 
-      static void setOutputCompareMode(OC::Mode::Type, u8 channel) DEPRECATED;
-      static OC::Mode::Type getOutputCompareMode(u8 channel)       DEPRECATED;
+      static void setOutputCompareMode(OCMode::Type, u8 channel) DEPRECATED;
+      static OCMode::Type getOutputCompareMode(u8 channel)       DEPRECATED;
 
-      static void setOutputComparePolarity(OC::Polarity::Type, u8 channel) DEPRECATED;
-      static OC::Polarity::Type getOutputComparePolarity(u8 channel)       DEPRECATED;
+      static void setOutputComparePolarity(OCPolarity::Type, u8 channel) DEPRECATED;
+      static OCPolarity::Type getOutputComparePolarity(u8 channel)       DEPRECATED;
 
-      static void setOutputComparePulseWidth(OC::PulseWidth::Type, u8 channel) DEPRECATED;
-      OC::PulseWidth::Type getOutputComparePulseWidth(u8 channel)              DEPRECATED;
+      static void setOutputComparePulseWidth(OCPulseWidth::Type, u8 channel) DEPRECATED;
+      OCPulseWidth::Type getOutputComparePulseWidth(u8 channel)              DEPRECATED;
 
       static void setOutputCompareHandler(IRQ_Handler, u8 channel) DEPRECATED;
       static IRQ_Handler getOutputCompareHandler(u8 channel)       DEPRECATED;
@@ -155,30 +191,30 @@ namespace HAL {
       struct OutputCompare {
 	//! \name Settings
 	//! @{
-	static void setSettings(const OC::Settings&) DEPRECATED;
+	static void setSettings(const OCSettings&) DEPRECATED;
 	template<typename Settings> static void setSettings(void)      DEPRECATED;
-	static OC::Settings getSettings(void)        DEPRECATED;
+	static void getSettings(OCSettings&)        DEPRECATED;
 	//! @}
 
 	//! \name Mode
 	//! @{
-	static void setMode(OC::Mode::Type)                DEPRECATED;
-	template<OC::Mode::Type> static void setMode(void) DEPRECATED;
-	static OC::Mode::Type getMode(void)                DEPRECATED;
+	static void setMode(OCMode::Type)                DEPRECATED;
+	template<OCMode::Type> static void setMode(void) DEPRECATED;
+	static OCMode::Type getMode(void)                DEPRECATED;
 	//! @}
 
 	//! \name Polarity
 	//! @{
-	static void setPolarity(OC::Polarity::Type)                DEPRECATED;
-	template<OC::Polarity::Type> static void setPolarity(void) DEPRECATED;
-	static OC::Polarity::Type getPolarity(void)                DEPRECATED;
+	static void setPolarity(OCPolarity::Type)                DEPRECATED;
+	template<OCPolarity::Type> static void setPolarity(void) DEPRECATED;
+	static OCPolarity::Type getPolarity(void)                DEPRECATED;
 	//! @}
 
 	//! \name Pulse Width
 	//! @{
-	static void setPulseWidth(OC::PulseWidth::Type)                DEPRECATED;
-	template<OC::PulseWidth::Type> static void setPulseWidth(void) DEPRECATED;
-	OC::PulseWidth::Type getPulseWidth(void)                       DEPRECATED;
+	static void setPulseWidth(OCPulseWidth::Type)                DEPRECATED;
+	template<OCPulseWidth::Type> static void setPulseWidth(void) DEPRECATED;
+	OCPulseWidth::Type getPulseWidth(void)                       DEPRECATED;
 	//! @}
 
 	//! \name Output Compare Handler
@@ -190,63 +226,27 @@ namespace HAL {
 
       //! \brief Encoder interface
       struct Encoder {
-	//! \brief The Encoder Mode
-	struct Mode {
-	  enum class Type : u8 { UNDEFINED, CHANNEL1_COUNT, CHANNEL2_COUNT, BOTH_COUNT };
-	  MACRO_ENUM_ELEMENT(UNDEFINED);
-	  MACRO_ENUM_ELEMENT(CHANNEL1_COUNT);
-	  MACRO_ENUM_ELEMENT(CHANNEL2_COUNT);
-	  MACRO_ENUM_ELEMENT(BOTH_COUNT);
-	};
-
-	//! \brief The Encoder Polarity
-	struct Polarity {
-	  enum class Type : u8 { UNDEFINED, RISING, FALLING, BOTH };
-	  MACRO_ENUM_ELEMENT(UNDEFINED);
-	  MACRO_ENUM_ELEMENT(RISING);
-	  MACRO_ENUM_ELEMENT(FALLING);
-	  MACRO_ENUM_ELEMENT(BOTH);
-	};
-	
-	//! \brief The Encoder Prescaler
-	struct Prescaler {
-	  using Type = u32;
-	};
-	
-	//! \brief TIMER Encoder Channel Settings
-	struct ChannelSettings {
-	  Polarity::Type polarity;
-	  Prescaler::Type prescaler;
-	}; 
-
-	//! \brief TIMER Encoder Settings
-	struct Settings {
-	  Mode::Type mode;
-	  ChannelSettings channel1;
-	  ChannelSettings channel2;
-	};
-
 	//! \name Settings
 	//! @{
-	static void setSettings(const Settings&)         DEPRECATED;
+	static void setSettings(const EncoderSettings&)         DEPRECATED;
 	template<typename Settings> static void setSettings(void) DEPRECATED;
-	static Settings getSettings(void)                DEPRECATED;
+	static void getSettings(EncoderSettings&)                DEPRECATED;
 	//! @}
 
 	//! \name Mode
 	//! @{
-	static void setMode(Mode::Type)                DEPRECATED;
-	template<Mode::Type> static void setMode(void) DEPRECATED;
-	static Mode::Type getEncoderMode(void)         DEPRECATED;
+	static void setMode(EncoderMode::Type)                DEPRECATED;
+	template<EncoderMode::Type> static void setMode(void) DEPRECATED;
+	static EncoderMode::Type getEncoderMode(void)         DEPRECATED;
 	//! @}
 
 	//! \name Channel Dynamic Functions
 	//! @{
-	static void setChannelPolarity(Polarity, u8 channel) DEPRECATED;
-	static Polarity getChannelPolarity(u8 channel)       DEPRECATED;
+	static void setChannelPolarity(EncoderPolarity::Type, u8 channel) DEPRECATED;
+	static EncoderPolarity::Type getChannelPolarity(u8 channel)       DEPRECATED;
 
-	static void setChannelPrescaler(Polarity, u8 channel) DEPRECATED;
-	static Polarity getChannelPrescaler(u8 channel)       DEPRECATED;
+	static void setChannelPrescaler(EncoderPolarity, u8 channel) DEPRECATED;
+	static EncoderPolarity::Type getChannelPrescaler(u8 channel)       DEPRECATED;
 	//! @}
 
 	//! \brief Encoder Channel interface
@@ -254,14 +254,16 @@ namespace HAL {
 	struct Channel {
 	  //! \name Polarity
 	  //! @{
-	  static void setPolarity(Polarity) DEPRECATED;
-	  static Polarity getPolarity(void) DEPRECATED;
+	  static void setPolarity(EncoderPolarity::Type)                DEPRECATED;
+	  template<EncoderPolarity::Type> static void setPolarity(void) DEPRECATED;
+	  static EncoderPolarity::Type getPolarity(void)                DEPRECATED;
 	  //! @}
 	    
 	  //! \name Prescaler
 	  //! @{
-	  static void setPrescaler(Polarity) DEPRECATED;
-	  static Polarity getPrescaler(void) DEPRECATED;
+	  static void setPrescaler(EncoderPrescaler::Type)                DEPRECATED;
+	  template<EncoderPrescaler::Type> static void setPrescaler(void) DEPRECATED;
+	  static EncoderPrescaler::Type getPrescaler(void)                DEPRECATED;
 	  //! @}
 	};
       };
