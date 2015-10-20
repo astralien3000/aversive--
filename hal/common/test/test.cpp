@@ -1,11 +1,13 @@
 #include <hal/gpio_interface.hpp>
+#include <hal/timer_interface.hpp>
+#include <hal/uart_interface.hpp>
 #include <util/dummy.hpp>
 
 #include <iostream>
 using namespace std;
 
-struct TEST : HAL::GPIO::DriverInterface {
-  struct Mode : HAL::GPIO::Mode {
+struct TEST : HAL::Private::GPIO_DriverInterface {
+  struct Mode : GPIO_DriverInterface::Mode {
     static constexpr Type UNDEFINED = Type::UNDEFINED;
     static constexpr Type INPUT = Type::INPUT;
     static constexpr Type OUTPUT = Type::OUTPUT;
@@ -20,10 +22,16 @@ struct TEST : HAL::GPIO::DriverInterface {
     
   }
 
-  static void setMode(HAL::GPIO::Mode::Type, u32) {
+  static void setMode(Mode::Type, u32) {
 
   }
 
+};
+
+struct TEST_TIMER : HAL::Private::TIMER_DriverInterface {
+  struct CounterMode : TIMER_DriverInterface::CounterMode {
+    static constexpr Type UNDEFINED = Type::UNDEFINED;
+  };
 };
 
 struct Test {
@@ -56,6 +64,8 @@ int main(int, char**) {
   Test test;
   test.setValue(true);
   TEST::setMode(TEST::Mode::ALTERNATE_FUNCTION, 0);
+  //TEST::Settings ts;
+  //TEST::setPinSettings(ts, 5);
 
   cout << "OK !" << endl;
   return 0;
