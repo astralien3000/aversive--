@@ -9,174 +9,214 @@ namespace HAL {
   namespace ATMegaxx0_1 {
 
     template<u8 ID>
-    struct GPIO : ::HAL::Private::GPIO::DriverInterface {
+    struct GPIO : ::HAL::Private::GPIO_DriverInterface {
 
 #define MACRO_ENUM_ELEMENT(elem)		\
-      static constexpr Type elem = Type::elem
+      inline static constexpr Type elem = Type::elem
       
-      struct Mode : ::HAL::Private::GPIO::Mode {
-	MACRO_ENUM_ELEMENT(UNDEFINED);
+      struct Mode : GPIO_DriverInterface::Mode {
 	MACRO_ENUM_ELEMENT(INPUT);
 	MACRO_ENUM_ELEMENT(OUTPUT);
       };
 
 #undef MACRO_ENUM_ELEMENT
 
-      //! \brief the module is always enabled
-      inline static constexpr bool isModuleEnabled(void) {
-	return true;
-      }
+      //! \name Module Enable
+      //! @{
+      inline static bool isModuleEnabled(void);
+      //inline static void enableModule(void);
+      //inline static void disableModule(void);
+      //! @}
+
+      //! \name Module Sleep Enable
+      //! @{
+      //inline static bool isModuleSleepEnabled(void);
+      //inline static void enableModuleSleep(void);
+      //inline static void disableModuleSleep(void);
+      //! @}
+	
+      //! \name Settings
+      //! @{
+      inline static void getPinSettings(Settings&, u8 pin_number);
+      inline static void setPinSettings(const Settings&, u8 pin_number);
+      inline static void setPinGroupSettings(const Settings&, u32 pin_mask);
+      //! @}
 
       //! \name Mode
       //! @{
-      inline static typename Mode::Type getPinMode(u8 pin_number) {
-	if(HDL::GPIO<ID>::DDR & (1 << pin_number)) {
-	  return Mode::OUTPUT;
-	}
-	else {
-	  return Mode::INPUT;
-	}
-      }
-      
-      inline static void setPinMode(typename Mode::Type type, u8 pin_number) {
-	setMode(type, (1 << pin_number));
-      }
-      
-      inline static void setMode(typename Mode::Type type, u32 pin_mask) {
-	if(type == Mode::INPUT) {
-	  HDL::GPIO<ID>::DDR &= (u8)~pin_mask;
-	}
-	else if(type == Mode::OUTPUT) {
-	  HDL::GPIO<ID>::DDR |= (u8)pin_mask;
-	}
-      }
-      
-      template<u8 PIN_NUMBER>
-      inline static typename Mode::Type getPinMode(void) {
-	if(HDL::GPIO<ID>::Fields::template DDR<PIN_NUMBER>::field) {
-	  return Mode::OUTPUT;
-	}
-	else {
-	  return Mode::INPUT;
-	}
-      }
-	
-      template<typename Mode::Type TYPE, u8 PIN_NUMBER>
-      inline static void setPinMode(void) {
-	static_assert((TYPE == Mode::INPUT) || (TYPE == Mode::OUTPUT),
-		      "This mode is not supported for this microcontroller");
-	
-	if(TYPE == Mode::INPUT) {
-	  HDL::GPIO<ID>::Fields::template DDR<PIN_NUMBER>::field = false;
-	}
-	else if(TYPE == Mode::OUTPUT) {
-	  HDL::GPIO<ID>::Fields::template DDR<PIN_NUMBER>::field = true;
-	}
-      }
-      
-      template<typename Mode::Type TYPE, u32 PIN_MASK>
-      inline static void setMode(void) {
-	static_assert((TYPE == Mode::INPUT) || (TYPE == Mode::OUTPUT),
-		      "This mode is not supported for this microcontroller");
-	static_assert((PIN_MASK & 0xFF) == PIN_MASK,
-		      "Invalid PIN MASK");
+      inline static typename Mode::Type getPinMode(u8 pin_number);
+      inline static void setPinMode(typename Mode::Type, u8 pin_number);
+      inline static void setPinGroupMode(typename Mode::Type, u32 pin_mask);
+      //! @}
 
-      	if(TYPE == Mode::INPUT) {
-	  HDL::GPIO<ID>::DDR &= (u8)~PIN_MASK;
-	}
-	else if(TYPE == Mode::OUTPUT) {
-	  HDL::GPIO<ID>::DDR |= (u8)PIN_MASK;
-	}
-      }
+      //! \name Output Mode
+      //! @{
+      //inline static typename OutputMode::Type getPinOutputMode(u8 pin_number);
+      //inline static void setPinOutputMode(typename OutputMode::Type, u8 pin_number);
+      //inline static void setPinGroupOutputMode(typename OutputMode::Type, u32 pin_mask);
+      //! @}
+
+      //! \name Alternate Function
+      //! @{
+      //inline static typename Alternate::Type getPinAlternate(u8 pin_number);
+      //inline static void setPinAlternate(typename Alternate::Type, u8 pin_number);
+      //inline static void setPinGroupAlternate(typename Alternate::Type, u32 pin_mask);
+      //! @}
+
+      //! \name Pull policy
+      //! @{
+      //inline static typename Pull::Type getPinPull(u8 pin_number);
+      //inline static void setPinPull(typename Pull::Type, u8 pin_number);
+      //inline static void setPinGroupPull(typename Pull::Type, u32 pin_mask);
+      //! @}
+
+      //! \name Speed
+      //! @{
+      //inline static typename Speed::Type getPinSpeed(u8 pin_number);
+      //inline static void setPinSpeed(typename Speed::Type, u8 pin_number);
+      //inline static void setPinGroupSpeed(typename Speed::Type, u32 pin_mask);
+      //! @}
+
+      //! \name External Interrupt Handler
+      //! @{
+      //inline static IRQ_Handler getPinExtiHandler(u8 pin_number);
+      //inline static void setPinExtiHandler(IRQ_Handler, u8 pin_number);
+      //! @}
+
+      //! \name Trigger Detection
+      //! @{
+      //inline static typename TriggerDetection::Type getPinTriggerDetection(u8 pin_number);
+      //inline static void setPinTriggerDectection(typename TriggerDetection::Type, u8 pin_number);
       //! @}
 
       //! \name Value
       //! @{
-      inline static bool getPinValue(u8 pin_number) {
-	return (HDL::GPIO<ID>::PIN & (1 << pin_number)) == (1 << pin_number);
-      }
-      
-      inline static void setPinValue(bool value, u8 pin_number) {
-	if(value) {
-	  HDL::GPIO<ID>::PORT |= 1 << pin_number;
-	}
-	else {
-	  HDL::GPIO<ID>::PORT &= ~(1 << pin_number);
-	}
-      }
-      
-      //! \todo TEST
-      inline static void togglePin(u8 pin_number) {
-	const u8 msk = 1 << pin_number;
-	if(HDL::GPIO<ID>::PORT & msk) {
-	  HDL::GPIO<ID>::PORT &= ~msk;
-	}
-	else {
-	  HDL::GPIO<ID>::PORT |= msk;
-	}
-      }
-      
-      inline static u32 getValue(void) {
-	return HDL::GPIO<ID>::PIN;
-      }
-      
-      inline static void setValue(u32 value) {
-	HDL::GPIO<ID>::PORT = value;
-      }
-      
-      inline static void setValue(bool value, u32 pin_mask) {
-	if(value) {
-	  HDL::GPIO<ID>::PORT &= (u8)~pin_mask;
-	}
-	else {
-	  HDL::GPIO<ID>::PORT |= (u8)pin_mask;
-	}
-      }
+      inline static u32 getValue(void);
+      inline static void setValue(u32 value);
+      template<u32 VALUE> inline static void setValue(void);
 
-      //! \todo TEST
-      inline static void toggle(u32 pin_mask) {
-	HDL::GPIO<ID>::PORT =
-	  (HDL::GPIO<ID>::PORT & (u8)~pin_mask) |
-	  ((~VAL(HDL::GPIO<ID>::PORT)) & (u8)pin_mask);
-      }
-      
-      template<u8 PIN_NUMBER>
-      inline static bool getPinValue(void) {
-	return HDL::GPIO<ID>::Fields::template PIN<PIN_NUMBER>::field;
-      }
-      
-      template<bool VALUE, u8 PIN_NUMBER>
-      inline static void setPinValue(void) {
-	HDL::GPIO<ID>::Fields::template PORT<PIN_NUMBER>::field = VALUE;
-      }
-      
-      //! \todo TEST
-      template<u8 PIN_NUMBER>
-      static void togglePin(void) {
-	using PORTField = typename HDL::GPIO<ID>::Fields::template PORT<PIN_NUMBER>;
-	PORTField::field = !PORTField::field;
-      }
+      inline static bool getPinValue(u8 pin_number);
+      inline static void setPinValue(bool value, u8 pin_number);
+      inline static void togglePin(u8 pin_number);
 
-      template<u32 VALUE> static void setValue(void) {
-	HDL::GPIO<ID>::PORT = (u8)VALUE;
-      }
-      
-      template<bool VALUE, u32 PIN_MASK> static void setValue(void) {
-	if(VALUE) {
-	  HDL::GPIO<ID>::PORT |= (u8)PIN_MASK;
-	}
-	else {
-	  HDL::GPIO<ID>::PORT &= (u8)~PIN_MASK;
-	}
-      }
-      
-      //! \todo TEST
-      template<u32 PIN_MASK> static void toggle(void) {
-	HDL::GPIO<ID>::PORT =
-	  (HDL::GPIO<ID>::PORT & (u8)~PIN_MASK) |
-	  ((~VAL(HDL::GPIO<ID>::PORT)) & (u8)PIN_MASK);
-      }
+      inline static void setPinGroupValue(bool value, u32 pin_mask);
+      inline static void togglePinGroup(u32 pin_mask);
       //! @}
+
+      //! \brief Templated PinGroup interface
+      template<u32 PIN_MASK>
+      struct PinGroup {
+	//! \name Settings
+	//! @{
+	inline static void setSettings(const Settings&);
+	template<typename Settings> inline static void setSettings(void);
+	//! @}
+
+	//! \name Mode
+	//! @{
+	inline static void setMode(typename Mode::Type);
+	template<typename Mode::Type> inline static void setMode(void);
+	//! @}
+
+	//! \name Output Mode
+	//! @{
+	//inline static void setOutputMode(typename OutputMode::Type);
+	//template<typename OutputMode::Type> inline static void setOutputMode(void);
+	//! @}
+
+	//! \name Alternate Function
+	//! @{
+	//inline static void setAlternate(typename Alternate::Type);
+	//template<typename Alternate::Type> inline static void setAlternate(void);
+	//! @}
+
+	//! \name Pull policy
+	//! @{
+	//inline static void setPull(typename Pull::Type);
+	//template<typename Pull::Type> inline static void setPull(void);
+	//! @}
+
+	//! \name Speed
+	//! @{
+	//inline static void setSpeed(typename Speed::Type);
+	//template<typename Speed::Type> inline static void setSpeed(void);
+	//! @}
+
+	//! \name Value
+	//! @{
+	inline static void setValue(bool value);
+	template<bool VALUE> inline static void setValue(void);
+	inline static void toggle(void);
+	//! @}
+      };
+
+      //! \brief Templated Pin interface
+      template<u8 PIN_NUMBER>
+      struct Pin {
+	//! \name Settings
+	//! @{
+	inline static void getSettings(Settings&);
+	inline static void setSettings(const Settings&);
+	template<typename Settings> inline static void setSettings(void);
+	//! @}
+
+	//! \name Mode
+	//! @{
+	inline static typename Mode::Type getMode(void);
+	inline static void setMode(typename Mode::Type);
+	template<typename Mode::Type> inline static void setMode(void);
+	//! @}
+
+	//! \name Output Mode
+	//! @{
+	//inline static typename OutputMode::Type getOutputMode(void);
+	//inline static void setOutputMode(typename OutputMode::Type);
+	//template<typename OutputMode::Type> inline static void setOutputMode(void);
+	//! @}
+
+	//! \name Alternate Function
+	//! @{
+	//inline static typename Alternate::Type getAlternate(void);
+	//inline static void setAlternate(typename Alternate::Type);
+	//template<typename Alternate::Type> inline static void setAlternate(void);
+	//! @}
+
+	//! \name Pull policy
+	//! @{
+	//inline static typename Pull::Type getPull(void);
+	//inline static void setPull(typename Pull::Type);
+	//template<typename Pull::Type> inline static void setPull(void);
+	//! @}
+
+	//! \name Speed
+	//! @{
+	//inline static typename Speed::Type getSpeed(void);
+	//inline static void setSpeed(typename Speed::Type);
+	//template<typename Speed::Type> inline static void setSpeed(void);
+	//! @}
+
+	//! \name External Interrupt Handler
+	//! @{
+	//inline static IRQ_Handler getExtiHandler(void);
+	//inline static void setExtiHandler(IRQ_Handler);
+	//! @}
+
+	//! \name Trigger Detection
+	//! @{
+	//inline static typename TriggerDetection::Type getTriggerDetection(void);
+	//inline static void setTriggerDectection(typename TriggerDetection::Type);
+	//template<typename TriggerDetection::Type> inline static void setTriggerDectection(void);
+	//! @}
+
+	//! \name Value
+	//! @{
+	inline static bool getValue(void);
+	inline static void setValue(bool value);
+	inline static void toggle(void);
+	template<bool VALUE> inline static void setValue(void);
+	//! @}
+
+      };
     };
 
     using GPIO_A = GPIO<0>;

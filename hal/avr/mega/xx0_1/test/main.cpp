@@ -6,11 +6,11 @@ extern void delay(void);
 
 int main(int, char**) {
  
-  GPIO_B::setPinMode<GPIO_B::Mode::OUTPUT, 7>();
+  GPIO_B::Pin<7>::setMode<GPIO_B::Mode::OUTPUT>();
 
   while(1) {
     delay();
-    GPIO_B::togglePin<7>();
+    GPIO_B::Pin<7>::toggle();
   }
   
   return 0;
