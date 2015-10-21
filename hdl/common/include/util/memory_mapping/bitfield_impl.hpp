@@ -12,19 +12,19 @@ namespace MemoryMapping {
 
   template<typename RegType, typename Group, int BITNUM>
   inline const BitField<RegType, Group, BITNUM>& BitField<RegType, Group, BITNUM>::operator=(const Config<RegType, Group, (1<<BITNUM)>& cfg) const {
-    REGISTER = (REGISTER & ~(1 << BITNUM)) | cfg.VALUE;
+    REGISTER = (REGISTER & (RegType)~(1 << BITNUM)) | cfg.VALUE;
     return *this;
   }
 
   template<typename RegType, typename Group, int BITNUM>
   inline const BitField<RegType, Group, BITNUM>& BitField<RegType, Group, BITNUM>::operator=(const BitField<RegType, Group, BITNUM>& bf) const {
-    REGISTER = (REGISTER & ~(1 << BITNUM)) | (bf.REGISTER & (1 << BITNUM));
+    REGISTER = (REGISTER & (RegType)~(1 << BITNUM)) | (bf.REGISTER & (1 << BITNUM));
     return *this;
   }
 
   template<typename RegType, typename Group, int BITNUM> template<typename OtherRegType, typename OtherGroup, int OTHER_BITNUM>
   inline const BitField<RegType, Group, BITNUM>& BitField<RegType, Group, BITNUM>::operator=(const BitField<OtherRegType, OtherGroup, OTHER_BITNUM>& bf) const {
-    REGISTER = (REGISTER & ~(1 << BITNUM)) | (((bf.REGISTER >> OTHER_BITNUM) & 1) << BITNUM);
+    REGISTER = (REGISTER & (RegType)~(1 << BITNUM)) | (((bf.REGISTER >> OTHER_BITNUM) & 1) << BITNUM);
     return *this;
   }
 
