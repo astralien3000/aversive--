@@ -226,10 +226,10 @@ namespace HAL {
 
 	//! \name Mode
 	//! @{
-	static Mode::Type getPinMode(void) DEPRECATED;
+	static Mode::Type getMode(void) DEPRECATED;
 	static void setMode(Mode::Type)    DEPRECATED;
 	  
-	template<Mode::Type> static void setPinMode(void) DEPRECATED;
+	template<Mode::Type> static void setMode(void) DEPRECATED;
 	//! @}
 
 	//! \name Output Mode
@@ -280,11 +280,11 @@ namespace HAL {
 
 	//! \name Value
 	//! @{
-	static bool getPinValue(void)       DEPRECATED;
-	static void setPinValue(bool value) DEPRECATED;
-	static void togglePin(void)         DEPRECATED;
+	static bool getValue(void)       DEPRECATED;
+	static void setValue(bool value) DEPRECATED;
+	static void toggle(void)         DEPRECATED;
 
-	template<bool VALUE> static void setPinValue(void) DEPRECATED;
+	template<bool VALUE> static void setValue(void) DEPRECATED;
 	//! @}
 
       };
