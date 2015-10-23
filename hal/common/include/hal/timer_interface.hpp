@@ -170,19 +170,19 @@ namespace HAL {
 
       //! \name OutputCompare Dynamic Functions
       //! @{
-      static void setOutputCompareSettings(const OCSettings&, u8 channel) DEPRECATED;
-      static void getOutputCompareSettings(OCSettings&, u8 channel)              DEPRECATED;
+      static void setOutputCompareSettings(u8 channel, const OCSettings&) DEPRECATED;
+      static void getOutputCompareSettings(u8 channel, OCSettings&)              DEPRECATED;
 
-      static void setOutputCompareMode(OCMode::Type, u8 channel) DEPRECATED;
+      static void setOutputCompareMode(u8 channel, OCMode::Type) DEPRECATED;
       static OCMode::Type getOutputCompareMode(u8 channel)       DEPRECATED;
 
-      static void setOutputComparePolarity(OCPolarity::Type, u8 channel) DEPRECATED;
+      static void setOutputComparePolarity(u8 channel, OCPolarity::Type) DEPRECATED;
       static OCPolarity::Type getOutputComparePolarity(u8 channel)       DEPRECATED;
 
-      static void setOutputComparePulseWidth(OCPulseWidth::Type, u8 channel) DEPRECATED;
+      static void setOutputComparePulseWidth(u8 channel, OCPulseWidth::Type) DEPRECATED;
       OCPulseWidth::Type getOutputComparePulseWidth(u8 channel)              DEPRECATED;
 
-      static void setOutputCompareHandler(IRQ_Handler, u8 channel) DEPRECATED;
+      static void setOutputCompareHandler(u8 channel, IRQ_Handler) DEPRECATED;
       static IRQ_Handler getOutputCompareHandler(u8 channel)       DEPRECATED;
       //! @}
       
@@ -242,10 +242,10 @@ namespace HAL {
 
 	//! \name Channel Dynamic Functions
 	//! @{
-	static void setChannelPolarity(EncoderPolarity::Type, u8 channel) DEPRECATED;
+	static void setChannelPolarity(u8 channel, EncoderPolarity::Type) DEPRECATED;
 	static EncoderPolarity::Type getChannelPolarity(u8 channel)       DEPRECATED;
 
-	static void setChannelPrescaler(EncoderPolarity, u8 channel) DEPRECATED;
+	static void setChannelPrescaler(u8 channel, EncoderPolarity) DEPRECATED;
 	static EncoderPolarity::Type getChannelPrescaler(u8 channel)       DEPRECATED;
 	//! @}
 
