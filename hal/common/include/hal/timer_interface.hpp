@@ -180,7 +180,7 @@ namespace HAL {
       static OCPolarity::Type getOutputComparePolarity(u8 channel)       UNAVAILABLE;
 
       static void setOutputComparePulseWidth(u8 channel, OCPulseWidth::Type) UNAVAILABLE;
-      OCPulseWidth::Type getOutputComparePulseWidth(u8 channel)              UNAVAILABLE;
+      static OCPulseWidth::Type getOutputComparePulseWidth(u8 channel)              UNAVAILABLE;
 
       static void setOutputCompareHandler(u8 channel, IRQ_Handler) UNAVAILABLE;
       static IRQ_Handler getOutputCompareHandler(u8 channel)       UNAVAILABLE;
@@ -214,7 +214,7 @@ namespace HAL {
 	//! @{
 	static void setPulseWidth(OCPulseWidth::Type)                UNAVAILABLE;
 	template<OCPulseWidth::Type> static void setPulseWidth(void) UNAVAILABLE;
-	OCPulseWidth::Type getPulseWidth(void)                       UNAVAILABLE;
+	static OCPulseWidth::Type getPulseWidth(void)                       UNAVAILABLE;
 	//! @}
 
 	//! \name Output Compare Handler
