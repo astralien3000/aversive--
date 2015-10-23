@@ -1,3 +1,14 @@
+/*!
+\page HAL UART Example
+\brief This file is a template you can use to develop your driver
+\todo 
+ - Rename the security aganst include loops
+ - Rename the driver
+ - Remove the Example namespace
+ - Uncomment the functionalities that are available on your hardware
+ - Implement it !
+*/
+
 #ifndef HAL_COMMON_UART_EXAMPLE_HPP
 #define HAL_COMMON_UART_EXAMPLE_HPP
 
@@ -10,6 +21,7 @@ namespace HAL {
     template<u8 ID>
     struct UART : ::HAL::Private::UART_DriverInterface {
       
+      //! \brief This is just an alias to define an available enum value
 #define MACRO_ENUM_ELEMENT(elem)				\
       //static constexpr Type elem = Type::elem
 
