@@ -1,4 +1,5 @@
 #include "../include/gpio.hpp"
+#include "../include/uart.hpp"
 
 using namespace HAL;
 
