@@ -5,7 +5,7 @@
 
 //! \brief This define tells to the compiler (GNU) to warn the user when a marked funcionnality is used
 //! \todo Replace by C++14 deprecated attribute
-#define DEPRECATED __attribute__((deprecated))
+#define UNAVAILABLE __attribute__((deprecated("This functionnality is not available for the microcontroller you are using")))
 
 namespace HAL {
 
@@ -16,7 +16,7 @@ namespace HAL {
       
       //! \brief This is just an alias to build "deprecatable Enumerations"
 #define MACRO_ENUM_ELEMENT(elem)				\
-      static constexpr Type elem DEPRECATED = Type::elem
+      static constexpr Type elem UNAVAILABLE = Type::elem
 
       //! \brief The UART Baudrate
       struct Baudrate {
@@ -94,110 +94,110 @@ namespace HAL {
 
       //! \name Module Enable
       //! @{
-      static bool isModuleEnabled(void) DEPRECATED;
-      static void enableModule(void)    DEPRECATED;
-      static void disableModule(void)   DEPRECATED;
+      static bool isModuleEnabled(void) UNAVAILABLE;
+      static void enableModule(void)    UNAVAILABLE;
+      static void disableModule(void)   UNAVAILABLE;
       //! @}
 
       //! \name Module Sleep Enable
       //! @{
-      static bool isModuleSleepEnabled(void) DEPRECATED;
-      static void enableModuleSleep(void)    DEPRECATED;
-      static void disableModuleSleep(void)   DEPRECATED;
+      static bool isModuleSleepEnabled(void) UNAVAILABLE;
+      static void enableModuleSleep(void)    UNAVAILABLE;
+      static void disableModuleSleep(void)   UNAVAILABLE;
       //! @}
 
       //! \name Settings
       //! @{
-      static void setSettings(const Settings&)                  DEPRECATED;
-      template<typename Settings> static void setSettings(void) DEPRECATED;
-      static void getSettings(Settings&)                        DEPRECATED;
+      static void setSettings(const Settings&)                  UNAVAILABLE;
+      template<typename Settings> static void setSettings(void) UNAVAILABLE;
+      static void getSettings(Settings&)                        UNAVAILABLE;
       //! @}
       
       //! \name Partiy
       //! @{
-      static void setParity(Parity::Type)                DEPRECATED;
-      template<Parity::Type> static void setParity(void) DEPRECATED;
-      static Parity::Type getParity(void)                DEPRECATED;
+      static void setParity(Parity::Type)                UNAVAILABLE;
+      template<Parity::Type> static void setParity(void) UNAVAILABLE;
+      static Parity::Type getParity(void)                UNAVAILABLE;
       //! @}
       
       //! \name Stop Bit
       //! @{
-      static void setStopBit(StopBit::Type)                DEPRECATED;
-      template<StopBit::Type> static void setStopBit(void) DEPRECATED;
-      static StopBit::Type getStopBit(void)                DEPRECATED;
+      static void setStopBit(StopBit::Type)                UNAVAILABLE;
+      template<StopBit::Type> static void setStopBit(void) UNAVAILABLE;
+      static StopBit::Type getStopBit(void)                UNAVAILABLE;
       //! @}
       
       //! \name Word Size
       //! @{
-      static void setWordSize(WordSize::Type)                DEPRECATED;
-      template<WordSize::Type> static void setWordSize(void) DEPRECATED;
-      static WordSize::Type getWordSize(void)                DEPRECATED;
+      static void setWordSize(WordSize::Type)                UNAVAILABLE;
+      template<WordSize::Type> static void setWordSize(void) UNAVAILABLE;
+      static WordSize::Type getWordSize(void)                UNAVAILABLE;
       //! @}
       
       //! \name TX Enable
       //! @{
-      static void enableTx(void)    DEPRECATED;
-      static void disableTx(void)   DEPRECATED;
-      static bool isTxEnabled(void) DEPRECATED;
+      static void enableTx(void)    UNAVAILABLE;
+      static void disableTx(void)   UNAVAILABLE;
+      static bool isTxEnabled(void) UNAVAILABLE;
       //! @}
       
       //! \name RX Enable
       //! @{
-      static void enableRx(void)    DEPRECATED;
-      static void disableRx(void)   DEPRECATED;
-      static bool isRxEnabled(void) DEPRECATED;
+      static void enableRx(void)    UNAVAILABLE;
+      static void disableRx(void)   UNAVAILABLE;
+      static bool isRxEnabled(void) UNAVAILABLE;
       //! @}
       
       //! \name TX FIFO Size
       //! @{
-      static void setTxFifoSize(FifoSize::Type)                DEPRECATED;
-      template<FifoSize::Type> static void setTxFifoSize(void) DEPRECATED;
-      static FifoSize::Type getTxFifoSize(void)                DEPRECATED;
+      static void setTxFifoSize(FifoSize::Type)                UNAVAILABLE;
+      template<FifoSize::Type> static void setTxFifoSize(void) UNAVAILABLE;
+      static FifoSize::Type getTxFifoSize(void)                UNAVAILABLE;
       //! @}
       
       //! \name RX FIFO Size
       //! @{
-      static void setRxFifoSize(FifoSize::Type)                DEPRECATED;
-      template<FifoSize::Type> static void setRxFifoSize(void) DEPRECATED;
-      static FifoSize::Type getRxFifoSize(void)                DEPRECATED;
+      static void setRxFifoSize(FifoSize::Type)                UNAVAILABLE;
+      template<FifoSize::Type> static void setRxFifoSize(void) UNAVAILABLE;
+      static FifoSize::Type getRxFifoSize(void)                UNAVAILABLE;
       //! @}
       
       //! \name Flow Control
       //! @{
-      static void setFlowControl(FlowControl::Type)                DEPRECATED;
-      template<FlowControl::Type> static void setFlowControl(void) DEPRECATED;
-      static FlowControl::Type getFlowControl(void)                DEPRECATED;
+      static void setFlowControl(FlowControl::Type)                UNAVAILABLE;
+      template<FlowControl::Type> static void setFlowControl(void) UNAVAILABLE;
+      static FlowControl::Type getFlowControl(void)                UNAVAILABLE;
       //! @}
       
       //! \name Endianess
       //! @{
-      static void setEndianess(Endianess::Type)                DEPRECATED;
-      template<Endianess::Type> static void setEndianess(void) DEPRECATED;
-      static Endianess::Type getEndianess(void)                DEPRECATED;
+      static void setEndianess(Endianess::Type)                UNAVAILABLE;
+      template<Endianess::Type> static void setEndianess(void) UNAVAILABLE;
+      static Endianess::Type getEndianess(void)                UNAVAILABLE;
       //! @}
       
       //! \name Handlers
       //! @{
-      static void setTxCompleteHandler(IRQ_Handler) DEPRECATED; // Tx Fifo is Empty
-      static void setRxCompleteHandler(IRQ_Handler) DEPRECATED; // Rx Fifo is Full
+      static void setTxCompleteHandler(IRQ_Handler) UNAVAILABLE; // Tx Fifo is Empty
+      static void setRxCompleteHandler(IRQ_Handler) UNAVAILABLE; // Rx Fifo is Full
       //! @}
       
       //! \name Stream operations
       //! @{
-      static void putChar(u8) DEPRECATED; // Blocking
-      static u8 getChar(void) DEPRECATED; // Blocking
+      static void putChar(u8) UNAVAILABLE; // Blocking
+      static u8 getChar(void) UNAVAILABLE; // Blocking
 
-      static u32 write(u8* data, u32 length) DEPRECATED; // Blocking
-      static u32 read(u8* data, u32 length)  DEPRECATED; // Blocking
+      static u32 write(u8* data, u32 length) UNAVAILABLE; // Blocking
+      static u32 read(u8* data, u32 length)  UNAVAILABLE; // Blocking
 
-      static u32 getTxFifoAvailableSpace(void) DEPRECATED;
-      static u32 getRxFifoAvailableWords(void) DEPRECATED;
+      static u32 getTxFifoAvailableSpace(void) UNAVAILABLE;
+      static u32 getRxFifoAvailableWords(void) UNAVAILABLE;
       //! @}
     };
 
   }
 }
 
-#undef DEPRECATED
+#undef UNAVAILABLE
 
 #endif//HAL_COMMON_UART_INTERFACE_HPP

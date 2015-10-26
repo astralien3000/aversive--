@@ -5,7 +5,7 @@
 
 //! \brief This define tells to the compiler (GNU) to warn the user when a marked funcionnality is used
 //! \todo Replace by C++14 deprecated attribute
-#define DEPRECATED __attribute__((deprecated))
+#define UNAVAILABLE __attribute__((deprecated("This functionnality is not available for the microcontroller you are using")))
 
 namespace HAL {
 
@@ -16,7 +16,7 @@ namespace HAL {
 
       //! \brief This is just an alias to build "deprecatable Enumerations"
 #define MACRO_ENUM_ELEMENT(elem)				\
-      static constexpr Type elem DEPRECATED = Type::elem
+      static constexpr Type elem UNAVAILABLE = Type::elem
 
       //! \brief Interrupt Handler
       //! \todo May be gatered with others IRQ_Handlers
@@ -122,68 +122,68 @@ namespace HAL {
       
       //! \name Module Enable
       //! @{
-      static bool isModuleEnabled(void) DEPRECATED;
-      static void enableModule(void)    DEPRECATED;
-      static void disableModule(void)   DEPRECATED;
+      static bool isModuleEnabled(void) UNAVAILABLE;
+      static void enableModule(void)    UNAVAILABLE;
+      static void disableModule(void)   UNAVAILABLE;
       //! @}
 
       //! \name Module Sleep Enable
       //! @{
-      static bool isModuleSleepEnabled(void) DEPRECATED;
-      static void enableModuleSleep(void)    DEPRECATED;
-      static void disableModuleSleep(void)   DEPRECATED;
+      static bool isModuleSleepEnabled(void) UNAVAILABLE;
+      static void enableModuleSleep(void)    UNAVAILABLE;
+      static void disableModuleSleep(void)   UNAVAILABLE;
       //! @}
 
       //! \name Settings
       //! @{
-      static void setSettings(const Settings&)            DEPRECATED;
-      static void getSettings(Settings&)                  DEPRECATED;
-      template<typename Settings> static void setSettings(void) DEPRECATED;
+      static void setSettings(const Settings&)            UNAVAILABLE;
+      static void getSettings(Settings&)                  UNAVAILABLE;
+      template<typename Settings> static void setSettings(void) UNAVAILABLE;
       //! @}
 	
       //! \name Counter Mode
       //! @{
-      static void setCounterMode(CounterMode::Type)                DEPRECATED;
-      template<CounterMode::Type> static void setCounterMode(void) DEPRECATED;
-      static CounterMode::Type getCounterMode(void)                DEPRECATED;
+      static void setCounterMode(CounterMode::Type)                UNAVAILABLE;
+      template<CounterMode::Type> static void setCounterMode(void) UNAVAILABLE;
+      static CounterMode::Type getCounterMode(void)                UNAVAILABLE;
       //! @}
 
       //! \name Clock Select
       //! @{
-      static void setClockSelect(CounterMode::Type)                DEPRECATED;
-      template<CounterMode::Type> static void setClockSelect(void) DEPRECATED;
-      static CounterMode::Type getClockSelect(void)                DEPRECATED;
+      static void setClockSelect(CounterMode::Type)                UNAVAILABLE;
+      template<CounterMode::Type> static void setClockSelect(void) UNAVAILABLE;
+      static CounterMode::Type getClockSelect(void)                UNAVAILABLE;
       //! @}
 
       //! \name Prescaler
       //! @{
-      static void setPrescaler(Prescaler::Type)                DEPRECATED;
-      template<Prescaler::Type> static void setPrescaler(void) DEPRECATED;
-      static Prescaler::Type getPrescaler(void)                DEPRECATED;
+      static void setPrescaler(Prescaler::Type)                UNAVAILABLE;
+      template<Prescaler::Type> static void setPrescaler(void) UNAVAILABLE;
+      static Prescaler::Type getPrescaler(void)                UNAVAILABLE;
       //! @}
 
       //! \name Overflow Handler
       //! @{
-      static void setOverflowHandler(IRQ_Handler) DEPRECATED;
-      static IRQ_Handler getOverflowHandler(void) DEPRECATED;
+      static void setOverflowHandler(IRQ_Handler) UNAVAILABLE;
+      static IRQ_Handler getOverflowHandler(void) UNAVAILABLE;
       //! @}
 
       //! \name OutputCompare Dynamic Functions
       //! @{
-      static void setOutputCompareSettings(const OCSettings&, u8 channel) DEPRECATED;
-      static void getOutputCompareSettings(OCSettings&, u8 channel)              DEPRECATED;
+      static void setOutputCompareSettings(u8 channel, const OCSettings&) UNAVAILABLE;
+      static void getOutputCompareSettings(u8 channel, OCSettings&)              UNAVAILABLE;
 
-      static void setOutputCompareMode(OCMode::Type, u8 channel) DEPRECATED;
-      static OCMode::Type getOutputCompareMode(u8 channel)       DEPRECATED;
+      static void setOutputCompareMode(u8 channel, OCMode::Type) UNAVAILABLE;
+      static OCMode::Type getOutputCompareMode(u8 channel)       UNAVAILABLE;
 
-      static void setOutputComparePolarity(OCPolarity::Type, u8 channel) DEPRECATED;
-      static OCPolarity::Type getOutputComparePolarity(u8 channel)       DEPRECATED;
+      static void setOutputComparePolarity(u8 channel, OCPolarity::Type) UNAVAILABLE;
+      static OCPolarity::Type getOutputComparePolarity(u8 channel)       UNAVAILABLE;
 
-      static void setOutputComparePulseWidth(OCPulseWidth::Type, u8 channel) DEPRECATED;
-      OCPulseWidth::Type getOutputComparePulseWidth(u8 channel)              DEPRECATED;
+      static void setOutputComparePulseWidth(u8 channel, OCPulseWidth::Type) UNAVAILABLE;
+      static OCPulseWidth::Type getOutputComparePulseWidth(u8 channel)              UNAVAILABLE;
 
-      static void setOutputCompareHandler(IRQ_Handler, u8 channel) DEPRECATED;
-      static IRQ_Handler getOutputCompareHandler(u8 channel)       DEPRECATED;
+      static void setOutputCompareHandler(u8 channel, IRQ_Handler) UNAVAILABLE;
+      static IRQ_Handler getOutputCompareHandler(u8 channel)       UNAVAILABLE;
       //! @}
       
       //! \brief Templated OutputCompare interface
@@ -191,36 +191,36 @@ namespace HAL {
       struct OutputCompare {
 	//! \name Settings
 	//! @{
-	static void setSettings(const OCSettings&) DEPRECATED;
-	template<typename Settings> static void setSettings(void)      DEPRECATED;
-	static void getSettings(OCSettings&)        DEPRECATED;
+	static void setSettings(const OCSettings&) UNAVAILABLE;
+	template<typename Settings> static void setSettings(void)      UNAVAILABLE;
+	static void getSettings(OCSettings&)        UNAVAILABLE;
 	//! @}
 
 	//! \name Mode
 	//! @{
-	static void setMode(OCMode::Type)                DEPRECATED;
-	template<OCMode::Type> static void setMode(void) DEPRECATED;
-	static OCMode::Type getMode(void)                DEPRECATED;
+	static void setMode(OCMode::Type)                UNAVAILABLE;
+	template<OCMode::Type> static void setMode(void) UNAVAILABLE;
+	static OCMode::Type getMode(void)                UNAVAILABLE;
 	//! @}
 
 	//! \name Polarity
 	//! @{
-	static void setPolarity(OCPolarity::Type)                DEPRECATED;
-	template<OCPolarity::Type> static void setPolarity(void) DEPRECATED;
-	static OCPolarity::Type getPolarity(void)                DEPRECATED;
+	static void setPolarity(OCPolarity::Type)                UNAVAILABLE;
+	template<OCPolarity::Type> static void setPolarity(void) UNAVAILABLE;
+	static OCPolarity::Type getPolarity(void)                UNAVAILABLE;
 	//! @}
 
 	//! \name Pulse Width
 	//! @{
-	static void setPulseWidth(OCPulseWidth::Type)                DEPRECATED;
-	template<OCPulseWidth::Type> static void setPulseWidth(void) DEPRECATED;
-	OCPulseWidth::Type getPulseWidth(void)                       DEPRECATED;
+	static void setPulseWidth(OCPulseWidth::Type)                UNAVAILABLE;
+	template<OCPulseWidth::Type> static void setPulseWidth(void) UNAVAILABLE;
+	static OCPulseWidth::Type getPulseWidth(void)                       UNAVAILABLE;
 	//! @}
 
 	//! \name Output Compare Handler
 	//! @{
-	static void setHandler(IRQ_Handler) DEPRECATED;
-	static IRQ_Handler getHandler(void) DEPRECATED;
+	static void setHandler(IRQ_Handler) UNAVAILABLE;
+	static IRQ_Handler getHandler(void) UNAVAILABLE;
 	//! @}
       };
 
@@ -228,25 +228,25 @@ namespace HAL {
       struct Encoder {
 	//! \name Settings
 	//! @{
-	static void setSettings(const EncoderSettings&)         DEPRECATED;
-	template<typename Settings> static void setSettings(void) DEPRECATED;
-	static void getSettings(EncoderSettings&)                DEPRECATED;
+	static void setSettings(const EncoderSettings&)         UNAVAILABLE;
+	template<typename Settings> static void setSettings(void) UNAVAILABLE;
+	static void getSettings(EncoderSettings&)                UNAVAILABLE;
 	//! @}
 
 	//! \name Mode
 	//! @{
-	static void setMode(EncoderMode::Type)                DEPRECATED;
-	template<EncoderMode::Type> static void setMode(void) DEPRECATED;
-	static EncoderMode::Type getEncoderMode(void)         DEPRECATED;
+	static void setMode(EncoderMode::Type)                UNAVAILABLE;
+	template<EncoderMode::Type> static void setMode(void) UNAVAILABLE;
+	static EncoderMode::Type getEncoderMode(void)         UNAVAILABLE;
 	//! @}
 
 	//! \name Channel Dynamic Functions
 	//! @{
-	static void setChannelPolarity(EncoderPolarity::Type, u8 channel) DEPRECATED;
-	static EncoderPolarity::Type getChannelPolarity(u8 channel)       DEPRECATED;
+	static void setChannelPolarity(u8 channel, EncoderPolarity::Type) UNAVAILABLE;
+	static EncoderPolarity::Type getChannelPolarity(u8 channel)       UNAVAILABLE;
 
-	static void setChannelPrescaler(EncoderPolarity, u8 channel) DEPRECATED;
-	static EncoderPolarity::Type getChannelPrescaler(u8 channel)       DEPRECATED;
+	static void setChannelPrescaler(u8 channel, EncoderPolarity) UNAVAILABLE;
+	static EncoderPolarity::Type getChannelPrescaler(u8 channel)       UNAVAILABLE;
 	//! @}
 
 	//! \brief Encoder Channel interface
@@ -254,16 +254,16 @@ namespace HAL {
 	struct Channel {
 	  //! \name Polarity
 	  //! @{
-	  static void setPolarity(EncoderPolarity::Type)                DEPRECATED;
-	  template<EncoderPolarity::Type> static void setPolarity(void) DEPRECATED;
-	  static EncoderPolarity::Type getPolarity(void)                DEPRECATED;
+	  static void setPolarity(EncoderPolarity::Type)                UNAVAILABLE;
+	  template<EncoderPolarity::Type> static void setPolarity(void) UNAVAILABLE;
+	  static EncoderPolarity::Type getPolarity(void)                UNAVAILABLE;
 	  //! @}
 	    
 	  //! \name Prescaler
 	  //! @{
-	  static void setPrescaler(EncoderPrescaler::Type)                DEPRECATED;
-	  template<EncoderPrescaler::Type> static void setPrescaler(void) DEPRECATED;
-	  static EncoderPrescaler::Type getPrescaler(void)                DEPRECATED;
+	  static void setPrescaler(EncoderPrescaler::Type)                UNAVAILABLE;
+	  template<EncoderPrescaler::Type> static void setPrescaler(void) UNAVAILABLE;
+	  static EncoderPrescaler::Type getPrescaler(void)                UNAVAILABLE;
 	  //! @}
 	};
       };
@@ -273,6 +273,6 @@ namespace HAL {
 }
 
 
-#undef DEPRECATED
+#undef UNAVAILABLE
 
 #endif//HAL_COMMON_TIMER_INTERFACE_HPP
