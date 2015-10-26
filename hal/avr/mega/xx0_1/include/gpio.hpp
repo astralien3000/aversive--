@@ -174,8 +174,8 @@ namespace HAL {
       }
       
       inline static void togglePinGroup(u32 pin_mask) {
-	HDL::GPIO<ID>::PORT =
-	  (HDL::GPIO<ID>::PORT & ~pin_mask) |
+	HDL::GPIO<ID>::PORT = 
+	  (HDL::GPIO<ID>::PORT & (u8)~pin_mask) |
 	  (~VAL(HDL::GPIO<ID>::PIN) & pin_mask);
       }
 
@@ -366,8 +366,9 @@ namespace HAL {
 	}
 	
         inline static void toggle(void) {
-	  HDL::GPIO<ID>::Fields::template PORT<PIN_NUMBER>::field =
-	    ~HDL::GPIO<ID>::Fields::template PIN<PIN_NUMBER>::field;
+	  // Check if the pin exist
+	  (void) HDL::GPIO<ID>::Fields::template PORT<PIN_NUMBER>::field;
+	  togglePin(PIN_NUMBER);
 	}
 	
         template<bool VALUE> inline static void setValue(void) {
@@ -390,6 +391,9 @@ namespace HAL {
     using GPIO_J = GPIO<9>;
     using GPIO_K = GPIO<10>;
     using GPIO_L = GPIO<11>;
+
+    // \brief This is used to specify settings that can be on any GPIO
+    using GPIOx = GPIO<-1>;
   }
 }
 
