@@ -112,16 +112,56 @@ namespace HAL {
 
       //! \name Value
       //! @{
-      inline static u32 getValue(void);
-      inline static void setValue(u32 value);
-      template<u32 VALUE> inline static void setValue(void);
+      inline static u32 getValue(void) {
+	return VAL(HDL::GPIO<ID>::PIN);
+      }
+      
+      inline static void setValue(u32 value) {
+	HDL::GPIO<ID>::PORT = value;
+      }
+      
+      template<u32 VALUE> inline static void setValue(void) {
+	static_assert(!(VALUE & ~0xFF), "Invalid value");
+	HDL::GPIO<ID>::PORT = VALUE;
+      }
 
-      inline static bool getPinValue(u8 pin_number);
-      inline static void setPinValue(u8 pin_number, bool value);
-      inline static void togglePin(u8 pin_number);
+      inline static bool getPinValue(u8 pin_number) {
+	if(HDL::GPIO<ID>::PIN & (1 << pin_number)) {
+	  return true;
+	}
+	else {
+	  return false;
+	}
+      }
+      
+      inline static void setPinValue(u8 pin_number, bool value) {
+	if(value) {
+	  HDL::GPIO<ID>::PORT |= (1 << pin_number);
+	}
+	else {
+	  HDL::GPIO<ID>::PORT &= ~(1 << pin_number);
+	}
+      }
+      
+      inline static void togglePin(u8 pin_number) {
+	setPinValue(pin_number, !getPinValue(pin_number));
+      }
 
-      inline static void setPinGroupValue(u32 pin_mask, bool value);
-      inline static void togglePinGroup(u32 pin_mask);
+      inline static void setPinGroupValue(u32 pin_mask, bool value) {
+	if(value) {
+	  HDL::GPIO<ID>::PORT |= pin_mask;
+	}
+	else {
+	  HDL::GPIO<ID>::PORT &= ~pin_mask;
+	}
+      }
+      
+      inline static void togglePinGroup(u32 pin_mask) {
+	HDL::GPIO<ID>::PORT =
+	  (HDL::GPIO<ID>::PORT & ~pin_mask) |
+	  (~VAL(HDL::GPIO<ID>::PIN) & pin_mask);
+      }
+
       //! @}
 
       //! \brief Templated PinGroup interface
