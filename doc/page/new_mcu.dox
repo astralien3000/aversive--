@@ -107,6 +107,17 @@ The title is quite understandable, anything that the user is not supposed to use
 
 You don't want the user to get his precious RAM swallowed, do you?
 
+## Adding your plateform definitions to HDL
+
+To add your definitions newly implemented to the HDL list, just modify `/hdl/common/include/hdl/reg.hpp`.
+
+You can add this kind of line :
+    
+    #if defined MCU_SPECIFIC_DEFINE
+    #include "path/to/your/hdl.hpp"
+    #endif    //MCU_SPECIFIC_DEFINE
+
+
 # HAL
 
 ## Drivers Interface
