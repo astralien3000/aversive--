@@ -19,6 +19,33 @@ namespace HAL {
         MACRO_ENUM_ELEMENT(OUTPUT);
       };
 
+      struct OutputMode : GPIO_DriverInterface::OutputMode {
+	MACRO_ENUM_ELEMENT(UNDEFINED);
+	//MACRO_ENUM_ELEMENT(PUSH_PULL);
+	//MACRO_ENUM_ELEMENT(OPEN_DRAIN);
+      };
+
+      struct Alternate : GPIO_DriverInterface::Alternate {
+	MACRO_ENUM_ELEMENT(UNDEFINED);
+      };
+
+      struct Pull : GPIO_DriverInterface::Pull {
+	MACRO_ENUM_ELEMENT(UNDEFINED);
+	//MACRO_ENUM_ELEMENT(UP);
+	//MACRO_ENUM_ELEMENT(DOWN);
+      };
+
+      struct Speed : GPIO_DriverInterface::Speed {
+	MACRO_ENUM_ELEMENT(UNDEFINED);
+      };
+
+      struct TriggerDetection : GPIO_DriverInterface::TriggerDetection {
+	MACRO_ENUM_ELEMENT(UNDEFINED);
+	//MACRO_ENUM_ELEMENT(RISING);
+	//MACRO_ENUM_ELEMENT(FALLING);
+	//MACRO_ENUM_ELEMENT(BOTH);
+      };
+
 #undef MACRO_ENUM_ELEMENT
 
       //! \name Module Enable
@@ -40,9 +67,21 @@ namespace HAL {
         
       //! \name Settings
       //! @{
-      inline static void getPinSettings(u8 pin_number, Settings&);
-      inline static void setPinSettings(u8 pin_number, const Settings&);
-      inline static void setPinGroupSettings(u32 pin_mask, const Settings&);
+      inline static void getPinSettings(u8 pin_number, Settings& settings) {
+	settings.mode = getPinMode(pin_number);
+	settings.output_mode = OutputMode::UNDEFINED;
+	settings.alternate = Alternate::UNDEFINED;
+	settings.pull = Pull::UNDEFINED;
+	settings.speed = Speed::UNDEFINED;
+      }
+      
+      inline static void setPinSettings(u8 pin_number, const Settings& settings) {
+	setPinMode(pin_number, settings.mode);
+      }
+      
+      inline static void setPinGroupSettings(u32 pin_mask, const Settings& settings) {
+	setPinGroupMode(pin_mask, settings);
+      }
       //! @}
 
       //! \name Mode
@@ -165,8 +204,19 @@ namespace HAL {
 	
         //! \name Settings
         //! @{
-        inline static void setSettings(const Settings&);
-        template<typename Settings> inline static void setSettings(void);
+        inline static void setSettings(const Settings& settings) {
+	  setPinGroupSettings(PIN_MASK, settings);
+	}
+	
+        template<typename Settings> inline static void setSettings(void) {
+	  static_assert(Settings::mode == Mode::OUTPUT || Settings::mode == Mode::INPUT, "Not a valid GPIO Mode for this microcontroller");
+	  static_assert(Settings::output_mode == OutputMode::UNDEFINED, "Pin OutputMode must be UNDEFINED");
+	  static_assert(Settings::alternate == Alternate::UNDEFINED, "Pin Alternate Function must be UNDEFINED");
+	  static_assert(Settings::pull == Pull::UNDEFINED, "Pin Pull Mode must be UNDEFINED");
+	  static_assert(Settings::speed == Speed::UNDEFINED, "Pin Speed must be UNDEFINED");
+
+	  setMode(Settings::mode);
+	}
         //! @}
 
         //! \name Mode
@@ -222,12 +272,26 @@ namespace HAL {
 
       //! \brief Templated Pin interface
       template<u8 PIN_NUMBER>
-      struct Pin {
+      struct Pin {	
         //! \name Settings
         //! @{
-        inline static void getSettings(Settings&);
-        inline static void setSettings(const Settings&);
-        template<typename Settings> inline static void setSettings(void);
+        inline static void getSettings(Settings& settings) {
+	  getPinSettings(PIN_NUMBER, settings);
+	}
+	
+        inline static void setSettings(const Settings& settings) {
+	  setMode(settings.mode);
+	}
+	
+        template<typename Settings> inline static void setSettings(void) {
+	  static_assert(Settings::mode == Mode::OUTPUT || Settings::mode == Mode::INPUT, "Not a valid GPIO Mode for this microcontroller");
+	  static_assert(Settings::output_mode == OutputMode::UNDEFINED, "Pin OutputMode must be UNDEFINED");
+	  static_assert(Settings::alternate == Alternate::UNDEFINED, "Pin Alternate Function must be UNDEFINED");
+	  static_assert(Settings::pull == Pull::UNDEFINED, "Pin Pull Mode must be UNDEFINED");
+	  static_assert(Settings::speed == Speed::UNDEFINED, "Pin Speed must be UNDEFINED");
+
+	  setMode(Settings::mode);
+	}
         //! @}
 
         //! \name Mode
