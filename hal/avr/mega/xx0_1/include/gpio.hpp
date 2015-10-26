@@ -40,9 +40,9 @@ namespace HAL {
         
       //! \name Settings
       //! @{
-      inline static void getPinSettings(Settings&, u8 pin_number);
-      inline static void setPinSettings(const Settings&, u8 pin_number);
-      inline static void setPinGroupSettings(const Settings&, u32 pin_mask);
+      inline static void getPinSettings(u8 pin_number, Settings&);
+      inline static void setPinSettings(u8 pin_number, const Settings&);
+      inline static void setPinGroupSettings(u32 pin_mask, const Settings&);
       //! @}
 
       //! \name Mode
@@ -56,7 +56,7 @@ namespace HAL {
 	}
       }
 
-      inline static void setPinGroupMode(typename Mode::Type mode, u32 pin_mask) {
+      inline static void setPinGroupMode(u32 pin_mask, typename Mode::Type mode) {
 	if(mode == Mode::OUTPUT) {
 	  HDL::GPIO<ID>::DDR |= pin_mask;
 	}
@@ -65,7 +65,7 @@ namespace HAL {
 	}
       }
       
-      inline static void setPinMode(typename Mode::Type mode, u8 pin_number) {
+      inline static void setPinMode(u8 pin_number, typename Mode::Type mode) {
 	setPinGroupMode(mode, (1 << pin_number));
       }
       //! @}
@@ -73,41 +73,41 @@ namespace HAL {
       //! \name Output Mode
       //! @{
       //inline static typename OutputMode::Type getPinOutputMode(u8 pin_number);
-      //inline static void setPinOutputMode(typename OutputMode::Type, u8 pin_number);
-      //inline static void setPinGroupOutputMode(typename OutputMode::Type, u32 pin_mask);
+      //inline static void setPinOutputMode(u8 pin_number, typename OutputMode::Type);
+      //inline static void setPinGroupOutputMode(u32 pin_mask, typename OutputMode::Type);
       //! @}
 
       //! \name Alternate Function
       //! @{
       //inline static typename Alternate::Type getPinAlternate(u8 pin_number);
-      //inline static void setPinAlternate(typename Alternate::Type, u8 pin_number);
-      //inline static void setPinGroupAlternate(typename Alternate::Type, u32 pin_mask);
+      //inline static void setPinAlternate(u8 pin_number, typename Alternate::Type);
+      //inline static void setPinGroupAlternate(u32 pin_mask, typename Alternate::Type);
       //! @}
 
       //! \name Pull policy
       //! @{
       //inline static typename Pull::Type getPinPull(u8 pin_number);
-      //inline static void setPinPull(typename Pull::Type, u8 pin_number);
-      //inline static void setPinGroupPull(typename Pull::Type, u32 pin_mask);
+      //inline static void setPinPull(u8 pin_number, typename Pull::Type);
+      //inline static void setPinGroupPull(u32 pin_mask, typename Pull::Type);
       //! @}
 
       //! \name Speed
       //! @{
       //inline static typename Speed::Type getPinSpeed(u8 pin_number);
-      //inline static void setPinSpeed(typename Speed::Type, u8 pin_number);
-      //inline static void setPinGroupSpeed(typename Speed::Type, u32 pin_mask);
+      //inline static void setPinSpeed(u8 pin_number, typename Speed::Type);
+      //inline static void setPinGroupSpeed(u32 pin_mask, typename Speed::Type);
       //! @}
 
       //! \name External Interrupt Handler
       //! @{
       //inline static IRQ_Handler getPinExtiHandler(u8 pin_number);
-      //inline static void setPinExtiHandler(IRQ_Handler, u8 pin_number);
+      //inline static void setPinExtiHandler(u8 pin_number, IRQ_Handler);
       //! @}
 
       //! \name Trigger Detection
       //! @{
       //inline static typename TriggerDetection::Type getPinTriggerDetection(u8 pin_number);
-      //inline static void setPinTriggerDectection(typename TriggerDetection::Type, u8 pin_number);
+      //inline static void setPinTriggerDectection(u8 pin_number, typename TriggerDetection::Type);
       //! @}
 
       //! \name Value
@@ -117,10 +117,10 @@ namespace HAL {
       template<u32 VALUE> inline static void setValue(void);
 
       inline static bool getPinValue(u8 pin_number);
-      inline static void setPinValue(bool value, u8 pin_number);
+      inline static void setPinValue(u8 pin_number, bool value);
       inline static void togglePin(u8 pin_number);
 
-      inline static void setPinGroupValue(bool value, u32 pin_mask);
+      inline static void setPinGroupValue(u32 pin_mask, bool value);
       inline static void togglePinGroup(u32 pin_mask);
       //! @}
 
