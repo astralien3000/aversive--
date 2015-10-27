@@ -34,7 +34,7 @@ namespace MemoryMapping {
     // Arithmetic
 
     //! \brief This macro helps to declare some bitwise operator methods
-#define MACRO_DECLARE_BITWISE(op)						\
+#define MACRO_DECLARE_BITWISE(op)					\
     template<typename OtherRegType, typename OtherGroup, OtherRegType OTHER_MASK> \
     constexpr Config<RegType, Group, MASK | OTHER_MASK> operator op(const Config<OtherRegType, OtherGroup, OTHER_MASK>& cfg) const { \
       static_assert(!sizeof(RegType) && sizeof(RegType),		\

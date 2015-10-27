@@ -19,7 +19,9 @@ namespace MemoryMapping {
     //! \brief Constructor
     //! \param config : The first Config of the list 
     //! \param next : The remaining configs of the list
-    constexpr VirtualConfig(const Config config, const Next... next);
+    constexpr VirtualConfig(const Config config, const Next... next)
+      : CONFIGS(config, next...) {
+    }
 
   };
     
@@ -57,7 +59,9 @@ namespace MemoryMapping {
    * 
    */
   template<typename Config, typename ... Next>
-  constexpr VirtualConfig<Config, Next...> make_virtual_config(const Config config, const Next... next);
+  constexpr VirtualConfig<Config, Next...> make_virtual_config(const Config config, const Next... next) {
+    return VirtualConfig<Config, Next...>(config, next...);
+  }
   
 }
 

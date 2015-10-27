@@ -5,6 +5,16 @@
 
 namespace MemoryMapping {
 
+  namespace Private {    
+    struct VirtualFieldAssignVisitor {
+      template<typename T1, typename T2>
+      void visit(T1 left, T2 right) const {
+	left = right;
+	//var = 0;
+      }
+    };
+  }
+  
   //! \brief This class represents a "meta" Field that is splitted between several Registers
   /*!
    * It is quite common to find this case in AVR MCUs. To enable the user to handle a field as one entity, 
@@ -21,18 +31,26 @@ namespace MemoryMapping {
     //! \brief Constructor
     //! \param field : The first Field of the list 
     //! \param next : The remaining fields of the list
-    constexpr VirtualField(const Field field, const Next... next);
+    constexpr VirtualField(const Field field, const Next... next)
+      : FIELDS(field, next...) {
+    }
 
     //! \brief Assignment operation between two VirtualFields
     //! \warning The fields need to be compatible to perform this operation
     template<typename... Fields>
-    inline const VirtualField& operator=(const VirtualField<Fields...>& field) const;
+    inline const VirtualField& operator=(const VirtualField<Fields...>& field) const {
+      pair_static_list_foreach(FIELDS, field.FIELDS, Private::VirtualFieldAssignVisitor());
+      return *this;
+    }
 
     //! \brief Assignment operation between a VirtualFields and a VirtualConfig
     //! \warning The fields and configs need to be compatible to perform this operation
     template<typename... Configs>
-    inline const VirtualField& operator=(const VirtualConfig<Configs...>& config) const;
-};
+    inline const VirtualField& operator=(const VirtualConfig<Configs...>& config) const {
+      pair_static_list_foreach(FIELDS, config.CONFIGS, Private::VirtualFieldAssignVisitor());
+      return *this;
+    }
+  };
 
   //! \brief This is a helper function that enables the developper to use auto keyword
   /*!
@@ -40,7 +58,9 @@ namespace MemoryMapping {
    * Please, see MemoryMapping::make_virtual_config's documentation to see a full example.
    */
   template<typename Field, typename ... Next>
-  constexpr VirtualField<Field, Next...> make_virtual_field(const Field field, const Next... next);
+  constexpr VirtualField<Field, Next...> make_virtual_field(const Field field, const Next... next) {
+    return VirtualField<Field, Next...>(field, next...);
+  }
   
 }
 
