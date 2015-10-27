@@ -54,6 +54,11 @@ namespace MemoryMapping {
 
   template<typename RegType, typename Group> inline const RegType Register<RegType, Group>::operator<<(const RegType val) const { return *(volatile RegType*)ADDRESS << val; }
   template<typename RegType, typename Group> inline const RegType Register<RegType, Group>::operator>>(const RegType val) const { return *(volatile RegType*)ADDRESS >> val; }
+
+#undef MACRO_DEFINE_ARITH
+  
+  template<typename RegType, typename Group> inline const RegType Register<RegType, Group>::operator~(void) const { return ~(*(volatile RegType*)ADDRESS); }
+  
 }
 
 #endif//REGISTER_IMPL_HPP

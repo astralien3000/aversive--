@@ -60,7 +60,7 @@ namespace MemoryMapping {
 
 #undef MACRO_DECLARE_ARITH
 
-    
+    const RegType operator~(void) const;
   };
 
   //! \brief Return the Register's value
