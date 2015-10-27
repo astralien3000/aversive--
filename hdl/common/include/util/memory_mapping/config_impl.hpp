@@ -4,6 +4,11 @@
 namespace MemoryMapping {
 
   template<typename RegType, typename Group, RegType MASK>
+  constexpr inline RegType VAL(const Config<RegType, Group, MASK>& cfg) {
+    return cfg.VALUE;
+  }
+  
+  template<typename RegType, typename Group, RegType MASK>
   inline constexpr Config<RegType, Group, MASK>::Config(const RegType value)
     : VALUE(value) {
   }
@@ -63,12 +68,22 @@ namespace MemoryMapping {
 #define OP /
 #include "config_impl_arith.hpp"
 #undef OP
-
+    
 #define OP %
 #include "config_impl_arith.hpp"
 #undef OP
 
+#define MACRO_DEFINE_COMPAR(op)						\
+    template<typename RegType, typename Group, RegType MASK>		\
+    inline constexpr bool Config<RegType, Group, MASK>::operator op (const Config<RegType, Group, MASK>& cfg) const { \
+      return VALUE op cfg.VALUE;					\
+    }
 
+    
+    MACRO_DEFINE_COMPAR(==)
+    MACRO_DEFINE_COMPAR(!=)
+
+#undef MACRO_DEFINE_COMPAR
 }
 
 #endif//CONFIG_IMPL_HPP

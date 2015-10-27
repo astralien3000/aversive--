@@ -68,6 +68,14 @@ namespace MemoryMapping {
     #include "config_decl_arith.hpp"
     #undef OP
 
+#define MACRO_DECLARE_COMPAR(op)						\
+    inline constexpr bool operator op (const Config&);
+
+    MACRO_DECLARE_COMPAR(==);
+    MACRO_DECLARE_COMPAR(!=);
+    
+#undef MACRO_DECLARE_COMPAR
+    
   };
 
   template<typename RegType, typename Group, typename ValType>

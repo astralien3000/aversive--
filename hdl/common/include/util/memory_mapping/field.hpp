@@ -3,6 +3,16 @@
 
 namespace MemoryMapping {
 
+  template<typename RegType, typename Group, RegType FIELD_MASK>
+  constexpr inline RegType MASK(const Field<RegType, Group, FIELD_MASK>&) {
+    return FIELD_MASK;
+  }
+  
+  template<typename RegType, typename Group, RegType FIELD_MASK>
+  constexpr inline Register<RegType, Group> REG(const Field<RegType, Group, FIELD_MASK>& field) {
+    return field.REGISTER;
+  }
+  
   //! \brief This class represents a part of a Register
   //! \param RegType : the register integer type
   //! \param Group : the register group
