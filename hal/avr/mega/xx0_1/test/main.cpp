@@ -27,11 +27,14 @@ int main(int, char**) {
   }
   */
 
-  GPIO_B::Pin<7>::setMode(GPIOx::Mode::OUTPUT);
+  //UART_0::setParity<UARTx::Parity::NONE>();
+  //UART_0::getParity();
+  UART_0::setWordSize<5>();
+  //GPIO_B::Pin<7>::setMode(GPIOx::Mode::OUTPUT);
 
   while(1) {
-    delay();
-    GPIO_B::Pin<7>::toggle();
+    //delay();
+    //GPIO_B::Pin<7>::toggle();
     //GPIO_B::togglePin(7);
   }
   
