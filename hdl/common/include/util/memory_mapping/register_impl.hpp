@@ -26,91 +26,34 @@ namespace MemoryMapping {
   }
 
 // Assignment
-#define OP =
-#include "register_impl_assign.hpp"
-#undef OP
+#define MACRO_DEFINE_ASSIGN(op)			\
+  template<typename RegType, typename Group> template<typename OtherRegType, typename OtherGroup, RegType MASK> inline const Register<RegType, Group>& Register<RegType, Group>::operator op(const Config<OtherRegType, OtherGroup, MASK>& ) const { static_assert(!sizeof(RegType) && sizeof(RegType), "Incompatibles Register and Config"); return *this; } \
+  template<typename RegType, typename Group> template<RegType MASK> inline const Register<RegType, Group>& Register<RegType, Group>::operator op(const Config<RegType, Group, MASK>& cfg) const { *(volatile RegType*)ADDRESS op cfg.VALUE; return *this; } \
+  template<typename RegType, typename Group> template<typename OtherRegType, typename OtherGroup> inline const Register<RegType, Group>& Register<RegType, Group>::operator op(const Register<OtherRegType, OtherGroup>& ) const { static_assert(!sizeof(RegType) && sizeof(RegType), "Incompatibles Registers"); return *this; } \
+  template<typename RegType, typename Group> inline const Register<RegType, Group>& Register<RegType, Group>::operator op(const Register<RegType, Group>& reg) const { *(volatile RegType*)ADDRESS op *(RegType*)reg.ADDRESS; return *this; } \
+  template<typename RegType, typename Group> inline const Register<RegType, Group>& Register<RegType, Group>::operator op(const RegType val) const { *(volatile RegType*)ADDRESS op val; return *this; }
 
-#define OP |=
-#include "register_impl_assign.hpp"
-#undef OP
+  MACRO_DEFINE_ASSIGN(=);
+  MACRO_DEFINE_ASSIGN(|=);
+  MACRO_DEFINE_ASSIGN(&=);
+  MACRO_DEFINE_ASSIGN(^=);
 
-#define OP &=
-#include "register_impl_assign.hpp"
-#undef OP
-
-#define OP ^=
-#include "register_impl_assign.hpp"
-#undef OP
-
-#define OP <<=
-#include "register_impl_assign.hpp"
-#undef OP
-
-#define OP >>=
-#include "register_impl_assign.hpp"
-#undef OP
-
-#define OP +=
-#include "register_impl_assign.hpp"
-#undef OP
-
-#define OP -=
-#include "register_impl_assign.hpp"
-#undef OP
-
-#define OP *=
-#include "register_impl_assign.hpp"
-#undef OP
-
-#define OP /=
-#include "register_impl_assign.hpp"
-#undef OP
-
-#define OP %=
-#include "register_impl_assign.hpp"
-#undef OP
+#undef MACRO_DEFINE_ASSIGN
 
 // Arithmetic
-#define OP |
-#include "register_impl_arith.hpp"
-#undef OP
+#define MACRO_DEFINE_ARITH(op)			\
+  template<typename RegType, typename Group> template<typename OtherRegType, typename OtherGroup, RegType MASK> inline const RegType Register<RegType, Group>::operator op(const Config<OtherRegType, OtherGroup, MASK>& ) const { static_assert(!sizeof(RegType) && sizeof(RegType), "Incompatibles Register and Config"); return 0; } \
+  template<typename RegType, typename Group> template<RegType MASK> inline const RegType Register<RegType, Group>::operator op(const Config<RegType, Group, MASK>& cfg) const { return *(volatile RegType*)ADDRESS op cfg.VALUE; } \
+  template<typename RegType, typename Group> template<typename OtherRegType, typename OtherGroup> inline const RegType Register<RegType, Group>::operator op(const Register<OtherRegType, OtherGroup>& ) const { static_assert(!sizeof(RegType) && sizeof(RegType), "Incompatibles Registers"); return 0; } \
+  template<typename RegType, typename Group> inline const RegType Register<RegType, Group>::operator op(const Register<RegType, Group>& reg) const { return *(volatile RegType*)ADDRESS op *(volatile RegType*)reg.ADDRESS; } \
+  template<typename RegType, typename Group> inline const RegType Register<RegType, Group>::operator op(const RegType val) const { return *(volatile RegType*)ADDRESS op val; }
 
-#define OP &
-#include "register_impl_arith.hpp"
-#undef OP
+  MACRO_DEFINE_ARITH(|);
+  MACRO_DEFINE_ARITH(&);
+  MACRO_DEFINE_ARITH(^);
 
-#define OP ^
-#include "register_impl_arith.hpp"
-#undef OP
-
-#define OP <<
-#include "register_impl_arith.hpp"
-#undef OP
-
-#define OP >>
-#include "register_impl_arith.hpp"
-#undef OP
-
-#define OP +
-#include "register_impl_arith.hpp"
-#undef OP
-
-#define OP -
-#include "register_impl_arith.hpp"
-#undef OP
-
-#define OP *
-#include "register_impl_arith.hpp"
-#undef OP
-
-#define OP /
-#include "register_impl_arith.hpp"
-#undef OP
-
-#define OP %
-#include "register_impl_arith.hpp"
-#undef OP
-
+  template<typename RegType, typename Group> inline const RegType Register<RegType, Group>::operator<<(const RegType val) const { return *(volatile RegType*)ADDRESS << val; }
+  template<typename RegType, typename Group> inline const RegType Register<RegType, Group>::operator>>(const RegType val) const { return *(volatile RegType*)ADDRESS >> val; }
 }
 
 #endif//REGISTER_IMPL_HPP

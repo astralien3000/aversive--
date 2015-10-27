@@ -29,91 +29,38 @@ namespace MemoryMapping {
     constexpr Register(const usys address);
 
     // Assignment
-    #define OP =
-    #include "register_decl_assign.hpp"
-    #undef OP
+#define MACRO_DECLARE_ASSIGN(op)					\
+    template<typename OtherRegType, typename OtherGroup, RegType MASK> const Register& operator op(const Config<OtherRegType, OtherGroup, MASK>& cfg) const; \
+    template<RegType MASK> const Register& operator op(const Config<RegType, Group, MASK>& cfg) const; \
+    template<typename OtherRegType, typename OtherGroup> const Register& operator op(const Register<OtherRegType, OtherGroup>& reg) const; \
+    const Register& operator op(const Register<RegType, Group>& reg) const; \
+    const Register& operator op(const RegType val) const;		\
 
-    #define OP |=
-    #include "register_decl_assign.hpp"
-    #undef OP
+    MACRO_DECLARE_ASSIGN(=);
+    MACRO_DECLARE_ASSIGN(|=);
+    MACRO_DECLARE_ASSIGN(&=);
+    MACRO_DECLARE_ASSIGN(^=);
 
-    #define OP &=
-    #include "register_decl_assign.hpp"
-    #undef OP
-
-    #define OP ^=
-    #include "register_decl_assign.hpp"
-    #undef OP
-
-    #define OP <<=
-    #include "register_decl_assign.hpp"
-    #undef OP
-
-    #define OP >>=
-    #include "register_decl_assign.hpp"
-    #undef OP
-
-    #define OP +=
-    #include "register_decl_assign.hpp"
-    #undef OP
-
-    #define OP -=
-    #include "register_decl_assign.hpp"
-    #undef OP
-
-    #define OP *=
-    #include "register_decl_assign.hpp"
-    #undef OP
-
-    #define OP /=
-    #include "register_decl_assign.hpp"
-    #undef OP
-
-    #define OP %=
-    #include "register_decl_assign.hpp"
-    #undef OP
-
+#undef MACRO_DECLARE_ASSIGN
+    
     // Arithmetic
-    #define OP |
-    #include "register_decl_arith.hpp"
-    #undef OP
+#define MACRO_DECLARE_ARITH(op)			\
+    template<typename OtherRegType, typename OtherGroup, RegType MASK> const RegType operator op(const Config<OtherRegType, OtherGroup, MASK>& cfg) const; \
+    template<RegType MASK> const RegType operator op(const Config<RegType, Group, MASK>& cfg) const; \
+    template<typename OtherRegType, typename OtherGroup> const RegType operator op(const Register<OtherRegType, OtherGroup>& reg) const; \
+    const RegType operator op(const Register<RegType, Group>& reg) const; \
+    const RegType operator op(const RegType val) const;
 
-    #define OP &
-    #include "register_decl_arith.hpp"
-    #undef OP
+    MACRO_DECLARE_ARITH(|);
+    MACRO_DECLARE_ARITH(&);
+    MACRO_DECLARE_ARITH(^);
 
-    #define OP ^
-    #include "register_decl_arith.hpp"
-    #undef OP
+    const RegType operator>>(const RegType val) const;
+    const RegType operator<<(const RegType val) const;
 
-    #define OP <<
-    #include "register_decl_arith.hpp"
-    #undef OP
+#undef MACRO_DECLARE_ARITH
 
-    #define OP >>
-    #include "register_decl_arith.hpp"
-    #undef OP
-
-    #define OP +
-    #include "register_decl_arith.hpp"
-    #undef OP
-
-    #define OP -
-    #include "register_decl_arith.hpp"
-    #undef OP
-
-    #define OP *
-    #include "register_decl_arith.hpp"
-    #undef OP
-
-    #define OP /
-    #include "register_decl_arith.hpp"
-    #undef OP
-
-    #define OP %
-    #include "register_decl_arith.hpp"
-    #undef OP
-
+    
   };
 
   //! \brief Return the Register's value

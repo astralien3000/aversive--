@@ -76,66 +76,6 @@ MACRO_TEST_CLASS(TestRegistersSimpleAssignOK) {
   }
 };
 
-MACRO_TEST_CLASS(TestRegistersArithAssignOK) {
-  void test_add(void) {
-    r1 = 1;
-    r2 = 1;
-    
-    R1 += R2;
-    
-    assert(r1 == 2);
-    assert(r2 == 1);
-  }
-
-  void test_sub(void) {
-    r1 = 1;
-    r2 = 1;
-    
-    R1 -= R2;
-    
-    assert(r1 == 0);
-    assert(r2 == 1);
-  }
-
-  void test_mul(void) {
-    r1 = 2;
-    r2 = 2;
-    
-    R1 *= R2;
-    
-    assert(r1 == 4);
-    assert(r2 == 2);
-  }
-
-  void test_div(void) {
-    r1 = 2;
-    r2 = 2;
-    
-    R1 /= R2;
-    
-    assert(r1 == 1);
-    assert(r2 == 2);
-  }
-
-  void test_mod(void) {
-    r1 = 2;
-    r2 = 2;
-    
-    R1 %= R2;
-    
-    assert(r1 == 0);
-    assert(r2 == 2);
-  }
-
-  void run(void) {
-    test_add();
-    test_sub();
-    test_mul();
-    test_div();
-    test_mod();
-  }
-};
-
 MACRO_TEST_CLASS(TestRegistersBitAssignOK) {
   void test_and(void) {
     r1 = 0b110;
@@ -179,36 +119,6 @@ MACRO_TEST_CLASS(TestRegistersSimpleAssignKO) {
   void run(void) {
     R1 = R3;
   }
-};
-
-MACRO_TEST_CLASS(TestRegistersAddAssignKO) {
-  void run(void) {
-    R1 += R3;
-  };
-};
-
-MACRO_TEST_CLASS(TestRegistersSubAssignKO) {
-  void run(void) {
-    R1 -= R3;
-  };
-};
-
-MACRO_TEST_CLASS(TestRegistersMulAssignKO) {
-  void run(void) {
-    R1 *= R3;
-  };
-};
-
-MACRO_TEST_CLASS(TestRegistersDivAssignKO) {
-  void run(void) {
-    R1 /= R3;
-  };
-};
-
-MACRO_TEST_CLASS(TestRegistersModAssignKO) {
-  void run(void) {
-    R1 %= R3;
-  };
 };
 
 MACRO_TEST_CLASS(TestRegistersBitAndAssignKO) {
