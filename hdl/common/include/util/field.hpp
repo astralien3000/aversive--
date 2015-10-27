@@ -79,6 +79,21 @@ namespace MemoryMapping {
       return *this;
     }
 
+#define MACRO_DEFINE_COMPAR(op)						\
+    bool operator op(const Field& other) const {			\
+      return (REGISTER & MASK) op (other.REGISTER & MASK);		\
+    }									\
+    bool operator op(const Config<RegType, Group, MASK>& cfg) const {	\
+      return (REGISTER & MASK) op (cfg & MASK);				\
+    }									\
+    bool operator op(const RegType val) const {				\
+      return *this op make_config(*this, val);				\
+    }									\
+
+    MACRO_DEFINE_COMPAR(==);
+    MACRO_DEFINE_COMPAR(!=);
+    
+#undef MACRO_DEFINE_COMPAR
   };
 
 }

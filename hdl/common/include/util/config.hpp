@@ -73,7 +73,17 @@ namespace MemoryMapping {
 #define MACRO_DECLARE_COMPAR(op)					\
     inline constexpr bool operator op (const Config& cfg) const {	\
       return VALUE op cfg.VALUE;					\
-    }
+    }									\
+    inline constexpr bool operator op (const Field<RegType, Group, MASK>& field) const { \
+      return field op (*this);						\
+    }									\
+    template<int BITNUM>						\
+    inline constexpr bool operator op (const BitField<RegType, Group, BITNUM>& bf) const { \
+      return bf op (*this);						\
+    }									\
+    inline constexpr bool operator op (const Register<RegType, Group>& reg) const { \
+      return reg op (*this);						\
+    }									\
     
     MACRO_DECLARE_COMPAR(==);
     MACRO_DECLARE_COMPAR(!=);

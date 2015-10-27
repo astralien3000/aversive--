@@ -29,6 +29,7 @@ constexpr BitField8<G2, 0> R3B0 = R3;
 
 constexpr auto G1F1C1 = make_config(R1F1, 0b001);
 constexpr auto G1F1C2 = make_config(R1F1, 0b101);
+constexpr auto G1F1C3 = make_config(R1F1, 0b111);
 
 constexpr auto G1F2C1 = make_config(R1F2, 0b10);
 
@@ -73,6 +74,49 @@ MACRO_TEST_CLASS(TestRegistersSimpleAssignOK) {
     
     assert(r1 == 0b10101010);
     assert(r2 == 0b10101010);
+  }
+};
+
+MACRO_TEST_CLASS(TestBitFieldComparOK) {
+  void run(void) {
+    r1 = 0b10;
+    r2 = 0b10;
+    r3 = 0b10;
+    
+    assert(R3B0 == R2B0);
+    assert(R1B1 != R2B0);
+    assert(false == R2B0);
+    assert(false != R1B1);
+    assert(R2B0 != true);
+    assert(R1B1 == true);
+
+    assert(R1B1 == G1B1C1);
+    assert(G1B1C1 == R1B1);
+  }
+};
+
+MACRO_TEST_CLASS(TestRegisterComparOK) {
+  void run(void) {
+    r1 = 0b10;
+    r2 = 0b10;
+    
+    assert(R1 == R2);
+    assert(!(R1 != R2));
+  }
+};
+
+MACRO_TEST_CLASS(TestFieldComparOK) {
+
+  void run(void) {
+    r1 = 0b00101100;
+    r2 = 0b00101100;
+    
+    assert(R1F1 == R2F1);
+    assert(!(R1F1 != R2F1));
+
+    assert(R1F1 == 0b111);
+    assert(R1F1 == G1F1C3);
+    assert(G1F1C3 == R1F1);
   }
 };
 

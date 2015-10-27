@@ -84,6 +84,24 @@ namespace MemoryMapping {
     MACRO_DEFINE_LOGIC(&&);
     MACRO_DEFINE_LOGIC(||);
 
+#undef MACRO_DEFINE_LOGIC
+
+#define MACRO_DEFINE_COMPAR(op)						\
+    template<RegType MASK>						\
+    bool operator op(const Config<RegType, Group, MASK>& cfg) const {	\
+      static_assert(MASK==1<<BITNUM,					\
+		    "Invalid Config and BitField comparison");		\
+      return (VAL(REGISTER) & MASK) op (VAL(cfg) & MASK);		\
+    }									\
+    bool operator op(const bool val) const {				\
+      return val op *this;						\
+    }									\
+
+    MACRO_DEFINE_COMPAR(==);
+    MACRO_DEFINE_COMPAR(!=);
+    
+#undef MACRO_DEFINE_COMPAR
+
   };
 
 }
