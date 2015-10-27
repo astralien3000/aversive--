@@ -1,6 +1,8 @@
 #ifndef BITFIELD_HPP
 #define BITFIELD_HPP
 
+#include "memory_mapping.hpp"
+
 namespace MemoryMapping {
 
   //! \brief This class is a part of a Register limited to one Bit

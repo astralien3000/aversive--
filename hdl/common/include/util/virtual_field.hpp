@@ -1,6 +1,7 @@
 #ifndef VIRTUAL_FIELD_HPP
 #define VIRTUAL_FIELD_HPP
 
+#include "memory_mapping.hpp"
 #include <base/static_list.hpp>
 
 namespace MemoryMapping {

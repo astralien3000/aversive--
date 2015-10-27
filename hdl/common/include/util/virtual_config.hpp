@@ -1,6 +1,7 @@
 #ifndef VIRTUAL_CONFIG_HPP
 #define VIRTUAL_CONFIG_HPP
 
+#include "memory_mapping.hpp"
 #include <base/static_list.hpp>
 
 namespace MemoryMapping {

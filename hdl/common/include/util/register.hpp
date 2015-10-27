@@ -1,7 +1,7 @@
 #ifndef REGISTER_HPP
 #define REGISTER_HPP
 
-#include <base/integer.hpp>
+#include "memory_mapping.hpp"
 
 namespace MemoryMapping {
 

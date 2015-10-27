@@ -1,6 +1,8 @@
 #ifndef FIELD_HPP
 #define FIELD_HPP
 
+#include "memory_mapping.hpp"
+
 namespace MemoryMapping {
 
   template<typename RegType, typename Group, RegType FIELD_MASK>

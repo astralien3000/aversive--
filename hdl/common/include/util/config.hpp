@@ -1,6 +1,8 @@
 #ifndef CONFIG_HPP
 #define CONFIG_HPP
 
+#include "memory_mapping.hpp"
+
 namespace MemoryMapping {
 
   //! \brief This class represents a value that a Register can take
