@@ -28,46 +28,27 @@ namespace MemoryMapping {
     constexpr Config(const Config& other);
 
     // Arithmetic
-    #define OP |
-    #include "config_decl_arith.hpp"
-    #undef OP
 
-    #define OP &
-    #include "config_decl_arith.hpp"
-    #undef OP
+    //! \brief This macro helps to declare some bitwise operator methods
+#define MACRO_DECLARE_BITWISE(op)						\
+    template<typename OtherRegType, typename OtherGroup, OtherRegType OTHER_MASK> \
+    constexpr Config<RegType, Group, MASK | OTHER_MASK> operator op(const Config<OtherRegType, OtherGroup, OTHER_MASK>& cfg) const; \
+    template<RegType OTHER_MASK>					\
+    constexpr Config<RegType, Group, MASK | OTHER_MASK> operator op(const Config<RegType, Group, OTHER_MASK>& cfg) const; \
+    template<typename OtherRegType, typename OtherGroup>		\
+    constexpr RegType operator op(const Register<OtherRegType, OtherGroup>& reg) const; \
+    constexpr RegType operator op(const Register<RegType, Group>& reg) const; \
+    constexpr RegType operator op(const RegType val) const;
+    
+    MACRO_DECLARE_BITWISE(|);
+    MACRO_DECLARE_BITWISE(&);
+    MACRO_DECLARE_BITWISE(^);
+    
+#undef MACRO_DECLARE_ARITH
+    
+    constexpr Config<RegType, Group, MASK> operator~(void) const;
 
-    #define OP ^
-    #include "config_decl_arith.hpp"
-    #undef OP
-
-    #define OP <<
-    #include "config_decl_arith.hpp"
-    #undef OP
-
-    #define OP >>
-    #include "config_decl_arith.hpp"
-    #undef OP
-
-    #define OP +
-    #include "config_decl_arith.hpp"
-    #undef OP
-
-    #define OP -
-    #include "config_decl_arith.hpp"
-    #undef OP
-
-    #define OP *
-    #include "config_decl_arith.hpp"
-    #undef OP
-
-    #define OP /
-    #include "config_decl_arith.hpp"
-    #undef OP
-
-    #define OP %
-    #include "config_decl_arith.hpp"
-    #undef OP
-
+    //! \brief This macro helps to declare some comparison operator methods
 #define MACRO_DECLARE_COMPAR(op)						\
     inline constexpr bool operator op (const Config&);
 
