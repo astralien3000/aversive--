@@ -59,7 +59,6 @@ namespace MemoryMapping {
 
 #include "memory_mapping/config_impl.hpp"
 #include "memory_mapping/field_impl.hpp"
-#include "memory_mapping/bitfield_impl.hpp"
 #include "memory_mapping/virtual_field_impl.hpp"
 #include "memory_mapping/virtual_config_impl.hpp"
 
