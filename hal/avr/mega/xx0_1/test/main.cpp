@@ -13,31 +13,42 @@ struct LedSettings {
   static constexpr auto pull = GPIOx::Pull::UNDEFINED;
 };
 
+struct UARTSettings {
+  static constexpr UARTx::Baudrate::Type baudrate = 9600;
+  static constexpr auto parity = UARTx::Parity::NONE;
+  static constexpr auto stop_bit = UARTx::StopBit::ONE_BIT;
+  static constexpr auto word_size = 8;
+      
+  static constexpr bool tx_enabled = true;
+  static constexpr bool rx_enabled = true;
+
+  static constexpr UARTx::FifoSize::Type tx_fifo_size = 1;
+  static constexpr UARTx::FifoSize::Type rx_fifo_size = 1;
+
+  static constexpr auto flow_control = UARTx::FlowControl::NONE;
+
+  static constexpr auto endianess = UARTx::Endianess::LSB;
+};
+
+
+//*/
+template<u8 ID>
+inline u32 HAL::UART<ID>::getSystemClockFrequency(void) {
+  return 16000000;
+}
+//*/
 
 int main(int, char**) {
+  UART_0::setSettings<UARTSettings>();
 
-  /*
-  GPIO_B::Pin<7>::setSettings<LedSettings>();
+  u8 c = 'a';
   
   while(1) {
+    if(UART_0::getRxFifoAvailableWords() >= 1) {
+      c = UART_0::getChar();
+    }
+    UART_0::putChar(c);
     delay();
-    GPIO_B::Pin<7>::setValue<true>();
-    delay();
-    GPIO_B::Pin<7>::setValue<false>();
-  }
-  */
-
-  //UART_0::setParity<UARTx::Parity::NONE>();
-  //UART_0::getParity();
-  //UART_0::setWordSize<5>();
-  //UART_0::setWordSize(8);
-  //GPIO_B::Pin<7>::setMode(GPIOx::Mode::OUTPUT);
-
-  while(1) {
-    UART_0::getChar();
-    //delay();
-    //GPIO_B::Pin<7>::toggle();
-    //GPIO_B::togglePin(7);
   }
   
   return 0;

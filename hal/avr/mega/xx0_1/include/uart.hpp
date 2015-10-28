@@ -29,7 +29,7 @@ namespace HAL {
       };
 
       struct FlowControl : UART_DriverInterface::FlowControl {
-	//MACRO_ENUM_ELEMENT(UNDEFINED);
+	MACRO_ENUM_ELEMENT(UNDEFINED);
 	MACRO_ENUM_ELEMENT(NONE);
 	//MACRO_ENUM_ELEMENT(CTS);
 	//MACRO_ENUM_ELEMENT(RTS);
@@ -43,6 +43,9 @@ namespace HAL {
       
 #undef MACRO_ENUM_ELEMENT
 
+      //! \brief This function has to be User-defined
+      inline static u32 getSystemClockFrequency(void); // DEFINE ME
+      
       //inline static bool isModuleEnabled(void);
       //inline static void enableModule(void);
       //inline static void disableModule(void);
@@ -51,9 +54,88 @@ namespace HAL {
       //inline static void enableModuleSleep(void);
       //inline static void disableModuleSleep(void);
 
-      inline static void setSettings(const Settings&);
-      template<typename Settings> inline static void setSettings(void);
-      inline static void getSettings(Settings&);
+      inline static void setSettings(const Settings& settings) {
+	setBaudrate(settings.baudrate);
+	setParity(settings.parity);
+	setStopBit(settings.stop_bit);
+	setWordSize(settings.word_size);
+	
+	if(settings.tx_enabled) {
+	  enableTx();
+	}
+	else {
+	  disableTx();
+	}
+	
+	if(settings.rx_enabled) {
+	  enableRx();
+	}
+	else {
+	  disableRx();
+	}
+      }
+      
+      template<typename Settings> inline static void setSettings(void) {
+	static_assert(Settings::flow_control == FlowControl::UNDEFINED ||
+		      Settings::flow_control == FlowControl::NONE,
+		      "Invalid Flow Control");
+	static_assert(Settings::endianess == Endianess::UNDEFINED ||
+		      Settings::endianess == Endianess::LSB,
+		      "Invalid Endianess");
+	static_assert(Settings::tx_fifo_size == 1,
+		      "Invalid TX FIFO Size");
+	static_assert(Settings::rx_fifo_size == 1,
+		      "Invalid RX FIFO Size");
+	
+	setBaudrate(Settings::baudrate);
+	setParity(Settings::parity);
+	setStopBit(Settings::stop_bit);
+	setWordSize(Settings::word_size);
+	
+	if(Settings::tx_enabled) {
+	  enableTx();
+	}
+	else {
+	  disableTx();
+	}
+	
+	if(Settings::rx_enabled) {
+	  enableRx();
+	}
+	else {
+	  disableRx();
+	}	
+      }
+      
+      inline static void getSettings(Settings& settings) {
+	settings.baudrate = getBaudrate();
+	settings.parity = getParity();
+	settings.stop_bit = getStopBit();
+	settings.word_size = getWordSize();
+      
+	settings.tx_enabled = isTxEnabled();
+	settings.rx_enabled = isRxEnabled();
+
+	settings.tx_fifo_size = getTxFifoSize();
+	settings.rx_fifo_size = getRxFifoSize();
+
+	settings.flow_control = FlowControl::NONE;
+
+	settings.endianess = Endianess::LSB;
+      }
+      
+      inline static void setBaudrate(Baudrate::Type baudrate) {
+	HDL::UART<ID>::BRR = (getSystemClockFrequency() / (16 * baudrate)) - 1;
+      }
+      
+      template<Baudrate::Type BAUDRATE> inline static void setBaudrate(void) {
+	static_assert(!(BAUDRATE & ~0xFFFF), "Invalid Baudrate");
+	setBaudrate(BAUDRATE);
+      }
+      
+      inline static Baudrate::Type getBaudrate(void) {
+	return getSystemClockFrequency() / (16 * (VAL(HDL::UART<ID>::BRR) + 1));
+      }
       
       inline static void setParity(typename Parity::Type parity) {
 	// UNDEFINED Will not change parity
@@ -93,9 +175,27 @@ namespace HAL {
 	}
       }
       
-      inline static void setStopBit(typename StopBit::Type);
-      template<typename StopBit::Type> inline static void setStopBit(void);
-      inline static typename StopBit::Type getStopBit(void);
+      inline static void setStopBit(typename StopBit::Type sb) {
+	if(sb == StopBit::ONE_BIT) {
+	  HDL::UART<ID>::Fields::SBS = false;
+	}
+	else if(sb == StopBit::TWO_BIT) {
+	  HDL::UART<ID>::Fields::SBS = true;
+	}
+      }
+      
+      template<typename StopBit::Type SB> inline static void setStopBit(void) {
+	setStopBit(SB);
+      }
+      
+      inline static typename StopBit::Type getStopBit(void) {
+	if(HDL::UART<ID>::Fields::SBS) {
+	  return StopBit::ONE_BIT;
+	}
+	else {
+	  return StopBit::TWO_BIT;
+	}
+      }
 
     private:
       template<u8 VAL>
@@ -203,7 +303,7 @@ namespace HAL {
       inline static void setRxCompleteHandler(IRQ_Handler);
       
       inline static void putChar(u8 val) {
-	while(!HDL::UART<ID>::Fields::TXC);
+	while(!HDL::UART<ID>::Fields::DRE);
 	HDL::UART<ID>::DR = val;
       }
       
@@ -212,11 +312,39 @@ namespace HAL {
 	return VAL(HDL::UART<ID>::DR);
       }
 
-      inline static u32 write(u8* data, u32 length);
-      inline static u32 read(u8* data, u32 length);
+      inline static u32 write(u8* data, u32 length) {
+	const u32 res = length;
+	while(length) {
+	  putChar(data);
+	  data++;
+	  length--;
+	}
+	return res;
+      }
+      
+      inline static u32 read(u8* data, u32 length) {
+	const u32 res = length;
+	while(length) {
+	  *data = getChar();
+	  data++;
+	  length--;
+	}
+	return res;
+      }
 
-      inline static u32 getTxFifoAvailableSpace(void);
-      inline static u32 getRxFifoAvailableWords(void);
+      inline static u32 getTxFifoAvailableSpace(void) {
+	if(HDL::UART<ID>::Fields::DRE) {
+	  return 1;
+	}
+	return 0;
+      }
+      
+      inline static u32 getRxFifoAvailableWords(void) {
+	if(HDL::UART<ID>::Fields::RXC) {
+	  return 1;
+	}
+	return 0;
+      }
     };
 
     using UART_0 = UART<0>;
