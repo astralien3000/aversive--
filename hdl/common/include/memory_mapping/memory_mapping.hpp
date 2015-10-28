@@ -50,18 +50,11 @@ namespace MemoryMapping {
 
 }
 
-#include "memory_mapping/register.hpp"
-#include "memory_mapping/config.hpp"
-#include "memory_mapping/field.hpp"
-#include "memory_mapping/bitfield.hpp"
-#include "memory_mapping/virtual_field.hpp"
-#include "memory_mapping/virtual_config.hpp"
-
-#include "memory_mapping/register_impl.hpp"
-#include "memory_mapping/config_impl.hpp"
-#include "memory_mapping/field_impl.hpp"
-#include "memory_mapping/bitfield_impl.hpp"
-#include "memory_mapping/virtual_field_impl.hpp"
-#include "memory_mapping/virtual_config_impl.hpp"
+#include "register.hpp"
+#include "config.hpp"
+#include "field.hpp"
+#include "bitfield.hpp"
+#include "virtual_field.hpp"
+#include "virtual_config.hpp"
 
 #endif//MEMORY_MAPPING_HPP
