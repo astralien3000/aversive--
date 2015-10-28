@@ -5,7 +5,7 @@
 using GPIO = HAL::Example::GPIO<0>;
 
 int main(int, char**) {
-  GPIO::setPinMode(0, GPIO::Mode::ALTERNATE_FUNCTION);
+  //GPIO::setPinMode(0, GPIO::Mode::ALTERNATE_FUNCTION);
 
   return 0;
 }

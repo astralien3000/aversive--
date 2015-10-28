@@ -65,6 +65,10 @@ namespace HAL {
       //template<typename Settings> static void setSettings(void);
       //static void getSettings(Settings&);
       
+      //static void setBaudrate(Baudrate::Type);
+      //template<Baudrate::Type> static void setBaudrate(void);
+      //static Baudrate::Type getBaudrate(void);
+      
       //static void setParity(Parity::Type);
       //template<Parity::Type> static void setParity(void);
       //static Parity::Type getParity(void);

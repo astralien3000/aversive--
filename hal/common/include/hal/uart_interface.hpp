@@ -113,6 +113,13 @@ namespace HAL {
       static void getSettings(Settings&)                        UNAVAILABLE;
       //! @}
       
+      //! \name Baudrate
+      //! @{
+      static void setBaudrate(Baudrate::Type)                UNAVAILABLE;
+      template<Baudrate::Type> static void setBaudrate(void) UNAVAILABLE;
+      static Baudrate::Type getBaudrate(void)                UNAVAILABLE;
+      //! @}
+      
       //! \name Partiy
       //! @{
       static void setParity(Parity::Type)                UNAVAILABLE;
