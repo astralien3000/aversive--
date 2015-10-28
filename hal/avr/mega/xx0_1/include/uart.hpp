@@ -43,19 +43,19 @@ namespace HAL {
       
 #undef MACRO_ENUM_ELEMENT
 
-      //static bool isModuleEnabled(void);
-      //static void enableModule(void);
-      //static void disableModule(void);
+      //inline static bool isModuleEnabled(void);
+      //inline static void enableModule(void);
+      //inline static void disableModule(void);
 
-      //static bool isModuleSleepEnabled(void);
-      //static void enableModuleSleep(void);
-      //static void disableModuleSleep(void);
+      //inline static bool isModuleSleepEnabled(void);
+      //inline static void enableModuleSleep(void);
+      //inline static void disableModuleSleep(void);
 
-      static void setSettings(const Settings&);
-      template<typename Settings> static void setSettings(void);
-      static void getSettings(Settings&);
+      inline static void setSettings(const Settings&);
+      template<typename Settings> inline static void setSettings(void);
+      inline static void getSettings(Settings&);
       
-      static void setParity(typename Parity::Type parity) {
+      inline static void setParity(typename Parity::Type parity) {
 	// UNDEFINED Will not change parity
 	if(parity == Parity::NONE) {
 	  HDL::UART<ID>::Fields::PM = 0b00;
@@ -68,24 +68,24 @@ namespace HAL {
 	}
       }
       
-      template<typename Parity::Type PARITY> static void setParity(void) {
+      template<typename Parity::Type PARITY> inline static void setParity(void) {
 	setParity(PARITY);
       }
       
-      static typename Parity::Type getParity(void) {
+      //! \todo This function is not optimized
+      inline static typename Parity::Type getParity(void) {
 	constexpr auto& PM = HDL::UART<ID>::Fields::PM;
 	constexpr auto CFG_NONE = make_config(PM, 0b00);
 	constexpr auto CFG_EVEN = make_config(PM, 0b10);
 	constexpr auto CFG_ODD  = make_config(PM, 0b11);
-	const u8 REGVAL = REG(PM) & MASK(PM);
 
-	if(REGVAL == VAL(CFG_NONE)) {
+	if(PM == CFG_NONE) {
 	  return Parity::NONE;
 	}
-	else if(REGVAL == VAL(CFG_EVEN)) {
+	else if(PM == CFG_EVEN) {
 	  return Parity::EVEN;
 	}
-	else if(REGVAL == VAL(CFG_ODD)) {
+	else if(PM == CFG_ODD) {
 	  return Parity::ODD;
 	}
 	else {
@@ -93,9 +93,9 @@ namespace HAL {
 	}
       }
       
-      static void setStopBit(typename StopBit::Type);
-      template<typename StopBit::Type> static void setStopBit(void);
-      static typename StopBit::Type getStopBit(void);
+      inline static void setStopBit(typename StopBit::Type);
+      template<typename StopBit::Type> inline static void setStopBit(void);
+      inline static typename StopBit::Type getStopBit(void);
 
     private:
       template<u8 VAL>
@@ -108,7 +108,7 @@ namespace HAL {
       };
       
     public:
-      static void setWordSize(typename WordSize::Type word_size) {
+      inline static void setWordSize(typename WordSize::Type word_size) {
 	constexpr auto& CSZ = HDL::UART<ID>::Fields::CSZ;
 	if(word_size == 5) {
 	  CSZ = CSZ_CFG<0b000>::config;
@@ -127,50 +127,96 @@ namespace HAL {
 	}
       }
       
-      template<typename WordSize::Type WORD_SIZE> static void setWordSize(void) {
+      template<typename WordSize::Type WORD_SIZE> inline static void setWordSize(void) {
 	static_assert(5 <= WORD_SIZE && WORD_SIZE <= 9, "Invalid Word Size");
 	setWordSize(WORD_SIZE);
       }
-      
-      static typename WordSize::Type getWordSize(void) {
-	
+
+      //! \todo This function is not optimized
+      inline static typename WordSize::Type getWordSize(void) {
+	constexpr auto& CSZ = HDL::UART<ID>::Fields::CSZ;
+	if(CSZ == CSZ_CFG<0b000>::config) {
+	  return 5;
+	}
+	else if(CSZ == CSZ_CFG<0b001>::config) {
+	  return 6;
+	}
+	else if(CSZ == CSZ_CFG<0b010>::config) {
+	  return 7;
+	}
+	else if(CSZ == CSZ_CFG<0b011>::config) {
+	  return 8;
+	}
+	else if(CSZ == CSZ_CFG<0b111>::config) {
+	  return 9;
+	}
+	return 0;
       }
       
-      static void enableTx(void);
-      static void disableTx(void);
-      static bool isTxEnabled(void);
+      inline static void enableTx(void) {
+	HDL::UART<ID>::Fields::TXEN = true;
+      }
       
-      static void enableRx(void);
-      static void disableRx(void);
-      static bool isRxEnabled(void);
+      inline static void disableTx(void) {
+	HDL::UART<ID>::Fields::TXEN = false;
+      }
       
-      //static void setTxFifoSize(typename FifoSize::Type);
-      //template<typename FifoSize::Type> static void setTxFifoSize(void);
-      static typename FifoSize::Type getTxFifoSize(void);
+      inline static bool isTxEnabled(void) {
+	return HDL::UART<ID>::Fields::TXEN;
+      }
       
-      //static void setRxFifoSize(typename FifoSize::Type);
-      //template<typename FifoSize::Type> static void setRxFifoSize(void);
-      static typename FifoSize::Type getRxFifoSize(void);
+      inline static void enableRx(void) {
+	HDL::UART<ID>::Fields::RXEN = true;
+      }
       
-      //static void setFlowControl(typename FlowControl::Type);
-      //template<typename FlowControl::Type> static void setFlowControl(void);
-      //static typename FlowControl::Type getFlowControl(void);
+      inline static void disableRx(void) {
+	HDL::UART<ID>::Fields::RXEN = false;
+      }
       
-      //static void setEndianess(typename Endianess::Type);
-      //template<typename Endianess::Type> static void setEndianess(void);
-      static typename Endianess::Type getEndianess(void);
+      inline static bool isRxEnabled(void) {
+	return HDL::UART<ID>::Fields::RXEN;
+      }
       
-      static void setTxCompleteHandler(IRQ_Handler); 
-      static void setRxCompleteHandler(IRQ_Handler); 
+      //inline static void setTxFifoSize(typename FifoSize::Type);
+      //template<typename FifoSize::Type> inline static void setTxFifoSize(void);
+      inline static typename FifoSize::Type getTxFifoSize(void) {
+	return 1;
+      }
       
-      static void putChar(u8); 
-      static u8 getChar(void); 
+      //inline static void setRxFifoSize(typename FifoSize::Type);
+      //template<typename FifoSize::Type> inline static void setRxFifoSize(void);
+      inline static typename FifoSize::Type getRxFifoSize(void) {
+	return 1;
+      }
+      
+      //inline static void setFlowControl(typename FlowControl::Type);
+      //template<typename FlowControl::Type> inline static void setFlowControl(void);
+      //inline static typename FlowControl::Type getFlowControl(void);
+      
+      //inline static void setEndianess(typename Endianess::Type);
+      //template<typename Endianess::Type> inline static void setEndianess(void);
+      inline static typename Endianess::Type getEndianess(void) {
+	return Endianess::LSB;
+      }
+      
+      inline static void setTxCompleteHandler(IRQ_Handler);
+      inline static void setRxCompleteHandler(IRQ_Handler);
+      
+      inline static void putChar(u8 val) {
+	while(!HDL::UART<ID>::Fields::TXC);
+	HDL::UART<ID>::DR = val;
+      }
+      
+      inline static u8 getChar(void) {
+	while(!HDL::UART<ID>::Fields::RXC);
+	return VAL(HDL::UART<ID>::DR);
+      }
 
-      static u32 write(u8* data, u32 length); 
-      static u32 read(u8* data, u32 length); 
+      inline static u32 write(u8* data, u32 length);
+      inline static u32 read(u8* data, u32 length);
 
-      static u32 getTxFifoAvailableSpace(void);
-      static u32 getRxFifoAvailableWords(void);
+      inline static u32 getTxFifoAvailableSpace(void);
+      inline static u32 getRxFifoAvailableWords(void);
     };
 
     using UART_0 = UART<0>;

@@ -29,10 +29,12 @@ int main(int, char**) {
 
   //UART_0::setParity<UARTx::Parity::NONE>();
   //UART_0::getParity();
-  UART_0::setWordSize<5>();
+  //UART_0::setWordSize<5>();
+  //UART_0::setWordSize(8);
   //GPIO_B::Pin<7>::setMode(GPIOx::Mode::OUTPUT);
 
   while(1) {
+    UART_0::getChar();
     //delay();
     //GPIO_B::Pin<7>::toggle();
     //GPIO_B::togglePin(7);
