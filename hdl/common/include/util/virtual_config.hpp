@@ -24,6 +24,23 @@ namespace MemoryMapping {
       : CONFIGS(config, next...) {
     }
 
+#define MACRO_DEFINE_COMPAR(op)						\
+    template<typename... Configs>					\
+    inline bool operator op(const VirtualConfig<Configs...>& other) const { \
+      Private::VirtualFieldIsEqualVisitor visitor;			\
+      pair_static_list_foreach(CONFIGS, other.CONFIGS, visitor);	\
+      return visitor.res op true;					\
+    }									\
+    template<typename... Fields>					\
+    inline bool operator op(const VirtualField<Fields...>& field) const { \
+      return field op *this;						\
+    }									\
+    
+    MACRO_DEFINE_COMPAR(==);
+    MACRO_DEFINE_COMPAR(!=);
+    
+#undef MACRO_DEFINE_COMPAR
+
   };
     
   //! \brief This is a helper function that enables the developper to use auto keyword

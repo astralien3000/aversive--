@@ -38,6 +38,28 @@ constexpr StaticList<First, Next...> make_static_list(First first, StaticList<Ne
 }
 
 template<typename Visitor, typename List>
+void static_list_foreach(const List& list, Visitor& visitor) {
+  visitor.visit(list.first);
+  static_list_foreach(list.next, visitor);
+}
+
+template<typename Visitor, typename First>
+void static_list_foreach(const StaticList<First>& list, Visitor& visitor) {
+  visitor.visit(list.first);
+}
+
+template<typename Visitor, typename List1, typename List2>
+void pair_static_list_foreach(const List1& list1, const List2& list2, Visitor& visitor) {
+  visitor.visit(list1.first, list2.first);
+  pair_static_list_foreach(list1.next, list2.next, visitor);
+}
+
+template<typename Visitor, typename First1, typename First2>
+void pair_static_list_foreach(const StaticList<First1>& list1, const StaticList<First2>& list2, Visitor& visitor) {
+  visitor.visit(list1.first, list2.first);
+}
+
+template<typename Visitor, typename List>
 void static_list_foreach(const List& list, const Visitor& visitor) {
   visitor.visit(list.first);
   static_list_foreach(list.next, visitor);

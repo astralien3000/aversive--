@@ -11,7 +11,13 @@ namespace MemoryMapping {
       template<typename T1, typename T2>
       void visit(T1 left, T2 right) const {
 	left = right;
-	//var = 0;
+      }
+    };
+    struct VirtualFieldIsEqualVisitor {
+      bool res = true;
+      template<typename T1, typename T2>
+      void visit(T1 left, T2 right) {
+	res &= (left == right);
       }
     };
   }
@@ -40,7 +46,8 @@ namespace MemoryMapping {
     //! \warning The fields need to be compatible to perform this operation
     template<typename... Fields>
     inline const VirtualField& operator=(const VirtualField<Fields...>& field) const {
-      pair_static_list_foreach(FIELDS, field.FIELDS, Private::VirtualFieldAssignVisitor());
+      const Private::VirtualFieldAssignVisitor visitor;
+      pair_static_list_foreach(FIELDS, field.FIELDS, visitor);
       return *this;
     }
 
@@ -48,9 +55,30 @@ namespace MemoryMapping {
     //! \warning The fields and configs need to be compatible to perform this operation
     template<typename... Configs>
     inline const VirtualField& operator=(const VirtualConfig<Configs...>& config) const {
-      pair_static_list_foreach(FIELDS, config.CONFIGS, Private::VirtualFieldAssignVisitor());
+      const Private::VirtualFieldAssignVisitor visitor;
+      pair_static_list_foreach(FIELDS, config.CONFIGS, visitor);
       return *this;
     }
+
+#define MACRO_DEFINE_COMPAR(op)						\
+    template<typename... Fields>					\
+    inline bool operator op(const VirtualField<Fields...>& other) const { \
+      Private::VirtualFieldIsEqualVisitor visitor;			\
+      pair_static_list_foreach(FIELDS, other.FIELDS, visitor);		\
+      return visitor.res op true;					\
+    }									\
+    template<typename... Configs>					\
+    inline bool operator op(const VirtualConfig<Configs...>& cfg) const { \
+      Private::VirtualFieldIsEqualVisitor visitor;			\
+      pair_static_list_foreach(FIELDS, cfg.CONFIGS, visitor);		\
+      return visitor.res op true;					\
+    }									\
+
+    MACRO_DEFINE_COMPAR(==);
+    MACRO_DEFINE_COMPAR(!=);
+    
+#undef MACRO_DEFINE_COMPAR
+
   };
 
   //! \brief This is a helper function that enables the developper to use auto keyword

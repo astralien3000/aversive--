@@ -40,7 +40,7 @@ constexpr auto G2F2C2 = make_config(R3F2, 0b11);
 
 constexpr auto VF1 = make_virtual_field(R1F1, R3F2);
 constexpr auto VF2 = make_virtual_field(R2F1, R3F2);
-constexpr auto VC1 = make_virtual_field(G1F1C2, G2F2C1);
+constexpr auto VC1 = make_virtual_config(G1F1C2, G2F2C1);
 
 struct Test {
   static std::vector<const char*> list;
@@ -63,6 +63,18 @@ std::vector<const char*> Test::list;
 
 ////////////////////////////////////////////////////////////////
 // Registers
+
+MACRO_TEST_CLASS(TestVirtualFieldsCompar2OK) {
+  void run(void) {
+    r1 = 0b01100100;
+    r2 = 0b01100100;
+    r3 = 0b01100100;
+    
+    assert(VF1 == VF2);
+    assert(VF1 == VC1);
+    assert(VC1 == VF1);
+  }
+};
 
 MACRO_TEST_CLASS(TestRegistersSimpleAssignOK) {
   void run(void) {
@@ -406,8 +418,6 @@ MACRO_TEST_CLASS(TestVirtualFieldsSimpleAssign2OK) {
     assert(r3 == 0b01000000);
   }
 };
-
-
 
 int main(int, char**) {
 #if defined DISPLAY_LIST
