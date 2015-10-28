@@ -1,5 +1,5 @@
-#include <util/memory_mapping.hpp>
-#include <util/dummy.hpp>
+#include <memory_mapping/memory_mapping.hpp>
+#include <base/dummy.hpp>
 #include <assert.h>
 #include <iostream>
 #include <vector>

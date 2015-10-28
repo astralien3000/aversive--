@@ -1,8 +1,8 @@
 #ifndef HDL_AVR_MEGA_XX0_1_GPIO_REGS_HPP
 #define HDL_AVR_MEGA_XX0_1_GPIO_REGS_HPP
 
-#include <util/memory_mapping.hpp>
-#include <util/dummy.hpp>
+#include <memory_mapping/memory_mapping.hpp>
+#include <base/dummy.hpp>
 
 namespace HDL {
     
