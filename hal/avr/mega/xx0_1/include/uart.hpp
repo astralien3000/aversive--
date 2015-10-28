@@ -9,7 +9,18 @@ namespace HAL {
 
     template<u8 ID>
     struct UART : ::HAL::Private::UART_DriverInterface {
+    private:
       
+      //! \brief This function has to be User-defined
+      inline static u32 getSystemClockFrequency(void); // DEFINE ME
+
+      //! \brief The TX Complete Event handler
+      static IRQ_Handler txc;
+      
+      //! \brief The RX Complete Event handler
+      static IRQ_Handler rxc;
+
+    public:
       //! \brief This is just an alias to define an available enum value
 #define MACRO_ENUM_ELEMENT(elem)				\
       static constexpr Type elem = Type::elem
@@ -42,9 +53,6 @@ namespace HAL {
       };
       
 #undef MACRO_ENUM_ELEMENT
-
-      //! \brief This function has to be User-defined
-      inline static u32 getSystemClockFrequency(void); // DEFINE ME
       
       //inline static bool isModuleEnabled(void);
       //inline static void enableModule(void);
@@ -299,8 +307,8 @@ namespace HAL {
 	return Endianess::LSB;
       }
       
-      inline static void setTxCompleteHandler(IRQ_Handler);
-      inline static void setRxCompleteHandler(IRQ_Handler);
+      static void setTxCompleteHandler(IRQ_Handler);
+      static void setRxCompleteHandler(IRQ_Handler);
       
       inline static void putChar(u8 val) {
 	while(!HDL::UART<ID>::Fields::DRE);

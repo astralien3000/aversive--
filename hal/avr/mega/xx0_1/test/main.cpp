@@ -40,6 +40,9 @@ inline u32 HAL::UART<ID>::getSystemClockFrequency(void) {
 
 int main(int, char**) {
   UART_0::setSettings<UARTSettings>();
+  UART_0::setTxCompleteHandler([](){
+      
+    });
 
   u8 c = 'a';
   

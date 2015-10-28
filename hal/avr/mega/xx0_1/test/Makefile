@@ -64,7 +64,7 @@ atmega640: avr
 avr: export CC=$(AVR_CC)
 avr: export CFLAGS=$(AVR_CFLAGS) $(WCFLAGS) -mmcu=$(AVERSIVE_MMCU)
 avr: export INCLUDE=$(AVR_INCLUDE)
-avr: export LDFLAGS=$(AVR_LDFLAGS)
+avr: export LDFLAGS=$(AVR_LDFLAGS) -laversive_$(AVERSIVE_MMCU)
 avr: export BUILD_DIR=$(AVR_BUILD_DIR)/$(AVERSIVE_MMCU)
 avr: export EXEC=$(GEN_EXEC)_$(AVERSIVE_MMCU).elf
 avr: compile
