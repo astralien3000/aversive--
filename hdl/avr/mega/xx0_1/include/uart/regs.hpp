@@ -23,7 +23,7 @@ namespace HDL {
 	  static constexpr Register8<typename Defs::Groups::CSR_B> CSR_B = Defs::CSR_B;
 	  static constexpr Register8<typename Defs::Groups::CSR_C> CSR_C = Defs::CSR_C;
 
-	  static constexpr Register8<typename Defs::Groups::BRR> BRR = Defs::BRR;
+	  static constexpr Register16<typename Defs::Groups::BRR> BRR = Defs::BRR;
 	  static constexpr Register8<typename Defs::Groups::BRR_L> BRR_L = Defs::BRR_L;
 	  static constexpr Register8<typename Defs::Groups::BRR_H> BRR_H = Defs::BRR_H;
 
