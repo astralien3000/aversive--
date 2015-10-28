@@ -3,8 +3,7 @@
 \brief This file is a template you can use to develop your driver
 \todo 
  - Rename the security aganst include loops
- - Rename the driver
- - Remove the Example namespace
+ - Rename the Example namespace
  - Uncomment the functionalities that are available on your hardware
  - Implement it !
 */
@@ -23,7 +22,7 @@ namespace HAL {
       
       //! \brief This is just an alias to define an available enum value
 #define MACRO_ENUM_ELEMENT(elem)				\
-      //static constexpr Type elem = Type::elem
+      static constexpr Type elem = Type::elem
 
       struct Parity : UART_DriverInterface::Parity {
 	//MACRO_ENUM_ELEMENT(UNDEFINED);
@@ -65,6 +64,10 @@ namespace HAL {
       //static void setSettings(const Settings&);
       //template<typename Settings> static void setSettings(void);
       //static void getSettings(Settings&);
+      
+      //static void setBaudrate(Baudrate::Type);
+      //template<Baudrate::Type> static void setBaudrate(void);
+      //static Baudrate::Type getBaudrate(void);
       
       //static void setParity(Parity::Type);
       //template<Parity::Type> static void setParity(void);

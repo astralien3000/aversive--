@@ -3,8 +3,7 @@
 \brief This file is a template you can use to develop your driver
 \todo 
  - Rename the security aganst include loops
- - Rename the driver
- - Remove the Example namespace
+ - Rename the Example namespace
  - Uncomment the functionalities that are available on your hardware
  - Implement it !
 */
