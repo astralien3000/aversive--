@@ -1,4 +1,5 @@
 #include <hdl/reg.hpp>
+#include "../../include/int.hpp"
 #include <avr/io.h>
 
 using namespace HDL;
@@ -6,7 +7,19 @@ using namespace HDL;
 #define TEST_REGISTER(aversive, libc)		\
   static_assert((usys)aversive.ADDRESS == (usys)&libc, "ERROR : Bad Register address")
 
+namespace HDL {
+  namespace Interrupts {
+    using mTOC = TIMER<1>::OC<0>;
+    
+    template<> template<>
+    void mTOC::comp(void) {
+      GPIO_A::PIN = 0;
+    }
+  }
+}
+
 int main(int, char**) {
+
   TEST_REGISTER(GPIO_A::PIN , PINA);
   TEST_REGISTER(GPIO_A::DDR , DDRA);
   TEST_REGISTER(GPIO_A::PORT, PORTA);
