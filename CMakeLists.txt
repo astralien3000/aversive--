@@ -7,4 +7,11 @@ file(GLOB_RECURSE PLATFORM_HPP "include/${AVERSIVE_PLATFORM}/*.hpp")
 file(GLOB_RECURSE COMMON_CPP "src/common/*.cpp")
 file(GLOB_RECURSE PLATFORM_CPP "src/${AVERSIVE_PLATFORM}/*.cpp")
 
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include/${AVERSIVE_PLATFORM}")
+
+if(${AVERSIVE_PLATFORM} STREQUAL "sasiae")
+  find_package(Qt5 COMPONENTS Core)
+  include_directories(${Qt5Core_INCLUDE_DIRS})
+endif()
+
 add_library(Aversive++ STATIC ${COMMON_HPP} ${PLATFORM_HPP} ${COMMON_CPP} ${PLATFORM_CPP} ${AVERSIVE_THIRDPARTY})
