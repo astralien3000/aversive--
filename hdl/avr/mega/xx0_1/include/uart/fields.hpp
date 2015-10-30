@@ -2,8 +2,8 @@
 #define HDL_AVR_MEGA_XX0_1_UART_FIELDS_HPP
 
 #include "regs.hpp"
-#include <util/memory_mapping.hpp>
-#include <util/dummy.hpp>
+#include <memory_mapping/memory_mapping.hpp>
+#include <base/dummy.hpp>
 
 namespace HDL {
     
