@@ -8,7 +8,7 @@ else
 _VERBOSE=-s
 endif
 
-sasiae: mk/all.mk
+sasiae:
 	@(mkdir -p build/sasiae/ && cd build/sasiae/ && cmake -DCMAKE_TOOLCHAIN_FILE=../../cmake/toolchain/sasiae.cmake ../../ && $(MAKE) $(_VERBOSE))
 
 atmega32:
