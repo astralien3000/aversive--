@@ -56,7 +56,7 @@ qtcreator:
 todo:
 	@grep --color=auto -nr todo include/ src/
 
-mrproper: clean clean_archiparser clean_test clean_mk clean_generated
+mrproper: clean clean_archiparser clean_test
 	@rm -rf build/*
 
 clean_qtcreator:
