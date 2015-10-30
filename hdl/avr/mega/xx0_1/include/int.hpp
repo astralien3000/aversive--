@@ -1,6 +1,8 @@
 #ifndef HDL_AVR_MEGA_XX0_1_INT_HPP
 #define HDL_AVR_MEGA_XX0_1_INT_HPP
 
+#include<base/integer.hpp>
+
 #define INTERRUPT				\
   __attribute__((signal,section(".text.interrupt")))
 

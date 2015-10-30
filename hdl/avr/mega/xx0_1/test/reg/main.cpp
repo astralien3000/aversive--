@@ -9,17 +9,19 @@ using namespace HDL;
 
 namespace HDL {
   namespace Interrupts {
-    using mTOC = TIMER<1>::OC<0>;
-    
-    template<> template<>
-    void mTOC::comp(void) {
-      GPIO_A::PIN = 0;
+    template<> void UART<0>::tx(void) {
+      
     }
   }
 }
 
-int main(int, char**) {
+extern "C" void __import(void);
+void test(void) {
+  __import();
+}
 
+int main(int, char**) {
+  
   TEST_REGISTER(GPIO_A::PIN , PINA);
   TEST_REGISTER(GPIO_A::DDR , DDRA);
   TEST_REGISTER(GPIO_A::PORT, PORTA);
