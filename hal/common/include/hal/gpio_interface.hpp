@@ -12,12 +12,15 @@ namespace HAL {
   namespace Private {
   
     //! \brief GPIO Driver Interface
+    //! \param 
     /*!
      * This interface exists to show the develloper what can be implemented.
      * But the developper may not implement everything, since not every mirocontroller has as much functionnalities.
      * If a microcontroller provides a service that does not fit this interface, please, contact the main developpers of this project.
      */
+    template<typename T>
     struct GPIO_DriverInterface {
+      using IO_Type = T;
       
       //! \brief This is just an alias to build "deprecatable Enumerations"
 #define MACRO_ENUM_ELEMENT(elem)				\
@@ -75,11 +78,11 @@ namespace HAL {
 
       //! \brief GPIO Pin Settings
       struct Settings {
-	Mode::Type mode;
-	OutputMode::Type output_mode;
-	Alternate::Type alternate;
-	Pull::Type pull;
-	Speed::Type speed;
+	typename Mode::Type mode;
+	typename OutputMode::Type output_mode;
+	typename Alternate::Type alternate;
+	typename Pull::Type pull;
+	typename Speed::Type speed;
       };
 
 #undef MACRO_ENUM_ELEMENT
@@ -102,42 +105,42 @@ namespace HAL {
       //! @{
       static void getPinSettings(u8 pin_number, Settings&)           UNAVAILABLE;
       static void setPinSettings(u8 pin_number, const Settings&)     UNAVAILABLE;
-      static void setPinGroupSettings(u32 pin_mask, const Settings&) UNAVAILABLE;
+      static void setPinGroupSettings(IO_Type pin_mask, const Settings&) UNAVAILABLE;
       //! @}
 
       //! \name Mode
       //! @{
-      static Mode::Type getPinMode(u8 pin_number)           UNAVAILABLE;
-      static void setPinMode(u8 pin_number, Mode::Type)     UNAVAILABLE;
-      static void setPinGroupMode(u32 pin_mask, Mode::Type) UNAVAILABLE;
+      static typename Mode::Type getPinMode(u8 pin_number)           UNAVAILABLE;
+      static void setPinMode(u8 pin_number, typename Mode::Type)     UNAVAILABLE;
+      static void setPinGroupMode(IO_Type pin_mask, typename Mode::Type) UNAVAILABLE;
       //! @}
 
       //! \name Output Mode
       //! @{
-      static OutputMode::Type getPinOutputMode(u8 pin_number)           UNAVAILABLE;
-      static void setPinOutputMode(u8 pin_number, OutputMode::Type)     UNAVAILABLE;
-      static void setPinGroupOutputMode(u32 pin_mask, OutputMode::Type) UNAVAILABLE;
+      static typename OutputMode::Type getPinOutputMode(u8 pin_number)           UNAVAILABLE;
+      static void setPinOutputMode(u8 pin_number, typename OutputMode::Type)     UNAVAILABLE;
+      static void setPinGroupOutputMode(IO_Type pin_mask, typename OutputMode::Type) UNAVAILABLE;
       //! @}
 
       //! \name Alternate Function
       //! @{
-      static Alternate::Type getPinAlternate(u8 pin_number)           UNAVAILABLE;
-      static void setPinAlternate(u8 pin_number, Alternate::Type)     UNAVAILABLE;
-      static void setPinGroupAlternate(u32 pin_mask, Alternate::Type) UNAVAILABLE;
+      static typename Alternate::Type getPinAlternate(u8 pin_number)           UNAVAILABLE;
+      static void setPinAlternate(u8 pin_number, typename Alternate::Type)     UNAVAILABLE;
+      static void setPinGroupAlternate(IO_Type pin_mask, typename Alternate::Type) UNAVAILABLE;
       //! @}
 
       //! \name Pull policy
       //! @{
-      static Pull::Type getPinPull(u8 pin_number)               UNAVAILABLE;
-      static void setPinPull(u8 pin_number, Pull::Type)         UNAVAILABLE;
-      static void setPinGroupPull(u32 pin_mask, Pull::Type)     UNAVAILABLE;
+      static typename Pull::Type getPinPull(u8 pin_number)               UNAVAILABLE;
+      static void setPinPull(u8 pin_number, typename Pull::Type)         UNAVAILABLE;
+      static void setPinGroupPull(IO_Type pin_mask, typename Pull::Type)     UNAVAILABLE;
       //! @}
 
       //! \name Speed
       //! @{
-      static Speed::Type getPinSpeed(u8 pin_number)           UNAVAILABLE;
-      static void setPinSpeed(u8 pin_number, Speed::Type)     UNAVAILABLE;
-      static void setPinGroupSpeed(u32 pin_mask, Speed::Type) UNAVAILABLE;
+      static typename Speed::Type getPinSpeed(u8 pin_number)           UNAVAILABLE;
+      static void setPinSpeed(u8 pin_number, typename Speed::Type)     UNAVAILABLE;
+      static void setPinGroupSpeed(IO_Type pin_mask, typename Speed::Type) UNAVAILABLE;
       //! @}
 
       //! \name External Interrupt Handler
@@ -148,26 +151,26 @@ namespace HAL {
 
       //! \name Trigger Detection
       //! @{
-      static TriggerDetection::Type getPinTriggerDetection(u8 pin_number)        UNAVAILABLE;
-      static void setPinTriggerDectection(u8 pin_number, TriggerDetection::Type) UNAVAILABLE;
+      static typename TriggerDetection::Type getPinTriggerDetection(u8 pin_number)        UNAVAILABLE;
+      static void setPinTriggerDectection(u8 pin_number, typename TriggerDetection::Type) UNAVAILABLE;
       //! @}
 
       //! \name Value
       //! @{
-      static u32 getValue(void)                      UNAVAILABLE;
-      static void setValue(u32 value)                UNAVAILABLE;
-      template<u32 VALUE> static void setValue(void) UNAVAILABLE;
+      static IO_Type getValue(void)                      UNAVAILABLE;
+      static void setValue(IO_Type value)                UNAVAILABLE;
+      template<IO_Type VALUE> static void setValue(void) UNAVAILABLE;
 
       static bool getPinValue(u8 pin_number)             UNAVAILABLE;
       static void setPinValue(u8 pin_number, bool value) UNAVAILABLE;
       static void togglePin(u8 pin_number)               UNAVAILABLE;
 
-      static void setPinGroupValue(u32 pin_mask, bool value) UNAVAILABLE;
-      static void togglePinGroup(u32 pin_mask)               UNAVAILABLE;
+      static void setPinGroupValue(IO_Type pin_mask, bool value) UNAVAILABLE;
+      static void togglePinGroup(IO_Type pin_mask)               UNAVAILABLE;
       //! @}
 
       //! \brief Templated PinGroup interface
-      template<u32 PIN_MASK>
+      template<IO_Type PIN_MASK>
       struct PinGroup {
 	//! \name Settings
 	//! @{
@@ -177,32 +180,32 @@ namespace HAL {
 
 	//! \name Mode
 	//! @{
-	static void setMode(Mode::Type)                UNAVAILABLE;
-	template<Mode::Type> static void setMode(void) UNAVAILABLE;
+	static void setMode(typename Mode::Type)                UNAVAILABLE;
+	template<typename Mode::Type> static void setMode(void) UNAVAILABLE;
 	//! @}
 
 	//! \name Output Mode
 	//! @{
-	static void setOutputMode(OutputMode::Type)                UNAVAILABLE;
-	template<OutputMode::Type> static void setOutputMode(void) UNAVAILABLE;
+	static void setOutputMode(typename OutputMode::Type)                UNAVAILABLE;
+	template<typename OutputMode::Type> static void setOutputMode(void) UNAVAILABLE;
 	//! @}
 
 	//! \name Alternate Function
 	//! @{
-	static void setAlternate(Alternate::Type)                UNAVAILABLE;
-	template<Alternate::Type> static void setAlternate(void) UNAVAILABLE;
+	static void setAlternate(typename Alternate::Type)                UNAVAILABLE;
+	template<typename Alternate::Type> static void setAlternate(void) UNAVAILABLE;
 	//! @}
 
 	//! \name Pull policy
 	//! @{
-	static void setPull(Pull::Type)                UNAVAILABLE;
-	template<Pull::Type> static void setPull(void) UNAVAILABLE;
+	static void setPull(typename Pull::Type)                UNAVAILABLE;
+	template<typename Pull::Type> static void setPull(void) UNAVAILABLE;
 	//! @}
 
 	//! \name Speed
 	//! @{
-	static void setSpeed(Speed::Type)                UNAVAILABLE;
-	template<Speed::Type> static void setSpeed(void) UNAVAILABLE;
+	static void setSpeed(typename Speed::Type)                UNAVAILABLE;
+	template<typename Speed::Type> static void setSpeed(void) UNAVAILABLE;
 	//! @}
 
 	//! \name Value
@@ -226,42 +229,42 @@ namespace HAL {
 
 	//! \name Mode
 	//! @{
-	static Mode::Type getMode(void) UNAVAILABLE;
-	static void setMode(Mode::Type)    UNAVAILABLE;
+	static typename Mode::Type getMode(void) UNAVAILABLE;
+	static void setMode(typename Mode::Type)    UNAVAILABLE;
 	  
-	template<Mode::Type> static void setMode(void) UNAVAILABLE;
+	template<typename Mode::Type> static void setMode(void) UNAVAILABLE;
 	//! @}
 
 	//! \name Output Mode
 	//! @{
-	static OutputMode::Type getOutputMode(void) UNAVAILABLE;
-	static void setOutputMode(OutputMode::Type) UNAVAILABLE;
+	static typename OutputMode::Type getOutputMode(void) UNAVAILABLE;
+	static void setOutputMode(typename OutputMode::Type) UNAVAILABLE;
 
-	template<OutputMode::Type> static void setOutputMode(void) UNAVAILABLE;
+	template<typename OutputMode::Type> static void setOutputMode(void) UNAVAILABLE;
 	//! @}
 
 	//! \name Alternate Function
 	//! @{
-	static Alternate::Type getAlternate(void) UNAVAILABLE;
-	static void setAlternate(Alternate::Type) UNAVAILABLE;
+	static typename Alternate::Type getAlternate(void) UNAVAILABLE;
+	static void setAlternate(typename Alternate::Type) UNAVAILABLE;
 
-	template<Alternate::Type> static void setAlternate(void) UNAVAILABLE;
+	template<typename Alternate::Type> static void setAlternate(void) UNAVAILABLE;
 	//! @}
 
 	//! \name Pull policy
 	//! @{
-	static Pull::Type getPull(void) UNAVAILABLE;
-	static void setPull(Pull::Type) UNAVAILABLE;
+	static typename Pull::Type getPull(void) UNAVAILABLE;
+	static void setPull(typename Pull::Type) UNAVAILABLE;
 
-	template<Pull::Type> static void setPull(void) UNAVAILABLE;
+	template<typename Pull::Type> static void setPull(void) UNAVAILABLE;
 	//! @}
 
 	//! \name Speed
 	//! @{
-	static Speed::Type getSpeed(void) UNAVAILABLE;
-	static void setSpeed(Speed::Type) UNAVAILABLE;
+	static typename Speed::Type getSpeed(void) UNAVAILABLE;
+	static void setSpeed(typename Speed::Type) UNAVAILABLE;
 
-	template<Speed::Type> static void setSpeed(void) UNAVAILABLE;
+	template<typename Speed::Type> static void setSpeed(void) UNAVAILABLE;
 	//! @}
 
 	//! \name External Interrupt Handler
@@ -272,10 +275,10 @@ namespace HAL {
 
 	//! \name Trigger Detection
 	//! @{
-	static TriggerDetection::Type getTriggerDetection(void)  UNAVAILABLE;
-	static void setTriggerDectection(TriggerDetection::Type) UNAVAILABLE;
+	static typename TriggerDetection::Type getTriggerDetection(void)  UNAVAILABLE;
+	static void setTriggerDectection(typename TriggerDetection::Type) UNAVAILABLE;
 
-	template<TriggerDetection::Type> static void setTriggerDectection(void) UNAVAILABLE;
+	template<typename TriggerDetection::Type> static void setTriggerDectection(void) UNAVAILABLE;
 	//! @}
 
 	//! \name Value
