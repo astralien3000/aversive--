@@ -11,53 +11,48 @@
 #define HAL_COMMON_GPIO_EXAMPLE_HPP
 
 #include <hal/gpio_interface.hpp>
+#include <hal/macros_define.hpp>
 
 namespace HAL {
   
   namespace Example {
   
     template<u8 ID>
-    struct GPIO : ::HAL::Private::GPIO_DriverInterface<u8> {
+    struct GPIO : ::HAL::GPIO_DriverInterface<u8> {
       
-      //! \brief This is just an alias to define an available enum value
-#define MACRO_ENUM_ELEMENT(elem)				\
-      static constexpr Type elem = Type::elem
-
       struct Mode : GPIO_DriverInterface::Mode {
-	MACRO_ENUM_ELEMENT(UNDEFINED);
-	MACRO_ENUM_ELEMENT(INPUT);
-	MACRO_ENUM_ELEMENT(OUTPUT);
-	MACRO_ENUM_ELEMENT(ALTERNATE_FUNCTION);
+	_AVERSIVE_AVAILABLE_ELEMENT(UNDEFINED);
+	_AVERSIVE_AVAILABLE_ELEMENT(INPUT);
+	_AVERSIVE_AVAILABLE_ELEMENT(OUTPUT);
+	_AVERSIVE_AVAILABLE_ELEMENT(ALTERNATE_FUNCTION);
       };
     
       struct OutputMode : GPIO_DriverInterface::OutputMode {
-	MACRO_ENUM_ELEMENT(UNDEFINED);
-	MACRO_ENUM_ELEMENT(PUSH_PULL);
-	MACRO_ENUM_ELEMENT(OPEN_DRAIN);
+	_AVERSIVE_AVAILABLE_ELEMENT(UNDEFINED);
+	_AVERSIVE_AVAILABLE_ELEMENT(PUSH_PULL);
+	_AVERSIVE_AVAILABLE_ELEMENT(OPEN_DRAIN);
       };
 
       struct Alternate : GPIO_DriverInterface::Alternate {
-	MACRO_ENUM_ELEMENT(UNDEFINED);
+	_AVERSIVE_AVAILABLE_ELEMENT(UNDEFINED);
       };
 
       struct Pull : GPIO_DriverInterface::Pull {
-	MACRO_ENUM_ELEMENT(UNDEFINED);
-	MACRO_ENUM_ELEMENT(UP);
-	MACRO_ENUM_ELEMENT(DOWN);
+	_AVERSIVE_AVAILABLE_ELEMENT(UNDEFINED);
+	_AVERSIVE_AVAILABLE_ELEMENT(UP);
+	_AVERSIVE_AVAILABLE_ELEMENT(DOWN);
       };
 
       struct Speed : GPIO_DriverInterface::Speed {
-	MACRO_ENUM_ELEMENT(UNDEFINED);
+	_AVERSIVE_AVAILABLE_ELEMENT(UNDEFINED);
       };
 
       struct TriggerDetection : GPIO_DriverInterface::TriggerDetection {
-	MACRO_ENUM_ELEMENT(UNDEFINED);
-	MACRO_ENUM_ELEMENT(RISING);
-	MACRO_ENUM_ELEMENT(FALLING);
-	MACRO_ENUM_ELEMENT(BOTH);
+	_AVERSIVE_AVAILABLE_ELEMENT(UNDEFINED);
+	_AVERSIVE_AVAILABLE_ELEMENT(RISING);
+	_AVERSIVE_AVAILABLE_ELEMENT(FALLING);
+	_AVERSIVE_AVAILABLE_ELEMENT(BOTH);
       };
-
-#undef MACRO_ENUM_ELEMENT
 
       static bool isModuleEnabled(void) { return 0; }
       static void enableModule(void) {}
@@ -176,5 +171,7 @@ namespace HAL {
     
   }  
 }
+
+#include <hal/macros_undef.hpp>
 
 #endif//HAL_COMMON_GPIO_EXAMPLE_HPP

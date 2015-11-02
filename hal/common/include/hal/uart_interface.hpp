@@ -2,10 +2,7 @@
 #define HAL_COMMON_UART_INTERFACE_HPP
 
 #include <base/integer.hpp>
-
-//! \brief This define tells to the compiler (GNU) to warn the user when a marked funcionnality is used
-//! \todo Replace by C++14 deprecated attribute
-#define UNAVAILABLE __attribute__((deprecated("This functionnality is not available for the microcontroller you are using")))
+#include <hal/macros_define.hpp>
 
 namespace HAL {
 
@@ -15,10 +12,6 @@ namespace HAL {
   struct UART_DriverInterface {
     using IO_Type = T;
       
-    //! \brief This is just an alias to build "deprecatable Enumerations"
-#define MACRO_ENUM_ELEMENT(elem)                        \
-    static constexpr Type elem UNAVAILABLE = Type::elem
-
     //! \brief The UART Baudrate
     struct Baudrate {
       using Type = u32;
@@ -27,19 +20,19 @@ namespace HAL {
     //! \brief The UART Parity Mode
     struct Parity {
       enum class Type : u8 { UNDEFINED = 0, NONE, EVEN, ODD };
-      MACRO_ENUM_ELEMENT(UNDEFINED);
-      MACRO_ENUM_ELEMENT(NONE);
-      MACRO_ENUM_ELEMENT(EVEN);
-      MACRO_ENUM_ELEMENT(ODD);
+      _AVERSIVE_UNAVAILABLE_ELEMENT(UNDEFINED);
+      _AVERSIVE_UNAVAILABLE_ELEMENT(NONE);
+      _AVERSIVE_UNAVAILABLE_ELEMENT(EVEN);
+      _AVERSIVE_UNAVAILABLE_ELEMENT(ODD);
     };
 
     //! \brief The UART Stop Bit Length
     struct StopBit {
       enum class Type : u8 { UNDEFINED = 0, ONE_BIT, ONE_AND_HALF_BIT, TWO_BIT };
-      MACRO_ENUM_ELEMENT(UNDEFINED);
-      MACRO_ENUM_ELEMENT(ONE_BIT);
-      MACRO_ENUM_ELEMENT(ONE_AND_HALF_BIT);
-      MACRO_ENUM_ELEMENT(TWO_BIT);
+      _AVERSIVE_UNAVAILABLE_ELEMENT(UNDEFINED);
+      _AVERSIVE_UNAVAILABLE_ELEMENT(ONE_BIT);
+      _AVERSIVE_UNAVAILABLE_ELEMENT(ONE_AND_HALF_BIT);
+      _AVERSIVE_UNAVAILABLE_ELEMENT(TWO_BIT);
     };
 
     //! \brief The UART Word Size
@@ -55,18 +48,18 @@ namespace HAL {
     //! \brief The UART Flow Control Mode
     struct FlowControl {
       enum class Type : u8 { UNDEFINED = 0, NONE, CTS, RTS };
-      MACRO_ENUM_ELEMENT(UNDEFINED);
-      MACRO_ENUM_ELEMENT(NONE);
-      MACRO_ENUM_ELEMENT(CTS);
-      MACRO_ENUM_ELEMENT(RTS);
+      _AVERSIVE_UNAVAILABLE_ELEMENT(UNDEFINED);
+      _AVERSIVE_UNAVAILABLE_ELEMENT(NONE);
+      _AVERSIVE_UNAVAILABLE_ELEMENT(CTS);
+      _AVERSIVE_UNAVAILABLE_ELEMENT(RTS);
     };
 
     //! \brief The UART Endianess
     struct Endianess {
       enum class Type : u8 { UNDEFINED = 0, MSB, LSB };
-      MACRO_ENUM_ELEMENT(UNDEFINED);
-      MACRO_ENUM_ELEMENT(MSB);
-      MACRO_ENUM_ELEMENT(LSB);
+      _AVERSIVE_UNAVAILABLE_ELEMENT(UNDEFINED);
+      _AVERSIVE_UNAVAILABLE_ELEMENT(MSB);
+      _AVERSIVE_UNAVAILABLE_ELEMENT(LSB);
     };
       
     //! \brief Interrupt Handler
@@ -91,120 +84,118 @@ namespace HAL {
       typename Endianess::Type endianess;
     };
 
-#undef MACRO_ENUM_ELEMENT
-
     //! \name Module Enable
     //! @{
-    static bool isModuleEnabled(void) UNAVAILABLE;
-    static void enableModule(void)    UNAVAILABLE;
-    static void disableModule(void)   UNAVAILABLE;
+    static bool isModuleEnabled(void) _AVERSIVE_UNAVAILABLE;
+    static void enableModule(void)    _AVERSIVE_UNAVAILABLE;
+    static void disableModule(void)   _AVERSIVE_UNAVAILABLE;
     //! @}
 
     //! \name Module Sleep Enable
     //! @{
-    static bool isModuleSleepEnabled(void) UNAVAILABLE;
-    static void enableModuleSleep(void)    UNAVAILABLE;
-    static void disableModuleSleep(void)   UNAVAILABLE;
+    static bool isModuleSleepEnabled(void) _AVERSIVE_UNAVAILABLE;
+    static void enableModuleSleep(void)    _AVERSIVE_UNAVAILABLE;
+    static void disableModuleSleep(void)   _AVERSIVE_UNAVAILABLE;
     //! @}
 
     //! \name Settings
     //! @{
-    static void setSettings(const Settings&)                  UNAVAILABLE;
-    template<typename Settings> static void setSettings(void) UNAVAILABLE;
-    static void getSettings(Settings&)                        UNAVAILABLE;
+    static void setSettings(const Settings&)                  _AVERSIVE_UNAVAILABLE;
+    template<typename Settings> static void setSettings(void) _AVERSIVE_UNAVAILABLE;
+    static void getSettings(Settings&)                        _AVERSIVE_UNAVAILABLE;
     //! @}
       
     //! \name Baudrate
     //! @{
-    static void setBaudrate(typename Baudrate::Type)                UNAVAILABLE;
-    template<typename Baudrate::Type> static void setBaudrate(void) UNAVAILABLE;
-    static typename Baudrate::Type getBaudrate(void)                UNAVAILABLE;
+    static void setBaudrate(typename Baudrate::Type)                _AVERSIVE_UNAVAILABLE;
+    template<typename Baudrate::Type> static void setBaudrate(void) _AVERSIVE_UNAVAILABLE;
+    static typename Baudrate::Type getBaudrate(void)                _AVERSIVE_UNAVAILABLE;
     //! @}
       
     //! \name Partiy
     //! @{
-    static void setParity(typename Parity::Type)                UNAVAILABLE;
-    template<typename Parity::Type> static void setParity(void) UNAVAILABLE;
-    static typename Parity::Type getParity(void)                UNAVAILABLE;
+    static void setParity(typename Parity::Type)                _AVERSIVE_UNAVAILABLE;
+    template<typename Parity::Type> static void setParity(void) _AVERSIVE_UNAVAILABLE;
+    static typename Parity::Type getParity(void)                _AVERSIVE_UNAVAILABLE;
     //! @}
       
     //! \name Stop Bit
     //! @{
-    static void setStopBit(typename StopBit::Type)                UNAVAILABLE;
-    template<typename StopBit::Type> static void setStopBit(void) UNAVAILABLE;
-    static typename StopBit::Type getStopBit(void)                UNAVAILABLE;
+    static void setStopBit(typename StopBit::Type)                _AVERSIVE_UNAVAILABLE;
+    template<typename StopBit::Type> static void setStopBit(void) _AVERSIVE_UNAVAILABLE;
+    static typename StopBit::Type getStopBit(void)                _AVERSIVE_UNAVAILABLE;
     //! @}
       
     //! \name Word Size
     //! @{
-    static void setWordSize(typename WordSize::Type)                UNAVAILABLE;
-    template<typename WordSize::Type> static void setWordSize(void) UNAVAILABLE;
-    static typename WordSize::Type getWordSize(void)                UNAVAILABLE;
+    static void setWordSize(typename WordSize::Type)                _AVERSIVE_UNAVAILABLE;
+    template<typename WordSize::Type> static void setWordSize(void) _AVERSIVE_UNAVAILABLE;
+    static typename WordSize::Type getWordSize(void)                _AVERSIVE_UNAVAILABLE;
     //! @}
       
     //! \name TX Enable
     //! @{
-    static void enableTx(void)    UNAVAILABLE;
-    static void disableTx(void)   UNAVAILABLE;
-    static bool isTxEnabled(void) UNAVAILABLE;
+    static void enableTx(void)    _AVERSIVE_UNAVAILABLE;
+    static void disableTx(void)   _AVERSIVE_UNAVAILABLE;
+    static bool isTxEnabled(void) _AVERSIVE_UNAVAILABLE;
     //! @}
       
     //! \name RX Enable
     //! @{
-    static void enableRx(void)    UNAVAILABLE;
-    static void disableRx(void)   UNAVAILABLE;
-    static bool isRxEnabled(void) UNAVAILABLE;
+    static void enableRx(void)    _AVERSIVE_UNAVAILABLE;
+    static void disableRx(void)   _AVERSIVE_UNAVAILABLE;
+    static bool isRxEnabled(void) _AVERSIVE_UNAVAILABLE;
     //! @}
       
     //! \name TX FIFO Size
     //! @{
-    static void setTxFifoSize(typename FifoSize::Type)                UNAVAILABLE;
-    template<typename FifoSize::Type> static void setTxFifoSize(void) UNAVAILABLE;
-    static typename FifoSize::Type getTxFifoSize(void)                UNAVAILABLE;
+    static void setTxFifoSize(typename FifoSize::Type)                _AVERSIVE_UNAVAILABLE;
+    template<typename FifoSize::Type> static void setTxFifoSize(void) _AVERSIVE_UNAVAILABLE;
+    static typename FifoSize::Type getTxFifoSize(void)                _AVERSIVE_UNAVAILABLE;
     //! @}
       
     //! \name RX FIFO Size
     //! @{
-    static void setRxFifoSize(typename FifoSize::Type)                UNAVAILABLE;
-    template<typename FifoSize::Type> static void setRxFifoSize(void) UNAVAILABLE;
-    static typename FifoSize::Type getRxFifoSize(void)                UNAVAILABLE;
+    static void setRxFifoSize(typename FifoSize::Type)                _AVERSIVE_UNAVAILABLE;
+    template<typename FifoSize::Type> static void setRxFifoSize(void) _AVERSIVE_UNAVAILABLE;
+    static typename FifoSize::Type getRxFifoSize(void)                _AVERSIVE_UNAVAILABLE;
     //! @}
       
     //! \name Flow Control
     //! @{
-    static void setFlowControl(typename FlowControl::Type)                UNAVAILABLE;
-    template<typename FlowControl::Type> static void setFlowControl(void) UNAVAILABLE;
-    static typename FlowControl::Type getFlowControl(void)                UNAVAILABLE;
+    static void setFlowControl(typename FlowControl::Type)                _AVERSIVE_UNAVAILABLE;
+    template<typename FlowControl::Type> static void setFlowControl(void) _AVERSIVE_UNAVAILABLE;
+    static typename FlowControl::Type getFlowControl(void)                _AVERSIVE_UNAVAILABLE;
     //! @}
       
     //! \name Endianess
     //! @{
-    static void setEndianess(typename Endianess::Type)                UNAVAILABLE;
-    template<typename Endianess::Type> static void setEndianess(void) UNAVAILABLE;
-    static typename Endianess::Type getEndianess(void)                UNAVAILABLE;
+    static void setEndianess(typename Endianess::Type)                _AVERSIVE_UNAVAILABLE;
+    template<typename Endianess::Type> static void setEndianess(void) _AVERSIVE_UNAVAILABLE;
+    static typename Endianess::Type getEndianess(void)                _AVERSIVE_UNAVAILABLE;
     //! @}
       
     //! \name Handlers
     //! @{
-    static void setTxCompleteHandler(IRQ_Handler) UNAVAILABLE; // Tx Fifo is Empty
-    static void setRxCompleteHandler(IRQ_Handler) UNAVAILABLE; // Rx Fifo is Full
+    static void setTxCompleteHandler(IRQ_Handler) _AVERSIVE_UNAVAILABLE; // Tx Fifo is Empty
+    static void setRxCompleteHandler(IRQ_Handler) _AVERSIVE_UNAVAILABLE; // Rx Fifo is Full
     //! @}
       
     //! \name Stream operations
     //! @{
-    static void putChar(IO_Type) UNAVAILABLE; // Blocking
-    static IO_Type getChar(void) UNAVAILABLE; // Blocking
+    static void putChar(IO_Type) _AVERSIVE_UNAVAILABLE; // Blocking
+    static IO_Type getChar(void) _AVERSIVE_UNAVAILABLE; // Blocking
 
-    static u32 write(IO_Type* data, u32 length) UNAVAILABLE; // Blocking
-    static u32 read(IO_Type* data, u32 length)  UNAVAILABLE; // Blocking
+    static u32 write(IO_Type* data, u32 length) _AVERSIVE_UNAVAILABLE; // Blocking
+    static u32 read(IO_Type* data, u32 length)  _AVERSIVE_UNAVAILABLE; // Blocking
 
-    static u32 getTxFifoAvailableSpace(void) UNAVAILABLE;
-    static u32 getRxFifoAvailableWords(void) UNAVAILABLE;
+    static u32 getTxFifoAvailableSpace(void) _AVERSIVE_UNAVAILABLE;
+    static u32 getRxFifoAvailableWords(void) _AVERSIVE_UNAVAILABLE;
     //! @}
   };
 
 }
 
-#undef UNAVAILABLE
+#include <hal/macros_undef.hpp>
 
 #endif//HAL_COMMON_UART_INTERFACE_HPP
