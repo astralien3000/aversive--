@@ -2,7 +2,7 @@
 AVERSIVE_ROOT=../../..
 
 ## Your project's object .o files
-OBJ=test.o
+OBJ=test.o gpio_test.o timer_test.o uart_test.o
 
 ## Your executable file name
 GEN_EXEC=test

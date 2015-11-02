@@ -1,5 +1,4 @@
-/*!
-\page HAL UART Example
+/*
 \brief This file is a template you can use to develop your driver
 \todo 
  - Rename the security aganst include loops
@@ -25,97 +24,97 @@ namespace HAL {
       static constexpr Type elem = Type::elem
 
       struct Parity : UART_DriverInterface::Parity {
-	//MACRO_ENUM_ELEMENT(UNDEFINED);
-	//MACRO_ENUM_ELEMENT(NONE);
-	//MACRO_ENUM_ELEMENT(EVEN);
-	//MACRO_ENUM_ELEMENT(ODD);
+	MACRO_ENUM_ELEMENT(UNDEFINED);
+	MACRO_ENUM_ELEMENT(NONE);
+	MACRO_ENUM_ELEMENT(EVEN);
+	MACRO_ENUM_ELEMENT(ODD);
       };
 
       struct StopBit : UART_DriverInterface::StopBit {
-	//MACRO_ENUM_ELEMENT(UNDEFINED);
-	//MACRO_ENUM_ELEMENT(ONE_BIT);
-	//MACRO_ENUM_ELEMENT(ONE_AND_HALF_BIT);
-	//MACRO_ENUM_ELEMENT(TWO_BIT);
+	MACRO_ENUM_ELEMENT(UNDEFINED);
+	MACRO_ENUM_ELEMENT(ONE_BIT);
+	MACRO_ENUM_ELEMENT(ONE_AND_HALF_BIT);
+	MACRO_ENUM_ELEMENT(TWO_BIT);
       };
 
       struct FlowControl : UART_DriverInterface::FlowControl {
-	//MACRO_ENUM_ELEMENT(UNDEFINED);
-	//MACRO_ENUM_ELEMENT(NONE);
-	//MACRO_ENUM_ELEMENT(CTS);
-	//MACRO_ENUM_ELEMENT(RTS);
+	MACRO_ENUM_ELEMENT(UNDEFINED);
+	MACRO_ENUM_ELEMENT(NONE);
+	MACRO_ENUM_ELEMENT(CTS);
+	MACRO_ENUM_ELEMENT(RTS);
       };
 
       struct Endianess : UART_DriverInterface::Endianess {
-	//MACRO_ENUM_ELEMENT(UNDEFINED);
-	//MACRO_ENUM_ELEMENT(MSB);
-	//MACRO_ENUM_ELEMENT(LSB);
+	MACRO_ENUM_ELEMENT(UNDEFINED);
+	MACRO_ENUM_ELEMENT(MSB);
+	MACRO_ENUM_ELEMENT(LSB);
       };
       
 #undef MACRO_ENUM_ELEMENT
 
-      //static bool isModuleEnabled(void);
-      //static void enableModule(void);
-      //static void disableModule(void);
+      static bool isModuleEnabled(void) { return false; }
+      static void enableModule(void) {}
+      static void disableModule(void) {}
 
-      //static bool isModuleSleepEnabled(void);
-      //static void enableModuleSleep(void);
-      //static void disableModuleSleep(void);
+      static bool isModuleSleepEnabled(void) { return false; }
+      static void enableModuleSleep(void) {}
+      static void disableModuleSleep(void) {}
 
-      //static void setSettings(const Settings&);
-      //template<typename Settings> static void setSettings(void);
-      //static void getSettings(Settings&);
+      static void setSettings(const Settings&) {}
+      template<typename Settings> static void setSettings(void) {}
+      static void getSettings(Settings&) {}
       
-      //static void setBaudrate(Baudrate::Type);
-      //template<Baudrate::Type> static void setBaudrate(void);
-      //static Baudrate::Type getBaudrate(void);
+      static void setBaudrate(typename Baudrate::Type) {}
+      template<typename Baudrate::Type> static void setBaudrate(void) {}
+      static typename Baudrate::Type getBaudrate(void) { return 0; }
       
-      //static void setParity(Parity::Type);
-      //template<Parity::Type> static void setParity(void);
-      //static Parity::Type getParity(void);
+      static void setParity(typename Parity::Type) {}
+      template<typename Parity::Type> static void setParity(void) {}
+      static typename Parity::Type getParity(void) { return Parity::UNDEFINED; }
       
-      //static void setStopBit(StopBit::Type);
-      //template<StopBit::Type> static void setStopBit(void);
-      //static StopBit::Type getStopBit(void);
+      static void setStopBit(typename StopBit::Type) {}
+      template<typename StopBit::Type> static void setStopBit(void) {}
+      static typename StopBit::Type getStopBit(void) { return StopBit::UNDEFINED; }
       
-      //static void setWordSize(WordSize::Type);
-      //template<WordSize::Type> static void setWordSize(void);
-      //static WordSize::Type getWordSize(void);
+      static void setWordSize(typename WordSize::Type) {}
+      template<typename WordSize::Type> static void setWordSize(void) {}
+      static typename WordSize::Type getWordSize(void) { return 0; }
       
-      //static void enableTx(void);
-      //static void disableTx(void);
-      //static bool isTxEnabled(void);
+      static void enableTx(void) {}
+      static void disableTx(void) {}
+      static bool isTxEnabled(void) { return false; }
       
-      //static void enableRx(void);
-      //static void disableRx(void);
-      //static bool isRxEnabled(void);
+      static void enableRx(void) {}
+      static void disableRx(void) {}
+      static bool isRxEnabled(void) { return false; }
       
-      //static void setTxFifoSize(FifoSize::Type);
-      //template<FifoSize::Type> static void setTxFifoSize(void);
-      //static FifoSize::Type getTxFifoSize(void);
+      static void setTxFifoSize(typename FifoSize::Type) {}
+      template<typename FifoSize::Type> static void setTxFifoSize(void) {}
+      static typename FifoSize::Type getTxFifoSize(void) { return 0; }
       
-      //static void setRxFifoSize(FifoSize::Type);
-      //template<FifoSize::Type> static void setRxFifoSize(void);
-      //static FifoSize::Type getRxFifoSize(void);
+      static void setRxFifoSize(typename FifoSize::Type) {}
+      template<typename FifoSize::Type> static void setRxFifoSize(void) {}
+      static typename FifoSize::Type getRxFifoSize(void) { return 0; }
       
-      //static void setFlowControl(FlowControl::Type);
-      //template<FlowControl::Type> static void setFlowControl(void);
-      //static FlowControl::Type getFlowControl(void);
+      static void setFlowControl(typename FlowControl::Type) {}
+      template<typename FlowControl::Type> static void setFlowControl(void) {}
+      static typename FlowControl::Type getFlowControl(void) { return FlowControl::UNDEFINED; }
       
-      //static void setEndianess(Endianess::Type);
-      //template<Endianess::Type> static void setEndianess(void);
-      //static Endianess::Type getEndianess(void);
+      static void setEndianess(typename Endianess::Type) {}
+      template<typename Endianess::Type> static void setEndianess(void) {}
+      static typename Endianess::Type getEndianess(void) { return Endianess::UNDEFINED; }
       
-      //static void setTxCompleteHandler(IRQ_Handler); 
-      //static void setRxCompleteHandler(IRQ_Handler); 
+      static void setTxCompleteHandler(IRQ_Handler) {} 
+      static void setRxCompleteHandler(IRQ_Handler) {} 
       
-      //static void putChar(u8); 
-      //static u8 getChar(void); 
+      static void putChar(u8) {}
+      static u8 getChar(void) { return 0; }
 
-      //static u32 write(u8* data, u32 length); 
-      //static u32 read(u8* data, u32 length); 
+      static u32 write(u8*, u32) { return 0; }
+      static u32 read(u8*, u32) { return 0; }
 
-      //static u32 getTxFifoAvailableSpace(void);
-      //static u32 getRxFifoAvailableWords(void);
+      static u32 getTxFifoAvailableSpace(void) { return 0; }
+      static u32 getRxFifoAvailableWords(void) { return 0; }
     };
 
   }

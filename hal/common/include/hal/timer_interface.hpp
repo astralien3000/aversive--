@@ -65,7 +65,8 @@ namespace HAL {
 
       //! \brief The OutputCompare Signal Polarity
       struct OCPolarity {
-	enum class Type : u8 { HIGH, LOW };
+	enum class Type : u8 { UNDEFINED, HIGH, LOW };
+	MACRO_ENUM_ELEMENT(UNDEFINED);
 	MACRO_ENUM_ELEMENT(HIGH);
 	MACRO_ENUM_ELEMENT(LOW);
       };
@@ -150,9 +151,9 @@ namespace HAL {
 
       //! \name Clock Select
       //! @{
-      static void setClockSelect(CounterMode::Type)                UNAVAILABLE;
-      template<CounterMode::Type> static void setClockSelect(void) UNAVAILABLE;
-      static CounterMode::Type getClockSelect(void)                UNAVAILABLE;
+      static void setClockSelect(ClockSelect::Type)                UNAVAILABLE;
+      template<ClockSelect::Type> static void setClockSelect(void) UNAVAILABLE;
+      static ClockSelect::Type getClockSelect(void)                UNAVAILABLE;
       //! @}
 
       //! \name Prescaler
@@ -245,8 +246,8 @@ namespace HAL {
 	static void setChannelPolarity(u8 channel, EncoderPolarity::Type) UNAVAILABLE;
 	static EncoderPolarity::Type getChannelPolarity(u8 channel)       UNAVAILABLE;
 
-	static void setChannelPrescaler(u8 channel, EncoderPolarity) UNAVAILABLE;
-	static EncoderPolarity::Type getChannelPrescaler(u8 channel)       UNAVAILABLE;
+	static void setChannelPrescaler(u8 channel, EncoderPrescaler::Type) UNAVAILABLE;
+	static EncoderPrescaler::Type getChannelPrescaler(u8 channel)       UNAVAILABLE;
 	//! @}
 
 	//! \brief Encoder Channel interface

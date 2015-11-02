@@ -1,5 +1,4 @@
-/*!
-\page HAL GPIO Example
+/*
 \brief This file is a template you can use to develop your driver
 \todo 
  - Rename the security aganst include loops
