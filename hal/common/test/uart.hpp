@@ -17,7 +17,7 @@ namespace HAL {
   namespace Example {
 
     template<u8 ID>
-    struct UART : ::HAL::Private::UART_DriverInterface {
+    struct UART : ::HAL::Private::UART_DriverInterface<u8> {
       
       //! \brief This is just an alias to define an available enum value
 #define MACRO_ENUM_ELEMENT(elem)				\

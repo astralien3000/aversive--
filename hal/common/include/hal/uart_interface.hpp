@@ -12,7 +12,9 @@ namespace HAL {
   namespace Private {
 
     //! \brief UART Driver Interface
+    template<typename T>
     struct UART_DriverInterface {
+      using IO_Type = T;
       
       //! \brief This is just an alias to build "deprecatable Enumerations"
 #define MACRO_ENUM_ELEMENT(elem)				\
@@ -74,20 +76,20 @@ namespace HAL {
 
       //! \brief UART Settings
       struct Settings {
-	Baudrate::Type baudrate;
-	Parity::Type parity;
-	StopBit::Type stop_bit;
-	WordSize::Type word_size;
+	typename Baudrate::Type baudrate;
+	typename Parity::Type parity;
+	typename StopBit::Type stop_bit;
+	typename WordSize::Type word_size;
       
 	bool tx_enabled;
 	bool rx_enabled;
 
-	FifoSize::Type tx_fifo_size;
-	FifoSize::Type rx_fifo_size;
+	typename FifoSize::Type tx_fifo_size;
+	typename FifoSize::Type rx_fifo_size;
 
-	FlowControl::Type flow_control;
+	typename FlowControl::Type flow_control;
 
-	Endianess::Type endianess;
+	typename Endianess::Type endianess;
       };
 
 #undef MACRO_ENUM_ELEMENT
@@ -115,30 +117,30 @@ namespace HAL {
       
       //! \name Baudrate
       //! @{
-      static void setBaudrate(Baudrate::Type)                UNAVAILABLE;
-      template<Baudrate::Type> static void setBaudrate(void) UNAVAILABLE;
-      static Baudrate::Type getBaudrate(void)                UNAVAILABLE;
+      static void setBaudrate(typename Baudrate::Type)                UNAVAILABLE;
+      template<typename Baudrate::Type> static void setBaudrate(void) UNAVAILABLE;
+      static typename Baudrate::Type getBaudrate(void)                UNAVAILABLE;
       //! @}
       
       //! \name Partiy
       //! @{
-      static void setParity(Parity::Type)                UNAVAILABLE;
-      template<Parity::Type> static void setParity(void) UNAVAILABLE;
-      static Parity::Type getParity(void)                UNAVAILABLE;
+      static void setParity(typename Parity::Type)                UNAVAILABLE;
+      template<typename Parity::Type> static void setParity(void) UNAVAILABLE;
+      static typename Parity::Type getParity(void)                UNAVAILABLE;
       //! @}
       
       //! \name Stop Bit
       //! @{
-      static void setStopBit(StopBit::Type)                UNAVAILABLE;
-      template<StopBit::Type> static void setStopBit(void) UNAVAILABLE;
-      static StopBit::Type getStopBit(void)                UNAVAILABLE;
+      static void setStopBit(typename StopBit::Type)                UNAVAILABLE;
+      template<typename StopBit::Type> static void setStopBit(void) UNAVAILABLE;
+      static typename StopBit::Type getStopBit(void)                UNAVAILABLE;
       //! @}
       
       //! \name Word Size
       //! @{
-      static void setWordSize(WordSize::Type)                UNAVAILABLE;
-      template<WordSize::Type> static void setWordSize(void) UNAVAILABLE;
-      static WordSize::Type getWordSize(void)                UNAVAILABLE;
+      static void setWordSize(typename WordSize::Type)                UNAVAILABLE;
+      template<typename WordSize::Type> static void setWordSize(void) UNAVAILABLE;
+      static typename WordSize::Type getWordSize(void)                UNAVAILABLE;
       //! @}
       
       //! \name TX Enable
@@ -157,30 +159,30 @@ namespace HAL {
       
       //! \name TX FIFO Size
       //! @{
-      static void setTxFifoSize(FifoSize::Type)                UNAVAILABLE;
-      template<FifoSize::Type> static void setTxFifoSize(void) UNAVAILABLE;
-      static FifoSize::Type getTxFifoSize(void)                UNAVAILABLE;
+      static void setTxFifoSize(typename FifoSize::Type)                UNAVAILABLE;
+      template<typename FifoSize::Type> static void setTxFifoSize(void) UNAVAILABLE;
+      static typename FifoSize::Type getTxFifoSize(void)                UNAVAILABLE;
       //! @}
       
       //! \name RX FIFO Size
       //! @{
-      static void setRxFifoSize(FifoSize::Type)                UNAVAILABLE;
-      template<FifoSize::Type> static void setRxFifoSize(void) UNAVAILABLE;
-      static FifoSize::Type getRxFifoSize(void)                UNAVAILABLE;
+      static void setRxFifoSize(typename FifoSize::Type)                UNAVAILABLE;
+      template<typename FifoSize::Type> static void setRxFifoSize(void) UNAVAILABLE;
+      static typename FifoSize::Type getRxFifoSize(void)                UNAVAILABLE;
       //! @}
       
       //! \name Flow Control
       //! @{
-      static void setFlowControl(FlowControl::Type)                UNAVAILABLE;
-      template<FlowControl::Type> static void setFlowControl(void) UNAVAILABLE;
-      static FlowControl::Type getFlowControl(void)                UNAVAILABLE;
+      static void setFlowControl(typename FlowControl::Type)                UNAVAILABLE;
+      template<typename FlowControl::Type> static void setFlowControl(void) UNAVAILABLE;
+      static typename FlowControl::Type getFlowControl(void)                UNAVAILABLE;
       //! @}
       
       //! \name Endianess
       //! @{
-      static void setEndianess(Endianess::Type)                UNAVAILABLE;
-      template<Endianess::Type> static void setEndianess(void) UNAVAILABLE;
-      static Endianess::Type getEndianess(void)                UNAVAILABLE;
+      static void setEndianess(typename Endianess::Type)                UNAVAILABLE;
+      template<typename Endianess::Type> static void setEndianess(void) UNAVAILABLE;
+      static typename Endianess::Type getEndianess(void)                UNAVAILABLE;
       //! @}
       
       //! \name Handlers
@@ -191,11 +193,11 @@ namespace HAL {
       
       //! \name Stream operations
       //! @{
-      static void putChar(u8) UNAVAILABLE; // Blocking
-      static u8 getChar(void) UNAVAILABLE; // Blocking
+      static void putChar(IO_Type) UNAVAILABLE; // Blocking
+      static IO_Type getChar(void) UNAVAILABLE; // Blocking
 
-      static u32 write(u8* data, u32 length) UNAVAILABLE; // Blocking
-      static u32 read(u8* data, u32 length)  UNAVAILABLE; // Blocking
+      static u32 write(IO_Type* data, u32 length) UNAVAILABLE; // Blocking
+      static u32 read(IO_Type* data, u32 length)  UNAVAILABLE; // Blocking
 
       static u32 getTxFifoAvailableSpace(void) UNAVAILABLE;
       static u32 getRxFifoAvailableWords(void) UNAVAILABLE;
