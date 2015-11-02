@@ -17,7 +17,7 @@ namespace HAL {
   namespace Example {
   
     template<u8 ID>
-    struct TIMER : ::HAL::Private::TIMER_DriverInterface {
+    struct TIMER : ::HAL::Private::TIMER_DriverInterface<u16> {
 
       //! \brief This is just an alias to define an available enum value
 #define MACRO_ENUM_ELEMENT(elem)				\
