@@ -93,7 +93,7 @@ void timer_test(void) {
   TIMER::Encoder::Channel<0>::setPolarity(TIMER::EncoderPolarity::UNDEFINED);
   TIMER::Encoder::Channel<0>::setPolarity<TIMER::EncoderPolarity::UNDEFINED>();
   TIMER::Encoder::Channel<0>::getPolarity();
-	    
+            
   TIMER::Encoder::Channel<0>::setPrescaler(0);
   TIMER::Encoder::Channel<0>::setPrescaler<0>();
   TIMER::Encoder::Channel<0>::getPrescaler();
