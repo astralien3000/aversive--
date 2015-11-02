@@ -1,6 +1,7 @@
 #ifndef VIRTUAL_CONFIG_HPP
 #define VIRTUAL_CONFIG_HPP
 
+#include "memory_mapping.hpp"
 #include <base/static_list.hpp>
 
 namespace MemoryMapping {
@@ -19,7 +20,26 @@ namespace MemoryMapping {
     //! \brief Constructor
     //! \param config : The first Config of the list 
     //! \param next : The remaining configs of the list
-    constexpr VirtualConfig(const Config config, const Next... next);
+    constexpr VirtualConfig(const Config config, const Next... next)
+      : CONFIGS(config, next...) {
+    }
+
+#define MACRO_DEFINE_COMPAR(op)						\
+    template<typename... Configs>					\
+    inline bool operator op(const VirtualConfig<Configs...>& other) const { \
+      Private::VirtualFieldIsEqualVisitor visitor;			\
+      pair_static_list_foreach(CONFIGS, other.CONFIGS, visitor);	\
+      return visitor.res op true;					\
+    }									\
+    template<typename... Fields>					\
+    inline bool operator op(const VirtualField<Fields...>& field) const { \
+      return field op *this;						\
+    }									\
+    
+    MACRO_DEFINE_COMPAR(==);
+    MACRO_DEFINE_COMPAR(!=);
+    
+#undef MACRO_DEFINE_COMPAR
 
   };
     
@@ -57,7 +77,9 @@ namespace MemoryMapping {
    * 
    */
   template<typename Config, typename ... Next>
-  constexpr VirtualConfig<Config, Next...> make_virtual_config(const Config config, const Next... next);
+  constexpr VirtualConfig<Config, Next...> make_virtual_config(const Config config, const Next... next) {
+    return VirtualConfig<Config, Next...>(config, next...);
+  }
   
 }
 

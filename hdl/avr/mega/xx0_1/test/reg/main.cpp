@@ -7,6 +7,8 @@ using namespace HDL;
   static_assert((usys)aversive.ADDRESS == (usys)&libc, "ERROR : Bad Register address")
 
 int main(int, char**) {
+  GPIO_A::Fields::PIN_0 = GPIO_A::Fields::PIN_6;
+  
   TEST_REGISTER(GPIO_A::PIN , PINA);
   TEST_REGISTER(GPIO_A::DDR , DDRA);
   TEST_REGISTER(GPIO_A::PORT, PORTA);
