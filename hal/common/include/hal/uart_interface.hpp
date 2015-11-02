@@ -12,6 +12,7 @@ namespace HAL {
   namespace Private {
 
     //! \brief UART Driver Interface
+    //! \param T : The type of a standard UART Data Register
     template<typename T>
     struct UART_DriverInterface {
       using IO_Type = T;

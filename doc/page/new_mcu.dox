@@ -134,7 +134,10 @@ To create your own driver, you will have to inherit from these interfaces, and r
 
 Don't worry, you will not have to write a Driver from scratch ;) ! If we can't code it for you, we can provide you a template that propose every constants and functions that you can implement. You will just have to uncomment a constant or a function to support it. Of course, you will have to implement the functions you support.
 
-The templates are located in `/hal/common/doc`.
+The templates are located in `/doc/example/new_drivers`.
+
+Here is an example for a GPIO Driver :
+\include new_drivers/gpio.hpp
 
 ## Adding your Driver to HAL
 

@@ -12,7 +12,7 @@ namespace HAL {
   namespace Private {
   
     //! \brief GPIO Driver Interface
-    //! \param 
+    //! \param T : The type of a standard GPIO I/O Register
     /*!
      * This interface exists to show the develloper what can be implemented.
      * But the developper may not implement everything, since not every mirocontroller has as much functionnalities.

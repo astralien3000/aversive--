@@ -12,6 +12,7 @@ namespace HAL {
   namespace Private {
   
     //! \brief TIMER Driver Interface
+    //! \param T : The type of a standard Timer Counter Register
     template<typename T>
     struct TIMER_DriverInterface {
       using IO_Type = T;
