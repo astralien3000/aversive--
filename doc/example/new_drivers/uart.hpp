@@ -11,6 +11,7 @@
 #define HAL_COMMON_UART_EXAMPLE_HPP
 
 #include <hal/uart_interface.hpp>
+#include <hal/macros_define.hpp>
 
 namespace HAL {
 
@@ -19,39 +20,33 @@ namespace HAL {
     template<u8 ID>
     struct UART : ::HAL::Private::UART_DriverInterface<u8> {
       
-      //! \brief This is just an alias to define an available enum value
-#define MACRO_ENUM_ELEMENT(elem)				\
-      static constexpr Type elem = Type::elem
-
       struct Parity : UART_DriverInterface::Parity {
-	//MACRO_ENUM_ELEMENT(UNDEFINED);
-	//MACRO_ENUM_ELEMENT(NONE);
-	//MACRO_ENUM_ELEMENT(EVEN);
-	//MACRO_ENUM_ELEMENT(ODD);
+	//_AVERSIVE_AVAILABLE_ELEMENT(UNDEFINED);
+	//_AVERSIVE_AVAILABLE_ELEMENT(NONE);
+	//_AVERSIVE_AVAILABLE_ELEMENT(EVEN);
+	//_AVERSIVE_AVAILABLE_ELEMENT(ODD);
       };
 
       struct StopBit : UART_DriverInterface::StopBit {
-	//MACRO_ENUM_ELEMENT(UNDEFINED);
-	//MACRO_ENUM_ELEMENT(ONE_BIT);
-	//MACRO_ENUM_ELEMENT(ONE_AND_HALF_BIT);
-	//MACRO_ENUM_ELEMENT(TWO_BIT);
+	//_AVERSIVE_AVAILABLE_ELEMENT(UNDEFINED);
+	//_AVERSIVE_AVAILABLE_ELEMENT(ONE_BIT);
+	//_AVERSIVE_AVAILABLE_ELEMENT(ONE_AND_HALF_BIT);
+	//_AVERSIVE_AVAILABLE_ELEMENT(TWO_BIT);
       };
 
       struct FlowControl : UART_DriverInterface::FlowControl {
-	//MACRO_ENUM_ELEMENT(UNDEFINED);
-	//MACRO_ENUM_ELEMENT(NONE);
-	//MACRO_ENUM_ELEMENT(CTS);
-	//MACRO_ENUM_ELEMENT(RTS);
+	//_AVERSIVE_AVAILABLE_ELEMENT(UNDEFINED);
+	//_AVERSIVE_AVAILABLE_ELEMENT(NONE);
+	//_AVERSIVE_AVAILABLE_ELEMENT(CTS);
+	//_AVERSIVE_AVAILABLE_ELEMENT(RTS);
       };
 
       struct Endianess : UART_DriverInterface::Endianess {
-	//MACRO_ENUM_ELEMENT(UNDEFINED);
-	//MACRO_ENUM_ELEMENT(MSB);
-	//MACRO_ENUM_ELEMENT(LSB);
+	//_AVERSIVE_AVAILABLE_ELEMENT(UNDEFINED);
+	//_AVERSIVE_AVAILABLE_ELEMENT(MSB);
+	//_AVERSIVE_AVAILABLE_ELEMENT(LSB);
       };
       
-#undef MACRO_ENUM_ELEMENT
-
       //static bool isModuleEnabled(void) { return false; }
       //static void enableModule(void) {}
       //static void disableModule(void) {}
@@ -119,5 +114,7 @@ namespace HAL {
 
   }
 }
+
+#include <hal/macros_undef.hpp>
 
 #endif//HAL_COMMON_UART_EXAMPLE_HPP

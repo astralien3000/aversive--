@@ -11,6 +11,7 @@
 #define HAL_COMMON_TIMER_EXAMPLE_HPP
 
 #include <hal/timer_interface.hpp>
+#include <hal/macros_define.hpp>
 
 namespace HAL {
 
@@ -19,48 +20,42 @@ namespace HAL {
     template<u8 ID>
     struct TIMER : ::HAL::Private::TIMER_DriverInterface<u16> {
 
-      //! \brief This is just an alias to define an available enum value
-#define MACRO_ENUM_ELEMENT(elem)				\
-      static constexpr Type elem = Type::elem
-
       struct CounterMode : TIMER_DriverInterface::CounterMode {
-	//MACRO_ENUM_ELEMENT(UNDEFINED);
-	//MACRO_ENUM_ELEMENT(UP);
-	//MACRO_ENUM_ELEMENT(DOWN);
-	//MACRO_ENUM_ELEMENT(CENTER_ALIGNED);
+	//_AVERSIVE_AVAILABLE_ELEMENT(UNDEFINED);
+	//_AVERSIVE_AVAILABLE_ELEMENT(UP);
+	//_AVERSIVE_AVAILABLE_ELEMENT(DOWN);
+	//_AVERSIVE_AVAILABLE_ELEMENT(CENTER_ALIGNED);
       };
 
       struct ClockSelect : TIMER_DriverInterface::ClockSelect {
-	//MACRO_ENUM_ELEMENT(UNDEFINED);
-	//MACRO_ENUM_ELEMENT(INTERNAL);
+	//_AVERSIVE_AVAILABLE_ELEMENT(UNDEFINED);
+	//_AVERSIVE_AVAILABLE_ELEMENT(INTERNAL);
       };
 
       struct OCMode : TIMER_DriverInterface::OCMode {
-	//MACRO_ENUM_ELEMENT(UNDEFINED);
-	//MACRO_ENUM_ELEMENT(PWM);
+	//_AVERSIVE_AVAILABLE_ELEMENT(UNDEFINED);
+	//_AVERSIVE_AVAILABLE_ELEMENT(PWM);
       };
 
       struct OCPolarity : TIMER_DriverInterface::OCPolarity {
-	//MACRO_ENUM_ELEMENT(UNDEFINED);
-	//MACRO_ENUM_ELEMENT(HIGH);
-	//MACRO_ENUM_ELEMENT(LOW);
+	//_AVERSIVE_AVAILABLE_ELEMENT(UNDEFINED);
+	//_AVERSIVE_AVAILABLE_ELEMENT(HIGH);
+	//_AVERSIVE_AVAILABLE_ELEMENT(LOW);
       };
 
       struct EncoderMode : TIMER_DriverInterface::EncoderMode {
-	//MACRO_ENUM_ELEMENT(UNDEFINED);
-	//MACRO_ENUM_ELEMENT(CHANNEL1_COUNT);
-	//MACRO_ENUM_ELEMENT(CHANNEL2_COUNT);
-	//MACRO_ENUM_ELEMENT(BOTH_COUNT);
+	//_AVERSIVE_AVAILABLE_ELEMENT(UNDEFINED);
+	//_AVERSIVE_AVAILABLE_ELEMENT(CHANNEL1_COUNT);
+	//_AVERSIVE_AVAILABLE_ELEMENT(CHANNEL2_COUNT);
+	//_AVERSIVE_AVAILABLE_ELEMENT(BOTH_COUNT);
       };
 
       struct EncoderPolarity : TIMER_DriverInterface::EncoderPolarity {
-	//MACRO_ENUM_ELEMENT(UNDEFINED);
-	//MACRO_ENUM_ELEMENT(RISING);
-	//MACRO_ENUM_ELEMENT(FALLING);
-	//MACRO_ENUM_ELEMENT(BOTH);
+	//_AVERSIVE_AVAILABLE_ELEMENT(UNDEFINED);
+	//_AVERSIVE_AVAILABLE_ELEMENT(RISING);
+	//_AVERSIVE_AVAILABLE_ELEMENT(FALLING);
+	//_AVERSIVE_AVAILABLE_ELEMENT(BOTH);
       };
-
-#undef MACRO_ENUM_ELEMENT
       
       //static bool isModuleEnabled(void) { return false; }
       //static void enableModule(void) {}
@@ -156,5 +151,7 @@ namespace HAL {
 
   }
 }
+
+#include <hal/macros_undef.hpp>
 
 #endif//HAL_COMMON_TIMER_EXAMPLE_HPP
