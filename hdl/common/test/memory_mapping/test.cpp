@@ -1,5 +1,5 @@
-#include <util/memory_mapping.hpp>
-#include <util/dummy.hpp>
+#include <memory_mapping/memory_mapping.hpp>
+#include <base/dummy.hpp>
 #include <assert.h>
 #include <iostream>
 #include <vector>
@@ -29,6 +29,7 @@ constexpr BitField8<G2, 0> R3B0 = R3;
 
 constexpr auto G1F1C1 = make_config(R1F1, 0b001);
 constexpr auto G1F1C2 = make_config(R1F1, 0b101);
+constexpr auto G1F1C3 = make_config(R1F1, 0b111);
 
 constexpr auto G1F2C1 = make_config(R1F2, 0b10);
 
@@ -39,7 +40,7 @@ constexpr auto G2F2C2 = make_config(R3F2, 0b11);
 
 constexpr auto VF1 = make_virtual_field(R1F1, R3F2);
 constexpr auto VF2 = make_virtual_field(R2F1, R3F2);
-constexpr auto VC1 = make_virtual_field(G1F1C2, G2F2C1);
+constexpr auto VC1 = make_virtual_config(G1F1C2, G2F2C1);
 
 struct Test {
   static std::vector<const char*> list;
@@ -63,6 +64,18 @@ std::vector<const char*> Test::list;
 ////////////////////////////////////////////////////////////////
 // Registers
 
+MACRO_TEST_CLASS(TestVirtualFieldsCompar2OK) {
+  void run(void) {
+    r1 = 0b01100100;
+    r2 = 0b01100100;
+    r3 = 0b01100100;
+    
+    assert(VF1 == VF2);
+    assert(VF1 == VC1);
+    assert(VC1 == VF1);
+  }
+};
+
 MACRO_TEST_CLASS(TestRegistersSimpleAssignOK) {
   void run(void) {
     r1 = 0;
@@ -76,63 +89,46 @@ MACRO_TEST_CLASS(TestRegistersSimpleAssignOK) {
   }
 };
 
-MACRO_TEST_CLASS(TestRegistersArithAssignOK) {
-  void test_add(void) {
-    r1 = 1;
-    r2 = 1;
+MACRO_TEST_CLASS(TestBitFieldComparOK) {
+  void run(void) {
+    r1 = 0b10;
+    r2 = 0b10;
+    r3 = 0b10;
     
-    R1 += R2;
-    
-    assert(r1 == 2);
-    assert(r2 == 1);
-  }
+    assert(R3B0 == R2B0);
+    assert(R1B1 != R2B0);
+    assert(false == R2B0);
+    assert(false != R1B1);
+    assert(R2B0 != true);
+    assert(R1B1 == true);
 
-  void test_sub(void) {
-    r1 = 1;
-    r2 = 1;
-    
-    R1 -= R2;
-    
-    assert(r1 == 0);
-    assert(r2 == 1);
+    assert(R1B1 == G1B1C1);
+    assert(G1B1C1 == R1B1);
   }
+};
 
-  void test_mul(void) {
-    r1 = 2;
-    r2 = 2;
+MACRO_TEST_CLASS(TestRegisterComparOK) {
+  void run(void) {
+    r1 = 0b10;
+    r2 = 0b10;
     
-    R1 *= R2;
-    
-    assert(r1 == 4);
-    assert(r2 == 2);
+    assert(R1 == R2);
+    assert(!(R1 != R2));
   }
+};
 
-  void test_div(void) {
-    r1 = 2;
-    r2 = 2;
-    
-    R1 /= R2;
-    
-    assert(r1 == 1);
-    assert(r2 == 2);
-  }
-
-  void test_mod(void) {
-    r1 = 2;
-    r2 = 2;
-    
-    R1 %= R2;
-    
-    assert(r1 == 0);
-    assert(r2 == 2);
-  }
+MACRO_TEST_CLASS(TestFieldComparOK) {
 
   void run(void) {
-    test_add();
-    test_sub();
-    test_mul();
-    test_div();
-    test_mod();
+    r1 = 0b00101100;
+    r2 = 0b00101100;
+    
+    assert(R1F1 == R2F1);
+    assert(!(R1F1 != R2F1));
+
+    assert(R1F1 == 0b111);
+    assert(R1F1 == G1F1C3);
+    assert(G1F1C3 == R1F1);
   }
 };
 
@@ -179,36 +175,6 @@ MACRO_TEST_CLASS(TestRegistersSimpleAssignKO) {
   void run(void) {
     R1 = R3;
   }
-};
-
-MACRO_TEST_CLASS(TestRegistersAddAssignKO) {
-  void run(void) {
-    R1 += R3;
-  };
-};
-
-MACRO_TEST_CLASS(TestRegistersSubAssignKO) {
-  void run(void) {
-    R1 -= R3;
-  };
-};
-
-MACRO_TEST_CLASS(TestRegistersMulAssignKO) {
-  void run(void) {
-    R1 *= R3;
-  };
-};
-
-MACRO_TEST_CLASS(TestRegistersDivAssignKO) {
-  void run(void) {
-    R1 /= R3;
-  };
-};
-
-MACRO_TEST_CLASS(TestRegistersModAssignKO) {
-  void run(void) {
-    R1 %= R3;
-  };
 };
 
 MACRO_TEST_CLASS(TestRegistersBitAndAssignKO) {
@@ -452,8 +418,6 @@ MACRO_TEST_CLASS(TestVirtualFieldsSimpleAssign2OK) {
     assert(r3 == 0b01000000);
   }
 };
-
-
 
 int main(int, char**) {
 #if defined DISPLAY_LIST

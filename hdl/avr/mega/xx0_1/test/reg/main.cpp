@@ -1,24 +1,10 @@
 #include <hdl/reg.hpp>
-#include "../../include/int.hpp"
 #include <avr/io.h>
 
 using namespace HDL;
 
 #define TEST_REGISTER(aversive, libc)		\
   static_assert((usys)aversive.ADDRESS == (usys)&libc, "ERROR : Bad Register address")
-
-namespace HDL {
-  namespace Interrupts {
-    template<> void UART<0>::tx(void) {
-      
-    }
-  }
-}
-
-extern "C" void __import(void);
-void test(void) {
-  __import();
-}
 
 int main(int, char**) {
   
