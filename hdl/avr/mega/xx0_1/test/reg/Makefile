@@ -28,7 +28,7 @@ AVR_INCLUDE=-I$(AVERSIVE_ROOT)/hdl/common/include
 
 ## Link
 GEN_LDFLAGS= 
-AVR_LDFLAGS= $(GEN_LDFLAGS) -lAversive++  -Wl,--whole-archive -lAversive++_startup -Wl,--no-whole-archive
+AVR_LDFLAGS= $(GEN_LDFLAGS)
 
 ## Build Directory
 GEN_BUILD_DIR=build

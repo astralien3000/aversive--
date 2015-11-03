@@ -1,4 +1,4 @@
-extern "C" __attribute__((naked,section(".init2"))) void _init(void) {
+extern "C" __attribute__((naked,section(".init2"))) void _init2(void) {
   asm("eor     r1, r1");
   asm("out     0x3f, r1");
   asm("ldi     r28, 0xFF");
@@ -7,6 +7,9 @@ extern "C" __attribute__((naked,section(".init2"))) void _init(void) {
   asm("out     0x3d, r28");
   asm("ldi     r16, 0x00");
   asm("out     0x3c, r16");
+}
+
+extern "C" __attribute__((naked,section(".init9"))) void _init9(void) {
   asm("call    main");
   asm("jmp     _exit");
 }

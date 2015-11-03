@@ -16,6 +16,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#if defined _AVERSIVE_OLD_SUPPORT
+
 #include <hardware/timer.hpp>
 
 template<int ID>
@@ -50,4 +52,6 @@ MACRO_INTERRUPT_BIND(Timer<1>, comparEvent<2>, TIMER1_COMPC_vect)
 MACRO_INTERRUPT_BIND(Timer<0>, comparEvent<0>, TIMER0_COMPA_vect)
 #else
 MACRO_INTERRUPT_BIND(Timer<0>, comparEvent<0>, TIMER0_COMP_vect)
+#endif
+
 #endif

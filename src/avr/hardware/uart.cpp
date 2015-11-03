@@ -16,6 +16,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#if defined _AVERSIVE_OLD_SUPPORT
+
 #include <hardware/uart.hpp>
 
 #include "interrupt_bind.hpp"
@@ -55,3 +57,5 @@ MACRO_INTERRUPT_BIND(Uart<0>, sendEvent, USART_TXC_vect)
 MACRO_INTERRUPT_BIND(Uart<0>, emptyEvent, USART_UDRE_vect)
 #endif
 
+
+#endif
