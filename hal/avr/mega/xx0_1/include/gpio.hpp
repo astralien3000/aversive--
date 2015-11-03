@@ -2,14 +2,14 @@
 #define HAL_AVR_MEGA_XX0_1_GPIO_HPP
 
 #include <hal/gpio_interface.hpp>
-#include <hdl/reg.hpp>
+#include <hdl/hdl.hpp>
 
 namespace HAL {
 
   namespace ATMegaxx0_1 {
 
     template<u8 ID>
-    struct GPIO : ::HAL::Private::GPIO_DriverInterface {
+    struct GPIO : ::HAL::GPIO_DriverInterface<u8> {
 
 #define MACRO_ENUM_ELEMENT(elem)                \
       static constexpr Type elem = Type::elem

@@ -8,7 +8,7 @@ namespace HAL {
   namespace ATMegaxx0_1 {
 
     template<u8 ID>
-    struct UART : ::HAL::Private::UART_DriverInterface {
+    struct UART : ::HAL::UART_DriverInterface<u8> {
     private:
       
       //! \brief This function has to be User-defined

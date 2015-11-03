@@ -40,9 +40,7 @@ inline u32 HAL::UART<ID>::getSystemClockFrequency(void) {
 
 int main(int, char**) {
   UART_0::setSettings<UARTSettings>();
-  UART_0::setTxCompleteHandler([](){
-      
-    });
+  GPIO_B::Pin<7>::setSettings<LedSettings>();
 
   u8 c = 'a';
   
@@ -51,6 +49,7 @@ int main(int, char**) {
       c = UART_0::getChar();
     }
     UART_0::putChar(c);
+    GPIO_B::Pin<7>::toggle();
     delay();
   }
   
