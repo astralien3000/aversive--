@@ -27,8 +27,8 @@ GEN_INCLUDE= -I$(AVERSIVE_ROOT)/include
 AVR_INCLUDE=-I$(AVERSIVE_ROOT)/hdl/common/include
 
 ## Link
-GEN_LDFLAGS= -L$(AVERSIVE_ROOT)/build
-AVR_LDFLAGS= $(GEN_LDFLAGS) 
+GEN_LDFLAGS= 
+AVR_LDFLAGS= $(GEN_LDFLAGS)
 
 ## Build Directory
 GEN_BUILD_DIR=build
@@ -64,7 +64,7 @@ atmega640: avr
 avr: export CC=$(AVR_CC)
 avr: export CFLAGS=$(AVR_CFLAGS) $(WCFLAGS) -mmcu=$(AVERSIVE_MMCU)
 avr: export INCLUDE=$(AVR_INCLUDE)
-avr: export LDFLAGS=$(AVR_LDFLAGS)
+avr: export LDFLAGS=-L$(AVERSIVE_ROOT)/build/$(AVERSIVE_MMCU) $(AVR_LDFLAGS) -nostartfiles
 avr: export BUILD_DIR=$(AVR_BUILD_DIR)/$(AVERSIVE_MMCU)
 avr: export EXEC=$(GEN_EXEC)_$(AVERSIVE_MMCU).elf
 avr: compile

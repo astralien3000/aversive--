@@ -1,0 +1,18 @@
+
+if(${AVERSIVE_PLATFORM} STREQUAL "avr")
+  if(${AVERSIVE_MCU} STREQUAL "atmega2560")
+    set(SEARCH_DIR "${CMAKE_CURRENT_SOURCE_DIR}/avr/mega/xx0_1")
+  elseif(${AVERSIVE_MCU} STREQUAL "atmega2561")
+    set(SEARCH_DIR "${CMAKE_CURRENT_SOURCE_DIR}/avr/mega/xx0_1")
+  elseif(${AVERSIVE_MCU} STREQUAL "atmega1280")
+    set(SEARCH_DIR "${CMAKE_CURRENT_SOURCE_DIR}/avr/mega/xx0_1")
+  elseif(${AVERSIVE_MCU} STREQUAL "atmega1281")
+    set(SEARCH_DIR "${CMAKE_CURRENT_SOURCE_DIR}/avr/mega/xx0_1")
+  elseif(${AVERSIVE_MCU} STREQUAL "atmega640")
+    set(SEARCH_DIR "${CMAKE_CURRENT_SOURCE_DIR}/avr/mega/xx0_1")
+  endif()
+  
+  file(GLOB_RECURSE SOURCE_FILES "${SEARCH_DIR}/src/*.cpp")
+  message("test ${SEARCH_DIR}")
+  set(STARTUP_FILES ${SOURCE_FILES} PARENT_SCOPE)
+endif()
