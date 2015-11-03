@@ -15,3 +15,10 @@ if(${AVERSIVE_PLATFORM} STREQUAL "sasiae")
 endif()
 
 add_library(Aversive++ STATIC ${COMMON_HPP} ${PLATFORM_HPP} ${COMMON_CPP} ${PLATFORM_CPP} ${AVERSIVE_THIRDPARTY})
+
+
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/hdl")
+
+if(DEFINED STARTUP_FILES)
+  add_library(Aversive++_startup STATIC ${STARTUP_FILES})
+endif()
