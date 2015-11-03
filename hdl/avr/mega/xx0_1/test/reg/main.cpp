@@ -1,4 +1,4 @@
-#include <hdl/reg.hpp>
+#include <hdl/hdl.hpp>
 #include <avr/io.h>
 
 using namespace HDL;

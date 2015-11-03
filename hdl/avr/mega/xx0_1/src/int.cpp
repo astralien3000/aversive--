@@ -7,7 +7,7 @@
 extern "C" void __aversive_vectors(void) VECTORS;
 
 void __aversive_vectors(void) {
-  asm(XJMP(_init));                                      // 0
+  asm(XJMP(__init));                                     // 0
   asm(XJMP(_default_handler));                           // 1
   asm(XJMP(_default_handler));                           // 2
   asm(XJMP(_default_handler));                           // 3

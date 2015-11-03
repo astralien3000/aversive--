@@ -1,3 +1,8 @@
+extern "C" void __init(void);
+
+extern "C" __attribute__((naked,section(".init0"))) void _init0(void) {
+}
+
 extern "C" __attribute__((naked,section(".init2"))) void _init2(void) {
   asm("eor     r1, r1");
   asm("out     0x3f, r1");
@@ -13,3 +18,5 @@ extern "C" __attribute__((naked,section(".init9"))) void _init9(void) {
   asm("call    main");
   asm("jmp     _exit");
 }
+
+#pragma weak __init = _init0

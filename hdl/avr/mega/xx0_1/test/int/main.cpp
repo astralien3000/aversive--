@@ -1,6 +1,4 @@
-#include <hdl/reg.hpp>
-#include "../../include/int.hpp"
-#include "../../include/asm.hpp"
+#include <hdl/hdl.hpp>
 
 using namespace HDL;
 
