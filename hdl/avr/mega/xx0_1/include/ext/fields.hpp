@@ -5,6 +5,57 @@
 #include <memory_mapping/memory_mapping.hpp>
 #include <base/dummy.hpp>
 
+#define _AVERSIVE_DECLARE_FULL_GENERIC(f, grp, reg)		\
+  using _##f##_GROUP = typename Defs::Groups:: grp;		\
+  static constexpr auto _##f##_REG = Registers:: reg;
+
+#define _AVERSIVE_DECLARE_TEMPLATED_GENERIC(f)				\
+  template<u8 f##_ID, DummyType _DUMMY = DUMMY_VALUE>			\
+  struct f {								\
+    static_assert(!f##_ID && f##_ID, "Invalid f##_ID");			\
+  };									\
+
+#define _AVERSIVE_DECLARE_TEMPLATED_FULL_GENERIC(f, grp, reg)	\
+  _AVERSIVE_DECLARE_FULL_GENERIC(f, grp, reg);			\
+  _AVERSIVE_DECLARE_TEMPLATED_GENERIC(f);
+
+#define _AVERSIVE_DEFINE_TEMPLATED_FULL_GENERIC_2(f, suffix, id, type, grp, reg) \
+  static constexpr type<grp, Defs:: f##suffix> f##suffix  = reg;	\
+  template<DummyType _DUMMY> struct f<id, _DUMMY> {			\
+    static constexpr auto& field = f##suffix;				\
+  };
+
+#define _AVERSIVE_DEFINE_TEMPLATED_FULL_GENERIC(f, suffix, id, type, grp, reg) \
+  _AVERSIVE_DEFINE_TEMPLATED_FULL_GENERIC_2(f, suffix, id, type, typename Defs::Groups:: grp, Registers:: reg);
+
+#define _AVERSIVE_DEFINE_TEMPLATED_GENERIC(f, suffix, id, type)		\
+  _AVERSIVE_DEFINE_TEMPLATED_FULL_GENERIC_2(f, suffix, id, type, _##f##_GROUP, _##f##_REG);
+
+#define _AVERSIVE_DECLARE_TEMPLATED_FULL_BITFIELD(f, grp, reg)	\
+  _AVERSIVE_DECLARE_TEMPLATED_FULL_GENERIC(f, grp, reg);
+
+#define _AVERSIVE_DECLARE_TEMPLATED_BITFIELD(f)	\
+  _AVERSIVE_DECLARE_TEMPLATED_GENERIC(f);
+
+#define _AVERSIVE_DEFINE_TEMPLATED_BITFIELD(f, suffix, id)	\
+  _AVERSIVE_DEFINE_TEMPLATED_GENERIC(f, suffix, id, BitField8);
+
+#define _AVERSIVE_DEFINE_TEMPLATED_FULL_BITFIELD(f, suffix, id, grp, reg)	\
+  _AVERSIVE_DEFINE_TEMPLATED_FULL_GENERIC(f, suffix, id, BitField8, grp, reg);
+
+
+#define _AVERSIVE_DECLARE_TEMPLATED_FULL_FIELD(f, grp, reg)	\
+  _AVERSIVE_DECLARE_TEMPLATED_FULL_GENERIC(f, grp, reg);
+
+#define _AVERSIVE_DECLARE_TEMPLATED_FIELD(f)	\
+  _AVERSIVE_DECLARE_TEMPLATED_GENERIC(f);
+
+#define _AVERSIVE_DEFINE_TEMPLATED_FIELD(f, suffix, id)		\
+  _AVERSIVE_DEFINE_TEMPLATED_GENERIC(f, suffix, id, Field8);
+
+#define _AVERSIVE_DEFINE_TEMPLATED_FULL_FIELD(f, suffix, id, reg, grp)	\
+  _AVERSIVE_DEFINE_TEMPLATED_FULL_GENERIC(f, suffix, id, Field8, reg, grp);
+    
 namespace HDL {
     
   namespace ATMegaxx0_1 {  
@@ -20,97 +71,103 @@ namespace HDL {
 	  
 	  //! name PCIFR Register Bits
 	  //! @{
+	  _AVERSIVE_DECLARE_TEMPLATED_FULL_BITFIELD(PCIF, PCIFR, PCIFR);
+	  _AVERSIVE_DEFINE_TEMPLATED_BITFIELD(PCIF, _0, 0);
+	  _AVERSIVE_DEFINE_TEMPLATED_BITFIELD(PCIF, _1, 1);
 #if defined(__ATmegaxx0__)
-	  static constexpr BitField8<typename Defs::Groups::PCIFR, Defs::PCIF_2 > PCIF_2  = Registers::PCIFR;
+	  _AVERSIVE_DEFINE_TEMPLATED_BITFIELD(PCIF, _2, 2);
 #endif // __ATmegaxx0__
-	  static constexpr BitField8<typename Defs::Groups::PCIFR, Defs::PCIF_1 > PCIF_1  = Registers::PCIFR;
-	  static constexpr BitField8<typename Defs::Groups::PCIFR, Defs::PCIF_0 > PCIF_0  = Registers::PCIFR;
 	  //! @}
 
 	  //! name EIFR Register Bits
 	  //! @{
-	  static constexpr BitField8<typename Defs::Groups::EIMSK, Defs::INTF_7 > INTF_7  = Registers::EIFR;
-	  static constexpr BitField8<typename Defs::Groups::EIMSK, Defs::INTF_6 > INTF_6  = Registers::EIFR;
-	  static constexpr BitField8<typename Defs::Groups::EIMSK, Defs::INTF_5 > INTF_5  = Registers::EIFR;
-	  static constexpr BitField8<typename Defs::Groups::EIMSK, Defs::INTF_4 > INTF_4  = Registers::EIFR;
-	  static constexpr BitField8<typename Defs::Groups::EIMSK, Defs::INTF_3 > INTF_3  = Registers::EIFR;
-	  static constexpr BitField8<typename Defs::Groups::EIMSK, Defs::INTF_2 > INTF_2  = Registers::EIFR;
-	  static constexpr BitField8<typename Defs::Groups::EIMSK, Defs::INTF_1 > INTF_1  = Registers::EIFR;
-	  static constexpr BitField8<typename Defs::Groups::EIMSK, Defs::INTF_0 > INTF_0  = Registers::EIFR;
+	  _AVERSIVE_DECLARE_TEMPLATED_FULL_BITFIELD(INTF, EIMSK, EIFR);
+	  _AVERSIVE_DEFINE_TEMPLATED_BITFIELD(INTF, _0, 0);
+	  _AVERSIVE_DEFINE_TEMPLATED_BITFIELD(INTF, _1, 1);
+	  _AVERSIVE_DEFINE_TEMPLATED_BITFIELD(INTF, _2, 2);
+	  _AVERSIVE_DEFINE_TEMPLATED_BITFIELD(INTF, _3, 3);
+	  _AVERSIVE_DEFINE_TEMPLATED_BITFIELD(INTF, _4, 4);
+	  _AVERSIVE_DEFINE_TEMPLATED_BITFIELD(INTF, _5, 5);
+	  _AVERSIVE_DEFINE_TEMPLATED_BITFIELD(INTF, _6, 6);
+	  _AVERSIVE_DEFINE_TEMPLATED_BITFIELD(INTF, _7, 7);
 	  //! @}
 
 	  //! name EIMSK Register Bits
 	  //! @{
-	  static constexpr BitField8<typename Defs::Groups::EIMSK, Defs::INT_7 > INT_7  = Registers::EIMSK;
-	  static constexpr BitField8<typename Defs::Groups::EIMSK, Defs::INT_6 > INT_6  = Registers::EIMSK;
-	  static constexpr BitField8<typename Defs::Groups::EIMSK, Defs::INT_5 > INT_5  = Registers::EIMSK;
-	  static constexpr BitField8<typename Defs::Groups::EIMSK, Defs::INT_4 > INT_4  = Registers::EIMSK;
-	  static constexpr BitField8<typename Defs::Groups::EIMSK, Defs::INT_3 > INT_3  = Registers::EIMSK;
-	  static constexpr BitField8<typename Defs::Groups::EIMSK, Defs::INT_2 > INT_2  = Registers::EIMSK;
-	  static constexpr BitField8<typename Defs::Groups::EIMSK, Defs::INT_1 > INT_1  = Registers::EIMSK;
-	  static constexpr BitField8<typename Defs::Groups::EIMSK, Defs::INT_0 > INT_0  = Registers::EIMSK;
+	  _AVERSIVE_DECLARE_TEMPLATED_FULL_BITFIELD(INT, EIMSK, EIMSK);
+	  _AVERSIVE_DEFINE_TEMPLATED_BITFIELD(INT, _0, 0);
+	  _AVERSIVE_DEFINE_TEMPLATED_BITFIELD(INT, _1, 1);
+	  _AVERSIVE_DEFINE_TEMPLATED_BITFIELD(INT, _2, 2);
+	  _AVERSIVE_DEFINE_TEMPLATED_BITFIELD(INT, _3, 3);
+	  _AVERSIVE_DEFINE_TEMPLATED_BITFIELD(INT, _4, 4);
+	  _AVERSIVE_DEFINE_TEMPLATED_BITFIELD(INT, _5, 5);
+	  _AVERSIVE_DEFINE_TEMPLATED_BITFIELD(INT, _6, 6);
+	  _AVERSIVE_DEFINE_TEMPLATED_BITFIELD(INT, _7, 7);
 	  //! @}
 
 	  //! name PCICR Register Bits
 	  //! @{
+	  _AVERSIVE_DECLARE_TEMPLATED_FULL_BITFIELD(PCIE, PCICR, PCICR);
+	  _AVERSIVE_DEFINE_TEMPLATED_BITFIELD(PCIE, _0, 0);
+	  _AVERSIVE_DEFINE_TEMPLATED_BITFIELD(PCIE, _1, 1);
 #if defined(__ATmegaxx0__)
-	  static constexpr BitField8<typename Defs::Groups::PCICR, Defs::PCIE_2 > PCIE_2  = Registers::PCICR;
+	  _AVERSIVE_DEFINE_TEMPLATED_BITFIELD(PCIE, _2, 2);
 #endif // __ATmegaxx0__
-	  static constexpr BitField8<typename Defs::Groups::PCICR, Defs::PCIE_1 > PCIE_1  = Registers::PCICR;
-	  static constexpr BitField8<typename Defs::Groups::PCICR, Defs::PCIE_0 > PCIE_0  = Registers::PCICR;
 	  //! @}
 	  
 	  //! \name EICR_A Register Bits
 	  //! @{
-	  static constexpr Field8<typename Defs::Groups::EICR_A, Defs::ISC_3 > ISC_3  = Registers::EICR_A;
-	  static constexpr Field8<typename Defs::Groups::EICR_A, Defs::ISC_2 > ISC_2  = Registers::EICR_A;
-	  static constexpr Field8<typename Defs::Groups::EICR_A, Defs::ISC_1 > ISC_1  = Registers::EICR_A;
-	  static constexpr Field8<typename Defs::Groups::EICR_A, Defs::ISC_0 > ISC_0  = Registers::EICR_A;
+	  _AVERSIVE_DECLARE_TEMPLATED_FIELD(ISC);
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_FIELD(ISC, _0, 0, EICR_A, EICR_A);
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_FIELD(ISC, _1, 1, EICR_A, EICR_A);
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_FIELD(ISC, _2, 2, EICR_A, EICR_A);
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_FIELD(ISC, _3, 3, EICR_A, EICR_A);
 	  //! @}
 
 	  //! \name EICR_B Register Bits
 	  //! @{
-	  static constexpr Field8<typename Defs::Groups::EICR_B, Defs::ISC_7 > ISC_7  = Registers::EICR_B;
-	  static constexpr Field8<typename Defs::Groups::EICR_B, Defs::ISC_6 > ISC_6  = Registers::EICR_B;
-	  static constexpr Field8<typename Defs::Groups::EICR_B, Defs::ISC_5 > ISC_5  = Registers::EICR_B;
-	  static constexpr Field8<typename Defs::Groups::EICR_B, Defs::ISC_4 > ISC_4  = Registers::EICR_B;
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_FIELD(ISC, _4, 4, EICR_B, EICR_B);
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_FIELD(ISC, _5, 5, EICR_B, EICR_B);
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_FIELD(ISC, _6, 6, EICR_B, EICR_B);
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_FIELD(ISC, _7, 7, EICR_B, EICR_B);
 	  //! @}
 
 	  //! name PCMSK_0 Register Bits
 	  //! @{
-	  static constexpr BitField8<typename Defs::Groups::PCMSK_0, Defs::PCINT_7 > PCINT_7  = Registers::PCMSK_0;
-	  static constexpr BitField8<typename Defs::Groups::PCMSK_0, Defs::PCINT_6 > PCINT_6  = Registers::PCMSK_0;
-	  static constexpr BitField8<typename Defs::Groups::PCMSK_0, Defs::PCINT_5 > PCINT_5  = Registers::PCMSK_0;
-	  static constexpr BitField8<typename Defs::Groups::PCMSK_0, Defs::PCINT_4 > PCINT_4  = Registers::PCMSK_0;
-	  static constexpr BitField8<typename Defs::Groups::PCMSK_0, Defs::PCINT_3 > PCINT_3  = Registers::PCMSK_0;
-	  static constexpr BitField8<typename Defs::Groups::PCMSK_0, Defs::PCINT_2 > PCINT_2  = Registers::PCMSK_0;
-	  static constexpr BitField8<typename Defs::Groups::PCMSK_0, Defs::PCINT_1 > PCINT_1  = Registers::PCMSK_0;
-	  static constexpr BitField8<typename Defs::Groups::PCMSK_0, Defs::PCINT_0 > PCINT_0  = Registers::PCMSK_0;
+	  _AVERSIVE_DECLARE_TEMPLATED_BITFIELD(PCINT);	
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_BITFIELD(PCINT, _0, 0, PCMSK_0, PCMSK_0);
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_BITFIELD(PCINT, _1, 1, PCMSK_0, PCMSK_0);
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_BITFIELD(PCINT, _2, 2, PCMSK_0, PCMSK_0);
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_BITFIELD(PCINT, _3, 3, PCMSK_0, PCMSK_0);
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_BITFIELD(PCINT, _4, 4, PCMSK_0, PCMSK_0);
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_BITFIELD(PCINT, _5, 5, PCMSK_0, PCMSK_0);
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_BITFIELD(PCINT, _6, 6, PCMSK_0, PCMSK_0);
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_BITFIELD(PCINT, _7, 7, PCMSK_0, PCMSK_0);
 	  //! @}
 
 	  //! name PCMSK_1 Register Bits
 	  //! @{
-	  static constexpr BitField8<typename Defs::Groups::PCMSK_1, Defs::PCINT_15 > PCINT_15  = Registers::PCMSK_1;
-	  static constexpr BitField8<typename Defs::Groups::PCMSK_1, Defs::PCINT_14 > PCINT_14  = Registers::PCMSK_1;
-	  static constexpr BitField8<typename Defs::Groups::PCMSK_1, Defs::PCINT_13 > PCINT_13  = Registers::PCMSK_1;
-	  static constexpr BitField8<typename Defs::Groups::PCMSK_1, Defs::PCINT_12 > PCINT_12  = Registers::PCMSK_1;
-	  static constexpr BitField8<typename Defs::Groups::PCMSK_1, Defs::PCINT_11 > PCINT_11  = Registers::PCMSK_1;
-	  static constexpr BitField8<typename Defs::Groups::PCMSK_1, Defs::PCINT_10 > PCINT_10  = Registers::PCMSK_1;
-	  static constexpr BitField8<typename Defs::Groups::PCMSK_1, Defs::PCINT_9 > PCINT_9  = Registers::PCMSK_1;
-	  static constexpr BitField8<typename Defs::Groups::PCMSK_1, Defs::PCINT_8 > PCINT_8  = Registers::PCMSK_1;
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_BITFIELD(PCINT, _8, 8, PCMSK_1, PCMSK_1);
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_BITFIELD(PCINT, _9, 9, PCMSK_1, PCMSK_1);
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_BITFIELD(PCINT, _10, 10, PCMSK_1, PCMSK_1);
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_BITFIELD(PCINT, _11, 11, PCMSK_1, PCMSK_1);
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_BITFIELD(PCINT, _12, 12, PCMSK_1, PCMSK_1);
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_BITFIELD(PCINT, _13, 13, PCMSK_1, PCMSK_1);
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_BITFIELD(PCINT, _14, 14, PCMSK_1, PCMSK_1);
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_BITFIELD(PCINT, _15, 15, PCMSK_1, PCMSK_1);
 	  //! @}
 
 #if defined(__ATmegaxx0__) 
 	  //! name PCMSK_2 Register Bits
 	  //! @{
-	  static constexpr BitField8<typename Defs::Groups::PCMSK_2, Defs::PCINT_23 > PCINT_23  = Registers::PCMSK_2;
-	  static constexpr BitField8<typename Defs::Groups::PCMSK_2, Defs::PCINT_22 > PCINT_22  = Registers::PCMSK_2;
-	  static constexpr BitField8<typename Defs::Groups::PCMSK_2, Defs::PCINT_21 > PCINT_21  = Registers::PCMSK_2;
-	  static constexpr BitField8<typename Defs::Groups::PCMSK_2, Defs::PCINT_20 > PCINT_20  = Registers::PCMSK_2;
-	  static constexpr BitField8<typename Defs::Groups::PCMSK_2, Defs::PCINT_19 > PCINT_19  = Registers::PCMSK_2;
-	  static constexpr BitField8<typename Defs::Groups::PCMSK_2, Defs::PCINT_18 > PCINT_18  = Registers::PCMSK_2;
-	  static constexpr BitField8<typename Defs::Groups::PCMSK_2, Defs::PCINT_17 > PCINT_17  = Registers::PCMSK_2;
-	  static constexpr BitField8<typename Defs::Groups::PCMSK_2, Defs::PCINT_16 > PCINT_16  = Registers::PCMSK_2;
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_BITFIELD(PCINT, _16, 16, PCMSK_2, PCMSK_2);
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_BITFIELD(PCINT, _17, 17, PCMSK_2, PCMSK_2);
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_BITFIELD(PCINT, _18, 18, PCMSK_2, PCMSK_2);
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_BITFIELD(PCINT, _19, 19, PCMSK_2, PCMSK_2);
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_BITFIELD(PCINT, _20, 20, PCMSK_2, PCMSK_2);
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_BITFIELD(PCINT, _21, 21, PCMSK_2, PCMSK_2);
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_BITFIELD(PCINT, _22, 22, PCMSK_2, PCMSK_2);
+	  _AVERSIVE_DEFINE_TEMPLATED_FULL_BITFIELD(PCINT, _23, 23, PCMSK_2, PCMSK_2);
 #endif // __ATmegaxx0__
 	  //! @}
 	};
