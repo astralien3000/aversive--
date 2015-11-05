@@ -11,12 +11,13 @@ namespace HDL {
   namespace Interrupts {
 
     template<u8 ID>
-    struct GPIO {
-      template<u8 PIN_NUMBER>
-      struct Pin {
-	//! \todo Check if this pin can have EXTI handler
-	static void exti(void) INTERRUPT;
-      };
+    struct External {
+      static void interrupt(void) INTERRUPT;
+    };
+
+    template<u8 ID>
+    struct PinChange {
+      static void interrupt(void) INTERRUPT;
     };
 
     template<u8 ID>
@@ -26,6 +27,7 @@ namespace HDL {
 	static void comp(void) INTERRUPT;
       };
       static void ovf(void) INTERRUPT;
+      static void capt(void) INTERRUPT;
     };
 
     template<u8 ID>
