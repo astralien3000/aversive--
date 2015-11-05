@@ -15,6 +15,7 @@
 #include "gpio/modules.hpp"
 #include "timer/modules.hpp"
 #include "uart/modules.hpp"
+#include "ext/modules.hpp"
 
 namespace HDL {
   using namespace ATMegaxx0_1;
