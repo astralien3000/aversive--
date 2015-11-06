@@ -12,18 +12,6 @@ namespace HDL {
   }
 }
 
-#include <avr/io.h>
-#include <avr/interrupt.h>
-
-
-struct A {
-  int x;
-  int y;
-  A(int _x, int _y) : x(_x), y(_y) {}
-};
-
-volatile A test(0x11, 0x12);
-
 int main(int, char**) {
   GPIO_B::Fields::DDR<7>::field = true;
   GPIO_B::Fields::PORT<7>::field = true;
