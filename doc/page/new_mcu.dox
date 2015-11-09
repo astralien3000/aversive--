@@ -107,8 +107,46 @@ The title is quite understandable, anything that the user is not supposed to use
 
 You don't want the user to get his precious RAM swallowed, do you?
 
+## Adding your plateform definitions to HDL
+
+To add your definitions newly implemented to the HDL list, just modify `/hdl/common/include/hdl/reg.hpp`.
+
+You can add this kind of line :
+    
+    #if defined MCU_SPECIFIC_DEFINE
+    #include "path/to/your/hdl.hpp"
+    #endif    //MCU_SPECIFIC_DEFINE
+
+
 # HAL
 
-(Comming soon !)
+## Drivers Interface
+
+The Drivers Interface is located in `/hal/common/include/hal/`. This interface is supposed to handle every functionalities of every supported microcontrollers. If the microcontroller you are supporting has some features that are not shown in this interface, please, contact the main developers of Aversive++.
+
+While exploring the interface, you may see that every functions or constants are marked `UNAVAILABLE`. This is because every functionalities are supposed unavailable by default until it is implemented in a particular driver. Internally, the `UNAVAILABLE` attribute is managed by a `deprecated` attribute, which enable the library to display a warning message at compil-time.
+
+You may also see that some functions are available in several version (templated or with dynamic parameters). This is useful to let the final user choose his way of coding. It also enable the user to choose his security level or flexibility level. Indeed, templates allow developers to execute some compil-time verification, and dynamic parameters enables the user to change it during execution of the code. The driver developer is highly recommended to implement both versions, and to add the more verification he can do to the templated version.
+
+To create your own driver, you will have to inherit from these interfaces, and redefine each functionality you want to support.
+
+## Drivers templates
+
+Don't worry, you will not have to write a Driver from scratch ;) ! If we can't code it for you, we can provide you a template that propose every constants and functions that you can implement. You will just have to uncomment a constant or a function to support it. Of course, you will have to implement the functions you support.
+
+The templates are located in `/doc/example/new_drivers`.
+
+Here is an example for a GPIO Driver :
+\include new_drivers/gpio.hpp
+
+## Adding your Driver to HAL
+
+To add your driver newly implemented to the drivers list, just modify `/hal/common/include/hal.hpp`.
+
+You can add this kind of line :
+    
+    #if defined MCU_SPECIFIC_DEFINE
+    #include "path/to/your/driver.hpp"
+    #endif    //MCU_SPECIFIC_DEFINE
 
 */
