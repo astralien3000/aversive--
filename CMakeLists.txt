@@ -8,6 +8,7 @@ file(GLOB_RECURSE COMMON_CPP "src/common/*.cpp")
 file(GLOB_RECURSE PLATFORM_CPP "src/${AVERSIVE_PLATFORM}/*.cpp")
 
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include/${AVERSIVE_PLATFORM}")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/base/include")
 
 if(${AVERSIVE_PLATFORM} STREQUAL "sasiae")
   find_package(Qt5 COMPONENTS Core)

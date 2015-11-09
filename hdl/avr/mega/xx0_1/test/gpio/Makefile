@@ -23,8 +23,8 @@ GEN_CFLAGS=-Wall -Wextra --std=c++11
 AVR_CFLAGS=$(GEN_CFLAGS) -fno-threadsafe-statics -D__STDC_LIMIT_MACROS -O3
 
 ## Include
-GEN_INCLUDE= -I$(AVERSIVE_ROOT)/include
-AVR_INCLUDE=-I$(AVERSIVE_ROOT)/hdl/common/include
+GEN_INCLUDE= -I$(AVERSIVE_ROOT)/include -I$(AVERSIVE_ROOT)/base/include
+AVR_INCLUDE= $(GEN_INCLUDE) -I$(AVERSIVE_ROOT)/hdl/common/include
 
 ## Link
 GEN_LDFLAGS= -lAversive++
