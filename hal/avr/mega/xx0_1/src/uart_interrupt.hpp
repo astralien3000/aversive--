@@ -40,15 +40,23 @@ namespace HAL {
   }
 }
 
-#define _AVERSIVE_DEFINE_INTERRUPT_HANDLER(id)				\
+
+
+#define _AVERSIVE_DEFINE_TX_INTERRUPT_HANDLER(id)				\
   namespace HAL {							\
     namespace ATMegaxx0_1 {						\
       template<> UART<id>::IRQ_Handler UART<id>::txc = 0;		\
-      template<> UART<id>::IRQ_Handler UART<id>::rxc = 0;		\
     }									\
   }									\
   template void HDL::Interrupts::UART<id>::tx(void);			\
-  template void HDL::Interrupts::UART<id>::rx(void);			\
   template void HAL::ATMegaxx0_1::UART<id>::setTxCompleteHandler(IRQ_Handler); \
+
+#define _AVERSIVE_DEFINE_RX_INTERRUPT_HANDLER(id)				\
+  namespace HAL {							\
+    namespace ATMegaxx0_1 {						\
+      template<> UART<id>::IRQ_Handler UART<id>::rxc = 0;		\
+    }									\
+  }									\
+  template void HDL::Interrupts::UART<id>::rx(void);			\
   template void HAL::ATMegaxx0_1::UART<id>::setRxCompleteHandler(IRQ_Handler); \
 
