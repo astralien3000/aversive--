@@ -1,5 +1,5 @@
-#include "../include/gpio.hpp"
-#include "../include/uart.hpp"
+#include "hdl/hdl.hpp"
+#include "hal/hal.hpp"
 
 using namespace HAL;
 
@@ -42,16 +42,14 @@ int main(int, char**) {
   UART_0::setSettings<UARTSettings>();
   GPIO_B::Pin<7>::setSettings<LedSettings>();
 
-  u8 c = 'a';
+  UART_0::setRxCompleteHandler([]() {
+      UART_0::putChar(UART_0::getChar());
+      GPIO_B::Pin<7>::toggle();
+    });
+
+  HDL::sei();
   
-  while(1) {
-    if(UART_0::getRxFifoAvailableWords() >= 1) {
-      c = UART_0::getChar();
-    }
-    UART_0::putChar(c);
-    GPIO_B::Pin<7>::toggle();
-    delay();
-  }
+  while(1);
   
   return 0;
 }

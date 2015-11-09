@@ -2,6 +2,7 @@
 #define HAL_AVR_MEGA_XX0_1_UART_HPP
 
 #include <hal/uart_interface.hpp>
+#include <hdl/hdl.hpp>
 
 namespace HAL {
 
@@ -20,6 +21,7 @@ namespace HAL {
       //! \brief The RX Complete Event handler
       static IRQ_Handler rxc;
 
+      friend HDL::Interrupts::UART<ID>;
     public:
       //! \brief This is just an alias to define an available enum value
 #define MACRO_ENUM_ELEMENT(elem)				\
