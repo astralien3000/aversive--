@@ -39,12 +39,12 @@ namespace MemoryMapping {
   struct BitField {
   public:
     //! \brief The Register which this BitField belongs to
-    const Register<RegType, Group>& REGISTER;
+    const Register<RegType, Group> REGISTER;
 
   public:
     //! \brief Constructor
     //! \param reg : The Register which this Field belongs to
-    constexpr BitField(const Register<RegType, Group>& reg)
+    constexpr BitField(const Register<RegType, Group> reg)
       : REGISTER(reg) {
     }
 

@@ -1,6 +1,14 @@
 .PHONY: all atmega32 atmega128 atmega2560 stm32f4 doc clean mrproper
 
-all: sasiae atmega32 atmega128 atmega2560 stm32f4
+all: sasiae
+all: atmega32
+all: atmega128
+all: atmega2560
+all: atmega2561
+all: atmega1280
+all: atmega1281
+all: atmega640
+all: stm32f4
 
 ifeq ($(VERBOSE),1)
 _VERBOSE=VERBOSE=1
@@ -19,6 +27,18 @@ atmega128:
 
 atmega2560:
 	@(mkdir -p build/atmega2560/ && cd build/atmega2560/ && cmake -DCMAKE_TOOLCHAIN_FILE=../../cmake/toolchain/avr/atmega2560.cmake ../../ && $(MAKE) $(_VERBOSE))
+
+atmega2561:
+	@(mkdir -p build/$@/ && cd build/$@/ && cmake -DCMAKE_TOOLCHAIN_FILE=../../cmake/toolchain/avr/$@.cmake ../../ && $(MAKE) $(_VERBOSE))
+
+atmega1280:
+	@(mkdir -p build/$@/ && cd build/$@/ && cmake -DCMAKE_TOOLCHAIN_FILE=../../cmake/toolchain/avr/$@.cmake ../../ && $(MAKE) $(_VERBOSE))
+
+atmega1281:
+	@(mkdir -p build/$@/ && cd build/$@/ && cmake -DCMAKE_TOOLCHAIN_FILE=../../cmake/toolchain/avr/$@.cmake ../../ && $(MAKE) $(_VERBOSE))
+
+atmega640:
+	@(mkdir -p build/$@/ && cd build/$@/ && cmake -DCMAKE_TOOLCHAIN_FILE=../../cmake/toolchain/avr/$@.cmake ../../ && $(MAKE) $(_VERBOSE))
 
 stm32f4:
 	@(mkdir -p build/stm32f4/ && cd build/stm32f4/ && cmake -DCMAKE_TOOLCHAIN_FILE=../../cmake/toolchain/arm/stm32f4.cmake ../../ && $(MAKE) $(_VERBOSE))

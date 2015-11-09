@@ -4,68 +4,44 @@
 # User Configuration
 
 ## The root aversive directory
-AVERSIVE_ROOT=../..
+AVERSIVE_ROOT=../../../../../..
 
 ## Your project's object .o files
 OBJ=main.o
 
 ## Your executable file name
-GEN_EXEC=robot
-
-########################################
-# Aversive++ Configuration
-# You can retrieve these values from Aversive::Config class
-
-## Dummy parameter
-PARAM_DUMMY=42
+GEN_EXEC=test
 
 ########################################
 # Automatic Configuration
 
 ## Compiler
-SASIAE_CC=g++
 AVR_CC=avr-g++
 
 ## Flags
 GEN_CFLAGS=-Wall -Wextra --std=c++11
-SASIAE_CFLAGS=$(GEN_CFLAGS) -DQT_CORE_LIB -fpic
 AVR_CFLAGS=$(GEN_CFLAGS) -fno-threadsafe-statics -D__STDC_LIMIT_MACROS -O3
 
 ## Include
 GEN_INCLUDE= -I$(AVERSIVE_ROOT)/include
-SASIAE_INCLUDE= $(GEN_INCLUDE)/sasiae -I/usr/include/qt5 -I/usr/include/qt5/QtCore -I$(AVERSIVE_ROOT)/hdl/common/include
 AVR_INCLUDE=-I$(AVERSIVE_ROOT)/hdl/common/include
 
-## Config symbols
-DUMMY_SYM=_ZN8Aversive6Config13__PARAM_DUMMYE=$(PARAM_DUMMY)
-
-SYMBOL_LIST=$(DUMMY_SYM)
-
 ## Link
-DEFSYM=-Wl,--defsym=
-GEN_LDFLAGS= -L$(AVERSIVE_ROOT)/build $(addprefix $(DEFSYM), $(SYMBOL_LIST))
-SASIAE_LDFLAGS= $(GEN_LDFLAGS) -laversive_sasiae -lQt5Core -lpthread
-AVR_LDFLAGS= $(GEN_LDFLAGS) 
+GEN_LDFLAGS= -lAversive++
+AVR_LDFLAGS= $(GEN_LDFLAGS) -Wl,--whole-archive -lAversive++_startup -Wl,--no-whole-archive -nostartfiles
 
 ## Build Directory
 GEN_BUILD_DIR=build
-SASIAE_BUILD_DIR=$(GEN_BUILD_DIR)/sasiae
 AVR_BUILD_DIR=$(GEN_BUILD_DIR)
 
 ########################################
 # Rules
-all: atmega2560
-
-aversive: export WCFLAGS=-DAVERSIVE
-aversive: atmega2560
-
-sasiae: export CC=$(SASIAE_CC)
-sasiae: export CFLAGS=$(SASIAE_CFLAGS)
-sasiae: export INCLUDE=$(SASIAE_INCLUDE)
-sasiae: export LDFLAGS=$(SASIAE_LDFLAGS)
-sasiae: export BUILD_DIR=$(SASIAE_BUILD_DIR)
-sasiae: export EXEC=$(GEN_EXEC)_sasiae.elf
-sasiae: compile
+all:
+	make atmega2560
+	make atmega2561
+	make atmega1280
+	make atmega1281
+	make atmega640
 
 atmega128: export AVERSIVE_MMCU=atmega128
 atmega128: avr
@@ -88,7 +64,7 @@ atmega640: avr
 avr: export CC=$(AVR_CC)
 avr: export CFLAGS=$(AVR_CFLAGS) $(WCFLAGS) -mmcu=$(AVERSIVE_MMCU)
 avr: export INCLUDE=$(AVR_INCLUDE)
-avr: export LDFLAGS=$(AVR_LDFLAGS) -laversive_$(AVERSIVE_MMCU)
+avr: export LDFLAGS=-L$(AVERSIVE_ROOT)/build/$(AVERSIVE_MMCU) $(AVR_LDFLAGS)
 avr: export BUILD_DIR=$(AVR_BUILD_DIR)/$(AVERSIVE_MMCU)
 avr: export EXEC=$(GEN_EXEC)_$(AVERSIVE_MMCU).elf
 avr: compile
