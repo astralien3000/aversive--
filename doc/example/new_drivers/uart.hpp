@@ -18,7 +18,7 @@ namespace HAL {
   namespace Example {
 
     template<u8 ID>
-    struct UART : ::HAL::Private::UART_DriverInterface<u8> {
+    struct UART : ::HAL::UART_DriverInterface<u8> {
       
       struct Parity : UART_DriverInterface::Parity {
         //_AVERSIVE_AVAILABLE_ELEMENT(UNDEFINED);

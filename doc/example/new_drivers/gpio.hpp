@@ -18,7 +18,7 @@ namespace HAL {
   namespace Example {
   
     template<u8 ID>
-    struct GPIO : ::HAL::Private::GPIO_DriverInterface<u8> {
+    struct GPIO : ::HAL::GPIO_DriverInterface<u8> {
 
       struct Mode : GPIO_DriverInterface::Mode {
         //_AVERSIVE_AVAILABLE_ELEMENT(UNDEFINED);

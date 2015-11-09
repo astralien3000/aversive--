@@ -18,7 +18,7 @@ namespace HAL {
   namespace Example {
   
     template<u8 ID>
-    struct TIMER : ::HAL::Private::TIMER_DriverInterface<u16> {
+    struct TIMER : ::HAL::TIMER_DriverInterface<u16> {
 
       struct CounterMode : TIMER_DriverInterface::CounterMode {
         //_AVERSIVE_AVAILABLE_ELEMENT(UNDEFINED);
