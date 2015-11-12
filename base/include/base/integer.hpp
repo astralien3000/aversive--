@@ -16,8 +16,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef TYPE_HPP
-#define TYPE_HPP
+#ifndef HDL_COMMON_INTEGER_HPP
+#define HDL_COMMON_INTEGER_HPP
 
 #include <stdint.h>
 
@@ -27,16 +27,16 @@
 template<uint8_t _SIZE>
 struct IntegerInfo {
   //! \brief The size in bits of the integers the infos in this class refer to.
-  static const uint8_t SIZE = _SIZE;
+  static constexpr uint8_t SIZE = _SIZE;
   
   //! \brief Maximum value for an unsigned integer of SIZE bits.
-  static const uint64_t UNSIGNED_MAX = (static_cast<uint64_t>(1) << SIZE) - 1;
+  static constexpr uint64_t UNSIGNED_MAX = (static_cast<uint64_t>(1) << SIZE) - 1;
   
   //! \brief Maximum value for a signed integer of SIZE bits.
-  static const uint64_t SIGNED_MAX = (static_cast<uint64_t>(1) << (SIZE - 1)) - 1;
+  static constexpr int64_t SIGNED_MAX = (static_cast<uint64_t>(1) << (SIZE - 1)) - 1;
   
   //! \brief Minimum value for a signed integer of SIZE bits.
-  static const uint64_t SIGNED_MIN = static_cast<uint64_t>(1) << (SIZE - 1);
+  static constexpr int64_t SIGNED_MIN = -(static_cast<uint64_t>(1) << (SIZE - 1));
 };
 
 //! \class Integer integer.hpp <base/integer.hpp>
@@ -55,24 +55,25 @@ struct Integer {
   static_assert(true, "Integers of 8, 16, 32 or 64 bits only are supported.");
   
   //! \brief The size in bits of the integers represented by this class.
-  static const uint8_t SIZE = _SIZE;
+  static constexpr uint8_t SIZE = _SIZE;
   
   //! \brief Whether the integers represented by this class are "fast" or not.
-  static const bool FAST = _FAST;
+  static constexpr bool FAST = _FAST;
   
   //! \brief Signed type for integer of SIZE bits.
-  typedef void Signed;
+  using Signed = void;
   
   //! \brief Unsigned type for integer of SIZE bits.
-  typedef void Unsigned;
+  using Unsigned = void;
   
   //! \brief Informations for integer of SIZE bits.
-  typedef IntegerInfo<SIZE> Info;
+  using Info = IntegerInfo<SIZE>;
 };
 
+// Defs
 #define MACRO_INTEGER(s) \
-  template<> struct Integer<s, false> { static const uint8_t SIZE = s; static const bool FAST = false; typedef int##s##_t Signed; typedef uint##s##_t Unsigned; typedef IntegerInfo<s> Info; }; \
-  template<> struct Integer<s, true> { static const uint8_t SIZE = s; static const bool FAST = true; typedef int_fast##s##_t Signed; typedef uint_fast##s##_t Unsigned; typedef IntegerInfo<s> Info; };
+  template<> struct Integer<s, false> { static constexpr uint8_t SIZE = s; static constexpr bool FAST = false; using Signed = int##s##_t; using Unsigned = uint##s##_t; using Info = IntegerInfo<s>; }; \
+  template<> struct Integer<s, true> { static constexpr uint8_t SIZE = s; static constexpr bool FAST = true; using Signed = int_fast##s##_t; using Unsigned = uint_fast##s##_t; using Info = IntegerInfo<s>; };
 
 MACRO_INTEGER(8)
 MACRO_INTEGER(16)
@@ -81,11 +82,12 @@ MACRO_INTEGER(64)
 
 #undef MACRO_INTEGER
 
+// Short names
 #define MACRO_SHORT_NAME(size)					\
-  typedef typename Integer<size, false>::Signed  s##size;	\
-  typedef typename Integer<size, false>::Unsigned u##size;	\
-  typedef typename Integer<size, true>::Signed sf##size;	\
-  typedef typename Integer<size, true>::Unsigned uf##size;
+  using s##size  = Integer<size, false>::Signed;		\
+  using u##size  = Integer<size, false>::Unsigned;		\
+  using sf##size = Integer<size, true>::Signed;			\
+  using uf##size = Integer<size, true>::Unsigned;
 
 MACRO_SHORT_NAME(8)
 MACRO_SHORT_NAME(16)
@@ -94,7 +96,7 @@ MACRO_SHORT_NAME(64)
 
 #undef MACRO_SHORT_NAME
 
-typedef uintptr_t usys;
-typedef intptr_t ssys;
+using usys = uintptr_t;
+using ssys = intptr_t;
 
-#endif//TYPE_HPP
+#endif//HDL_COMMON_INTEGER_HPP
