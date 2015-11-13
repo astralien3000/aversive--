@@ -68,6 +68,6 @@ template<typename T> struct SecureCompil {
 };
 
 #define COMPIL(i)							\
-  Compil<SecureCompil<decltype(i)>::Type, (SecureCompil<decltype(i)>::Type)i>()
+  Compil<typename SecureCompil<decltype(i)>::Type, (typename SecureCompil<decltype(i)>::Type)i>()
 
 #endif//AVERSIVE_BASE_COMPIL_HPP
