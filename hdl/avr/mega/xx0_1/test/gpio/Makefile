@@ -24,7 +24,7 @@ AVR_CFLAGS=$(GEN_CFLAGS) -fno-threadsafe-statics -D__STDC_LIMIT_MACROS -O3
 
 ## Include
 GEN_INCLUDE= -I$(AVERSIVE_ROOT)/include
-AVR_INCLUDE=-I$(AVERSIVE_ROOT)/hdl/common/include
+AVR_INCLUDE=-I$(AVERSIVE_ROOT)/hdl/common/include -I$(AVERSIVE_ROOT)/base/include
 
 ## Link
 GEN_LDFLAGS= -lAversive++

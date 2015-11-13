@@ -1,6 +1,8 @@
 #ifndef HDL_UTIL_DUMMY_HPP
 #define HDL_UTIL_DUMMY_HPP
 
+#include <base/integer.hpp>
+
 //! \brief This is a utility type for templates
 /*! 
  * Due to C++ current (october 2015) specifications,

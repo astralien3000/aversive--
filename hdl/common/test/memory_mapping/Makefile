@@ -14,7 +14,7 @@ GEN_CC=g++
 GEN_CFLAGS=-Wall -Wextra --std=c++11 -DTEST=$(TEST)
 
 ## Include
-GEN_INCLUDE= -I$(AVERSIVE_ROOT)/hdl/common/include
+GEN_INCLUDE= -I$(AVERSIVE_ROOT)/base/include -I$(AVERSIVE_ROOT)/hdl/common/include
 
 ## Link
 GEN_LDFLAGS=
