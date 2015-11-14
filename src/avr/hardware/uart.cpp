@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#if defined _AVERSIVE_OLD_SUPPORT
+#if defined AVERSIVE_OLD_SUPPORT
 
 #include <hardware/uart.hpp>
 

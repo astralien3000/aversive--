@@ -23,19 +23,19 @@ namespace HAL {
     //! \name Settings
     //! @{
     template<typename GPIOType, typename PinType>
-    static void init(GPIOType gpio, PinType pin, const Settings& settings) _AVERSIVE_UNAVAILABLE;
+    static void init(GPIOType gpio, PinType pin, const Settings& settings) AVERSIVE_UNAVAILABLE;
     //! @}
 
     //! \name Value
     //! @{
     template<typename GPIOType, typename PinType>
-    static bool getValue(GPIOType gpio, PinType pin) _AVERSIVE_UNAVAILABLE;
+    static bool getValue(GPIOType gpio, PinType pin) AVERSIVE_UNAVAILABLE;
 
     template<typename GPIOType, typename PinType, typename ValueType>
-    static void setValue(GPIOType gpio, PinType  pin, ValueType value) _AVERSIVE_UNAVAILABLE;
+    static void setValue(GPIOType gpio, PinType  pin, ValueType value) AVERSIVE_UNAVAILABLE;
 
     template<typename GPIOType, typename PinType>
-    static void toggle(GPIOType gpio, PinType pin) _AVERSIVE_UNAVAILABLE;
+    static void toggle(GPIOType gpio, PinType pin) AVERSIVE_UNAVAILABLE;
     //! @}
   };
     

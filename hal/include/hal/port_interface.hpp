@@ -24,16 +24,16 @@ namespace HAL {
     //! \name Settings
     //! @{
     template<typename GPIOType>
-    static void init(GPIOType gpio, const Settings& settings) _AVERSIVE_UNAVAILABLE;
+    static void init(GPIOType gpio, const Settings& settings) AVERSIVE_UNAVAILABLE;
     //! @}
 
     //! \name Value
     //! @{
     template<typename GPIOType>
-    static IO_Type getValue(GPIOType gpio) _AVERSIVE_UNAVAILABLE;
+    static IO_Type getValue(GPIOType gpio) AVERSIVE_UNAVAILABLE;
     
     template<typename GPIOType, typename ValueType>
-    static void setValue(GPIOType gpio, ValueType value) _AVERSIVE_UNAVAILABLE;
+    static void setValue(GPIOType gpio, ValueType value) AVERSIVE_UNAVAILABLE;
     //! @}
   };
     
