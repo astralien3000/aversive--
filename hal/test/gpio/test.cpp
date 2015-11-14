@@ -64,10 +64,12 @@ int main(int, char**) {
     .output_mode = GPIO::OutputMode::UNDEFINED,
     .pull = GPIO::Pull::UNDEFINED
   };
-  
-  PORT::init(COMPIL(0), settings);
+
+  PORT::init(0_c, settings);
   PORT::init(0, settings);
-  PIN::init(COMPIL(1), COMPIL(1), settings);
-  PINGROUP::init(COMPIL(1), COMPIL(0b00110011), settings);
+  PIN::init(1_c, 1_c, settings);
+  PINGROUP::init(1_c, 0b00110011_c, settings);
+  PINGROUP::init(1_c, 0b00110011_cu8, settings);
+  PINGROUP::init(1_c, 0b00110011, settings);
   return 0;
 }
