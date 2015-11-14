@@ -10,20 +10,20 @@ volatile ::HAL::GPIO_DriverInterface<u8>::Mode::Type test2;
 
 struct GPIO : ::HAL::GPIO_DriverInterface<u8> {
 private:
-  using _Driver = ::HAL::GPIO_DriverInterface<u8>;
+  using Parent = ::HAL::GPIO_DriverInterface<u8>;
 
 public:
-  struct Mode : _Driver::Mode {
+  struct Mode : Parent::Mode {
     AVERSIVE_AVAILABLE_ELEMENT(UNDEFINED);
     AVERSIVE_AVAILABLE_ELEMENT(INPUT);
     AVERSIVE_AVAILABLE_ELEMENT(OUTPUT);
   };
   
-  struct OutputMode : _Driver::OutputMode {
+  struct OutputMode : Parent::OutputMode {
     AVERSIVE_AVAILABLE_ELEMENT(UNDEFINED);
   };
   
-  struct Pull : _Driver::Pull {
+  struct Pull : Parent::Pull {
     AVERSIVE_AVAILABLE_ELEMENT(UNDEFINED);
   };
 };
