@@ -2,6 +2,10 @@
 #include <hal/port_interface.hpp>
 #include <hal/pingroup_interface.hpp>
 #include <hal/pin_interface.hpp>
+#include <hal/uart_interface.hpp>
+#include <hal/timer_interface.hpp>
+#include <hal/pwm_interface.hpp>
+#include <hal/encoder_interface.hpp>
 
 volatile ::HAL::GPIO_DriverInterface<u8>::Mode::Type test;
 volatile ::HAL::GPIO_DriverInterface<u8>::Mode::Type test2;
