@@ -42,12 +42,20 @@ namespace HAL {
       AVERSIVE_UNAVAILABLE_ELEMENT(DOWN);
     };
 
-    //! \brief GPIO Settings
-    struct Settings {
-      typename Mode::Type mode;
-      typename OutputMode::Type output_mode;
-      typename Pull::Type pull;
+    //! \brief GPIO Generic Settings
+    template <typename ModeType, typename OutputModeType, typename PullType>
+    struct GenericSettings {
+      ModeType mode;
+      OutputModeType output_mode;
+      PullType pull;
     };
+    
+    //! \brief GPIO Settings
+    using Settings = GenericSettings<
+      typename Mode::Type,
+      typename OutputMode::Type,
+      typename Pull::Type
+      >;
   };
     
 }

@@ -9,32 +9,37 @@ volatile ::HAL::GPIO_DriverInterface<u8>::Mode::Type test2;
 #include <hal/macros_define.hpp>
 
 template<typename T>
-struct isCompil {
+struct IsCompil {
   static constexpr auto VALUE = COMPIL(false);
 };
 
 template<typename T, T VAL>
-struct isCompil<Compil<T, VAL>> {
+struct IsCompil<Compil<T, VAL>> {
   static constexpr auto VALUE = COMPIL(true);
 };
 
+template<typename T>
+constexpr decltype(IsCompil<T>::VALUE) is_compil(T) {
+  return IsCompil<T>::VALUE;
+}
+
 template<typename F1, typename F2>
-void CompilIf(Compil<bool, true>, F1 true_func, F2) {
+void compil_if(Compil<bool, true>, F1 true_func, F2) {
   true_func();
 }
 
 template<typename F1, typename F2>
-void CompilIf(Compil<bool, false>, F1, F2 false_func) {
+void compil_if(Compil<bool, false>, F1, F2 false_func) {
   false_func();
 }
 
 template<typename F>
-void CompilIf(Compil<bool, true>, F func) {
+void compil_if(Compil<bool, true>, F func) {
   func();
 }
 
 template<typename F>
-void CompilIf(Compil<bool, false>, F) {
+void compil_if(Compil<bool, false>, F) {
 }
 
 struct GPIO : ::HAL::GPIO_DriverInterface<u8> {
@@ -59,8 +64,8 @@ public:
 
 struct PORT : ::HAL::PORT_DriverInterface<u8> {
   template<typename GPIOType, typename Settings>
-  static inline constexpr void init(GPIOType gpio, const Settings& settings) {
-    CompilIf(isCompil<decltype(gpio)>::VALUE, [&](){
+  static inline void init(GPIOType gpio, const Settings& settings) {
+    compil_if(is_compil(gpio), [&](){
 	test = settings.mode;
       },
       //else
