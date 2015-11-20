@@ -22,7 +22,7 @@ namespace HAL {
     
     //! \name Settings
     //! @{
-    template<typename GPIOType, typename PinType>
+    template<typename GPIOType, typename PinType, typename Settings>
     static void init(GPIOType gpio, PinType pin, const Settings& settings) AVERSIVE_UNAVAILABLE;
     //! @}
 
