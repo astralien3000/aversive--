@@ -21,5 +21,5 @@ add_library(Aversive++ STATIC ${COMMON_HPP} ${PLATFORM_HPP} ${COMMON_CPP} ${PLAT
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/hdl")
 
 if(DEFINED STARTUP_FILES)
-  add_library(Aversive++_startup STATIC ${STARTUP_FILES})
+  add_library(Aversive++_startup STATIC $<TARGET_OBJECTS:hdl_test_startup>)
 endif()
