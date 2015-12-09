@@ -1,3 +1,14 @@
+# A new Home !
+
+The project is currently migrating to a new repository.
+
+Indeed, the project will be managed by the [AversivePlusPlus organisation](https://github.com/AversivePlusPlus).
+
+It will contain a set of modules separated into several repositories.
+The library will be more modulare, and easier to maintain.
+
+You can visit the [project's website](http://aversiveplusplus.com) to get the most recent news.
+
 # Aversive++
 
 This project provides a C++ library that eases microcontroller programming.
